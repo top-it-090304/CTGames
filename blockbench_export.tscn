@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cnmwgyrol72y5"]
+
+[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://tabkle.glb" id="1_02iw0"]
+
+[node name="blockbench_export" unique_id=38310727 instance=ExtResource("1_02iw0")]

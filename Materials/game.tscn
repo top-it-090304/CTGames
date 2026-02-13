@@ -1,0 +1,259 @@
+[gd_scene format=3 uid="uid://drv5iuxcpqs3h"]
+
+[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://tabkle.glb" id="2_i6gxk"]
+[ext_resource type="PackedScene" uid="uid://dvdb04wnnmqih" path="res://Materials/slot_machine_2d.tscn" id="3_gpbuv"]
+[ext_resource type="Script" uid="uid://clnlvrl3liwan" path="res://Materials/slot_machine_2d.gd" id="3_sa7vf"]
+[ext_resource type="Script" uid="uid://drb34ufyf0ejv" path="res://Materials/reel_1.gd" id="4_k2kpc"]
+[ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
+[ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
+[ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
+[ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
+[ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
+[ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
+[ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
+[ext_resource type="Script" uid="uid://ccgt8phd7qb8j" path="res://Materials/reel_2.gd" id="11_gpbuv"]
+[ext_resource type="Script" uid="uid://b2w1kin2i8sup" path="res://Materials/reel_3.gd" id="12_k2kpc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v06jb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sa7vf"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g7uyw"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_sa7vf")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_sa7vf"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qk58f"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_sa7vf")
+albedo_texture_force_srgb = true
+
+[node name="Game" type="Node3D" unique_id=970350183]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.13889812, 0, 0.007698357)
+size = Vector3(20, 0.2, 11.189056)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=1272693432]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.1259911, 3.7559538, 0.005780816)
+size = Vector3(20, 0.2, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1471188478]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.1259911, 1.958616, -2.8357558)
+size = Vector3(20, 7.9662476, 0.2)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1352069293]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.44672775, 1.9087561, 0.78356344)
+size = Vector3(20, 7.9229736, 0.2)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1373829784]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.2261143, 1.9671354, 0.005780816)
+size = Vector3(0.2, 7.908081, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=1819043525]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.5770316, 1.9278936, 0.005780816)
+size = Vector3(0.2, 7.6313477, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
+transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.224914, 2.309216, -0.7315999)
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=327683368]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="SlotMachine2D" parent="SubViewport" unique_id=1948149660 instance=ExtResource("3_gpbuv")]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_sa7vf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotMachine2D" unique_id=2128627625]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+scale = Vector2(2, 2)
+
+[node name="Reel1" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=332234229]
+layout_mode = 2
+script = ExtResource("4_k2kpc")
+
+[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1" unique_id=1216285220]
+layout_mode = 0
+offset_right = 857.0
+offset_bottom = 4894.0
+scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1868213290]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1636914269]
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=495077022]
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=592689908]
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1465946978]
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1834372308]
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=587315236]
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+stretch_mode = 5
+
+[node name="Reel2" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=25280344]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+script = ExtResource("11_gpbuv")
+
+[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2" unique_id=1030011268]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.243
+offset_right = 2204.0
+offset_bottom = 4894.0
+scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=922389118]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=1042025433]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=1879109227]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=404903786]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=887314731]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=468042411]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=836433852]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+stretch_mode = 5
+
+[node name="Reel3" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=1561957385]
+custom_minimum_size = Vector2(150, 300)
+layout_mode = 2
+script = ExtResource("12_k2kpc")
+
+[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3" unique_id=1336232502]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_right = 3831.0
+offset_bottom = 4894.0
+scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=898783653]
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=568397004]
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=875895820]
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=1663739658]
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=702292665]
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=146258100]
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=717452522]
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+stretch_mode = 5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=472889427]
+transform = Transform3D(1.3113416e-07, 1, -3.821371e-15, -4.371139e-08, 1.9106855e-15, -1, -1, 1.3113416e-07, 4.371139e-08, -4.0079885, 2.1950548, -0.91436404)
+mesh = SubResource("PlaneMesh_g7uyw")
+surface_material_override/0 = SubResource("StandardMaterial3D_qk58f")
+
+[node name="SpinButton" type="Button" parent="." unique_id=1143514273]
+offset_left = 3.0
+offset_top = 14.0
+offset_right = 170.0
+offset_bottom = 82.0
+text = "SPIN"
+
+[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]
+[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]

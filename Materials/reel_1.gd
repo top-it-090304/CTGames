@@ -1,0 +1,36 @@
+extends Control
+
+@export var speed : float = 2000.0
+var spinning = false
+var stopping = false
+
+@onready var symbols = $Symbols
+
+func start_spin():
+	
+	speed = 2000
+	spinning = true
+	stopping = false
+
+func _ready():
+	symbols.scale = Vector2(0.5, 0.5) 
+
+func stop_spin():
+	stopping = true
+
+func _process(delta):
+	if spinning:
+		symbols.position.y += speed * delta
+		print("Y = ", symbols.position.y) 
+		
+		
+		if symbols.position.y > 300:
+			symbols.position.y = 0
+		
+		
+		if stopping:
+			speed = lerp(speed, 0.0, 0.05)
+			
+			if speed < 10:
+				speed = 0
+				spinning = false

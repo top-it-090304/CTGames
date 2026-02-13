@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://drv5iuxcpqs3h"]
+
+[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://tabkle.glb" id="2_i6gxk"]
+[ext_resource type="Script" uid="uid://bw1m0c5dfxsoq" path="res://reel.gd" id="3_igyss"]
+[ext_resource type="Material" uid="uid://d307ibhfq6qc8" path="res://Materials/screen_material.tres" id="4_tbm47"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i6gxk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_igyss"]
+albedo_texture = SubResource("CompressedTexture2D_i6gxk")
+metallic = 0.98
+metallic_specular = 0.0
+normal_scale = -0.83
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tbm47"]
+
+[node name="Game" type="Node3D" unique_id=970350183]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.138, 0, 0.001917541)
+size = Vector3(20, 0.2, 11.189056)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=1272693432]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.12509298, 3.7559538, 0)
+size = Vector3(20, 0.2, 20)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1471188478]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.12509298, 1.958616, -2.8415365)
+size = Vector3(20, 7.9662476, 0.2)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1352069293]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.44582963, 1.9087561, 0.7777826)
+size = Vector3(20, 7.9229736, 0.2)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1373829784]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.225216, 1.9671354, 0)
+size = Vector3(0.2, 7.908081, 20)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=1819043525]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.5779297, 1.9278936, 0)
+size = Vector3(0.2, 7.6313477, 20)
+material = SubResource("StandardMaterial3D_igyss")
+metadata/_edit_group_ = true
+
+[node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
+transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
+
+[node name="Reel" type="Node3D" parent="." unique_id=1891999157]
+script = ExtResource("3_igyss")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Reel" unique_id=1725429507]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.30753, 0.5297413, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Reel" unique_id=1916062491]
+transform = Transform3D(-2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0, 0.5, 78.75865, 0.51450574, 0)
+mesh = SubResource("PlaneMesh_tbm47")
+surface_material_override/0 = ExtResource("4_tbm47")
+
+[node name="Camera3D" type="Camera3D" parent="Reel" unique_id=1316806152]
+transform = Transform3D(-0.42018074, 0, -0.9074405, 0, 1, 0, 0.9074405, 0, -0.42018074, 76.857956, 0.54073066, -0.41109002)
+fov = 53.437496
