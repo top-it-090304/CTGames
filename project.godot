@@ -13,7 +13,7 @@ config_version=5
 config/name="Новый игровой проект"
 run/main_scene="uid://drv5iuxcpqs3h"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://textures/icon.svg"
 
 [physics]
 

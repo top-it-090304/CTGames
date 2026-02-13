@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du4snea7ah12l"
-path.s3tc="res://.godot/imported/simple_wall_shelf_2_0.jpg-5313d1c2f9a80522866ed26bf559db71.s3tc.ctex"
+uid="uid://cqod1h8vknjq7"
+path.s3tc="res://.godot/imported/tabkle_1.png-d819485a8756b1df6794ace190e4c945.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "7d608ab32f560e5251ebc7aaf0f2dd85"
+"md5": "5d52b7aefbe591f79cca732088d94969"
 }
 
 [deps]
 
-source_file="res://simple_wall_shelf_2_0.jpg"
-dest_files=["res://.godot/imported/simple_wall_shelf_2_0.jpg-5313d1c2f9a80522866ed26bf559db71.s3tc.ctex"]
+source_file="res://Objects/tabkle_1.png"
+dest_files=["res://.godot/imported/tabkle_1.png-d819485a8756b1df6794ace190e4c945.s3tc.ctex"]
 
 [params]
 

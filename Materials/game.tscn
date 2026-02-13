@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://drv5iuxcpqs3h"]
 
-[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://tabkle.glb" id="2_i6gxk"]
+[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://Objects/tabkle.glb" id="2_i6gxk"]
 [ext_resource type="PackedScene" uid="uid://dvdb04wnnmqih" path="res://Materials/slot_machine_2d.tscn" id="3_gpbuv"]
 [ext_resource type="Script" uid="uid://clnlvrl3liwan" path="res://Materials/slot_machine_2d.gd" id="3_sa7vf"]
 [ext_resource type="Script" uid="uid://drb34ufyf0ejv" path="res://Materials/reel_1.gd" id="4_k2kpc"]
@@ -255,5 +255,5 @@ offset_right = 170.0
 offset_bottom = 82.0
 text = "SPIN"
 
-[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]
 [connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]
+[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]

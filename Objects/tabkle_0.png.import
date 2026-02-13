@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmee5i5h56at8"
-path.s3tc="res://.godot/imported/tabkle_1.png-72a9085afeb12590b4f975b4472e0c1b.s3tc.ctex"
+uid="uid://wf0o3uyxu1fh"
+path.s3tc="res://.godot/imported/tabkle_0.png-1a86cf8eff509afcaecf3024711cc147.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://tabkle_1.png"
-dest_files=["res://.godot/imported/tabkle_1.png-72a9085afeb12590b4f975b4472e0c1b.s3tc.ctex"]
+source_file="res://Objects/tabkle_0.png"
+dest_files=["res://.godot/imported/tabkle_0.png-1a86cf8eff509afcaecf3024711cc147.s3tc.ctex"]
 
 [params]
 

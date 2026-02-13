@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://fq7te7sr0l65"
-path="res://.godot/imported/tabkle.glb-6088b49a56eb05a459c45ddae7d1c527.scn"
+path="res://.godot/imported/tabkle.glb-94a11d0f21bb772fcff95dae5c619d20.scn"
 
 [deps]
 
-source_file="res://tabkle.glb"
-dest_files=["res://.godot/imported/tabkle.glb-6088b49a56eb05a459c45ddae7d1c527.scn"]
+source_file="res://Objects/tabkle.glb"
+dest_files=["res://.godot/imported/tabkle.glb-94a11d0f21bb772fcff95dae5c619d20.scn"]
 
 [params]
 
