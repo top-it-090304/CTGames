@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
 [ext_resource type="Script" uid="uid://ccgt8phd7qb8j" path="res://Materials/reel_2.gd" id="11_gpbuv"]
 [ext_resource type="Script" uid="uid://b2w1kin2i8sup" path="res://Materials/reel_3.gd" id="12_k2kpc"]
-[ext_resource type="PackedScene" uid="uid://blfo1plgufaof" path="res://test.glb" id="14_g7uyw"]
+[ext_resource type="PackedScene" uid="uid://b6t75ekg4gwvh" path="res://Objects/machine.glb" id="14_g7uyw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v06jb"]
 
@@ -254,11 +254,14 @@ offset_right = 170.0
 offset_bottom = 82.0
 text = "SPIN"
 
-[node name="blockbench_export" parent="." unique_id=165598994 instance=ExtResource("14_g7uyw")]
+[node name="blockbench_export" parent="." unique_id=165598994]
 transform = Transform3D(0.027696818, 0, 1.4997443, 0, 1.5, 0, -1.4997443, 0, 0.027696818, -4.8454123, 0.45088184, -0.67211413)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
+
+[node name="blockbench_export2" parent="." unique_id=2005981083 instance=ExtResource("14_g7uyw")]
+transform = Transform3D(-0.017377978, 0.0006233685, 0.9998489, -0.009222485, 0.99995714, -0.000783726, -0.9998065, -0.009234711, -0.017371481, -4.769286, 0.85910654, -0.69335794)
 
 [connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]
 [connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]
