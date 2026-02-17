@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
 [ext_resource type="Script" uid="uid://ccgt8phd7qb8j" path="res://Materials/reel_2.gd" id="11_gpbuv"]
 [ext_resource type="Script" uid="uid://b2w1kin2i8sup" path="res://Materials/reel_3.gd" id="12_k2kpc"]
+[ext_resource type="PackedScene" uid="uid://blfo1plgufaof" path="res://test.glb" id="14_g7uyw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v06jb"]
 
@@ -21,6 +22,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_g7uyw"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_sa7vf")
+size = Vector2(1, 0.7)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_sa7vf"]
 viewport_path = NodePath("SubViewport")
@@ -29,6 +31,8 @@ viewport_path = NodePath("SubViewport")
 resource_local_to_scene = true
 albedo_texture = SubResource("ViewportTexture_sa7vf")
 albedo_texture_force_srgb = true
+backlight_enabled = true
+backlight = Color(0.98145896, 0.9767758, 0.97641486, 1)
 
 [node name="Game" type="Node3D" unique_id=970350183]
 
@@ -72,7 +76,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.224914, 2.309216, -0.7315999)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -2.1104243, 2.309216, -0.7315999)
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=327683368]
 handle_input_locally = false
@@ -100,7 +104,6 @@ script = ExtResource("4_k2kpc")
 layout_mode = 0
 offset_right = 857.0
 offset_bottom = 4894.0
-scale = Vector2(0.1, 0.1)
 
 [node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1868213290]
 custom_minimum_size = Vector2(1, 1)
@@ -144,11 +147,7 @@ layout_mode = 2
 script = ExtResource("11_gpbuv")
 
 [node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2" unique_id=1030011268]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 0.243
+layout_mode = 0
 offset_right = 2204.0
 offset_bottom = 4894.0
 scale = Vector2(0.1, 0.1)
@@ -244,7 +243,7 @@ texture = ExtResource("11_3w25a")
 stretch_mode = 5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=472889427]
-transform = Transform3D(1.3113416e-07, 1, -3.821371e-15, -4.371139e-08, 1.9106855e-15, -1, -1, 1.3113416e-07, 4.371139e-08, -4.0079885, 2.1950548, -0.91436404)
+transform = Transform3D(1.3113416e-07, 1, -3.821371e-15, -4.371139e-08, 1.9106855e-15, -1, -1, 1.3113416e-07, 4.371139e-08, -4.5276637, 1.6580824, -0.677915)
 mesh = SubResource("PlaneMesh_g7uyw")
 surface_material_override/0 = SubResource("StandardMaterial3D_qk58f")
 
@@ -255,5 +254,11 @@ offset_right = 170.0
 offset_bottom = 82.0
 text = "SPIN"
 
-[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]
+[node name="blockbench_export" parent="." unique_id=165598994 instance=ExtResource("14_g7uyw")]
+transform = Transform3D(0.027696818, 0, 1.4997443, 0, 1.5, 0, -1.4997443, 0, 0.027696818, -4.8454123, 0.45088184, -0.67211413)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
+
 [connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]
+[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]
