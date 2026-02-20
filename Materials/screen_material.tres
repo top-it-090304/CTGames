@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d307ibhfq6qc8"]
+
+[ext_resource type="Shader" uid="uid://et21waw25kbu" path="res://Materials/screen_material.gdshader" id="1_c0kqo"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_c0kqo")
+shader_parameter/symbols = null
+shader_parameter/grid_size = Vector2(3, 3)

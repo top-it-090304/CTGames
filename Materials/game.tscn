@@ -1,0 +1,592 @@
+[gd_scene format=3 uid="uid://drv5iuxcpqs3h"]
+
+[ext_resource type="Script" uid="uid://ch7t4b4kf5x60" path="res://Materials/game.gd" id="1_hudx2"]
+[ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://Objects/tabkle.glb" id="2_i6gxk"]
+[ext_resource type="Script" uid="uid://dotupo8hc1e86" path="res://Materials/panel_2.gd" id="3_fust2"]
+[ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="3_gpbuv"]
+[ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
+[ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
+[ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
+[ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
+[ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
+[ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
+[ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
+[ext_resource type="Script" uid="uid://dhxasqgjo1sng" path="res://Materials/panel_3.gd" id="12_k2kpc"]
+[ext_resource type="Script" uid="uid://y4lc6efplyfa" path="res://Materials/panel_4.gd" id="13_sa7vf"]
+[ext_resource type="Script" uid="uid://cedjfqirp6hbj" path="res://Materials/panel_5.gd" id="14_0m7j0"]
+[ext_resource type="PackedScene" uid="uid://b6t75ekg4gwvh" path="res://Objects/machine.glb" id="14_g7uyw"]
+[ext_resource type="Script" uid="uid://c006bisq4kty1" path="res://Materials/panel_6.gd" id="15_0m7j0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v06jb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk58f"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62l5a"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l2bl"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3w25a"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4sbs"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_j2xmt"]
+resource_local_to_scene = true
+size = Vector2(1.3, 0.65)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fust2"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpbuv"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_fust2")
+
+[node name="Game" type="Node3D" unique_id=970350183]
+script = ExtResource("1_hudx2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.13889812, 0, 0.007698357)
+size = Vector3(20, 0.2, 11.189056)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=1272693432]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.1259911, 3.7559538, 0.005780816)
+size = Vector3(20, 0.2, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1471188478]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.1259911, 1.958616, -2.8357558)
+size = Vector3(20, 7.9662476, 0.2)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1352069293]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.44672775, 1.9087561, 0.78356344)
+size = Vector3(20, 7.9229736, 0.2)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1373829784]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.2261143, 1.9671354, 0.005780816)
+size = Vector3(0.2, 7.908081, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=1819043525]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.5770316, 1.9278936, 0.005780816)
+size = Vector3(0.2, 7.6313477, 20)
+material = SubResource("StandardMaterial3D_v06jb")
+metadata/_edit_group_ = true
+
+[node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
+transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -3.1425974, 1.6695852, -0.19723845)
+fov = 80.99463
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
+
+[node name="blockbench_export2" parent="." unique_id=2005981083 instance=ExtResource("14_g7uyw")]
+transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
+transparent_bg = true
+size = Vector2i(2000, 720)
+render_target_update_mode = 4
+
+[node name="SlotUI" type="Control" parent="SubViewport" unique_id=1402576505]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_gpbuv")
+symbols = Array[Texture2D]([ExtResource("5_sa7vf"), ExtResource("6_g7uyw"), ExtResource("7_0m7j0"), ExtResource("8_qk58f"), ExtResource("9_62l5a"), ExtResource("10_7l2bl"), ExtResource("11_3w25a")])
+weights = Array[float]([7.0, 8.0, 10.0, 9.0, 6.0, 50.0, 10.0])
+reels_row_path = NodePath("HBoxContainer")
+button_path = NodePath("../Button")
+label_path = NodePath("Label")
+
+[node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
+visible = false
+custom_minimum_size = Vector2(1400, 44)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 18.0
+offset_right = 76.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(1, 0.72, 0.35, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
+custom_minimum_size = Vector2(1564, 540)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 84.0
+offset_right = 1764.0
+offset_bottom = 624.0
+theme_override_constants/separation = 16
+
+[node name="Panel2" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1371510790]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qk58f")
+script = ExtResource("3_fust2")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2" unique_id=1265306406]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer" unique_id=1978296401]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1600128397]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=636497946]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=77746438]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=593643981]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1041830622]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=762576421]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1750990342]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel3" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1535404939]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_62l5a")
+script = ExtResource("12_k2kpc")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3" unique_id=325626560]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer" unique_id=886598828]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1506754377]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=2122522707]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1634918489]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=111572360]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=125277088]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=990484620]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=58654553]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel4" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=900466939]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7l2bl")
+script = ExtResource("13_sa7vf")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4" unique_id=1260188477]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer" unique_id=844146009]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=427976100]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1845341312]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=906233931]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1564721407]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=761420985]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=312222893]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1892909718]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel5" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=916677282]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w25a")
+script = ExtResource("14_0m7j0")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5" unique_id=267820924]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer" unique_id=1040745070]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=2094393432]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=289770453]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1056986977]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=314457585]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=441102158]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=70757673]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1929893014]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel6" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=517089707]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4sbs")
+script = ExtResource("15_0m7j0")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6" unique_id=979237616]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer" unique_id=16976578]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1940952828]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=655164]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1350266363]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1297181015]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1482858452]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1508293150]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=22877894]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
+visible = false
+custom_minimum_size = Vector2(300, 82)
+offset_left = 1630.0
+offset_top = 610.0
+offset_right = 1638.0
+offset_bottom = 650.0
+mouse_filter = 2
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1440921853]
+transform = Transform3D(-4.3711385e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -0.99999994, -4.3711385e-08, 1.9106853e-15, -4.364867, 1.6767324, -0.24195454)
+mesh = SubResource("PlaneMesh_j2xmt")
+surface_material_override/0 = SubResource("StandardMaterial3D_gpbuv")
