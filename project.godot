@@ -15,6 +15,10 @@ run/main_scene="uid://drv5iuxcpqs3h"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://textures/icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

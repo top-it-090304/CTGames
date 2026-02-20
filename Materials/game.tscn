@@ -1,9 +1,6 @@
 [gd_scene format=3 uid="uid://drv5iuxcpqs3h"]
 
 [ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://Objects/tabkle.glb" id="2_i6gxk"]
-[ext_resource type="PackedScene" uid="uid://dvdb04wnnmqih" path="res://Materials/slot_machine_2d.tscn" id="3_gpbuv"]
-[ext_resource type="Script" uid="uid://clnlvrl3liwan" path="res://Materials/slot_machine_2d.gd" id="3_sa7vf"]
-[ext_resource type="Script" uid="uid://drb34ufyf0ejv" path="res://Materials/reel_1.gd" id="4_k2kpc"]
 [ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
 [ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
@@ -11,28 +8,19 @@
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
-[ext_resource type="Script" uid="uid://ccgt8phd7qb8j" path="res://Materials/reel_2.gd" id="11_gpbuv"]
-[ext_resource type="Script" uid="uid://b2w1kin2i8sup" path="res://Materials/reel_3.gd" id="12_k2kpc"]
 [ext_resource type="PackedScene" uid="uid://b6t75ekg4gwvh" path="res://Objects/machine.glb" id="14_g7uyw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v06jb"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sa7vf"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_g7uyw"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_j2xmt"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_sa7vf")
-size = Vector2(1, 0.7)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_sa7vf"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_fust2"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qk58f"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpbuv"]
 resource_local_to_scene = true
-albedo_texture = SubResource("ViewportTexture_sa7vf")
-albedo_texture_force_srgb = true
-backlight_enabled = true
-backlight = Color(0.98145896, 0.9767758, 0.97641486, 1)
+albedo_texture = SubResource("ViewportTexture_fust2")
 
 [node name="Game" type="Node3D" unique_id=970350183]
 
@@ -76,183 +64,8 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -2.1104243, 2.309216, -0.7315999)
-
-[node name="SubViewport" type="SubViewport" parent="." unique_id=327683368]
-handle_input_locally = false
-render_target_update_mode = 4
-
-[node name="SlotMachine2D" parent="SubViewport" unique_id=1948149660 instance=ExtResource("3_gpbuv")]
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("3_sa7vf")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotMachine2D" unique_id=2128627625]
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-scale = Vector2(2, 2)
-
-[node name="Reel1" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=332234229]
-layout_mode = 2
-script = ExtResource("4_k2kpc")
-
-[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1" unique_id=1216285220]
-layout_mode = 0
-offset_right = 857.0
-offset_bottom = 4894.0
-
-[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1868213290]
-custom_minimum_size = Vector2(1, 1)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1636914269]
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=495077022]
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=592689908]
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1465946978]
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=1834372308]
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel1/Symbols" unique_id=587315236]
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-stretch_mode = 5
-
-[node name="Reel2" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=25280344]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-script = ExtResource("11_gpbuv")
-
-[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2" unique_id=1030011268]
-layout_mode = 0
-offset_right = 2204.0
-offset_bottom = 4894.0
-scale = Vector2(0.1, 0.1)
-
-[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=922389118]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=1042025433]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=1879109227]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=404903786]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=887314731]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=468042411]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel2/Symbols" unique_id=836433852]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-stretch_mode = 5
-
-[node name="Reel3" type="Control" parent="SubViewport/SlotMachine2D/HBoxContainer" unique_id=1561957385]
-custom_minimum_size = Vector2(150, 300)
-layout_mode = 2
-script = ExtResource("12_k2kpc")
-
-[node name="Symbols" type="VBoxContainer" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3" unique_id=1336232502]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-offset_right = 3831.0
-offset_bottom = 4894.0
-scale = Vector2(0.1, 0.1)
-
-[node name="TextureRect1" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=898783653]
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=568397004]
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=875895820]
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=1663739658]
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=702292665]
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=146258100]
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotMachine2D/HBoxContainer/Reel3/Symbols" unique_id=717452522]
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-stretch_mode = 5
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=472889427]
-transform = Transform3D(-0.028061079, 0.9996062, 1.2265906e-09, -4.371139e-08, 1.9106855e-15, -1, -0.9996062, -0.028061079, 4.3694175e-08, -4.2674375, 1.6855203, -0.21605429)
-mesh = SubResource("PlaneMesh_g7uyw")
-surface_material_override/0 = SubResource("StandardMaterial3D_qk58f")
-
-[node name="SpinButton" type="Button" parent="." unique_id=1143514273]
-offset_left = 3.0
-offset_top = 14.0
-offset_right = 170.0
-offset_bottom = 82.0
-text = "SPIN"
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.6868007, 2.2986436, -8.673761)
+fov = 80.99463
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
@@ -260,5 +73,154 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 [node name="blockbench_export2" parent="." unique_id=2005981083 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-0.02604966, 0.0009344287, 0.9998488, -0.013824506, 1.4989357, -0.00078372855, -1.4987098, -0.013842832, -0.017371533, -4.5562725, 0.45852017, -0.23754549)
 
-[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_spin_button_pressed"]
-[connection signal="pressed" from="SpinButton" to="SubViewport/SlotMachine2D" method="_on_SpinButton_pressed"]
+[node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
+transparent_bg = true
+size = Vector2i(1024, 512)
+render_target_update_mode = 4
+
+[node name="SlotUI" type="Node2D" parent="SubViewport" unique_id=437231860]
+
+[node name="ColorRect" type="ColorRect" parent="SubViewport/SlotUI" unique_id=1546542995]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=235465508]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel" unique_id=1892153278]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer" unique_id=390244032]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1352572736]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=615662460]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=113952058]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1065459599]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=776540291]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1041421787]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=2093778098]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Panel2" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1371510790]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2" unique_id=1265306406]
+layout_mode = 0
+offset_left = 370.0
+offset_right = 626.0
+offset_bottom = 1816.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer" unique_id=1978296401]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1600128397]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=636497946]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=77746438]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=593643981]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1041830622]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=762576421]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1750990342]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Panel3" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=778043855]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="SubViewport/SlotUI" unique_id=2019399268]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1440921853]
+transform = Transform3D(-0.03141076, 0.9790918, 0.20097873, 0, 0.20107795, -0.9795752, -0.99950653, -0.030769203, -0.006316012, -3.5690873, 1.6767324, -8.596552)
+mesh = SubResource("PlaneMesh_j2xmt")
+surface_material_override/0 = SubResource("StandardMaterial3D_gpbuv")
