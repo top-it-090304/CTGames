@@ -71,7 +71,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -3.9165325, 1.6695852, -0.19723845)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -3.1403759, 2.2986436, -0.24538004)
 fov = 80.99463
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -82,30 +82,19 @@ transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
 transparent_bg = true
-size = Vector2i(2000, 720)
+size = Vector2i(1280, 768)
 render_target_update_mode = 4
 
-[node name="SlotUI" type="Control" parent="SubViewport" unique_id=1402576505]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="SlotUI" type="Node2D" parent="SubViewport" unique_id=437231860]
 script = ExtResource("3_gpbuv")
 symbols = Array[Texture2D]([ExtResource("5_sa7vf"), ExtResource("6_g7uyw"), ExtResource("7_0m7j0"), ExtResource("8_qk58f"), ExtResource("9_62l5a"), ExtResource("10_7l2bl"), ExtResource("11_3w25a")])
-reels_row_path = NodePath("HBoxContainer")
-button_path = NodePath("../Button")
-label_path = NodePath("Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Panel2" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1371510790]
 layout_mode = 2
-mouse_filter = 2
 script = ExtResource("3_fust2")
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2" unique_id=1265306406]
@@ -169,7 +158,6 @@ stretch_mode = 5
 
 [node name="Panel3" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1535404939]
 layout_mode = 2
-mouse_filter = 2
 script = ExtResource("12_k2kpc")
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3" unique_id=325626560]
@@ -232,7 +220,6 @@ stretch_mode = 5
 
 [node name="Panel4" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=900466939]
 layout_mode = 2
-mouse_filter = 2
 script = ExtResource("13_sa7vf")
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4" unique_id=1260188477]
@@ -296,7 +283,6 @@ stretch_mode = 5
 
 [node name="Panel5" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=916677282]
 layout_mode = 2
-mouse_filter = 2
 script = ExtResource("14_0m7j0")
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5" unique_id=267820924]
@@ -360,7 +346,6 @@ stretch_mode = 5
 
 [node name="Panel6" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=517089707]
 layout_mode = 2
-mouse_filter = 2
 script = ExtResource("15_0m7j0")
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6" unique_id=979237616]
@@ -422,15 +407,13 @@ texture = ExtResource("11_3w25a")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Button" type="Button" parent="SubViewport/SlotUI" unique_id=2019399268]
+offset_right = 8.0
+offset_bottom = 8.0
+
 [node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-
-[node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
-offset_left = 20.0
-offset_right = 28.0
-offset_bottom = 40.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1440921853]
 transform = Transform3D(-4.3711385e-08, 0.99999994, -4.3711385e-08, 0, -4.3711385e-08, -0.99999994, -0.99999994, -4.3711385e-08, 1.9106853e-15, -4.364867, 1.6767324, -0.24195454)
