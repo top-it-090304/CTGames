@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Новый игровой проект"
-run/main_scene="res://Materials/game.tscn"
+run/main_scene="uid://bkm6cqcetsu17"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://textures/icon.svg"
 
 [display]
 
 window/stretch/mode="canvas_items"
+
+[dotnet]
+
+project/assembly_name="Новый игровой проект"
 
 [physics]
 
