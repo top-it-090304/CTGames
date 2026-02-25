@@ -38,12 +38,6 @@ albedo_texture = ExtResource("2_62l5a")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lo5pb"]
 albedo_texture = ExtResource("2_62l5a")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk58f"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62l5a"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -63,6 +57,12 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4sbs"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_navue"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -129,7 +129,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -2.028074, 1.8986881, -0.66935945)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -3.2376652, 1.8986881, -0.66935945)
 fov = 61.222404
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -156,6 +156,11 @@ weights = Array[float]([7.0, 8.0, 10.0, 9.0, 6.0, 50.0, 10.0])
 reels_row_path = NodePath("HBoxContainer")
 button_path = NodePath("../Button")
 label_path = NodePath("Label")
+starting_bankroll = null
+spin_fee = null
+min_bet = null
+max_bet = null
+bet_step = null
 
 [node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
 visible = false
@@ -181,7 +186,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_qk58f")
+theme_override_styles/panel = SubResource("StyleBoxFlat_62l5a")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -266,7 +271,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_62l5a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7l2bl")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -351,7 +356,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_7l2bl")
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w25a")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -436,7 +441,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3w25a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m4sbs")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -521,7 +526,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_m4sbs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_navue")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -617,7 +622,7 @@ mesh = SubResource("PlaneMesh_j2xmt")
 surface_material_override/0 = SubResource("StandardMaterial3D_gpbuv")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1878562853]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9199753, 2.91191, -1.3254383)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7919872, 2.91191, -1.3254383)
 light_color = Color(1, 0.6666667, 0.22745098, 1)
 light_energy = 1.554
 light_indirect_energy = 1.871
