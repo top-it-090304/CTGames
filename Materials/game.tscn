@@ -135,7 +135,7 @@ fov = 61.222404
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 
-[node name="blockbench_export2" parent="." unique_id=2005981083 instance=ExtResource("14_g7uyw")]
+[node name="blockbench_export2" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
