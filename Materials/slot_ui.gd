@@ -2,6 +2,8 @@
 extends Control
 
 signal status_changed(text: String)
+signal hud_changed(money: int, spins_left: int, tickets: int)
+signal win_popup_requested(amount: int)
 
 @export var symbols: Array[Texture2D] = []
 @export var weights: Array[float] = []
@@ -28,22 +30,12 @@ var label: Label
 
 var _reels: Array[Panel] = []
 var _busy: bool = false
-var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var _last_status: String = ""
 
 var money: int = 0
 var spins_left: int = 0
 var tickets: int = 0
 
-var hud_left: Panel
-var hud_right: Panel
-var lbl_money: Label
-var lbl_spins: Label
-var lbl_tickets: Label
-var win_popup: Label
-
 func _ready() -> void:
-	_rng.randomize()
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
 	btn = get_node_or_null(button_path) as Button
 	label = get_node_or_null(label_path) as Label
@@ -61,8 +53,7 @@ func _ready() -> void:
 	_hide_legacy_ui()
 	_normalize_weights()
 	_sync_reel_pools()
-	_ensure_hud()
-	_refresh_hud()
+	_emit_hud_changed()
 	_set_status("READY")
 
 	if btn != null and not btn.pressed.is_connected(request_spin):
@@ -101,7 +92,7 @@ func request_spin() -> void:
 		return
 	if spins_left < spins_per_round:
 		_set_status("NO SPINS LEFT")
-		_refresh_hud()
+		_emit_hud_changed()
 		return
 	_spin()
 
@@ -113,7 +104,7 @@ func _spin() -> void:
 	_sync_reel_pools()
 	_busy = true
 	spins_left -= spins_per_round
-	_refresh_hud()
+	_emit_hud_changed()
 	_set_status("SPINNING")
 
 	for reel: Panel in _reels:
@@ -137,14 +128,13 @@ func _spin() -> void:
 	var win_amount: int = int(result.get("win_amount", 0))
 	if win_amount > 0:
 		money += win_amount
-		_show_win_popup(win_amount)
+		emit_signal("win_popup_requested", win_amount)
 
 	_set_status(String(result.get("text", "DONE")))
-	_refresh_hud()
+	_emit_hud_changed()
 	_busy = false
 
 func _set_status(text: String) -> void:
-	_last_status = text
 	emit_signal("status_changed", text)
 
 func _hide_legacy_ui() -> void:
@@ -246,97 +236,17 @@ func _payout_for(match_count: int) -> int:
 		return payout_x4
 	return payout_x3
 
-func _refresh_hud() -> void:
-	if lbl_money != null:
-		lbl_money.text = "%s F" % _format_money(money)
-	if lbl_spins != null:
-		lbl_spins.text = "SPINS LEFT: %d" % spins_left
-	if lbl_tickets != null:
-		lbl_tickets.text = "%d TIX" % tickets
+func _emit_hud_changed() -> void:
+	emit_signal("hud_changed", money, spins_left, tickets)
 
-func _ensure_hud() -> void:
-	hud_left = get_node_or_null("HudLeft") as Panel
-	if hud_left == null:
-		hud_left = Panel.new()
-		hud_left.name = "HudLeft"
-		add_child(hud_left)
-	hud_left.position = Vector2(18.0, 18.0)
-	hud_left.size = Vector2(360.0, 140.0)
-	hud_left.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud_left.add_theme_stylebox_override("panel", _hud_box())
+func get_hud_state() -> Dictionary:
+	return {
+		"money": money,
+		"spins_left": spins_left,
+		"tickets": tickets,
+	}
 
-	lbl_money = _ensure_label(hud_left, "Money", Rect2(16.0, 14.0, 330.0, 52.0), 52)
-	lbl_spins = _ensure_label(hud_left, "Spins", Rect2(16.0, 76.0, 330.0, 36.0), 44)
-
-	hud_right = get_node_or_null("HudRight") as Panel
-	if hud_right == null:
-		hud_right = Panel.new()
-		hud_right.name = "HudRight"
-		add_child(hud_right)
-	hud_right.anchor_left = 1.0
-	hud_right.anchor_right = 1.0
-	hud_right.position = Vector2(-210.0, 18.0)
-	hud_right.size = Vector2(192.0, 72.0)
-	hud_right.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud_right.add_theme_stylebox_override("panel", _hud_box())
-
-	lbl_tickets = _ensure_label(hud_right, "Tickets", Rect2(16.0, 14.0, 160.0, 42.0), 44)
-	lbl_tickets.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-
-	win_popup = get_node_or_null("WinPopup") as Label
-	if win_popup == null:
-		win_popup = Label.new()
-		win_popup.name = "WinPopup"
-		add_child(win_popup)
-	win_popup.anchor_left = 0.5
-	win_popup.anchor_top = 0.5
-	win_popup.anchor_right = 0.5
-	win_popup.anchor_bottom = 0.5
-	win_popup.position = Vector2(-220.0, -58.0)
-	win_popup.size = Vector2(440.0, 120.0)
-	win_popup.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	win_popup.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	win_popup.add_theme_font_size_override("font_size", 88)
-	win_popup.add_theme_color_override("font_color", Color(1.0, 0.2, 0.95, 1.0))
-	win_popup.visible = false
-	win_popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	move_child(hud_left, get_child_count() - 1)
-	move_child(hud_right, get_child_count() - 1)
-	move_child(win_popup, get_child_count() - 1)
-
-func _ensure_label(parent: Control, name: String, rect: Rect2, font_size: int) -> Label:
-	var node: Label = parent.get_node_or_null(name) as Label
-	if node == null:
-		node = Label.new()
-		node.name = name
-		parent.add_child(node)
-	node.position = rect.position
-	node.size = rect.size
-	node.add_theme_font_size_override("font_size", font_size)
-	node.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
-	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return node
-
-func _show_win_popup(amount: int) -> void:
-	if win_popup == null:
-		return
-	win_popup.text = "+%d F" % amount
-	win_popup.visible = true
-	var tw: Tween = create_tween()
-	tw.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tw.tween_property(win_popup, "modulate:a", 1.0, 0.01)
-	tw.tween_interval(0.85)
-	tw.tween_property(win_popup, "modulate:a", 0.0, 0.28)
-	tw.finished.connect(_hide_win_popup)
-
-func _hide_win_popup() -> void:
-	if win_popup == null:
-		return
-	win_popup.visible = false
-	win_popup.modulate.a = 1.0
-
-func _format_money(value: int) -> String:
+func format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))
 	var out: String = ""
 	var count: int = 0
@@ -347,15 +257,6 @@ func _format_money(value: int) -> String:
 			out = "." + out
 			count = 0
 	return out
-
-func _hud_box() -> StyleBoxFlat:
-	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = Color(0.0, 0.0, 0.0, 0.88)
-	style.corner_radius_top_left = 2
-	style.corner_radius_top_right = 2
-	style.corner_radius_bottom_left = 2
-	style.corner_radius_bottom_right = 2
-	return style
 
 func _configure_slot_layout() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
