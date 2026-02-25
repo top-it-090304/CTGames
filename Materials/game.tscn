@@ -129,7 +129,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -3.2376652, 1.8986881, -0.66935945)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -2.1860518, 1.8986881, -0.66935945)
 fov = 61.222404
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -153,14 +153,18 @@ grow_vertical = 2
 script = ExtResource("3_gpbuv")
 symbols = Array[Texture2D]([ExtResource("5_sa7vf"), ExtResource("6_g7uyw"), ExtResource("7_0m7j0"), ExtResource("8_qk58f"), ExtResource("9_62l5a"), ExtResource("10_7l2bl"), ExtResource("11_3w25a")])
 weights = Array[float]([7.0, 8.0, 10.0, 9.0, 6.0, 50.0, 10.0])
+min_match_for_win = null
+payout_x3 = null
+payout_x4 = null
+payout_x5 = null
+reward_unit = null
+starting_money = null
+starting_spins = null
+starting_tickets = null
+spins_per_round = null
 reels_row_path = NodePath("HBoxContainer")
 button_path = NodePath("../Button")
 label_path = NodePath("Label")
-starting_bankroll = null
-spin_fee = null
-min_bet = null
-max_bet = null
-bet_step = null
 
 [node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
 visible = false
