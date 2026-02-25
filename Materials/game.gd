@@ -2,6 +2,7 @@
 extends Node3D
 
 @onready var slot_ui: Control = $SubViewport/SlotUI
+@onready var animation_player: AnimationPlayer = $blockbench_export2/AnimationPlayer
 
 var hud_layer: CanvasLayer
 var hud_left: Panel
@@ -28,6 +29,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _request_spin() -> void:
 	if slot_ui != null and slot_ui.has_method("request_spin"):
 		slot_ui.request_spin()
+	if animation_player:
+		animation_player.play("lever")
 
 func _connect_slot_ui() -> void:
 	if slot_ui == null:
