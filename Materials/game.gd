@@ -9,16 +9,22 @@ var hud_left: Panel
 var hud_right: Panel
 var lbl_money: Label
 var lbl_spins: Label
-var lbl_tickets: Label
+var lbl_tok: Label
 var win_popup: Label
+
 var win_popup_tween: Tween
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	_ensure_main_hud()
+	_ensure_hud_tree()
+	_bind_hud_nodes()
+	_remove_paytable_panel()
+	_configure_hud_visuals()
 	_connect_slot_ui()
 	_sync_hud_from_slot()
+	if win_popup != null:
+		win_popup.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -29,7 +35,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _request_spin() -> void:
 	if slot_ui != null and slot_ui.has_method("request_spin"):
 		slot_ui.request_spin()
-	if animation_player:
+	if animation_player != null:
 		animation_player.play("lever")
 
 func _connect_slot_ui() -> void:
@@ -56,18 +62,18 @@ func _sync_hud_from_slot() -> void:
 
 func _on_hud_changed(money: int, spins_left: int, tickets: int) -> void:
 	if lbl_money != null:
-		lbl_money.text = "%s F" % _format_money(money)
+		lbl_money.text = "%s Ф" % _format_money(money)
 	if lbl_spins != null:
 		lbl_spins.text = "SPINS LEFT: %d" % spins_left
-	if lbl_tickets != null:
-		lbl_tickets.text = "%d TIX" % tickets
+	if lbl_tok != null:
+		lbl_tok.text = "%d TOK" % tickets
 
 func _on_win_popup_requested(amount: int) -> void:
 	if win_popup == null:
 		return
 	if win_popup_tween != null:
 		win_popup_tween.kill()
-	win_popup.text = "+%d F" % amount
+	win_popup.text = "+%d Ф" % amount
 	win_popup.visible = true
 	win_popup.modulate.a = 1.0
 	var tw: Tween = create_tween()
@@ -80,89 +86,154 @@ func _on_win_popup_requested(amount: int) -> void:
 func _hide_win_popup() -> void:
 	if win_popup == null:
 		return
-	if win_popup_tween != null:
-		win_popup_tween = null
+	win_popup_tween = null
 	win_popup.visible = false
 	win_popup.modulate.a = 1.0
 
-func _ensure_main_hud() -> void:
+func _ensure_hud_tree() -> void:
 	hud_layer = get_node_or_null("MainHUD") as CanvasLayer
 	if hud_layer == null:
 		hud_layer = CanvasLayer.new()
 		hud_layer.name = "MainHUD"
 		add_child(hud_layer)
-	hud_layer.layer = 10
 
 	hud_left = hud_layer.get_node_or_null("HudLeft") as Panel
 	if hud_left == null:
 		hud_left = Panel.new()
 		hud_left.name = "HudLeft"
 		hud_layer.add_child(hud_left)
-	hud_left.position = Vector2(18.0, 18.0)
-	hud_left.size = Vector2(382.0, 136.0)
-	hud_left.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud_left.add_theme_stylebox_override("panel", _hud_box())
 
-	lbl_money = _ensure_label(hud_left, "Money", Rect2(18.0, 14.0, 346.0, 52.0), 52)
-	lbl_spins = _ensure_label(hud_left, "Spins", Rect2(18.0, 78.0, 346.0, 36.0), 42)
+	lbl_money = hud_left.get_node_or_null("MoneyLabel") as Label
+	if lbl_money == null:
+		lbl_money = Label.new()
+		lbl_money.name = "MoneyLabel"
+		lbl_money.text = "0 Ф"
+		hud_left.add_child(lbl_money)
+
+	lbl_spins = hud_left.get_node_or_null("SpinsLabel") as Label
+	if lbl_spins == null:
+		lbl_spins = Label.new()
+		lbl_spins.name = "SpinsLabel"
+		lbl_spins.text = "SPINS LEFT: 0"
+		hud_left.add_child(lbl_spins)
 
 	hud_right = hud_layer.get_node_or_null("HudRight") as Panel
 	if hud_right == null:
 		hud_right = Panel.new()
 		hud_right.name = "HudRight"
 		hud_layer.add_child(hud_right)
-	hud_right.anchor_left = 1.0
-	hud_right.anchor_right = 1.0
-	hud_right.offset_left = -208.0
-	hud_right.offset_top = 18.0
-	hud_right.offset_right = -18.0
-	hud_right.offset_bottom = 88.0
-	hud_right.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	hud_right.add_theme_stylebox_override("panel", _hud_box())
 
-	lbl_tickets = _ensure_label(hud_right, "Tickets", Rect2(16.0, 14.0, 162.0, 40.0), 44)
-	lbl_tickets.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	lbl_tok = hud_right.get_node_or_null("TokLabel") as Label
+	if lbl_tok == null:
+		var fallback: Label = hud_right.get_node_or_null("Label") as Label
+		if fallback != null:
+			fallback.name = "TokLabel"
+			lbl_tok = fallback
+		else:
+			lbl_tok = Label.new()
+			lbl_tok.name = "TokLabel"
+			lbl_tok.text = "0 TOK"
+			hud_right.add_child(lbl_tok)
 
 	win_popup = hud_layer.get_node_or_null("WinPopup") as Label
 	if win_popup == null:
 		win_popup = Label.new()
 		win_popup.name = "WinPopup"
+		win_popup.text = "+0 Ф"
 		hud_layer.add_child(win_popup)
-	win_popup.anchor_left = 0.5
-	win_popup.anchor_top = 0.5
-	win_popup.anchor_right = 0.5
-	win_popup.anchor_bottom = 0.5
-	win_popup.offset_left = -220.0
-	win_popup.offset_top = -58.0
-	win_popup.offset_right = 220.0
-	win_popup.offset_bottom = 58.0
-	win_popup.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	win_popup.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	win_popup.add_theme_font_size_override("font_size", 88)
-	win_popup.add_theme_color_override("font_color", Color(1.0, 0.2, 0.95, 1.0))
-	win_popup.visible = false
-	win_popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-func _ensure_label(parent: Control, name: String, rect: Rect2, font_size: int) -> Label:
-	var node: Label = parent.get_node_or_null(name) as Label
-	if node == null:
-		node = Label.new()
-		node.name = name
-		parent.add_child(node)
-	node.position = rect.position
-	node.size = rect.size
-	node.add_theme_font_size_override("font_size", font_size)
-	node.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
-	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return node
+func _bind_hud_nodes() -> void:
+	hud_layer = get_node_or_null("MainHUD") as CanvasLayer
+	hud_left = get_node_or_null("MainHUD/HudLeft") as Panel
+	hud_right = get_node_or_null("MainHUD/HudRight") as Panel
+	lbl_money = get_node_or_null("MainHUD/HudLeft/MoneyLabel") as Label
+	lbl_spins = get_node_or_null("MainHUD/HudLeft/SpinsLabel") as Label
+	lbl_tok = get_node_or_null("MainHUD/HudRight/TokLabel") as Label
+	win_popup = get_node_or_null("MainHUD/WinPopup") as Label
 
-func _hud_box() -> StyleBoxFlat:
+func _remove_paytable_panel() -> void:
+	if hud_layer == null:
+		return
+	var old_panel: Node = hud_layer.get_node_or_null("PaytablePanel")
+	if old_panel != null:
+		old_panel.queue_free()
+
+func _configure_hud_visuals() -> void:
+	if hud_left != null:
+		hud_left.anchor_left = 0.0
+		hud_left.anchor_top = 0.0
+		hud_left.anchor_right = 0.0
+		hud_left.anchor_bottom = 0.0
+		hud_left.offset_left = 18.0
+		hud_left.offset_top = 18.0
+		hud_left.offset_right = 388.0
+		hud_left.offset_bottom = 158.0
+		hud_left.add_theme_stylebox_override("panel", _hud_box_style())
+
+	if lbl_money != null:
+		lbl_money.position = Vector2(14.0, 10.0)
+		lbl_money.size = Vector2(356.0, 56.0)
+		lbl_money.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		lbl_money.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_money.add_theme_font_size_override("font_size", 56)
+		lbl_money.add_theme_color_override("font_color", Color(1.0, 0.86, 0.08, 1.0))
+		lbl_money.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		lbl_money.add_theme_constant_override("outline_size", 6)
+
+	if lbl_spins != null:
+		lbl_spins.position = Vector2(14.0, 84.0)
+		lbl_spins.size = Vector2(356.0, 44.0)
+		lbl_spins.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		lbl_spins.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_spins.add_theme_font_size_override("font_size", 48)
+		lbl_spins.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+		lbl_spins.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		lbl_spins.add_theme_constant_override("outline_size", 3)
+
+	if hud_right != null:
+		hud_right.anchor_left = 1.0
+		hud_right.anchor_top = 0.0
+		hud_right.anchor_right = 1.0
+		hud_right.anchor_bottom = 0.0
+		hud_right.offset_left = -188.0
+		hud_right.offset_top = 18.0
+		hud_right.offset_right = -18.0
+		hud_right.offset_bottom = 76.0
+		hud_right.add_theme_stylebox_override("panel", _hud_box_style())
+
+	if lbl_tok != null:
+		lbl_tok.position = Vector2(10.0, 8.0)
+		lbl_tok.size = Vector2(150.0, 44.0)
+		lbl_tok.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		lbl_tok.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_tok.add_theme_font_size_override("font_size", 32)
+		lbl_tok.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+		lbl_tok.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		lbl_tok.add_theme_constant_override("outline_size", 3)
+
+	if win_popup != null:
+		win_popup.anchor_left = 0.5
+		win_popup.anchor_right = 0.5
+		win_popup.anchor_top = 0.0
+		win_popup.anchor_bottom = 0.0
+		win_popup.offset_left = -180.0
+		win_popup.offset_right = 180.0
+		win_popup.offset_top = 96.0
+		win_popup.offset_bottom = 154.0
+		win_popup.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		win_popup.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		win_popup.add_theme_font_size_override("font_size", 66)
+		win_popup.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+		win_popup.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		win_popup.add_theme_constant_override("outline_size", 4)
+
+func _hud_box_style() -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = Color(0.0, 0.0, 0.0, 0.88)
-	style.corner_radius_top_left = 2
-	style.corner_radius_top_right = 2
-	style.corner_radius_bottom_left = 2
-	style.corner_radius_bottom_right = 2
+	style.bg_color = Color(0.0, 0.0, 0.0, 0.86)
+	style.corner_radius_top_left = 0
+	style.corner_radius_top_right = 0
+	style.corner_radius_bottom_left = 0
+	style.corner_radius_bottom_right = 0
 	return style
 
 func _format_money(value: int) -> String:

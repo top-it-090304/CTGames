@@ -7,22 +7,109 @@ signal win_popup_requested(amount: int)
 
 @export var symbols: Array[Texture2D] = []
 @export var weights: Array[float] = []
+@export var symbol_multiplier: float = 1.0
 
-@export var min_match_for_win: int = 3
-@export var payout_x3: int = 2
-@export var payout_x4: int = 4
-@export var payout_x5: int = 8
-@export var reward_unit: int = 94
-
-@export_group("HUD")
-@export var starting_money: int = 1552
-@export var starting_spins: int = 10
-@export var starting_tickets: int = 27
+@export_group("Start")
+@export var starting_money: int = 13
+@export var starting_spins: int = 2
+@export var starting_tickets: int = 2
 @export var spins_per_round: int = 1
 
 @export var reels_row_path: NodePath
 @export var button_path: NodePath
 @export var label_path: NodePath
+
+const SYMBOL_VALUES: Dictionary = {
+	"lemon": 2,
+	"cherry": 2,
+	"clover": 3,
+	"bell": 3,
+	"diamond": 5,
+	"chest": 5,
+	"seven": 7,
+}
+
+const SYMBOL_CHANCES: Dictionary = {
+	"lemon": 19.4,
+	"cherry": 19.4,
+	"clover": 14.9,
+	"bell": 14.9,
+	"diamond": 11.9,
+	"chest": 11.9,
+	"seven": 7.5,
+}
+
+const SYMBOL_TITLES: Dictionary = {
+	"lemon": "Лимон",
+	"cherry": "Вишня",
+	"clover": "Клевер",
+	"bell": "Колокол",
+	"diamond": "Алмаз",
+	"chest": "Сундук",
+	"seven": "Семерка",
+}
+
+var combo_defs: Array[Dictionary] = [
+	{
+		"name": "Гор. M",
+		"multiplier": 1.0,
+		"points": [Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3)],
+	},
+	{
+		"name": "Верт. M",
+		"multiplier": 1.0,
+		"points": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
+	},
+	{
+		"name": "Диаг. M",
+		"multiplier": 1.0,
+		"points": [Vector2i(0, 1), Vector2i(1, 2), Vector2i(2, 3)],
+	},
+	{
+		"name": "Гор. L",
+		"multiplier": 2.0,
+		"points": [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3)],
+	},
+	{
+		"name": "Гор. XL",
+		"multiplier": 3.0,
+		"points": [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3), Vector2i(1, 4)],
+	},
+	{
+		"name": "Вверх",
+		"multiplier": 4.0,
+		"points": [Vector2i(2, 0), Vector2i(1, 1), Vector2i(0, 2), Vector2i(1, 3), Vector2i(2, 4)],
+	},
+	{
+		"name": "Вниз",
+		"multiplier": 4.0,
+		"points": [Vector2i(0, 0), Vector2i(1, 1), Vector2i(2, 2), Vector2i(1, 3), Vector2i(0, 4)],
+	},
+	{
+		"name": "Небо",
+		"multiplier": 7.0,
+		"points": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4)],
+	},
+	{
+		"name": "Земля",
+		"multiplier": 7.0,
+		"points": [Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3), Vector2i(2, 4)],
+	},
+	{
+		"name": "Глаз",
+		"multiplier": 8.0,
+		"points": [Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 2), Vector2i(0, 3), Vector2i(1, 4)],
+	},
+	{
+		"name": "Джекпот",
+		"multiplier": 10.0,
+		"points": [
+			Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4),
+			Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3), Vector2i(1, 4),
+			Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3), Vector2i(2, 4),
+		],
+	},
+]
 
 var reels_row: HBoxContainer
 var btn: Button
@@ -51,7 +138,7 @@ func _ready() -> void:
 	_collect_reels()
 	_configure_slot_layout()
 	_hide_legacy_ui()
-	_normalize_weights()
+	_apply_symbol_chance_weights()
 	_sync_reel_pools()
 	_emit_hud_changed()
 	_set_status("READY")
@@ -63,7 +150,7 @@ func _collect_reels() -> void:
 	_reels.clear()
 	for child: Node in reels_row.get_children():
 		var panel: Panel = child as Panel
-		if panel != null and panel.has_method("start_spin") and panel.has_method("stop_with_result"):
+		if panel != null and panel.has_method("start_spin"):
 			_reels.append(panel)
 
 func _gui_input(event: InputEvent) -> void:
@@ -100,7 +187,7 @@ func is_spinning() -> bool:
 	return _busy
 
 func _spin() -> void:
-	_normalize_weights()
+	_apply_symbol_chance_weights()
 	_sync_reel_pools()
 	_busy = true
 	spins_left -= spins_per_round
@@ -123,8 +210,8 @@ func _spin() -> void:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	var mid_indices: Array[int] = _collect_middle_indices()
-	var result: Dictionary = _result_data(mid_indices)
+	var board: Array = _collect_board_indices_from_reels()
+	var result: Dictionary = _evaluate_board(board)
 	var win_amount: int = int(result.get("win_amount", 0))
 	if win_amount > 0:
 		money += win_amount
@@ -134,78 +221,139 @@ func _spin() -> void:
 	_emit_hud_changed()
 	_busy = false
 
-func _set_status(text: String) -> void:
-	emit_signal("status_changed", text)
+func _collect_board_indices_from_reels() -> Array:
+	var board: Array = [[], [], []]
+	for row: int in range(3):
+		board[row].resize(_reels.size())
 
-func _hide_legacy_ui() -> void:
-	if btn != null:
-		btn.visible = false
-		btn.disabled = true
-		btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for col: int in range(_reels.size()):
+		var reel: Panel = _reels[col]
+		for row: int in range(3):
+			var tex: Texture2D = _reel_texture_for_row(reel, row)
+			board[row][col] = _index_for_texture(tex)
+	return board
 
-	if label != null:
-		label.visible = false
-		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
+	if reel == null:
+		return null
 
-func _normalize_weights() -> void:
-	if weights.size() < symbols.size():
-		var before: int = weights.size()
-		weights.resize(symbols.size())
-		for i: int in range(before, weights.size()):
-			weights[i] = 1.0
-	elif weights.size() > symbols.size():
-		weights.resize(symbols.size())
+	if row == 1 and reel.has_method("get_middle_texture"):
+		return reel.call("get_middle_texture") as Texture2D
 
-func _sync_reel_pools() -> void:
-	for reel: Panel in _reels:
-		if reel.has_method("set_symbol_pool"):
-			reel.call("set_symbol_pool", symbols, weights)
+	var margin: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
+	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+	if margin == null or box == null:
+		if reel.has_method("get_middle_texture"):
+			return reel.call("get_middle_texture") as Texture2D
+		return null
 
-func _result_data(mid_indices: Array[int]) -> Dictionary:
-	if mid_indices.is_empty():
-		return {"text": "DONE", "win_amount": 0}
+	var factors: Array[float] = [1.0 / 6.0, 0.5, 5.0 / 6.0]
+	var safe_row: int = clampi(row, 0, 2)
+	var target_y: float = reel.size.y * factors[safe_row]
 
-	var counts: Dictionary = {}
-	for idx: int in mid_indices:
-		counts[idx] = int(counts.get(idx, 0)) + 1
+	var reel_icon_h: float = 170.0
+	var icon_size_var: Variant = reel.get("icon_size")
+	if icon_size_var is Vector2:
+		reel_icon_h = (icon_size_var as Vector2).y
 
-	var best_symbol: int = -1
-	var best_count: int = 0
-	for key: Variant in counts.keys():
-		var c: int = counts[key]
-		if c > best_count:
-			best_count = c
-			best_symbol = int(key)
+	var best_dist: float = INF
+	var best_icon: TextureRect = null
+	for child: Node in box.get_children():
+		var icon: TextureRect = child as TextureRect
+		if icon == null:
+			continue
 
-	var symbol_name: String = _symbol_name(best_symbol)
-	if best_count < min_match_for_win:
+		var icon_h: float = reel_icon_h
+		if icon_h <= 0.0:
+			if icon.size.y > 0.0:
+				icon_h = icon.size.y
+			elif icon.custom_minimum_size.y > 0.0:
+				icon_h = icon.custom_minimum_size.y
+			else:
+				icon_h = 170.0
+
+		var top_y: float = margin.offset_top + box.position.y + icon.position.y
+		var center_y: float = top_y + icon_h * 0.5
+		var dist: float = absf(center_y - target_y)
+		if dist < best_dist:
+			best_dist = dist
+			best_icon = icon
+
+	if best_icon == null:
+		if reel.has_method("get_middle_texture"):
+			return reel.call("get_middle_texture") as Texture2D
+		return null
+	return best_icon.texture
+
+func _evaluate_board(board: Array) -> Dictionary:
+	var total_win: int = 0
+	var hit_lines: Array[String] = []
+	var best_symbol_idx: int = -1
+
+	for combo: Dictionary in combo_defs:
+		var points: Array = combo.get("points", [])
+		if not _combo_points_fit(points, board):
+			continue
+
+		var first_point: Vector2i = points[0]
+		var base_index: int = _board_at(board, first_point)
+		if base_index < 0:
+			continue
+
+		var same_symbol: bool = true
+		for p_var: Variant in points:
+			var p: Vector2i = p_var
+			if _board_at(board, p) != base_index:
+				same_symbol = false
+				break
+
+		if not same_symbol:
+			continue
+
+		var combo_mult: float = float(combo.get("multiplier", 1.0))
+		var symbol_value: int = _symbol_coin_value(base_index)
+		var line_win: int = maxi(1, int(round(float(symbol_value) * combo_mult * symbol_multiplier)))
+		total_win += line_win
+		hit_lines.append("%s x%.1f" % [String(combo.get("name", "?")), combo_mult])
+		best_symbol_idx = base_index
+
+	if total_win <= 0:
 		return {
-			"text": "LOSE | %s x%d" % [symbol_name, best_count],
+			"text": "LOSE",
 			"win_amount": 0,
 		}
 
-	var mult: int = _payout_for(best_count)
-	var amount: int = mult * reward_unit
-	if best_count >= 5:
-		return {
-			"text": "JACKPOT | %s x%d | +%d" % [symbol_name, best_count, amount],
-			"win_amount": amount,
-		}
+	var shown: Array[String] = []
+	for i: int in range(mini(3, hit_lines.size())):
+		shown.append(hit_lines[i])
+	var summary: String = "; ".join(shown)
+	if hit_lines.size() > 3:
+		summary += " ..."
+
 	return {
-		"text": "WIN | %s x%d | +%d" % [symbol_name, best_count, amount],
-		"win_amount": amount,
+		"text": "WIN | %s | +%d | %s" % [_symbol_title(best_symbol_idx), total_win, summary],
+		"win_amount": total_win,
 	}
 
-func _collect_middle_indices() -> Array[int]:
-	var indices: Array[int] = []
-	indices.resize(_reels.size())
-	for i: int in range(_reels.size()):
-		var reel: Panel = _reels[i]
-		var tex: Texture2D = null
-		if reel.has_method("get_middle_texture"):
-			tex = reel.call("get_middle_texture") as Texture2D
-		indices[i] = _index_for_texture(tex)
-	return indices
+func _combo_points_fit(points: Array, board: Array) -> bool:
+	if board.size() < 3:
+		return false
+	var cols: int = (board[0] as Array).size()
+	for p_var: Variant in points:
+		var p: Vector2i = p_var
+		if p.y < 0 or p.y >= cols:
+			return false
+		if p.x < 0 or p.x >= 3:
+			return false
+	return true
+
+func _board_at(board: Array, point: Vector2i) -> int:
+	if point.x < 0 or point.x >= board.size():
+		return -1
+	var row: Array = board[point.x]
+	if point.y < 0 or point.y >= row.size():
+		return -1
+	return int(row[point.y])
 
 func _index_for_texture(tex: Texture2D) -> int:
 	if tex == null:
@@ -221,20 +369,60 @@ func _index_for_texture(tex: Texture2D) -> int:
 				return i
 	return -1
 
-func _symbol_name(index: int) -> String:
-	if index < 0 or index >= symbols.size():
-		return "?"
-	var path: String = symbols[index].resource_path
-	if path.is_empty():
-		return "symbol_%d" % index
-	return path.get_file().get_basename()
+func _symbol_coin_value(index: int) -> int:
+	var key: String = _symbol_key(index)
+	return int(SYMBOL_VALUES.get(key, 1))
 
-func _payout_for(match_count: int) -> int:
-	if match_count >= 5:
-		return payout_x5
-	if match_count == 4:
-		return payout_x4
-	return payout_x3
+func _chance_for_index(index: int) -> float:
+	var key: String = _symbol_key(index)
+	return float(SYMBOL_CHANCES.get(key, 1.0))
+
+func _symbol_title(index: int) -> String:
+	var key: String = _symbol_key(index)
+	return String(SYMBOL_TITLES.get(key, key))
+
+func _symbol_key(index: int) -> String:
+	if index < 0 or index >= symbols.size() or symbols[index] == null:
+		return ""
+	var raw_name: String = symbols[index].resource_path.get_file().get_basename().to_lower()
+	if raw_name.contains("lemon"):
+		return "lemon"
+	if raw_name.contains("cherry"):
+		return "cherry"
+	if raw_name.contains("clover"):
+		return "clover"
+	if raw_name.contains("bell"):
+		return "bell"
+	if raw_name.contains("diamond"):
+		return "diamond"
+	if raw_name.contains("chest"):
+		return "chest"
+	if raw_name.contains("seven"):
+		return "seven"
+	return raw_name
+
+func _set_status(text: String) -> void:
+	emit_signal("status_changed", text)
+
+func _hide_legacy_ui() -> void:
+	if btn != null:
+		btn.visible = false
+		btn.disabled = true
+		btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	if label != null:
+		label.visible = false
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _apply_symbol_chance_weights() -> void:
+	weights.resize(symbols.size())
+	for i: int in range(symbols.size()):
+		weights[i] = _chance_for_index(i)
+
+func _sync_reel_pools() -> void:
+	for reel: Panel in _reels:
+		if reel.has_method("set_symbol_pool"):
+			reel.call("set_symbol_pool", symbols, weights)
 
 func _emit_hud_changed() -> void:
 	emit_signal("hud_changed", money, spins_left, tickets)
