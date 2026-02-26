@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://ns0vxw66bg2k"]
+
+[ext_resource type="Script" uid="uid://cql51yhixnuld" path="res://intro.gd" id="1_s2ta7"]
+
+[node name="Intro" type="Control" unique_id=1079500995]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_s2ta7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1515398627]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=978614762]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2057826023]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=219896581]
+layout_mode = 2

@@ -3,6 +3,7 @@ extends Node3D
 
 @onready var slot_ui: Control = $SubViewport/SlotUI
 @onready var animation_player: AnimationPlayer = $blockbench_export2/AnimationPlayer
+@onready var intro_overlay: Node = get_node_or_null("IntroOverlay")
 
 var hud_layer: CanvasLayer
 var hud_left: Panel
@@ -23,20 +24,67 @@ func _ready() -> void:
 	_configure_hud_visuals()
 	_connect_slot_ui()
 	_sync_hud_from_slot()
+	_connect_intro_overlay()
+	_sync_intro_lock()
+	_ensure_intro_started()
 	if win_popup != null:
 		win_popup.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _is_intro_active():
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 			_request_spin()
 
 func _request_spin() -> void:
+	if _is_intro_active():
+		return
 	if slot_ui != null and slot_ui.has_method("request_spin"):
 		slot_ui.request_spin()
 	if animation_player != null:
 		animation_player.play("lever")
+
+func _connect_intro_overlay() -> void:
+	if intro_overlay == null:
+		return
+	if intro_overlay.has_signal("active_changed"):
+		var cb: Callable = Callable(self, "_on_intro_active_changed")
+		if not intro_overlay.is_connected("active_changed", cb):
+			intro_overlay.connect("active_changed", cb)
+	if intro_overlay.has_signal("camera_hint_requested"):
+		var cam_cb: Callable = Callable(self, "_on_camera_hint_requested")
+		if not intro_overlay.is_connected("camera_hint_requested", cam_cb):
+			intro_overlay.connect("camera_hint_requested", cam_cb)
+
+func _sync_intro_lock() -> void:
+	_on_intro_active_changed(_is_intro_active())
+
+func _ensure_intro_started() -> void:
+	if intro_overlay == null:
+		return
+	if intro_overlay.has_method("is_active") and bool(intro_overlay.call("is_active")):
+		return
+	if intro_overlay.has_method("start"):
+		intro_overlay.call_deferred("start")
+
+func _is_intro_active() -> bool:
+	if intro_overlay == null or not intro_overlay.has_method("is_active"):
+		return false
+	return bool(intro_overlay.call("is_active"))
+
+func _on_intro_active_changed(active: bool) -> void:
+	if slot_ui == null:
+		return
+	if slot_ui.has_method("set_input_locked"):
+		slot_ui.call("set_input_locked", active)
+	else:
+		slot_ui.set("input_locked", active)
+
+func _on_camera_hint_requested(hint: String) -> void:
+	# Placeholder for future camera moves on intro steps 6/8/9.
+	pass
 
 func _connect_slot_ui() -> void:
 	if slot_ui == null:

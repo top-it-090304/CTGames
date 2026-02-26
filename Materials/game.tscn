@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://cedjfqirp6hbj" path="res://Materials/panel_5.gd" id="14_0m7j0"]
 [ext_resource type="PackedScene" uid="uid://b6t75ekg4gwvh" path="res://Objects/machine.glb" id="14_g7uyw"]
 [ext_resource type="Script" uid="uid://c006bisq4kty1" path="res://Materials/panel_6.gd" id="15_0m7j0"]
+[ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
+[ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -129,7 +131,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.9283104, 1.8986881, -0.66935945)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.6481835, 1.6748283, -0.66935945)
 fov = 61.222404
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -622,3 +624,31 @@ light_color = Color(1, 0.6666667, 0.22745098, 1)
 light_energy = 1.554
 light_indirect_energy = 1.871
 light_volumetric_fog_energy = 2.02
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
+
+[node name="DialogueBox" type="Control" parent="UI" unique_id=1234789670]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 42.0
+offset_bottom = 42.0
+script = ExtResource("18_3w25a")
+
+[node name="ColorRect" type="ColorRect" parent="UI/DialogueBox" unique_id=817507137]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 59.0
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/DialogueBox" unique_id=370922921]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI/DialogueBox" unique_id=2022856999]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
+script = ExtResource("19_m4sbs")

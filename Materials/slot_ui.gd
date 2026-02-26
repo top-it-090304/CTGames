@@ -117,6 +117,7 @@ var label: Label
 
 var _reels: Array[Panel] = []
 var _busy: bool = false
+var input_locked: bool = false
 
 var money: int = 0
 var spins_left: int = 0
@@ -154,7 +155,7 @@ func _collect_reels() -> void:
 			_reels.append(panel)
 
 func _gui_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or _busy:
+	if Engine.is_editor_hint() or _busy or input_locked:
 		return
 
 	if event is InputEventScreenTouch:
@@ -169,7 +170,7 @@ func _gui_input(event: InputEvent) -> void:
 			request_spin()
 
 func request_spin() -> void:
-	if Engine.is_editor_hint() or _busy:
+	if Engine.is_editor_hint() or _busy or input_locked:
 		return
 	if symbols.is_empty():
 		_set_status("error: no symbols")
@@ -185,6 +186,9 @@ func request_spin() -> void:
 
 func is_spinning() -> bool:
 	return _busy
+
+func set_input_locked(locked: bool) -> void:
+	input_locked = locked
 
 func _spin() -> void:
 	_apply_symbol_chance_weights()
