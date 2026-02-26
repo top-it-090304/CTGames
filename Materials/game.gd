@@ -41,9 +41,15 @@ func _unhandled_input(event: InputEvent) -> void:
 func _request_spin() -> void:
 	if _is_intro_active():
 		return
-	if slot_ui != null and slot_ui.has_method("request_spin"):
-		slot_ui.request_spin()
-	if animation_player != null:
+	if slot_ui == null:
+		return
+		
+	if slot_ui.is_spinning():
+		return
+		
+	slot_ui.request_spin()
+	
+	if animation_player and slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
 		animation_player.play("lever")
 
 func _connect_intro_overlay() -> void:
