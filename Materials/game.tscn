@@ -131,7 +131,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.6481835, 1.6748283, -0.66935945)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -1.124219, 2.016616, -0.66935945)
 fov = 61.222404
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
