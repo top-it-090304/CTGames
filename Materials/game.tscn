@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://c006bisq4kty1" path="res://Materials/panel_6.gd" id="15_0m7j0"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
+[ext_resource type="PackedScene" uid="uid://c1hu3scpp7vho" path="res://beer_bottle.glb" id="20_m4sbs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -652,3 +653,12 @@ offset_bottom = 23.0
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
+
+[node name="Sketchfab_Scene" parent="." unique_id=1331165085 instance=ExtResource("20_m4sbs")]
+transform = Transform3D(0.005, 0, 0, 0, 0.0048296284, 0.0012940951, 0, -0.0012940951, 0.0048296284, -4.840637, 1.0682851, -2.6223335)
+
+[node name="Sketchfab_Scene" parent="Sketchfab_Scene" unique_id=693025055 instance=ExtResource("20_m4sbs")]
+transform = Transform3D(1, 0, 0, 0, 0.96592593, -0.25881907, 0, 0.25881907, 0.96592593, 40.73059, 3.1256104, -6.07489)
+
+[node name="Sketchfab_Scene" parent="Sketchfab_Scene/Sketchfab_Scene" unique_id=1868011681 instance=ExtResource("20_m4sbs")]
+transform = Transform3D(1, 0, 0, 0, -0.00052364246, -0.9999999, 0, 0.9999999, -0.00052364246, -13.556091, 13.41214, -1.3547974)
