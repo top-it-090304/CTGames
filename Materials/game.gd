@@ -38,6 +38,19 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_intro_active():
 		return
+
+	if event is InputEventScreenTouch:
+		var touch: InputEventScreenTouch = event as InputEventScreenTouch
+		if touch.pressed:
+			_request_spin()
+			return
+
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_request_spin()
+			return
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
@@ -99,6 +112,9 @@ func _on_intro_active_changed(active: bool) -> void:
 	else:
 		slot_ui.set("input_locked", active)
 
+	if not active and round_system != null and round_system.has_method("request_spin_choice"):
+		round_system.call_deferred("request_spin_choice")
+
 func _on_camera_hint_requested(hint: String) -> void:
 	_move_camera_to_hint(hint)
 
@@ -121,9 +137,9 @@ func _ensure_camera_targets() -> void:
 		add_child(root)
 
 	_ensure_marker(root, "CamMain", camera_3d, null, Vector3.ZERO)
-	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(1.1, 1.2, 2.1))
-	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(1.1, 1.2, 2.0))
-	_ensure_marker(root, "CamSlot", camera_3d, _find_slot_machine(), Vector3(0.2, 1.0, 2.1))
+	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(0.0, 1.2, 2.2))
+	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(0.0, 1.2, 2.2))
+	_ensure_marker(root, "CamSlot", camera_3d, _find_slot_machine(), Vector3(0.0, 1.0, 2.2))
 
 func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: Node3D, machine_offset: Vector3) -> void:
 	var marker: Marker3D = root.get_node_or_null(marker_name) as Marker3D
@@ -137,13 +153,26 @@ func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: N
 		return
 
 	if machine != null:
-		var pos: Vector3 = machine.global_position + machine.global_basis * machine_offset
-		marker.global_position = pos
+		var focus: Node3D = _machine_focus(machine)
+		if focus != null:
+			marker.global_position = focus.global_position
+		else:
+			marker.global_position = machine.global_position + machine.global_basis * machine_offset
 		marker.look_at(machine.global_position + Vector3(0.0, 0.7, 0.0), Vector3.UP)
 		return
 
 	if cam != null:
 		marker.global_transform = cam.global_transform
+
+func _machine_focus(machine: Node3D) -> Node3D:
+	if machine == null:
+		return null
+	var focus: Node3D = machine.get_node_or_null("FocusPoint") as Node3D
+	if focus == null:
+		return null
+	if focus.position.length() < 0.15:
+		return null
+	return focus
 
 func _move_camera_to_hint(hint: String) -> void:
 	if camera_3d == null:
@@ -157,7 +186,12 @@ func _move_camera_to_hint(hint: String) -> void:
 		cam_tween.kill()
 	cam_tween = create_tween()
 	cam_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	cam_tween.tween_property(camera_3d, "global_transform", target.global_transform, 0.62)
+	cam_tween.tween_property(camera_3d, "global_position", target.global_position, 0.50)
+	cam_tween.finished.connect(func() -> void:
+		if camera_3d == null or target == null:
+			return
+		camera_3d.global_transform = target.global_transform
+	)
 
 func _hint_target(hint: String) -> Marker3D:
 	var root: Node = get_node_or_null("CameraTargets")

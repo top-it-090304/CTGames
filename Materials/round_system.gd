@@ -64,7 +64,7 @@ func _ready() -> void:
 		call_deferred("_open_spin_choice")
 
 func _input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or game_over or _is_intro_active():
+	if Engine.is_editor_hint() or game_over or _is_intro_active() or _popup_open():
 		return
 
 	if event is InputEventMouseButton:
@@ -143,6 +143,10 @@ func request_spin_choice() -> void:
 func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
 		return
+
+	if game_root != null and game_root.has_method("_move_camera_to_hint"):
+		game_root.call("_move_camera_to_hint", "slot_machine")
+
 	popup.call(
 		"open_popup",
 		option_a_spins,
@@ -157,6 +161,13 @@ func _open_spin_choice() -> void:
 func _close_popup() -> void:
 	if popup != null and popup.has_method("close_popup"):
 		popup.call("close_popup")
+
+func _popup_open() -> bool:
+	if popup == null:
+		return false
+	if popup.has_method("is_open"):
+		return bool(popup.call("is_open"))
+	return popup.visible
 
 func _finish_round() -> void:
 	round_active = false
@@ -233,17 +244,21 @@ func _deposit_to_debt_machine() -> void:
 	_update_debt_ui()
 
 func _ensure_popup() -> void:
-	if slot_ui == null:
-		return
+	var popup_host: Node = game_root.get_node_or_null("UI")
+	if popup_host == null:
+		popup_host = game_root.get_node_or_null("MainHUD")
+	if popup_host == null:
+		popup_host = game_root
 
-	popup = slot_ui.get_node_or_null("SpinChoicePopup") as Control
+	popup = popup_host.get_node_or_null("SpinChoicePopup") as Control
 	if popup == null:
 		popup = Control.new()
 		popup.name = "SpinChoicePopup"
-		slot_ui.add_child(popup)
+		popup_host.add_child(popup)
 
-	if popup.get_script() == null:
-		popup.set_script(load("res://Materials/spin_choice_popup.gd"))
+	var popup_script: Script = load("res://Materials/spin_choice_popup.gd")
+	if popup.get_script() != popup_script:
+		popup.set_script(popup_script)
 
 	if popup.has_method("_ensure_ui"):
 		popup.call("_ensure_ui")
@@ -256,9 +271,10 @@ func _ensure_debt_viewport_ui() -> void:
 		debt_viewport.name = "DebtViewport"
 		game_root.add_child(debt_viewport)
 
-	debt_viewport.size = Vector2i(1024, 512)
+	debt_viewport.size = Vector2i(640, 400)
 	debt_viewport.transparent_bg = false
 	debt_viewport.disable_3d = true
+	debt_viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 	debt_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
 	debt_ui = debt_viewport.get_node_or_null("DebtUI") as Control
@@ -267,8 +283,9 @@ func _ensure_debt_viewport_ui() -> void:
 		debt_ui.name = "DebtUI"
 		debt_viewport.add_child(debt_ui)
 
-	if debt_ui.get_script() == null:
-		debt_ui.set_script(load("res://Materials/debt_ui.gd"))
+	var debt_ui_script: Script = load("res://Materials/debt_ui.gd")
+	if debt_ui.get_script() != debt_ui_script:
+		debt_ui.set_script(debt_ui_script)
 
 	_apply_debt_viewport_to_screen()
 
@@ -283,9 +300,10 @@ func _apply_debt_viewport_to_screen() -> void:
 		screen_mesh = MeshInstance3D.new()
 		screen_mesh.name = "DebtScreen"
 		var quad: QuadMesh = QuadMesh.new()
-		quad.size = Vector2(1.05, 0.56)
+		quad.size = Vector2(0.70, 0.85)
 		screen_mesh.mesh = quad
-		screen_mesh.position = Vector3(0.0, 0.72, 0.22)
+		screen_mesh.position = Vector3(-0.12, 1.60, -0.15)
+		screen_mesh.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
 		debt_machine.add_child(screen_mesh)
 
 	var viewport_tex: Texture2D = debt_viewport.get_texture()
@@ -295,8 +313,9 @@ func _apply_debt_viewport_to_screen() -> void:
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.albedo_texture = viewport_tex
-	mat.uv1_scale = Vector3(1.0, -1.0, 1.0)
-	mat.uv1_offset = Vector3(0.0, 1.0, 0.0)
+	mat.albedo_color = Color(1.0, 1.0, 1.0, 1.0)
+	mat.uv1_scale = Vector3(-1.0, -1.0, 1.0)
+	mat.uv1_offset = Vector3(1.0, 1.0, 0.0)
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.metallic = 0.0
 	mat.roughness = 1.0

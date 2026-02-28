@@ -38,6 +38,8 @@ func open_popup(
 	_b_ticket_bonus = b_ticket_bonus
 
 	_title.text = "Сколько спинов?"
+	_option_a.disabled = false
+	_option_b.disabled = false
 	_option_a.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_a_spins, _a_ticket_bonus, _a_cost]
 	_option_b.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_b_spins, _b_ticket_bonus, _b_cost]
 	_cancel.text = "Отмена"
@@ -81,7 +83,7 @@ func _ensure_ui() -> void:
 		backdrop.name = "Backdrop"
 		add_child(backdrop)
 	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.0, 0.0, 0.0, 0.68)
+	backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	_panel = get_node_or_null("Panel") as Panel
@@ -93,10 +95,10 @@ func _ensure_ui() -> void:
 	_panel.anchor_top = 0.5
 	_panel.anchor_right = 0.5
 	_panel.anchor_bottom = 0.5
-	_panel.offset_left = -390.0
-	_panel.offset_top = -190.0
-	_panel.offset_right = 390.0
-	_panel.offset_bottom = 190.0
+	_panel.offset_left = -360.0
+	_panel.offset_top = -175.0
+	_panel.offset_right = 360.0
+	_panel.offset_bottom = 175.0
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.0, 0.0, 0.0, 0.97)
@@ -122,7 +124,7 @@ func _ensure_ui() -> void:
 	_title.offset_bottom = 78.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 54)
+	_title.add_theme_font_size_override("font_size", 44)
 	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
 	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 	_title.add_theme_constant_override("outline_size", 2)
@@ -173,7 +175,7 @@ func _ensure_ui() -> void:
 		b.focus_mode = Control.FOCUS_NONE
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
-		b.add_theme_font_size_override("font_size", 46)
+		b.add_theme_font_size_override("font_size", 40)
 		b.add_theme_color_override("font_color", Color(0.84, 0.84, 0.84, 1.0))
 		b.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
 		b.add_theme_color_override("font_pressed_color", Color(0.7, 0.7, 0.7, 1.0))

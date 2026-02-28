@@ -24,7 +24,6 @@
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
-[ext_resource type="Script" uid="uid://p3fur4dcdms5" path="res://Materials/debt_viewport.gd" id="25_i1y15"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -147,7 +146,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.53394985, 2.016616, -0.66935945)
+transform = Transform3D(0.9999863, 0, 0.005235964, 0, 1, 0, -0.005235964, 0, 0.9999863, -1.312267, 2.016616, -0.66935945)
 fov = 95.7
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -776,7 +775,6 @@ script = ExtResource("24_i1y15")
 [node name="DebtViewport" type="SubViewport" parent="." unique_id=1115058972]
 size = Vector2i(1024, 512)
 render_target_update_mode = 4
-script = ExtResource("25_i1y15")
 
 [node name="DebtUI" type="Control" parent="DebtViewport" unique_id=1071916639]
 layout_mode = 3

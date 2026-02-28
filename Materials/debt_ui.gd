@@ -30,15 +30,31 @@ func _ensure_ui() -> void:
 		frame.name = "Frame"
 		add_child(frame)
 	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
-	frame.color = Color(0.01, 0.01, 0.01, 1.0)
+	frame.color = Color(0.0, 0.0, 0.0, 1.0)
 
-	rounds_left_label = _ensure_label("RoundsLeftLabel", Vector2(36.0, 24.0), Vector2(940.0, 68.0), 44, Color(1.0, 0.55, 0.12, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	debt_title_label = _ensure_label("DebtTitleLabel", Vector2(36.0, 130.0), Vector2(250.0, 52.0), 36, Color(0.75, 0.75, 0.75, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	debt_value_label = _ensure_label("DebtValueLabel", Vector2(350.0, 130.0), Vector2(300.0, 52.0), 44, Color(1.0, 0.86, 0.08, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
-	deposited_title_label = _ensure_label("DepositedTitleLabel", Vector2(36.0, 198.0), Vector2(320.0, 52.0), 36, Color(0.75, 0.75, 0.75, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	deposited_value_label = _ensure_label("DepositedValueLabel", Vector2(350.0, 198.0), Vector2(300.0, 52.0), 44, Color(1.0, 0.86, 0.08, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
-	interest_title_label = _ensure_label("InterestTitleLabel", Vector2(36.0, 266.0), Vector2(300.0, 52.0), 36, Color(0.75, 0.75, 0.75, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	interest_value_label = _ensure_label("InterestValueLabel", Vector2(350.0, 266.0), Vector2(420.0, 52.0), 38, Color(1.0, 0.55, 0.12, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
+	_ensure_line("LineTop", Vector2(24.0, 76.0), Vector2(592.0, 2.0))
+	_ensure_line("LineMid1", Vector2(24.0, 156.0), Vector2(592.0, 2.0))
+	_ensure_line("LineMid2", Vector2(24.0, 236.0), Vector2(592.0, 2.0))
+	_ensure_line("LineBottom", Vector2(24.0, 316.0), Vector2(592.0, 2.0))
+
+	rounds_left_label = _ensure_label("RoundsLeftLabel", Vector2(24.0, 18.0), Vector2(592.0, 44.0), 44, Color(1.0, 0.52, 0.08, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	debt_title_label = _ensure_label("DebtTitleLabel", Vector2(24.0, 96.0), Vector2(260.0, 44.0), 28, Color(0.88, 0.58, 0.24, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	debt_value_label = _ensure_label("DebtValueLabel", Vector2(332.0, 92.0), Vector2(284.0, 44.0), 44, Color(1.0, 0.86, 0.08, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
+	deposited_title_label = _ensure_label("DepositedTittleLabel", Vector2(24.0, 176.0), Vector2(260.0, 44.0), 28, Color(0.88, 0.58, 0.24, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	deposited_value_label = _ensure_label("DepositedValueLabel", Vector2(332.0, 172.0), Vector2(284.0, 44.0), 44, Color(1.0, 0.86, 0.08, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
+	interest_title_label = _ensure_label("InterestTitleLabel", Vector2(24.0, 256.0), Vector2(260.0, 44.0), 28, Color(0.88, 0.58, 0.24, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	interest_value_label = _ensure_label("InterestValueLabel", Vector2(332.0, 252.0), Vector2(284.0, 44.0), 34, Color(1.0, 0.52, 0.08, 1.0), HORIZONTAL_ALIGNMENT_RIGHT)
+
+func _ensure_line(name: String, pos: Vector2, size: Vector2) -> ColorRect:
+	var line: ColorRect = get_node_or_null(name) as ColorRect
+	if line == null:
+		line = ColorRect.new()
+		line.name = name
+		add_child(line)
+	line.position = pos
+	line.size = size
+	line.color = Color(1.0, 0.47, 0.1, 0.85)
+	return line
 
 func _ensure_label(name: String, pos: Vector2, size: Vector2, font_size: int, color: Color, align: HorizontalAlignment) -> Label:
 	var lbl: Label = get_node_or_null(name) as Label
