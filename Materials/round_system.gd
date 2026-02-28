@@ -64,7 +64,14 @@ func _ready() -> void:
 		call_deferred("_open_spin_choice")
 
 func _input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or game_over or _is_intro_active() or _popup_open():
+	if Engine.is_editor_hint() or _is_intro_active():
+		return
+
+	if _popup_open():
+		_handle_popup_input(event)
+		return
+
+	if game_over:
 		return
 
 	if event is InputEventMouseButton:
@@ -78,6 +85,64 @@ func _input(event: InputEvent) -> void:
 		if st.pressed:
 			_try_interact(st.position)
 			return
+
+func _handle_popup_input(event: InputEvent) -> void:
+	if popup == null:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key_event: InputEventKey = event as InputEventKey
+		match key_event.keycode:
+			KEY_1:
+				_press_popup_button("Option7Button")
+				get_viewport().set_input_as_handled()
+			KEY_2:
+				_press_popup_button("Option3Button")
+				get_viewport().set_input_as_handled()
+			KEY_ESCAPE, KEY_BACK:
+				_press_popup_button("CancelButton")
+				get_viewport().set_input_as_handled()
+		return
+
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_select_popup_option_by_screen_pos(mb.position)
+			get_viewport().set_input_as_handled()
+		return
+
+	if event is InputEventScreenTouch:
+		var st: InputEventScreenTouch = event as InputEventScreenTouch
+		if st.pressed:
+			_select_popup_option_by_screen_pos(st.position)
+			get_viewport().set_input_as_handled()
+		return
+
+func _select_popup_option_by_screen_pos(screen_pos: Vector2) -> void:
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return
+
+	var nx: float = screen_pos.x / viewport_size.x
+	var ny: float = screen_pos.y / viewport_size.y
+
+	if nx < 0.22 or nx > 0.78:
+		return
+
+	if ny < 0.53:
+		_press_popup_button("Option7Button")
+	elif ny < 0.64:
+		_press_popup_button("Option3Button")
+	else:
+		_press_popup_button("CancelButton")
+
+func _press_popup_button(button_name: String) -> void:
+	if popup == null:
+		return
+	var btn: BaseButton = popup.get_node_or_null("Panel/%s" % button_name) as BaseButton
+	if btn == null or btn.disabled:
+		return
+	btn.emit_signal("pressed")
 
 func _connect_signals() -> void:
 	if slot_ui != null and slot_ui.has_signal("spin_completed"):
@@ -139,6 +204,9 @@ func request_spin_choice() -> void:
 	if game_over or round_active or _is_intro_active():
 		return
 	_open_spin_choice()
+
+func is_popup_open() -> bool:
+	return _popup_open()
 
 func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
@@ -244,17 +312,14 @@ func _deposit_to_debt_machine() -> void:
 	_update_debt_ui()
 
 func _ensure_popup() -> void:
-	var popup_host: Node = game_root.get_node_or_null("UI")
-	if popup_host == null:
-		popup_host = game_root.get_node_or_null("MainHUD")
-	if popup_host == null:
-		popup_host = game_root
+	if slot_ui == null:
+		return
 
-	popup = popup_host.get_node_or_null("SpinChoicePopup") as Control
+	popup = slot_ui.get_node_or_null("SpinChoicePopup") as Control
 	if popup == null:
 		popup = Control.new()
 		popup.name = "SpinChoicePopup"
-		popup_host.add_child(popup)
+		slot_ui.add_child(popup)
 
 	var popup_script: Script = load("res://Materials/spin_choice_popup.gd")
 	if popup.get_script() != popup_script:
@@ -299,12 +364,17 @@ func _apply_debt_viewport_to_screen() -> void:
 	if screen_mesh == null:
 		screen_mesh = MeshInstance3D.new()
 		screen_mesh.name = "DebtScreen"
-		var quad: QuadMesh = QuadMesh.new()
-		quad.size = Vector2(0.70, 0.85)
-		screen_mesh.mesh = quad
-		screen_mesh.position = Vector3(-0.12, 1.60, -0.15)
-		screen_mesh.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
 		debt_machine.add_child(screen_mesh)
+
+	var quad: QuadMesh = screen_mesh.mesh as QuadMesh
+	if quad == null:
+		quad = QuadMesh.new()
+		screen_mesh.mesh = quad
+	quad.size = Vector2(0.70, 0.85)
+
+	screen_mesh.position = Vector3(-0.122, 1.596, -0.150)
+	screen_mesh.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
+	screen_mesh.scale = Vector3.ONE
 
 	var viewport_tex: Texture2D = debt_viewport.get_texture()
 	if viewport_tex == null:
@@ -314,8 +384,8 @@ func _apply_debt_viewport_to_screen() -> void:
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.albedo_texture = viewport_tex
 	mat.albedo_color = Color(1.0, 1.0, 1.0, 1.0)
-	mat.uv1_scale = Vector3(-1.0, -1.0, 1.0)
-	mat.uv1_offset = Vector3(1.0, 1.0, 0.0)
+	mat.uv1_scale = Vector3(-1.0, 1.0, 1.0)
+	mat.uv1_offset = Vector3(1.0, 0.0, 0.0)
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.metallic = 0.0
 	mat.roughness = 1.0

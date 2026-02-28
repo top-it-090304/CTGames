@@ -38,6 +38,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_intro_active():
 		return
+	if _is_spin_choice_open():
+		return
 
 	if event is InputEventScreenTouch:
 		var touch: InputEventScreenTouch = event as InputEventScreenTouch
@@ -58,6 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _request_spin() -> void:
 	if _is_intro_active():
+		return
+	if _is_spin_choice_open():
 		return
 	if slot_ui == null:
 		return
@@ -103,6 +107,11 @@ func _is_intro_active() -> bool:
 	if intro_overlay == null or not intro_overlay.has_method("is_active"):
 		return false
 	return bool(intro_overlay.call("is_active"))
+
+func _is_spin_choice_open() -> bool:
+	if round_system == null or not round_system.has_method("is_popup_open"):
+		return false
+	return bool(round_system.call("is_popup_open"))
 
 func _on_intro_active_changed(active: bool) -> void:
 	if slot_ui == null:
@@ -157,7 +166,7 @@ func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: N
 		if focus != null:
 			marker.global_position = focus.global_position
 		else:
-			marker.global_position = machine.global_position + machine.global_basis * machine_offset
+			marker.global_position = machine.global_position + machine_offset
 		marker.look_at(machine.global_position + Vector3(0.0, 0.7, 0.0), Vector3.UP)
 		return
 

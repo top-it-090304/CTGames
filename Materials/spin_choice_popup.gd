@@ -77,6 +77,11 @@ func _ensure_ui() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
+	for stale_name: String in ["TitleLabel", "Option7Button", "Option3Button", "CancelButton"]:
+		var stale: Node = get_node_or_null(stale_name)
+		if stale != null:
+			stale.queue_free()
+
 	var backdrop: ColorRect = get_node_or_null("Backdrop") as ColorRect
 	if backdrop == null:
 		backdrop = ColorRect.new()
@@ -96,17 +101,17 @@ func _ensure_ui() -> void:
 	_panel.anchor_right = 0.5
 	_panel.anchor_bottom = 0.5
 	_panel.offset_left = -360.0
-	_panel.offset_top = -175.0
+	_panel.offset_top = -180.0
 	_panel.offset_right = 360.0
-	_panel.offset_bottom = 175.0
+	_panel.offset_bottom = 180.0
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+
 	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.0, 0.0, 0.0, 0.97)
-	panel_style.border_color = Color(0.12, 0.12, 0.12, 1.0)
-	panel_style.border_width_left = 2
-	panel_style.border_width_top = 2
-	panel_style.border_width_right = 2
-	panel_style.border_width_bottom = 2
+	panel_style.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+	panel_style.border_width_left = 0
+	panel_style.border_width_top = 0
+	panel_style.border_width_right = 0
+	panel_style.border_width_bottom = 0
 	_panel.add_theme_stylebox_override("panel", panel_style)
 
 	_title = _panel.get_node_or_null("TitleLabel") as Label
@@ -118,13 +123,13 @@ func _ensure_ui() -> void:
 	_title.anchor_top = 0.0
 	_title.anchor_right = 1.0
 	_title.anchor_bottom = 0.0
-	_title.offset_left = 24.0
-	_title.offset_top = 24.0
-	_title.offset_right = -24.0
-	_title.offset_bottom = 78.0
+	_title.offset_left = 20.0
+	_title.offset_top = 64.0
+	_title.offset_right = -20.0
+	_title.offset_bottom = 120.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 44)
+	_title.add_theme_font_size_override("font_size", 66)
 	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
 	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 	_title.add_theme_constant_override("outline_size", 2)
@@ -138,10 +143,10 @@ func _ensure_ui() -> void:
 	_option_a.anchor_right = 1.0
 	_option_a.anchor_top = 0.0
 	_option_a.anchor_bottom = 0.0
-	_option_a.offset_left = 36.0
-	_option_a.offset_top = 102.0
-	_option_a.offset_right = -36.0
-	_option_a.offset_bottom = 154.0
+	_option_a.offset_left = 26.0
+	_option_a.offset_top = 156.0
+	_option_a.offset_right = -26.0
+	_option_a.offset_bottom = 214.0
 
 	_option_b = _panel.get_node_or_null("Option3Button") as Button
 	if _option_b == null:
@@ -152,10 +157,10 @@ func _ensure_ui() -> void:
 	_option_b.anchor_right = 1.0
 	_option_b.anchor_top = 0.0
 	_option_b.anchor_bottom = 0.0
-	_option_b.offset_left = 36.0
-	_option_b.offset_top = 164.0
-	_option_b.offset_right = -36.0
-	_option_b.offset_bottom = 216.0
+	_option_b.offset_left = 26.0
+	_option_b.offset_top = 226.0
+	_option_b.offset_right = -26.0
+	_option_b.offset_bottom = 284.0
 
 	_cancel = _panel.get_node_or_null("CancelButton") as Button
 	if _cancel == null:
@@ -166,19 +171,19 @@ func _ensure_ui() -> void:
 	_cancel.anchor_right = 1.0
 	_cancel.anchor_top = 0.0
 	_cancel.anchor_bottom = 0.0
-	_cancel.offset_left = 250.0
-	_cancel.offset_top = 268.0
-	_cancel.offset_right = -250.0
-	_cancel.offset_bottom = 324.0
+	_cancel.offset_left = 160.0
+	_cancel.offset_top = 296.0
+	_cancel.offset_right = -160.0
+	_cancel.offset_bottom = 352.0
 
 	for b: Button in [_option_a, _option_b, _cancel]:
 		b.focus_mode = Control.FOCUS_NONE
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
-		b.add_theme_font_size_override("font_size", 40)
-		b.add_theme_color_override("font_color", Color(0.84, 0.84, 0.84, 1.0))
-		b.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
-		b.add_theme_color_override("font_pressed_color", Color(0.7, 0.7, 0.7, 1.0))
+		b.add_theme_font_size_override("font_size", 56)
+		b.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78, 1.0))
+		b.add_theme_color_override("font_hover_color", Color(0.98, 0.98, 0.98, 1.0))
+		b.add_theme_color_override("font_pressed_color", Color(0.6, 0.6, 0.6, 1.0))
 		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		b.add_theme_constant_override("outline_size", 2)
 
