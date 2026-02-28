@@ -2,7 +2,7 @@
 extends Node3D
 
 @onready var slot_ui: Control = $SubViewport/SlotUI
-@onready var animation_player: AnimationPlayer = $blockbench_export2/AnimationPlayer
+@onready var animation_player: AnimationPlayer = _resolve_animation_player()
 @onready var intro_overlay: Node = get_node_or_null("IntroOverlay")
 @onready var camera_3d: Camera3D = get_node_or_null("Camera3D") as Camera3D
 @onready var round_system: Node = get_node_or_null("RoundSystem")
@@ -106,7 +106,10 @@ func _ensure_round_system() -> void:
 	if round_system == null:
 		round_system = Node.new()
 		round_system.name = "RoundSystem"
+		round_system.set_script(load("res://Materials/round_system.gd"))
 		add_child(round_system)
+		return
+
 	if round_system.get_script() == null:
 		round_system.set_script(load("res://Materials/round_system.gd"))
 
@@ -120,7 +123,7 @@ func _ensure_camera_targets() -> void:
 	_ensure_marker(root, "CamMain", camera_3d, null, Vector3.ZERO)
 	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(1.1, 1.2, 2.1))
 	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(1.1, 1.2, 2.0))
-	_ensure_marker(root, "CamSlot", camera_3d, get_node_or_null("blockbench_export2") as Node3D, Vector3(0.2, 1.0, 2.1))
+	_ensure_marker(root, "CamSlot", camera_3d, _find_slot_machine(), Vector3(0.2, 1.0, 2.1))
 
 func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: Node3D, machine_offset: Vector3) -> void:
 	var marker: Marker3D = root.get_node_or_null(marker_name) as Marker3D
@@ -176,6 +179,18 @@ func _find_machine(primary: String, fallback: String) -> Node3D:
 	if node != null:
 		return node
 	return get_node_or_null(fallback) as Node3D
+
+func _find_slot_machine() -> Node3D:
+	var machine: Node3D = get_node_or_null("SlotMachine") as Node3D
+	if machine != null:
+		return machine
+	return get_node_or_null("blockbench_export2") as Node3D
+
+func _resolve_animation_player() -> AnimationPlayer:
+	var machine: Node3D = _find_slot_machine()
+	if machine == null:
+		return null
+	return machine.get_node_or_null("AnimationPlayer") as AnimationPlayer
 
 func _connect_slot_ui() -> void:
 	if slot_ui == null:
