@@ -286,12 +286,13 @@ func _apply_debt_viewport_to_screen() -> void:
 		screen_mesh.position = Vector3(0.0, 0.72, 0.22)
 		debt_machine.add_child(screen_mesh)
 
-	var vt: ViewportTexture = ViewportTexture.new()
-	vt.viewport_path = debt_viewport.get_path()
+	var viewport_tex: Texture2D = debt_viewport.get_texture()
+	if viewport_tex == null:
+		return
 
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_texture = vt
+	mat.albedo_texture = viewport_tex
 	mat.metallic = 0.0
 	mat.roughness = 1.0
 	screen_mesh.material_override = mat

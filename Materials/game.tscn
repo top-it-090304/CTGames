@@ -22,9 +22,9 @@
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://c1hu3scpp7vho" path="res://beer_bottle.glb" id="20_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
-[ext_resource type="Script" uid="uid://2drl1vdgik0c" path="res://Objects/spin_choice_popup.gd" id="23_tiqx2"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
+[ext_resource type="Script" uid="uid://p3fur4dcdms5" path="res://Materials/debt_viewport.gd" id="25_i1y15"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -56,31 +56,31 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gd6a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tiqx2"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm020"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1y15"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4hxe"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuapk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tn84i"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmok7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi5rp"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -130,7 +130,7 @@ material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1373829784]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.1913867, 1.879318, -1.113495)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -5.012871, 1.879318, -1.113495)
 material_override = SubResource("StandardMaterial3D_ablru")
 size = Vector3(0.2, 7.716736, 7.3530273)
 material = SubResource("StandardMaterial3D_v06jb")
@@ -147,7 +147,7 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.56614166, 2.016616, -0.66935945)
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.53394985, 2.016616, -0.66935945)
 fov = 95.7
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
@@ -199,6 +199,45 @@ offset_right = 76.0
 offset_bottom = 41.0
 theme_override_colors/font_color = Color(1, 0.72, 0.35, 1)
 
+[node name="SpinChoicePopup" type="Control" parent="SubViewport/SlotUI" unique_id=1022492355]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=1938862468]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=350267874]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=898720673]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Option7Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=478804374]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Option3Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=202939555]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="CancelButton" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=937074814]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
 [node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
 custom_minimum_size = Vector2(1564, 540)
 layout_mode = 0
@@ -213,7 +252,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4gd6a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tiqx2")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -298,7 +337,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fm020")
+theme_override_styles/panel = SubResource("StyleBoxFlat_i1y15")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -383,7 +422,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_a4hxe")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -468,7 +507,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_uuapk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tn84i")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -553,7 +592,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yi5rp")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -632,45 +671,6 @@ layout_mode = 2
 texture = ExtResource("11_3w25a")
 expand_mode = 3
 stretch_mode = 5
-
-[node name="SpinChoicePopup" type="Control" parent="SubViewport/SlotUI" unique_id=1022492355]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Backdrop" type="ColorRect" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=1938862468]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Panel" type="Panel" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=350267874]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TitleLabel" type="Label" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=898720673]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="Option7Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=478804374]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="Option3Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=202939555]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="CancelButton" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=937074814]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
 
 [node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
 visible = false
@@ -753,7 +753,6 @@ transform = Transform3D(1, 0, 0, 0, -0.00052364246, -0.9999999, 0, 0.9999999, -0
 
 [node name="TicketMachine" parent="." unique_id=29912408 instance=ExtResource("21_navue")]
 transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9984968, -2.798228, 0.57128525, -2.575203)
-script = ExtResource("23_tiqx2")
 
 [node name="InteractArea" type="Area3D" parent="TicketMachine" unique_id=267107733]
 
@@ -777,6 +776,7 @@ script = ExtResource("24_i1y15")
 [node name="DebtViewport" type="SubViewport" parent="." unique_id=1115058972]
 size = Vector2i(1024, 512)
 render_target_update_mode = 4
+script = ExtResource("25_i1y15")
 
 [node name="DebtUI" type="Control" parent="DebtViewport" unique_id=1071916639]
 layout_mode = 3
