@@ -58,6 +58,7 @@ func _ready() -> void:
 	_ensure_popup()
 	_connect_signals()
 	_update_debt_ui()
+	_set_spins_left(0)
 
 	if not _is_intro_active():
 		call_deferred("_open_spin_choice")
@@ -257,6 +258,7 @@ func _ensure_debt_viewport_ui() -> void:
 
 	debt_viewport.size = Vector2i(1024, 512)
 	debt_viewport.transparent_bg = false
+	debt_viewport.disable_3d = true
 	debt_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
 	debt_ui = debt_viewport.get_node_or_null("DebtUI") as Control
@@ -293,6 +295,9 @@ func _apply_debt_viewport_to_screen() -> void:
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.albedo_texture = viewport_tex
+	mat.uv1_scale = Vector3(1.0, -1.0, 1.0)
+	mat.uv1_offset = Vector3(0.0, 1.0, 0.0)
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.metallic = 0.0
 	mat.roughness = 1.0
 	screen_mesh.material_override = mat
