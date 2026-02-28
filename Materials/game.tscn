@@ -22,6 +22,9 @@
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://c1hu3scpp7vho" path="res://beer_bottle.glb" id="20_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
+[ext_resource type="Script" uid="uid://2drl1vdgik0c" path="res://Objects/spin_choice_popup.gd" id="23_tiqx2"]
+[ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
+[ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -43,31 +46,41 @@ albedo_texture = ExtResource("2_62l5a")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lo5pb"]
 albedo_texture = ExtResource("2_62l5a")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lo5pb"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_tn84i"]
+viewport_path = NodePath("DebtViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yi5rp"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_tn84i")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
+size = Vector2(0.7, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gd6a"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cy8jj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm020"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tiqx2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1y15"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuapk"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4hxe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmok7"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -134,17 +147,28 @@ metadata/_edit_group_ = true
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.8587964, 2.016616, -0.66935945)
-fov = 61.222404
+transform = Transform3D(0.02443221, 0, 0.9997015, 0, 1, 0, -0.9997015, 0, 0.02443221, -0.56614166, 2.016616, -0.66935945)
+fov = 95.7
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 
-[node name="blockbench_export2" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
+[node name="SlotMachine" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
 
-[node name="blockbench_export3" parent="." unique_id=488182765 instance=ExtResource("5_ablru")]
-transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -1.5329165, 0, -2.2130125)
+[node name="DebtMachine" parent="." unique_id=488182765 instance=ExtResource("5_ablru")]
+transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -1.7931515, 0.5121797, -2.4699512)
+
+[node name="InteractArea" type="Area3D" parent="DebtMachine" unique_id=1603461943]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DebtMachine/InteractArea" unique_id=573360212]
+
+[node name="FocusPoint" type="Marker3D" parent="DebtMachine" unique_id=980007033]
+
+[node name="DebtScreen" type="MeshInstance3D" parent="DebtMachine" unique_id=607365747]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.12237692, 1.5958748, -0.15035176)
+material_override = SubResource("StandardMaterial3D_yi5rp")
+mesh = SubResource("PlaneMesh_xkq3k")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
 transparent_bg = true
@@ -189,7 +213,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_lo5pb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4gd6a")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -274,7 +298,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cy8jj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fm020")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -359,7 +383,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tiqx2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -444,7 +468,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_i1y15")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uuapk")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -529,7 +553,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_a4hxe")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -609,6 +633,45 @@ texture = ExtResource("11_3w25a")
 expand_mode = 3
 stretch_mode = 5
 
+[node name="SpinChoicePopup" type="Control" parent="SubViewport/SlotUI" unique_id=1022492355]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=1938862468]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=350267874]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=898720673]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Option7Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=478804374]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Option3Button" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=202939555]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="CancelButton" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=937074814]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
 [node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
 visible = false
 custom_minimum_size = Vector2(300, 82)
@@ -656,6 +719,26 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="RoundPanel" type="Panel" parent="UI" unique_id=1268353357]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DebtLabel" type="Label" parent="UI" unique_id=2062725729]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="PaidLabel" type="Label" parent="UI" unique_id=2099453375]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="InterestLabel" type="Label" parent="UI" unique_id=300832743]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="RoundsLabel" type="Label" parent="UI" unique_id=756170373]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
 
@@ -668,5 +751,76 @@ transform = Transform3D(1, 0, 0, 0, 0.96592593, -0.25881907, 0, 0.25881907, 0.96
 [node name="Sketchfab_Scene" parent="Sketchfab_Scene/Sketchfab_Scene" unique_id=1868011681 instance=ExtResource("20_m4sbs")]
 transform = Transform3D(1, 0, 0, 0, -0.00052364246, -0.9999999, 0, 0.9999999, -0.00052364246, -13.556091, 13.41214, -1.3547974)
 
-[node name="blockbench_export" parent="." unique_id=29912408 instance=ExtResource("21_navue")]
+[node name="TicketMachine" parent="." unique_id=29912408 instance=ExtResource("21_navue")]
 transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9984968, -2.798228, 0.57128525, -2.575203)
+script = ExtResource("23_tiqx2")
+
+[node name="InteractArea" type="Area3D" parent="TicketMachine" unique_id=267107733]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TicketMachine/InteractArea" unique_id=119889353]
+
+[node name="FocusPoint" type="Marker3D" parent="TicketMachine" unique_id=162385531]
+
+[node name="RoundSystem" type="Node3D" parent="." unique_id=634888334]
+script = ExtResource("24_i1y15")
+
+[node name="CameraTargets" type="Node3D" parent="." unique_id=48921000]
+
+[node name="CamMain" type="Marker3D" parent="CameraTargets" unique_id=1941190960]
+
+[node name="CamDebt" type="Marker3D" parent="CameraTargets" unique_id=1824680857]
+
+[node name="CamTickets" type="Marker3D" parent="CameraTargets" unique_id=2089826251]
+
+[node name="CamSlot" type="Marker3D" parent="CameraTargets" unique_id=1177043428]
+
+[node name="DebtViewport" type="SubViewport" parent="." unique_id=1115058972]
+size = Vector2i(1024, 512)
+render_target_update_mode = 4
+
+[node name="DebtUI" type="Control" parent="DebtViewport" unique_id=1071916639]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("25_a4hxe")
+
+[node name="Frame" type="ColorRect" parent="DebtViewport/DebtUI" unique_id=778586381]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RoundsLeftLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=939958554]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DebtTitleLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=420359692]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DebtValueLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=813204341]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DepositedTittleLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=772297047]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DepositedValueLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=1829663692]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="InterestTitleLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=424058212]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="InterestValueLabel" type="Label" parent="DebtViewport/DebtUI" unique_id=348572908]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

@@ -4,6 +4,8 @@ extends Node3D
 @onready var slot_ui: Control = $SubViewport/SlotUI
 @onready var animation_player: AnimationPlayer = $blockbench_export2/AnimationPlayer
 @onready var intro_overlay: Node = get_node_or_null("IntroOverlay")
+@onready var camera_3d: Camera3D = get_node_or_null("Camera3D") as Camera3D
+@onready var round_system: Node = get_node_or_null("RoundSystem")
 
 var hud_layer: CanvasLayer
 var hud_left: Panel
@@ -14,6 +16,7 @@ var lbl_tok: Label
 var win_popup: Label
 
 var win_popup_tween: Tween
+var cam_tween: Tween
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -24,6 +27,8 @@ func _ready() -> void:
 	_configure_hud_visuals()
 	_connect_slot_ui()
 	_sync_hud_from_slot()
+	_ensure_round_system()
+	_ensure_camera_targets()
 	_connect_intro_overlay()
 	_sync_intro_lock()
 	_ensure_intro_started()
@@ -43,13 +48,19 @@ func _request_spin() -> void:
 		return
 	if slot_ui == null:
 		return
-		
-	if slot_ui.is_spinning():
+
+	if slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		return
-		
-	slot_ui.request_spin()
-	
-	if animation_player and slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
+
+	if slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
+		if round_system != null and round_system.has_method("request_spin_choice"):
+			round_system.call("request_spin_choice")
+		return
+
+	if slot_ui.has_method("request_spin"):
+		slot_ui.call("request_spin")
+
+	if animation_player != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		animation_player.play("lever")
 
 func _connect_intro_overlay() -> void:
@@ -89,8 +100,82 @@ func _on_intro_active_changed(active: bool) -> void:
 		slot_ui.set("input_locked", active)
 
 func _on_camera_hint_requested(hint: String) -> void:
-	# Placeholder for future camera moves on intro steps 6/8/9.
-	pass
+	_move_camera_to_hint(hint)
+
+func _ensure_round_system() -> void:
+	if round_system == null:
+		round_system = Node.new()
+		round_system.name = "RoundSystem"
+		add_child(round_system)
+	if round_system.get_script() == null:
+		round_system.set_script(load("res://Materials/round_system.gd"))
+
+func _ensure_camera_targets() -> void:
+	var root: Node3D = get_node_or_null("CameraTargets") as Node3D
+	if root == null:
+		root = Node3D.new()
+		root.name = "CameraTargets"
+		add_child(root)
+
+	_ensure_marker(root, "CamMain", camera_3d, null, Vector3.ZERO)
+	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(1.1, 1.2, 2.1))
+	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(1.1, 1.2, 2.0))
+	_ensure_marker(root, "CamSlot", camera_3d, get_node_or_null("blockbench_export2") as Node3D, Vector3(0.2, 1.0, 2.1))
+
+func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: Node3D, machine_offset: Vector3) -> void:
+	var marker: Marker3D = root.get_node_or_null(marker_name) as Marker3D
+	if marker == null:
+		marker = Marker3D.new()
+		marker.name = marker_name
+		root.add_child(marker)
+
+	if marker_name == "CamMain" and cam != null:
+		marker.global_transform = cam.global_transform
+		return
+
+	if machine != null:
+		var pos: Vector3 = machine.global_position + machine.global_basis * machine_offset
+		marker.global_position = pos
+		marker.look_at(machine.global_position + Vector3(0.0, 0.7, 0.0), Vector3.UP)
+		return
+
+	if cam != null:
+		marker.global_transform = cam.global_transform
+
+func _move_camera_to_hint(hint: String) -> void:
+	if camera_3d == null:
+		return
+
+	var target: Marker3D = _hint_target(hint)
+	if target == null:
+		return
+
+	if cam_tween != null:
+		cam_tween.kill()
+	cam_tween = create_tween()
+	cam_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	cam_tween.tween_property(camera_3d, "global_transform", target.global_transform, 0.62)
+
+func _hint_target(hint: String) -> Marker3D:
+	var root: Node = get_node_or_null("CameraTargets")
+	if root == null:
+		return null
+
+	match hint:
+		"debt_machine":
+			return root.get_node_or_null("CamDebt") as Marker3D
+		"ticket_machine":
+			return root.get_node_or_null("CamTickets") as Marker3D
+		"slot_machine":
+			return root.get_node_or_null("CamSlot") as Marker3D
+		_:
+			return root.get_node_or_null("CamMain") as Marker3D
+
+func _find_machine(primary: String, fallback: String) -> Node3D:
+	var node: Node3D = get_node_or_null(primary) as Node3D
+	if node != null:
+		return node
+	return get_node_or_null(fallback) as Node3D
 
 func _connect_slot_ui() -> void:
 	if slot_ui == null:

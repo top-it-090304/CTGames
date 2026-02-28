@@ -4,6 +4,7 @@ extends Control
 signal status_changed(text: String)
 signal hud_changed(money: int, spins_left: int, tickets: int)
 signal win_popup_requested(amount: int)
+signal spin_completed(win_amount: int)
 
 @export var symbols: Array[Texture2D] = []
 @export var weights: Array[float] = []
@@ -224,6 +225,7 @@ func _spin() -> void:
 	_set_status(String(result.get("text", "DONE")))
 	_emit_hud_changed()
 	_busy = false
+	emit_signal("spin_completed", win_amount)
 
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
@@ -437,6 +439,45 @@ func get_hud_state() -> Dictionary:
 		"spins_left": spins_left,
 		"tickets": tickets,
 	}
+
+func get_money() -> int:
+	return money
+
+func get_spins_left() -> int:
+	return spins_left
+
+func get_tickets() -> int:
+	return tickets
+
+func set_spins_left(value: int) -> void:
+	spins_left = maxi(value, 0)
+	_emit_hud_changed()
+
+func add_money(amount: int) -> void:
+	money = maxi(money + amount, 0)
+	_emit_hud_changed()
+
+func spend_money(amount: int) -> bool:
+	if amount <= 0:
+		return true
+	if money < amount:
+		return false
+	money -= amount
+	_emit_hud_changed()
+	return true
+
+func add_tickets(amount: int) -> void:
+	tickets = maxi(tickets + amount, 0)
+	_emit_hud_changed()
+
+func spend_tickets(amount: int) -> bool:
+	if amount <= 0:
+		return true
+	if tickets < amount:
+		return false
+	tickets -= amount
+	_emit_hud_changed()
+	return true
 
 func format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))
