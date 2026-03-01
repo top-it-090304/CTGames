@@ -738,6 +738,17 @@ offset_bottom = 23.0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="Left" type="Button" parent="UI" unique_id=2131542521]
+offset_left = 974.0
+offset_top = 483.0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Right" type="Button" parent="UI" unique_id=673842236]
+offset_top = 483.0
+offset_right = 181.0
+offset_bottom = 648.0
+
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
 
@@ -822,3 +833,8 @@ offset_bottom = 23.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
+[connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
+[connection signal="button_down" from="UI/Right" to="." method="_on_right_button_down"]
+[connection signal="button_up" from="UI/Right" to="." method="_on_right_button_up"]

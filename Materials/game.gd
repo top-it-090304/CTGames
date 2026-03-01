@@ -18,6 +18,10 @@ var win_popup: Label
 var win_popup_tween: Tween
 var cam_tween: Tween
 
+var rotate_left := false
+var rotate_right := false
+var rotation_speed := 2.0
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -452,3 +456,22 @@ func _format_money(value: int) -> String:
 			out = "." + out
 			count = 0
 	return out
+
+
+func _on_left_button_down():
+	rotate_left = true
+
+func _on_left_button_up():
+	rotate_left = false
+
+func _on_right_button_down():
+	rotate_right = true
+
+func _on_right_button_up():
+	rotate_right = false
+
+func _process(delta):
+	if rotate_left:
+		$Camera3D.rotate_y(-rotation_speed * delta)
+	if rotate_right:
+		$Camera3D.rotate_y(rotation_speed * delta)
