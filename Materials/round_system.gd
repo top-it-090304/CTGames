@@ -215,6 +215,7 @@ func _open_spin_choice() -> void:
 	if game_root != null and game_root.has_method("_move_camera_to_hint"):
 		game_root.call("_move_camera_to_hint", "slot_machine")
 
+	_set_choice_overlay(true)
 	popup.call(
 		"open_popup",
 		option_a_spins,
@@ -229,6 +230,7 @@ func _open_spin_choice() -> void:
 func _close_popup() -> void:
 	if popup != null and popup.has_method("close_popup"):
 		popup.call("close_popup")
+	_set_choice_overlay(false)
 
 func _popup_open() -> bool:
 	if popup == null:
@@ -255,6 +257,7 @@ func _finish_round() -> void:
 	if rounds_left <= 0 and deposited < debt_target:
 		game_over = true
 		_set_slot_locked(true)
+		_set_choice_overlay(true)
 		if popup != null and popup.has_method("show_game_over"):
 			popup.call("show_game_over", debt_target, deposited)
 		return
@@ -445,6 +448,12 @@ func _set_slot_locked(locked: bool) -> void:
 		slot_ui.call("set_input_locked", locked)
 	else:
 		slot_ui.set("input_locked", locked)
+
+func _set_choice_overlay(active: bool) -> void:
+	if slot_ui == null:
+		return
+	if slot_ui.has_method("set_choice_overlay_active"):
+		slot_ui.call("set_choice_overlay_active", active)
 
 func _get_hud() -> Dictionary:
 	if slot_ui == null:

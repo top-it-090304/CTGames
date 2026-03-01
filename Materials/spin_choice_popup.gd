@@ -43,6 +43,7 @@ func open_popup(
 	_option_a.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_a_spins, _a_ticket_bonus, _a_cost]
 	_option_b.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_b_spins, _b_ticket_bonus, _b_cost]
 	_cancel.text = "Отмена"
+	_bring_to_front()
 	visible = true
 
 func close_popup() -> void:
@@ -56,10 +57,17 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 	_cancel.text = "Закрыть"
 	_option_a.disabled = true
 	_option_b.disabled = true
+	_bring_to_front()
 	visible = true
 
 func is_open() -> bool:
 	return visible
+
+func _bring_to_front() -> void:
+	var parent_node: Node = get_parent()
+	if parent_node != null:
+		parent_node.move_child(self, parent_node.get_child_count() - 1)
+	move_to_front()
 
 func _on_option_a_pressed() -> void:
 	emit_signal("option_selected", _a_spins, _a_cost, _a_ticket_bonus)

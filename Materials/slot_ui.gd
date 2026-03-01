@@ -191,6 +191,19 @@ func is_spinning() -> bool:
 func set_input_locked(locked: bool) -> void:
 	input_locked = locked
 
+func set_choice_overlay_active(active: bool) -> void:
+	var show_reels: bool = not active
+	if reels_row != null:
+		reels_row.visible = show_reels
+
+	var frame: CanvasItem = get_node_or_null("SlotFrame") as CanvasItem
+	if frame != null:
+		frame.visible = show_reels
+
+	var separators: CanvasItem = get_node_or_null("Separators") as CanvasItem
+	if separators != null:
+		separators.visible = show_reels
+
 func _spin() -> void:
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
