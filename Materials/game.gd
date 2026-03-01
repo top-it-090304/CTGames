@@ -148,7 +148,7 @@ func _ensure_camera_targets() -> void:
 	_ensure_marker(root, "CamMain", camera_3d, null, Vector3.ZERO)
 	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(0.0, 1.2, 2.2))
 	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(0.0, 1.2, 2.2))
-	_ensure_marker(root, "CamSlot", camera_3d, _find_slot_machine(), Vector3(0.0, 1.0, 2.2))
+	_ensure_marker(root, "CamSlot", camera_3d, null   , Vector3.ZERO)
 
 func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: Node3D, machine_offset: Vector3) -> void:
 	var marker: Marker3D = root.get_node_or_null(marker_name) as Marker3D
@@ -193,13 +193,21 @@ func _move_camera_to_hint(hint: String) -> void:
 
 	if cam_tween != null:
 		cam_tween.kill()
+
 	cam_tween = create_tween()
-	cam_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	cam_tween.tween_property(camera_3d, "global_position", target.global_position, 0.50)
-	cam_tween.finished.connect(func() -> void:
-		if camera_3d == null or target == null:
-			return
-		camera_3d.global_transform = target.global_transform
+	cam_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	cam_tween.parallel().tween_property(
+		camera_3d,
+		"global_position",
+		target.global_position,
+		0.6
+	)
+	cam_tween.parallel().tween_property(
+		camera_3d,
+		"global_rotation",
+		target.global_rotation,
+		0.6
 	)
 
 func _hint_target(hint: String) -> Marker3D:
