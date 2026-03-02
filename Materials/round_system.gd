@@ -392,8 +392,8 @@ func _apply_debt_viewport_to_screen() -> void:
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.albedo_texture = viewport_tex
 	mat.albedo_color = Color(1.0, 1.0, 1.0, 1.0)
-	mat.uv1_scale = Vector3(-1.0, 1.0, 1.0)
-	mat.uv1_offset = Vector3(1.0, 0.0, 0.0)
+	mat.uv1_scale = Vector3(1.0, -1.0, 1.0)
+	mat.uv1_offset = Vector3(0.0, 1.0, 0.0)
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.metallic = 0.0
 	mat.roughness = 1.0
