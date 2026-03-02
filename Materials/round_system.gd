@@ -34,6 +34,7 @@ var deposited: int = 0
 var game_over: bool = false
 var round_active: bool = false
 var early_bonus_given: bool = false
+var _finish_round_requested: bool = false
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -62,6 +63,31 @@ func _ready() -> void:
 
 	if not _is_intro_active():
 		call_deferred("_open_spin_choice")
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	_try_finish_round_if_ready()
+
+func _try_finish_round_if_ready() -> void:
+	if _finish_round_requested or game_over or not round_active:
+		return
+	if _get_spins_left() > 0:
+		return
+	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
+		return
+	_finish_round_requested = true
+	call_deferred("_finish_round_if_ready_deferred")
+
+func _finish_round_if_ready_deferred() -> void:
+	_finish_round_requested = false
+	if game_over or not round_active:
+		return
+	if _get_spins_left() > 0:
+		return
+	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
+		return
+	_finish_round()
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or _is_intro_active():
@@ -175,11 +201,7 @@ func _on_intro_active_changed(active: bool) -> void:
 		call_deferred("_open_spin_choice")
 
 func _on_spin_completed(_win_amount: int) -> void:
-	if game_over or not round_active:
-		return
-	if _get_spins_left() > 0:
-		return
-	_finish_round()
+	_try_finish_round_if_ready()
 
 func _on_popup_option_selected(spins: int, cost: int, ticket_bonus: int) -> void:
 	if game_over:
