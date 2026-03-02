@@ -364,20 +364,25 @@ func _apply_debt_viewport_to_screen() -> void:
 	var screen_mesh: MeshInstance3D = debt_machine.get_node_or_null("DebtScreen") as MeshInstance3D
 	if screen_mesh == null:
 		screen_mesh = _find_screen_mesh(debt_machine)
+
+	var created_screen: bool = false
 	if screen_mesh == null:
 		screen_mesh = MeshInstance3D.new()
 		screen_mesh.name = "DebtScreen"
 		debt_machine.add_child(screen_mesh)
+		created_screen = true
 
-	var quad: QuadMesh = screen_mesh.mesh as QuadMesh
-	if quad == null:
-		quad = QuadMesh.new()
+	if created_screen:
+		var quad: QuadMesh = QuadMesh.new()
+		quad.size = Vector2(0.70, 0.85)
 		screen_mesh.mesh = quad
-	quad.size = Vector2(0.70, 0.85)
-
-	screen_mesh.position = Vector3(-0.122, 1.596, -0.150)
-	screen_mesh.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
-	screen_mesh.scale = Vector3.ONE
+		screen_mesh.position = Vector3(-0.122, 1.596, -0.150)
+		screen_mesh.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
+		screen_mesh.scale = Vector3.ONE
+	elif screen_mesh.mesh == null:
+		var fallback_quad: QuadMesh = QuadMesh.new()
+		fallback_quad.size = Vector2(0.70, 0.85)
+		screen_mesh.mesh = fallback_quad
 
 	var viewport_tex: Texture2D = debt_viewport.get_texture()
 	if viewport_tex == null:
