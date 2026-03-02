@@ -132,15 +132,17 @@ func _ensure_ui() -> void:
 	_title.anchor_right = 1.0
 	_title.anchor_bottom = 0.0
 	_title.offset_left = 20.0
-	_title.offset_top = 64.0
+	_title.offset_top = 58.0
 	_title.offset_right = -20.0
-	_title.offset_bottom = 120.0
+	_title.offset_bottom = 132.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 66)
+	_title.add_theme_font_size_override("font_size", 76)
 	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
 	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-	_title.add_theme_constant_override("outline_size", 2)
+	_title.add_theme_constant_override("outline_size", 3)
+	_title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_title.scale = Vector2(1.04, 1.04)
 
 	_option_a = _panel.get_node_or_null("Option7Button") as Button
 	if _option_a == null:
@@ -152,9 +154,9 @@ func _ensure_ui() -> void:
 	_option_a.anchor_top = 0.0
 	_option_a.anchor_bottom = 0.0
 	_option_a.offset_left = 26.0
-	_option_a.offset_top = 156.0
+	_option_a.offset_top = 154.0
 	_option_a.offset_right = -26.0
-	_option_a.offset_bottom = 214.0
+	_option_a.offset_bottom = 224.0
 
 	_option_b = _panel.get_node_or_null("Option3Button") as Button
 	if _option_b == null:
@@ -166,9 +168,9 @@ func _ensure_ui() -> void:
 	_option_b.anchor_top = 0.0
 	_option_b.anchor_bottom = 0.0
 	_option_b.offset_left = 26.0
-	_option_b.offset_top = 226.0
+	_option_b.offset_top = 232.0
 	_option_b.offset_right = -26.0
-	_option_b.offset_bottom = 284.0
+	_option_b.offset_bottom = 302.0
 
 	_cancel = _panel.get_node_or_null("CancelButton") as Button
 	if _cancel == null:
@@ -180,20 +182,22 @@ func _ensure_ui() -> void:
 	_cancel.anchor_top = 0.0
 	_cancel.anchor_bottom = 0.0
 	_cancel.offset_left = 160.0
-	_cancel.offset_top = 296.0
+	_cancel.offset_top = 310.0
 	_cancel.offset_right = -160.0
-	_cancel.offset_bottom = 352.0
+	_cancel.offset_bottom = 360.0
 
 	for b: Button in [_option_a, _option_b, _cancel]:
 		b.focus_mode = Control.FOCUS_NONE
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
-		b.add_theme_font_size_override("font_size", 56)
+		b.add_theme_font_size_override("font_size", 64)
 		b.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78, 1.0))
 		b.add_theme_color_override("font_hover_color", Color(0.98, 0.98, 0.98, 1.0))
 		b.add_theme_color_override("font_pressed_color", Color(0.6, 0.6, 0.6, 1.0))
 		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-		b.add_theme_constant_override("outline_size", 2)
+		b.add_theme_constant_override("outline_size", 3)
+		b.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		b.scale = Vector2(1.02, 1.02)
 
 	if not _option_a.pressed.is_connected(_on_option_a_pressed):
 		_option_a.pressed.connect(_on_option_a_pressed)
