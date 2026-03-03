@@ -104,10 +104,10 @@ func _ensure_ui() -> void:
 		_panel = Panel.new()
 		_panel.name = "Panel"
 		add_child(_panel)
-	_panel.anchor_left = 0.5
-	_panel.anchor_top = 0.5
+	_panel.anchor_left = 0.312
+	_panel.anchor_top = 0.474
 	_panel.anchor_right = 0.5
-	_panel.anchor_bottom = 0.5
+	_panel.anchor_bottom = 0.571
 	_panel.offset_left = -360.0
 	_panel.offset_top = -180.0
 	_panel.offset_right = 360.0
@@ -127,17 +127,17 @@ func _ensure_ui() -> void:
 		_title = Label.new()
 		_title.name = "TitleLabel"
 		_panel.add_child(_title)
-	_title.anchor_left = 0.0
-	_title.anchor_top = 0.0
+	_title.anchor_left = 0.075
+	_title.anchor_top = -0.5
 	_title.anchor_right = 1.0
-	_title.anchor_bottom = 0.0
+	_title.anchor_bottom = 0.18
 	_title.offset_left = 20.0
 	_title.offset_top = 64.0
 	_title.offset_right = -20.0
 	_title.offset_bottom = 120.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 70)
+	_title.add_theme_font_size_override("font_size", 130)
 	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
 	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 	_title.add_theme_constant_override("outline_size", 3)
@@ -149,10 +149,10 @@ func _ensure_ui() -> void:
 		_option_a = Button.new()
 		_option_a.name = "Option7Button"
 		_panel.add_child(_option_a)
-	_option_a.anchor_left = 0.0
+	_option_a.anchor_left = 0.09
 	_option_a.anchor_right = 1.0
-	_option_a.anchor_top = 0.0
-	_option_a.anchor_bottom = 0.0
+	_option_a.anchor_top = -0.1
+	_option_a.anchor_bottom = 0.045
 	_option_a.offset_left = 26.0
 	_option_a.offset_top = 156.0
 	_option_a.offset_right = -26.0
@@ -163,7 +163,7 @@ func _ensure_ui() -> void:
 		_option_b = Button.new()
 		_option_b.name = "Option3Button"
 		_panel.add_child(_option_b)
-	_option_b.anchor_left = 0.0
+	_option_b.anchor_left = 0.104
 	_option_b.anchor_right = 1.0
 	_option_b.anchor_top = 0.0
 	_option_b.anchor_bottom = 0.0
@@ -177,10 +177,10 @@ func _ensure_ui() -> void:
 		_cancel = Button.new()
 		_cancel.name = "CancelButton"
 		_panel.add_child(_cancel)
-	_cancel.anchor_left = 0.0
+	_cancel.anchor_left = 0.267
 	_cancel.anchor_right = 1.0
 	_cancel.anchor_top = 0.0
-	_cancel.anchor_bottom = 0.0
+	_cancel.anchor_bottom = 0.513
 	_cancel.offset_left = 160.0
 	_cancel.offset_top = 306.0
 	_cancel.offset_right = -160.0
@@ -190,7 +190,7 @@ func _ensure_ui() -> void:
 		b.focus_mode = Control.FOCUS_NONE
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
-		b.add_theme_font_size_override("font_size", 58)
+		b.add_theme_font_size_override("font_size", 90)
 		b.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78, 1.0))
 		b.add_theme_color_override("font_hover_color", Color(0.98, 0.98, 0.98, 1.0))
 		b.add_theme_color_override("font_pressed_color", Color(0.6, 0.6, 0.6, 1.0))
