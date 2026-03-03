@@ -3,6 +3,11 @@ extends Control
 signal option_selected(spins: int, cost: int, ticket_bonus: int)
 signal canceled
 
+const OPTION_COLOR_DEFAULT: Color = Color(0.78, 0.78, 0.78, 1.0)
+const OPTION_COLOR_HOVER: Color = Color(0.98, 0.98, 0.98, 1.0)
+const OPTION_COLOR_PRESSED: Color = Color(0.6, 0.6, 0.6, 1.0)
+const OPTION_COLOR_SELECTED: Color = Color(1.0, 1.0, 1.0, 1.0)
+
 var _panel: Panel
 var _title: Label
 var _option_a: Button
@@ -16,6 +21,7 @@ var _a_ticket_bonus: int = 0
 var _b_spins: int = 0
 var _b_cost: int = 0
 var _b_ticket_bonus: int = 0
+var _selected_option: int = 0
 
 func _ready() -> void:
 	_ensure_ui()
@@ -43,6 +49,8 @@ func open_popup(
 	_option_a.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_a_spins, _a_ticket_bonus, _a_cost]
 	_option_b.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_b_spins, _b_ticket_bonus, _b_cost]
 	_cancel.text = "Отмена"
+	_selected_option = 0
+	_refresh_option_visuals()
 	_bring_to_front()
 	visible = true
 
@@ -57,6 +65,8 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 	_cancel.text = "Закрыть"
 	_option_a.disabled = true
 	_option_b.disabled = true
+	_selected_option = 0
+	_refresh_option_visuals()
 	_bring_to_front()
 	visible = true
 
@@ -70,13 +80,42 @@ func _bring_to_front() -> void:
 	move_to_front()
 
 func _on_option_a_pressed() -> void:
+	if _option_a == null or _option_a.disabled:
+		return
+	if _selected_option != 1:
+		_selected_option = 1
+		_refresh_option_visuals()
+		return
 	emit_signal("option_selected", _a_spins, _a_cost, _a_ticket_bonus)
 
 func _on_option_b_pressed() -> void:
+	if _option_b == null or _option_b.disabled:
+		return
+	if _selected_option != 2:
+		_selected_option = 2
+		_refresh_option_visuals()
+		return
 	emit_signal("option_selected", _b_spins, _b_cost, _b_ticket_bonus)
 
 func _on_cancel_pressed() -> void:
+	_selected_option = 0
+	_refresh_option_visuals()
 	emit_signal("canceled")
+
+func _apply_button_selection_colors(button: Button, selected: bool) -> void:
+	if button == null:
+		return
+	var color_normal: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_DEFAULT
+	var color_hover: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_HOVER
+	var color_pressed: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_PRESSED
+	button.add_theme_color_override("font_color", color_normal)
+	button.add_theme_color_override("font_hover_color", color_hover)
+	button.add_theme_color_override("font_pressed_color", color_pressed)
+
+func _refresh_option_visuals() -> void:
+	_apply_button_selection_colors(_option_a, _selected_option == 1 and (_option_a == null or not _option_a.disabled))
+	_apply_button_selection_colors(_option_b, _selected_option == 2 and (_option_b == null or not _option_b.disabled))
+	_apply_button_selection_colors(_cancel, false)
 
 func _ensure_ui() -> void:
 	if _panel != null:
@@ -191,13 +230,15 @@ func _ensure_ui() -> void:
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
 		b.add_theme_font_size_override("font_size", 90)
-		b.add_theme_color_override("font_color", Color(0.78, 0.78, 0.78, 1.0))
-		b.add_theme_color_override("font_hover_color", Color(0.98, 0.98, 0.98, 1.0))
-		b.add_theme_color_override("font_pressed_color", Color(0.6, 0.6, 0.6, 1.0))
+		b.add_theme_color_override("font_color", OPTION_COLOR_DEFAULT)
+		b.add_theme_color_override("font_hover_color", OPTION_COLOR_HOVER)
+		b.add_theme_color_override("font_pressed_color", OPTION_COLOR_PRESSED)
 		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		b.add_theme_constant_override("outline_size", 3)
 		b.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		b.scale = Vector2(1.02, 1.02)
+
+	_refresh_option_visuals()
 
 	if not _option_a.pressed.is_connected(_on_option_a_pressed):
 		_option_a.pressed.connect(_on_option_a_pressed)
