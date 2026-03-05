@@ -10,6 +10,7 @@ const GLOW_TINT: Color = Color(1.0, 0.08, 0.03, 0.52)
 @export var accel_time: float = 0.28
 @export var min_spin_time: float = 0.8
 @export var stop_time: float = 0.82
+@export var final_landing_time: float = 1.60
 @export var swap_duration: float = 0.08
 
 @export var icon_size: Vector2 = Vector2(250.0, 170.0)
@@ -93,7 +94,10 @@ func _process(delta: float) -> void:
 		if _want_mid != null and _t >= min_spin_time:
 			_brake()
 
-	_move(delta)
+	# During final hidden landing (state 4) movement is driven by tween only,
+	# so _move() must not run to avoid visual speed jumps.
+	if _state <= 3:
+		_move(delta)
 
 func _brake() -> void:
 	if _state == 3:
@@ -137,7 +141,7 @@ func _settle_to_slot(use_hidden_result_landing: bool = false) -> void:
 		if use_hidden_result_landing:
 			_start_hidden_result_landing()
 		else:
-			_finalize_stop()
+			_finalize_stop(false)
 		return
 
 	var denom: float = maxf(max_speed * 0.75, 1.0)
@@ -148,7 +152,7 @@ func _settle_to_slot(use_hidden_result_landing: bool = false) -> void:
 	if use_hidden_result_landing:
 		_settle_tween.finished.connect(_start_hidden_result_landing)
 	else:
-		_settle_tween.finished.connect(_finalize_stop)
+		_settle_tween.finished.connect(_finalize_stop.bind(false))
 
 func _start_hidden_result_landing() -> void:
 	if _settle_tween != null:
@@ -160,16 +164,17 @@ func _start_hidden_result_landing() -> void:
 		_finalize_stop(true)
 		return
 
+	# Put target symbols outside visible zone and roll them in.
 	_set_icon_texture(box.get_child(3) as TextureRect, _want_top, false)
 	_set_icon_texture(box.get_child(4) as TextureRect, _want_mid, false)
 	_set_icon_texture(box.get_child(5) as TextureRect, _want_bot, false)
 
-	var landing_durations: Array[float] = [0.08, 0.10, 0.12]
-	for dur: float in landing_durations:
-		var tw: Tween = create_tween()
-		tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tw.tween_property(box, "position:y", -_step, dur)
-		await tw.finished
+	var tw: Tween = create_tween()
+	tw.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(box, "position:y", -_step * 3.0, final_landing_time)
+	await tw.finished
+
+	for _i: int in range(3):
 		_rotate_once_after_step()
 		var moved_icon: TextureRect = box.get_child(box.get_child_count() - 1) as TextureRect
 		if moved_icon != null:
@@ -215,9 +220,9 @@ func _finalize_stop(apply_target_result: bool = true) -> void:
 func _set_three(t: Texture2D, m: Texture2D, b: Texture2D) -> void:
 	if box.get_child_count() < 3:
 		return
-	_set_icon_texture(box.get_child(0) as TextureRect, t, true)
-	_set_icon_texture(box.get_child(1) as TextureRect, m, true)
-	_set_icon_texture(box.get_child(2) as TextureRect, b, true)
+	_set_icon_texture(box.get_child(0) as TextureRect, t, false)
+	_set_icon_texture(box.get_child(1) as TextureRect, m, false)
+	_set_icon_texture(box.get_child(2) as TextureRect, b, false)
 
 func _set_icon_texture(icon: TextureRect, texture: Texture2D, smooth: bool = true) -> void:
 	if icon == null:

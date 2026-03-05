@@ -67,6 +67,9 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var money: int = 0
 var spins_left: int = 0
 var tickets: int = 0
+var _last_target_grid: Array = []
+var _last_win_amount: int = 0
+var _last_win_combo_id: String = ""
 
 func _ready() -> void:
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
@@ -161,9 +164,14 @@ func _spin() -> void:
 	for reel: Panel in _reels:
 		reel.start_spin()
 
-	# Generate a strict 3x5 result board by symbol chances before stopping reels.
+	# 1) Honest result is generated and evaluated BEFORE animation.
 	var target_board: Array = _generate_board_indices(3, _reels.size())
+	var planned_result: Dictionary = _evaluate_board(target_board)
+	_last_target_grid = target_board.duplicate(true)
+	_last_win_amount = int(planned_result.get("win_amount", 0))
+	_last_win_combo_id = String(planned_result.get("combo_id", ""))
 
+	# 2) Animation phase: visual randomness while reels spin.
 	await get_tree().create_timer(0.9).timeout
 
 	for col: int in range(_reels.size()):
@@ -186,11 +194,14 @@ func _spin() -> void:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	var board: Array = target_board
-	if not _board_is_3x5(board):
-		board = _collect_board_indices_from_reels()
+	# Optional safety check: visual board should match precomputed target.
+	await get_tree().process_frame
+	var visible_board: Array = _collect_board_indices_from_reels()
+	if _board_is_3x5(visible_board) and _board_is_3x5(target_board) and not _boards_equal(visible_board, target_board):
+		push_warning("Visible board differs from target board; payout still uses precomputed result.")
 
-	var result: Dictionary = _evaluate_board(board)
+	# 3) Payout happens only after final reel stop.
+	var result: Dictionary = planned_result
 	var win_amount: int = int(result.get("win_amount", 0))
 	if win_amount > 0:
 		money += win_amount
@@ -274,6 +285,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 		return {
 			"text": "ERR BOARD",
 			"win_amount": 0,
+			"combo_id": "",
 		}
 
 	if _combo_rules.is_empty():
@@ -286,6 +298,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 			continue
 
 		var combo_name: String = String(combo.get("name", "Комбо"))
+		var combo_id: String = String(combo.get("id", combo_name))
 		var combo_mult: int = int(combo.get("multiplier", 1))
 		var symbol_value: int = _symbol_coin_value(symbol_index)
 		var bet: int = maxi(bet_per_spin, 1)
@@ -294,11 +307,16 @@ func _evaluate_board(board: Array) -> Dictionary:
 		return {
 			"text": "WIN | %s x%d | %s (Ф=%d) | BET %d | +%d" % [combo_name, combo_mult, _symbol_title(symbol_index), symbol_value, bet, win_amount],
 			"win_amount": win_amount,
+			"combo_id": combo_id,
+			"combo_name": combo_name,
+			"symbol_index": symbol_index,
+			"combo_multiplier": combo_mult,
 		}
 
 	return {
 		"text": "LOSE",
 		"win_amount": 0,
+		"combo_id": "",
 	}
 
 func _find_best_variant_symbol(board: Array, variants: Array) -> int:
@@ -350,6 +368,19 @@ func _board_is_3x5(board: Array) -> bool:
 
 	return true
 
+func _boards_equal(a: Array, b: Array) -> bool:
+	if not _board_is_3x5(a) or not _board_is_3x5(b):
+		return false
+
+	for row: int in range(3):
+		var row_a: Array = a[row] as Array
+		var row_b: Array = b[row] as Array
+		for col: int in range(5):
+			if int(row_a[col]) != int(row_b[col]):
+				return false
+
+	return true
+
 func _build_combo_rules() -> Array[Dictionary]:
 	var rules: Array[Dictionary] = []
 
@@ -359,6 +390,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 		for col: int in range(5):
 			jackpot_points.append(Vector2i(row, col))
 	rules.append({
+		"id": "jackpot",
 		"name": "Джекпот",
 		"multiplier": 10,
 		"variants": [jackpot_points],
@@ -366,6 +398,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 2) Глаз x8
 	rules.append({
+		"id": "eye",
 		"name": "Глаз",
 		"multiplier": 8,
 		"variants": [[
@@ -377,6 +410,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 3) Небо x7
 	rules.append({
+		"id": "sky",
 		"name": "Небо",
 		"multiplier": 7,
 		"variants": [[
@@ -388,6 +422,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 4) Земля x7
 	rules.append({
+		"id": "earth",
 		"name": "Земля",
 		"multiplier": 7,
 		"variants": [[
@@ -399,6 +434,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 5) Вверх x4
 	rules.append({
+		"id": "up",
 		"name": "Вверх",
 		"multiplier": 4,
 		"variants": [[
@@ -410,6 +446,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 6) Вниз x4
 	rules.append({
+		"id": "down",
 		"name": "Вниз",
 		"multiplier": 4,
 		"variants": [[
@@ -426,6 +463,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 			Vector2i(row_xl, 0), Vector2i(row_xl, 1), Vector2i(row_xl, 2), Vector2i(row_xl, 3), Vector2i(row_xl, 4),
 		])
 	rules.append({
+		"id": "horizontal_xl",
 		"name": "Гор. XL",
 		"multiplier": 3,
 		"variants": horizontal_xl_variants,
@@ -438,6 +476,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 			Vector2i(row_l, 1), Vector2i(row_l, 2), Vector2i(row_l, 3), Vector2i(row_l, 4),
 		])
 	rules.append({
+		"id": "horizontal_l",
 		"name": "Гор. L",
 		"multiplier": 2,
 		"variants": horizontal_l_variants,
@@ -450,6 +489,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 			Vector2i(row_m, 1), Vector2i(row_m, 2), Vector2i(row_m, 3),
 		])
 	rules.append({
+		"id": "horizontal",
 		"name": "Гор.",
 		"multiplier": 1,
 		"variants": horizontal_m_variants,
@@ -462,6 +502,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 			Vector2i(0, col_v), Vector2i(1, col_v), Vector2i(2, col_v),
 		])
 	rules.append({
+		"id": "vertical",
 		"name": "Верт.",
 		"multiplier": 1,
 		"variants": vertical_variants,
@@ -469,6 +510,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	# 11) Диаг. x1 (и зеркальная)
 	rules.append({
+		"id": "diag",
 		"name": "Диаг.",
 		"multiplier": 1,
 		"variants": [
