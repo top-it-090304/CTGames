@@ -44,10 +44,10 @@ const SYMBOL_TITLES: Dictionary = {
 	"lemon": "Лимон",
 	"cherry": "Вишня",
 	"clover": "Клевер",
-	"bell": "Колокол",
+	"bell": "Колокольчик",
 	"diamond": "Алмаз",
 	"chest": "Сундук",
-	"seven": "Семерка",
+	"seven": "Семерки",
 }
 
 @export_group("Payout")
@@ -62,6 +62,7 @@ var label: Label
 var _reels: Array[Panel] = []
 var _busy: bool = false
 var input_locked: bool = false
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 var money: int = 0
 var spins_left: int = 0
@@ -76,6 +77,7 @@ func _ready() -> void:
 		push_error("reels_row is null: set reels_row_path in Inspector")
 		return
 
+	_rng.randomize()
 	money = starting_money
 	spins_left = starting_spins
 	tickets = starting_tickets
@@ -159,20 +161,35 @@ func _spin() -> void:
 	for reel: Panel in _reels:
 		reel.start_spin()
 
+	# Generate a strict 3x5 result board by symbol chances before stopping reels.
+	var target_board: Array = _generate_board_indices(3, _reels.size())
+
 	await get_tree().create_timer(0.9).timeout
 
-	for reel: Panel in _reels:
-		if reel.has_method("stop_spin"):
+	for col: int in range(_reels.size()):
+		var reel: Panel = _reels[col]
+		var top_idx: int = int((target_board[0] as Array)[col])
+		var mid_idx: int = int((target_board[1] as Array)[col])
+		var bot_idx: int = int((target_board[2] as Array)[col])
+		var top_tex: Texture2D = _texture_for_index(top_idx)
+		var mid_tex: Texture2D = _texture_for_index(mid_idx)
+		var bot_tex: Texture2D = _texture_for_index(bot_idx)
+
+		if reel.has_method("stop_with_result"):
+			reel.call("stop_with_result", top_tex, mid_tex, bot_tex)
+		elif reel.has_method("stop_spin"):
 			reel.call("stop_spin")
-		elif reel.has_method("stop_with_result"):
-			reel.call("stop_with_result", null, null, null)
+
 		if reel.has_signal("stopped"):
 			await reel.stopped
 		else:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	var board: Array = _collect_board_indices_from_reels()
+	var board: Array = target_board
+	if not _board_is_3x5(board):
+		board = _collect_board_indices_from_reels()
+
 	var result: Dictionary = _evaluate_board(board)
 	var win_amount: int = int(result.get("win_amount", 0))
 	if win_amount > 0:
@@ -183,7 +200,6 @@ func _spin() -> void:
 	_emit_hud_changed()
 	_busy = false
 	emit_signal("spin_completed", win_amount)
-
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
 	for row: int in range(3):
@@ -195,6 +211,43 @@ func _collect_board_indices_from_reels() -> Array:
 			var tex: Texture2D = _reel_texture_for_row(reel, row)
 			board[row][col] = _index_for_texture(tex)
 	return board
+
+func _generate_board_indices(rows: int, cols: int) -> Array:
+	var generated: Array = []
+	for row: int in range(rows):
+		var line: Array = []
+		for _col: int in range(cols):
+			line.append(_roll_symbol_index())
+		generated.append(line)
+	return generated
+
+func _roll_symbol_index() -> int:
+	if symbols.is_empty():
+		return -1
+
+	if weights.size() != symbols.size():
+		_apply_symbol_chance_weights()
+
+	var total: float = 0.0
+	for w_var: Variant in weights:
+		total += maxf(float(w_var), 0.0)
+
+	if total <= 0.0:
+		return _rng.randi_range(0, symbols.size() - 1)
+
+	var pick: float = _rng.randf() * total
+	var acc: float = 0.0
+	for i: int in range(weights.size()):
+		acc += maxf(float(weights[i]), 0.0)
+		if pick <= acc:
+			return i
+
+	return max(symbols.size() - 1, 0)
+
+func _texture_for_index(index: int) -> Texture2D:
+	if index < 0 or index >= symbols.size():
+		return null
+	return symbols[index]
 
 func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
 	if reel == null:

@@ -163,9 +163,9 @@ func _finalize_stop() -> void:
 func _set_three(t: Texture2D, m: Texture2D, b: Texture2D) -> void:
 	if box.get_child_count() < 3:
 		return
-	_set_icon_texture(box.get_child(0) as TextureRect, t, false)
-	_set_icon_texture(box.get_child(1) as TextureRect, m, false)
-	_set_icon_texture(box.get_child(2) as TextureRect, b, false)
+	_set_icon_texture(box.get_child(0) as TextureRect, t, true)
+	_set_icon_texture(box.get_child(1) as TextureRect, m, true)
+	_set_icon_texture(box.get_child(2) as TextureRect, b, true)
 
 func _set_icon_texture(icon: TextureRect, texture: Texture2D, smooth: bool = true) -> void:
 	if icon == null:
