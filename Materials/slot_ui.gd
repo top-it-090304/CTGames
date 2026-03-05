@@ -164,45 +164,25 @@ func _spin() -> void:
 	for reel: Panel in _reels:
 		reel.start_spin()
 
-	# 1) Honest result is generated and evaluated BEFORE animation.
-	var target_board: Array = _generate_board_indices(3, _reels.size())
-	var planned_result: Dictionary = _evaluate_board(target_board)
-	_last_target_grid = target_board.duplicate(true)
-	_last_win_amount = int(planned_result.get("win_amount", 0))
-	_last_win_combo_id = String(planned_result.get("combo_id", ""))
-
-	# 2) Animation phase: visual randomness while reels spin.
 	await get_tree().create_timer(0.9).timeout
 
-	for col: int in range(_reels.size()):
-		var reel: Panel = _reels[col]
-		var top_idx: int = int((target_board[0] as Array)[col])
-		var mid_idx: int = int((target_board[1] as Array)[col])
-		var bot_idx: int = int((target_board[2] as Array)[col])
-		var top_tex: Texture2D = _texture_for_index(top_idx)
-		var mid_tex: Texture2D = _texture_for_index(mid_idx)
-		var bot_tex: Texture2D = _texture_for_index(bot_idx)
-
-		if reel.has_method("stop_with_result"):
-			reel.call("stop_with_result", top_tex, mid_tex, bot_tex)
-		elif reel.has_method("stop_spin"):
+	for reel: Panel in _reels:
+		if reel.has_method("stop_spin"):
 			reel.call("stop_spin")
-
+		elif reel.has_method("stop_with_result"):
+			reel.call("stop_with_result", null, null, null)
 		if reel.has_signal("stopped"):
 			await reel.stopped
 		else:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	# Optional safety check: visual board should match precomputed target.
-	await get_tree().process_frame
-	var visible_board: Array = _collect_board_indices_from_reels()
-	if _board_is_3x5(visible_board) and _board_is_3x5(target_board) and not _boards_equal(visible_board, target_board):
-		push_warning("Visible board differs from target board; payout still uses precomputed result.")
-
-	# 3) Payout happens only after final reel stop.
-	var result: Dictionary = planned_result
+	var board: Array = _collect_board_indices_from_reels()
+	_last_target_grid = board.duplicate(true)
+	var result: Dictionary = _evaluate_board(board)
 	var win_amount: int = int(result.get("win_amount", 0))
+	_last_win_amount = win_amount
+	_last_win_combo_id = String(result.get("combo_id", ""))
 	if win_amount > 0:
 		money += win_amount
 		emit_signal("win_popup_requested", win_amount)
@@ -211,6 +191,7 @@ func _spin() -> void:
 	_emit_hud_changed()
 	_busy = false
 	emit_signal("spin_completed", win_amount)
+
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
 	for row: int in range(3):

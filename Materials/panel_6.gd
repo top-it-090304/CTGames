@@ -10,7 +10,6 @@ const GLOW_TINT: Color = Color(1.0, 0.08, 0.03, 0.52)
 @export var accel_time: float = 0.28
 @export var min_spin_time: float = 0.8
 @export var stop_time: float = 0.82
-@export var final_landing_time: float = 1.60
 @export var swap_duration: float = 0.08
 
 @export var icon_size: Vector2 = Vector2(250.0, 170.0)
@@ -94,10 +93,7 @@ func _process(delta: float) -> void:
 		if _want_mid != null and _t >= min_spin_time:
 			_brake()
 
-	# During final hidden landing (state 4) movement is driven by tween only,
-	# so _move() must not run to avoid visual speed jumps.
-	if _state <= 3:
-		_move(delta)
+	_move(delta)
 
 func _brake() -> void:
 	if _state == 3:
@@ -125,9 +121,9 @@ func _move(delta: float) -> void:
 func _on_brake_finished() -> void:
 	_speed = 0.0
 	_state = 4
-	_settle_to_slot(_want_mid != null)
+	_settle_to_slot()
 
-func _settle_to_slot(use_hidden_result_landing: bool = false) -> void:
+func _settle_to_slot() -> void:
 	if _step <= 0.0:
 		_finalize_stop()
 		return
@@ -138,10 +134,7 @@ func _settle_to_slot(use_hidden_result_landing: bool = false) -> void:
 
 	var dist: float = absf(target_y - box.position.y)
 	if dist <= 0.5:
-		if use_hidden_result_landing:
-			_start_hidden_result_landing()
-		else:
-			_finalize_stop(false)
+		_finalize_stop()
 		return
 
 	var denom: float = maxf(max_speed * 0.75, 1.0)
@@ -149,56 +142,9 @@ func _settle_to_slot(use_hidden_result_landing: bool = false) -> void:
 	_settle_tween = create_tween()
 	_settle_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	_settle_tween.tween_property(box, "position:y", target_y, settle_time)
-	if use_hidden_result_landing:
-		_settle_tween.finished.connect(_start_hidden_result_landing)
-	else:
-		_settle_tween.finished.connect(_finalize_stop.bind(false))
+	_settle_tween.finished.connect(_finalize_stop)
 
-func _start_hidden_result_landing() -> void:
-	if _settle_tween != null:
-		_settle_tween = null
-
-	_normalize_strip_position()
-
-	if _want_mid == null or box.get_child_count() < 6:
-		_finalize_stop(true)
-		return
-
-	# Put target symbols outside visible zone and roll them in.
-	_set_icon_texture(box.get_child(3) as TextureRect, _want_top, false)
-	_set_icon_texture(box.get_child(4) as TextureRect, _want_mid, false)
-	_set_icon_texture(box.get_child(5) as TextureRect, _want_bot, false)
-
-	var tw: Tween = create_tween()
-	tw.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tw.tween_property(box, "position:y", -_step * 3.0, final_landing_time)
-	await tw.finished
-
-	for _i: int in range(3):
-		_rotate_once_after_step()
-		var moved_icon: TextureRect = box.get_child(box.get_child_count() - 1) as TextureRect
-		if moved_icon != null:
-			_set_icon_texture(moved_icon, _pick_random_texture(), false)
-
-	_finalize_stop(false)
-
-func _normalize_strip_position() -> void:
-	box.position.y = _snap(box.position.y)
-	while box.position.y <= -_step:
-		_rotate_once_after_step()
-	if absf(box.position.y) > 0.01:
-		box.position.y = 0.0
-
-func _rotate_once_after_step() -> void:
-	if _step <= 0.0 or box.get_child_count() == 0:
-		return
-	box.position.y += _step
-	var first_child: Node = box.get_child(0)
-	box.remove_child(first_child)
-	box.add_child(first_child)
-	box.position.y = _snap(box.position.y)
-
-func _finalize_stop(apply_target_result: bool = true) -> void:
+func _finalize_stop() -> void:
 	if _settle_tween != null:
 		_settle_tween = null
 
@@ -210,11 +156,8 @@ func _finalize_stop(apply_target_result: bool = true) -> void:
 
 	box.position.y = _snap(box.position.y)
 	_state = 0
-	if apply_target_result and _want_mid != null:
+	if _want_mid != null:
 		_set_three(_want_top, _want_mid, _want_bot)
-	_want_top = null
-	_want_mid = null
-	_want_bot = null
 	emit_signal("stopped")
 
 func _set_three(t: Texture2D, m: Texture2D, b: Texture2D) -> void:
