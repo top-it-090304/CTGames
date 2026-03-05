@@ -59,6 +59,12 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tn84i"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi5rp"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -78,12 +84,6 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm020"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -253,7 +253,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yi5rp")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tn84i")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -338,7 +338,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xkq3k")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yi5rp")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -423,7 +423,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4gd6a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_xkq3k")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -508,7 +508,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fm020")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4gd6a")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -593,7 +593,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fm020")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18

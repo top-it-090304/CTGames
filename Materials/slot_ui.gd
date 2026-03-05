@@ -20,6 +20,11 @@ signal spin_completed(win_amount: int)
 @export var button_path: NodePath
 @export var label_path: NodePath
 
+@export_group("Payout")
+@export var bet_per_spin: int = 1
+@export var allow_combo_stacking: bool = true
+@export var jackpot_overrides_other_hits: bool = true
+
 const SYMBOL_VALUES: Dictionary = {
 	"lemon": 2,
 	"cherry": 2,
@@ -50,9 +55,6 @@ const SYMBOL_TITLES: Dictionary = {
 	"seven": "Семерки",
 }
 
-@export_group("Payout")
-@export var bet_per_spin: int = 1
-
 var _combo_rules: Array[Dictionary] = []
 
 var reels_row: HBoxContainer
@@ -67,6 +69,7 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var money: int = 0
 var spins_left: int = 0
 var tickets: int = 0
+
 var _last_target_grid: Array = []
 var _last_win_amount: int = 0
 var _last_win_combo_id: String = ""
@@ -132,6 +135,13 @@ func request_spin() -> void:
 		_set_status("NO SPINS LEFT")
 		_emit_hud_changed()
 		return
+
+	var bet: int = maxi(bet_per_spin, 0)
+	if bet > 0 and money < bet:
+		_set_status("NO MONEY")
+		_emit_hud_changed()
+		return
+
 	_spin()
 
 func is_spinning() -> bool:
@@ -156,6 +166,12 @@ func set_choice_overlay_active(active: bool) -> void:
 func _spin() -> void:
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
+
+	var bet: int = maxi(bet_per_spin, 0)
+	if bet > 0:
+		money -= bet
+		money = maxi(money, 0)
+
 	_busy = true
 	spins_left -= spins_per_round
 	_emit_hud_changed()
@@ -179,10 +195,12 @@ func _spin() -> void:
 
 	var board: Array = _collect_board_indices_from_reels()
 	_last_target_grid = board.duplicate(true)
+
 	var result: Dictionary = _evaluate_board(board)
 	var win_amount: int = int(result.get("win_amount", 0))
 	_last_win_amount = win_amount
 	_last_win_combo_id = String(result.get("combo_id", ""))
+
 	if win_amount > 0:
 		money += win_amount
 		emit_signal("win_popup_requested", win_amount)
@@ -263,64 +281,109 @@ func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
 
 func _evaluate_board(board: Array) -> Dictionary:
 	if not _board_is_3x5(board):
-		return {
-			"text": "ERR BOARD",
-			"win_amount": 0,
-			"combo_id": "",
-		}
+		return {"text": "ERR BOARD", "win_amount": 0, "combo_id": ""}
 
 	if _combo_rules.is_empty():
 		_combo_rules = _build_combo_rules()
 
+	var bet: int = maxi(bet_per_spin, 1)
+	var sym_mult: float = maxf(symbol_multiplier, 0.0)
+
+	var hits: Array[Dictionary] = []
+	var jackpot_hit: Dictionary = {}
+
 	for combo: Dictionary in _combo_rules:
 		var variants: Array = combo.get("variants", [])
-		var symbol_index: int = _find_best_variant_symbol(board, variants)
-		if symbol_index < 0:
-			continue
-
+		var combo_mult: int = int(combo.get("multiplier", 1))
 		var combo_name: String = String(combo.get("name", "Комбо"))
 		var combo_id: String = String(combo.get("id", combo_name))
-		var combo_mult: int = int(combo.get("multiplier", 1))
-		var symbol_value: int = _symbol_coin_value(symbol_index)
-		var bet: int = maxi(bet_per_spin, 1)
-		var win_amount: int = maxi(bet * symbol_value * combo_mult, 0)
 
+		for variant_var: Variant in variants:
+			var points: Array = variant_var as Array
+			if points.is_empty():
+				continue
+			if not _combo_points_fit(points, board):
+				continue
+
+			var symbol_index: int = _uniform_symbol_index(board, points)
+			if symbol_index < 0:
+				continue
+
+			var symbol_value: int = _symbol_coin_value(symbol_index)
+			var raw_win: float = float(bet) * float(symbol_value) * float(combo_mult) * sym_mult
+			var win_amount: int = maxi(int(round(raw_win)), 0)
+
+			var hit: Dictionary = {
+				"combo_id": combo_id,
+				"combo_name": combo_name,
+				"combo_multiplier": combo_mult,
+				"symbol_index": symbol_index,
+				"symbol_value": symbol_value,
+				"win_amount": win_amount,
+				"points": points,
+			}
+
+			if combo_id == "jackpot":
+				jackpot_hit = hit
+				break
+
+			hits.append(hit)
+
+			if not allow_combo_stacking:
+				break
+
+		if combo_id == "jackpot" and not jackpot_hit.is_empty():
+			break
+		if not allow_combo_stacking and not hits.is_empty():
+			break
+
+	if not jackpot_hit.is_empty():
+		var total_jackpot: int = int(jackpot_hit.get("win_amount", 0))
 		return {
-			"text": "WIN | %s x%d | %s (Ф=%d) | BET %d | +%d" % [combo_name, combo_mult, _symbol_title(symbol_index), symbol_value, bet, win_amount],
-			"win_amount": win_amount,
-			"combo_id": combo_id,
-			"combo_name": combo_name,
-			"symbol_index": symbol_index,
-			"combo_multiplier": combo_mult,
+			"text": "WIN | Джекпот x10 | %s (Ф=%d) | BET %d | +%d" % [
+				_symbol_title(int(jackpot_hit.get("symbol_index", -1))),
+				int(jackpot_hit.get("symbol_value", 0)),
+				bet,
+				total_jackpot
+			],
+			"win_amount": total_jackpot,
+			"combo_id": "jackpot",
+			"hits": [jackpot_hit],
 		}
 
+	if jackpot_overrides_other_hits and not jackpot_hit.is_empty():
+		pass
+
+	if hits.is_empty():
+		return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
+
+	var total: int = 0
+	var best_hit: Dictionary = hits[0]
+	for h: Dictionary in hits:
+		total += int(h.get("win_amount", 0))
+		if int(h.get("combo_multiplier", 0)) > int(best_hit.get("combo_multiplier", 0)):
+			best_hit = h
+		elif int(h.get("combo_multiplier", 0)) == int(best_hit.get("combo_multiplier", 0)) and int(h.get("symbol_value", 0)) > int(best_hit.get("symbol_value", 0)):
+			best_hit = h
+
+	var parts: Array[String] = []
+	for h: Dictionary in hits:
+		parts.append("%s x%d (%s Ф=%d) +%d" % [
+			String(h.get("combo_name", "")),
+			int(h.get("combo_multiplier", 1)),
+			_symbol_title(int(h.get("symbol_index", -1))),
+			int(h.get("symbol_value", 0)),
+			int(h.get("win_amount", 0)),
+		])
+
+	var text: String = "WIN | BET %d | TOTAL +%d | %s" % [bet, total, " + ".join(parts)]
+
 	return {
-		"text": "LOSE",
-		"win_amount": 0,
-		"combo_id": "",
+		"text": text,
+		"win_amount": total,
+		"combo_id": String(best_hit.get("combo_id", "")),
+		"hits": hits,
 	}
-
-func _find_best_variant_symbol(board: Array, variants: Array) -> int:
-	var best_symbol_index: int = -1
-	var best_symbol_value: int = -1
-
-	for variant_var: Variant in variants:
-		var points: Array = variant_var as Array
-		if points.is_empty():
-			continue
-		if not _combo_points_fit(points, board):
-			continue
-
-		var symbol_index: int = _uniform_symbol_index(board, points)
-		if symbol_index < 0:
-			continue
-
-		var symbol_value: int = _symbol_coin_value(symbol_index)
-		if symbol_value > best_symbol_value:
-			best_symbol_value = symbol_value
-			best_symbol_index = symbol_index
-
-	return best_symbol_index
 
 func _uniform_symbol_index(board: Array, points: Array) -> int:
 	if points.is_empty():
@@ -341,43 +404,21 @@ func _uniform_symbol_index(board: Array, points: Array) -> int:
 func _board_is_3x5(board: Array) -> bool:
 	if board.size() != 3:
 		return false
-
 	for row_var: Variant in board:
 		var row: Array = row_var as Array
 		if row.size() != 5:
 			return false
-
-	return true
-
-func _boards_equal(a: Array, b: Array) -> bool:
-	if not _board_is_3x5(a) or not _board_is_3x5(b):
-		return false
-
-	for row: int in range(3):
-		var row_a: Array = a[row] as Array
-		var row_b: Array = b[row] as Array
-		for col: int in range(5):
-			if int(row_a[col]) != int(row_b[col]):
-				return false
-
 	return true
 
 func _build_combo_rules() -> Array[Dictionary]:
 	var rules: Array[Dictionary] = []
 
-	# 1) Джекпот x10
 	var jackpot_points: Array[Vector2i] = []
 	for row: int in range(3):
 		for col: int in range(5):
 			jackpot_points.append(Vector2i(row, col))
-	rules.append({
-		"id": "jackpot",
-		"name": "Джекпот",
-		"multiplier": 10,
-		"variants": [jackpot_points],
-	})
+	rules.append({"id": "jackpot", "name": "Джекпот", "multiplier": 10, "variants": [jackpot_points]})
 
-	# 2) Глаз x8
 	rules.append({
 		"id": "eye",
 		"name": "Глаз",
@@ -389,7 +430,6 @@ func _build_combo_rules() -> Array[Dictionary]:
 		]],
 	})
 
-	# 3) Небо x7
 	rules.append({
 		"id": "sky",
 		"name": "Небо",
@@ -401,7 +441,6 @@ func _build_combo_rules() -> Array[Dictionary]:
 		]],
 	})
 
-	# 4) Земля x7
 	rules.append({
 		"id": "earth",
 		"name": "Земля",
@@ -413,7 +452,6 @@ func _build_combo_rules() -> Array[Dictionary]:
 		]],
 	})
 
-	# 5) Вверх x4
 	rules.append({
 		"id": "up",
 		"name": "Вверх",
@@ -425,7 +463,6 @@ func _build_combo_rules() -> Array[Dictionary]:
 		]],
 	})
 
-	# 6) Вниз x4
 	rules.append({
 		"id": "down",
 		"name": "Вниз",
@@ -437,59 +474,34 @@ func _build_combo_rules() -> Array[Dictionary]:
 		]],
 	})
 
-	# 7) Гор. XL x3 (любой ряд)
 	var horizontal_xl_variants: Array = []
 	for row_xl: int in range(3):
 		horizontal_xl_variants.append([
 			Vector2i(row_xl, 0), Vector2i(row_xl, 1), Vector2i(row_xl, 2), Vector2i(row_xl, 3), Vector2i(row_xl, 4),
 		])
-	rules.append({
-		"id": "horizontal_xl",
-		"name": "Гор. XL",
-		"multiplier": 3,
-		"variants": horizontal_xl_variants,
-	})
+	rules.append({"id": "horizontal_xl", "name": "Гор. XL", "multiplier": 3, "variants": horizontal_xl_variants})
 
-	# 8) Гор. L x2 (любой ряд, колонки 2..5)
 	var horizontal_l_variants: Array = []
 	for row_l: int in range(3):
 		horizontal_l_variants.append([
 			Vector2i(row_l, 1), Vector2i(row_l, 2), Vector2i(row_l, 3), Vector2i(row_l, 4),
 		])
-	rules.append({
-		"id": "horizontal_l",
-		"name": "Гор. L",
-		"multiplier": 2,
-		"variants": horizontal_l_variants,
-	})
+	rules.append({"id": "horizontal_l", "name": "Гор. L", "multiplier": 2, "variants": horizontal_l_variants})
 
-	# 9) Гор. x1 (любой ряд, центральные 3)
 	var horizontal_m_variants: Array = []
 	for row_m: int in range(3):
 		horizontal_m_variants.append([
 			Vector2i(row_m, 1), Vector2i(row_m, 2), Vector2i(row_m, 3),
 		])
-	rules.append({
-		"id": "horizontal",
-		"name": "Гор.",
-		"multiplier": 1,
-		"variants": horizontal_m_variants,
-	})
+	rules.append({"id": "horizontal", "name": "Гор.", "multiplier": 1, "variants": horizontal_m_variants})
 
-	# 10) Верт. x1 (любая колонка)
 	var vertical_variants: Array = []
 	for col_v: int in range(5):
 		vertical_variants.append([
 			Vector2i(0, col_v), Vector2i(1, col_v), Vector2i(2, col_v),
 		])
-	rules.append({
-		"id": "vertical",
-		"name": "Верт.",
-		"multiplier": 1,
-		"variants": vertical_variants,
-	})
+	rules.append({"id": "vertical", "name": "Верт.", "multiplier": 1, "variants": vertical_variants})
 
-	# 11) Диаг. x1 (и зеркальная)
 	rules.append({
 		"id": "diag",
 		"name": "Диаг.",
@@ -501,6 +513,7 @@ func _build_combo_rules() -> Array[Dictionary]:
 	})
 
 	return rules
+
 func _combo_points_fit(points: Array, board: Array) -> bool:
 	if board.size() < 3:
 		return false
@@ -594,11 +607,7 @@ func _emit_hud_changed() -> void:
 	emit_signal("hud_changed", money, spins_left, tickets)
 
 func get_hud_state() -> Dictionary:
-	return {
-		"money": money,
-		"spins_left": spins_left,
-		"tickets": tickets,
-	}
+	return {"money": money, "spins_left": spins_left, "tickets": tickets}
 
 func get_money() -> int:
 	return money
