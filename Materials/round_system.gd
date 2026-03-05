@@ -152,12 +152,16 @@ func _select_popup_option_by_screen_pos(screen_pos: Vector2) -> void:
 	var nx: float = screen_pos.x / viewport_size.x
 	var ny: float = screen_pos.y / viewport_size.y
 
-	if nx < 0.22 or nx > 0.78:
+	if popup != null and popup.has_method("press_by_normalized_position"):
+		popup.call("press_by_normalized_position", nx, ny)
 		return
 
-	if ny < 0.53:
+	# Fallback mapping
+	if nx < 0.18 or nx > 0.82:
+		return
+	if ny < 0.61:
 		_press_popup_button("Option7Button")
-	elif ny < 0.64:
+	elif ny < 0.70:
 		_press_popup_button("Option3Button")
 	else:
 		_press_popup_button("CancelButton")

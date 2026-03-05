@@ -232,11 +232,6 @@ layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 
-[node name="CancelButton" type="Button" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=937074814]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
 [node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
 custom_minimum_size = Vector2(1564, 540)
 layout_mode = 0

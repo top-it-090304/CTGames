@@ -50,67 +50,10 @@ const SYMBOL_TITLES: Dictionary = {
 	"seven": "Семерка",
 }
 
-var combo_defs: Array[Dictionary] = [
-	{
-		"name": "Гор. M",
-		"multiplier": 1.0,
-		"points": [Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3)],
-	},
-	{
-		"name": "Верт. M",
-		"multiplier": 1.0,
-		"points": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
-	},
-	{
-		"name": "Диаг. M",
-		"multiplier": 1.0,
-		"points": [Vector2i(0, 1), Vector2i(1, 2), Vector2i(2, 3)],
-	},
-	{
-		"name": "Гор. L",
-		"multiplier": 2.0,
-		"points": [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3)],
-	},
-	{
-		"name": "Гор. XL",
-		"multiplier": 3.0,
-		"points": [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3), Vector2i(1, 4)],
-	},
-	{
-		"name": "Вверх",
-		"multiplier": 4.0,
-		"points": [Vector2i(2, 0), Vector2i(1, 1), Vector2i(0, 2), Vector2i(1, 3), Vector2i(2, 4)],
-	},
-	{
-		"name": "Вниз",
-		"multiplier": 4.0,
-		"points": [Vector2i(0, 0), Vector2i(1, 1), Vector2i(2, 2), Vector2i(1, 3), Vector2i(0, 4)],
-	},
-	{
-		"name": "Небо",
-		"multiplier": 7.0,
-		"points": [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4)],
-	},
-	{
-		"name": "Земля",
-		"multiplier": 7.0,
-		"points": [Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3), Vector2i(2, 4)],
-	},
-	{
-		"name": "Глаз",
-		"multiplier": 8.0,
-		"points": [Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 2), Vector2i(0, 3), Vector2i(1, 4)],
-	},
-	{
-		"name": "Джекпот",
-		"multiplier": 10.0,
-		"points": [
-			Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4),
-			Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3), Vector2i(1, 4),
-			Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3), Vector2i(2, 4),
-		],
-	},
-]
+@export_group("Payout")
+@export var bet_per_spin: int = 1
+
+var _combo_rules: Array[Dictionary] = []
 
 var reels_row: HBoxContainer
 var btn: Button
@@ -142,6 +85,7 @@ func _ready() -> void:
 	_hide_legacy_ui()
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
+	_combo_rules = _build_combo_rules()
 	_emit_hud_changed()
 	_set_status("READY")
 
@@ -256,104 +200,231 @@ func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
 	if reel == null:
 		return null
 
+	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+	if box != null:
+		var safe_row: int = clampi(row, 0, 2)
+		var seen: int = 0
+		for child: Node in box.get_children():
+			var icon: TextureRect = child as TextureRect
+			if icon == null:
+				continue
+			if seen == safe_row and icon.texture != null:
+				return icon.texture
+			seen += 1
+
 	if row == 1 and reel.has_method("get_middle_texture"):
 		return reel.call("get_middle_texture") as Texture2D
-
-	var margin: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
-	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
-	if margin == null or box == null:
-		if reel.has_method("get_middle_texture"):
-			return reel.call("get_middle_texture") as Texture2D
-		return null
-
-	var factors: Array[float] = [1.0 / 6.0, 0.5, 5.0 / 6.0]
-	var safe_row: int = clampi(row, 0, 2)
-	var target_y: float = reel.size.y * factors[safe_row]
-
-	var reel_icon_h: float = 170.0
-	var icon_size_var: Variant = reel.get("icon_size")
-	if icon_size_var is Vector2:
-		reel_icon_h = (icon_size_var as Vector2).y
-
-	var best_dist: float = INF
-	var best_icon: TextureRect = null
-	for child: Node in box.get_children():
-		var icon: TextureRect = child as TextureRect
-		if icon == null:
-			continue
-
-		var icon_h: float = reel_icon_h
-		if icon_h <= 0.0:
-			if icon.size.y > 0.0:
-				icon_h = icon.size.y
-			elif icon.custom_minimum_size.y > 0.0:
-				icon_h = icon.custom_minimum_size.y
-			else:
-				icon_h = 170.0
-
-		var top_y: float = margin.offset_top + box.position.y + icon.position.y
-		var center_y: float = top_y + icon_h * 0.5
-		var dist: float = absf(center_y - target_y)
-		if dist < best_dist:
-			best_dist = dist
-			best_icon = icon
-
-	if best_icon == null:
-		if reel.has_method("get_middle_texture"):
-			return reel.call("get_middle_texture") as Texture2D
-		return null
-	return best_icon.texture
+	return null
 
 func _evaluate_board(board: Array) -> Dictionary:
-	var total_win: int = 0
-	var hit_lines: Array[String] = []
-	var best_symbol_idx: int = -1
-
-	for combo: Dictionary in combo_defs:
-		var points: Array = combo.get("points", [])
-		if not _combo_points_fit(points, board):
-			continue
-
-		var first_point: Vector2i = points[0]
-		var base_index: int = _board_at(board, first_point)
-		if base_index < 0:
-			continue
-
-		var same_symbol: bool = true
-		for p_var: Variant in points:
-			var p: Vector2i = p_var
-			if _board_at(board, p) != base_index:
-				same_symbol = false
-				break
-
-		if not same_symbol:
-			continue
-
-		var combo_mult: float = float(combo.get("multiplier", 1.0))
-		var symbol_value: int = _symbol_coin_value(base_index)
-		var line_win: int = maxi(1, int(round(float(symbol_value) * combo_mult * symbol_multiplier)))
-		total_win += line_win
-		hit_lines.append("%s x%.1f" % [String(combo.get("name", "?")), combo_mult])
-		best_symbol_idx = base_index
-
-	if total_win <= 0:
+	if not _board_is_3x5(board):
 		return {
-			"text": "LOSE",
+			"text": "ERR BOARD",
 			"win_amount": 0,
 		}
 
-	var shown: Array[String] = []
-	for i: int in range(mini(3, hit_lines.size())):
-		shown.append(hit_lines[i])
-	var summary: String = "; ".join(shown)
-	if hit_lines.size() > 3:
-		summary += " ..."
+	if _combo_rules.is_empty():
+		_combo_rules = _build_combo_rules()
+
+	for combo: Dictionary in _combo_rules:
+		var variants: Array = combo.get("variants", [])
+		var symbol_index: int = _find_best_variant_symbol(board, variants)
+		if symbol_index < 0:
+			continue
+
+		var combo_name: String = String(combo.get("name", "Комбо"))
+		var combo_mult: int = int(combo.get("multiplier", 1))
+		var symbol_value: int = _symbol_coin_value(symbol_index)
+		var bet: int = maxi(bet_per_spin, 1)
+		var win_amount: int = maxi(bet * symbol_value * combo_mult, 0)
+
+		return {
+			"text": "WIN | %s x%d | %s (Ф=%d) | BET %d | +%d" % [combo_name, combo_mult, _symbol_title(symbol_index), symbol_value, bet, win_amount],
+			"win_amount": win_amount,
+		}
 
 	return {
-		"text": "WIN | %s | +%d | %s" % [_symbol_title(best_symbol_idx), total_win, summary],
-		"win_amount": total_win,
+		"text": "LOSE",
+		"win_amount": 0,
 	}
 
+func _find_best_variant_symbol(board: Array, variants: Array) -> int:
+	var best_symbol_index: int = -1
+	var best_symbol_value: int = -1
+
+	for variant_var: Variant in variants:
+		var points: Array = variant_var as Array
+		if points.is_empty():
+			continue
+		if not _combo_points_fit(points, board):
+			continue
+
+		var symbol_index: int = _uniform_symbol_index(board, points)
+		if symbol_index < 0:
+			continue
+
+		var symbol_value: int = _symbol_coin_value(symbol_index)
+		if symbol_value > best_symbol_value:
+			best_symbol_value = symbol_value
+			best_symbol_index = symbol_index
+
+	return best_symbol_index
+
+func _uniform_symbol_index(board: Array, points: Array) -> int:
+	if points.is_empty():
+		return -1
+
+	var first_point: Vector2i = points[0]
+	var base_index: int = _board_at(board, first_point)
+	if base_index < 0:
+		return -1
+
+	for p_var: Variant in points:
+		var p: Vector2i = p_var
+		if _board_at(board, p) != base_index:
+			return -1
+
+	return base_index
+
+func _board_is_3x5(board: Array) -> bool:
+	if board.size() != 3:
+		return false
+
+	for row_var: Variant in board:
+		var row: Array = row_var as Array
+		if row.size() != 5:
+			return false
+
+	return true
+
+func _build_combo_rules() -> Array[Dictionary]:
+	var rules: Array[Dictionary] = []
+
+	# 1) Джекпот x10
+	var jackpot_points: Array[Vector2i] = []
+	for row: int in range(3):
+		for col: int in range(5):
+			jackpot_points.append(Vector2i(row, col))
+	rules.append({
+		"name": "Джекпот",
+		"multiplier": 10,
+		"variants": [jackpot_points],
+	})
+
+	# 2) Глаз x8
+	rules.append({
+		"name": "Глаз",
+		"multiplier": 8,
+		"variants": [[
+			Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3),
+			Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 3), Vector2i(1, 4),
+			Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3),
+		]],
+	})
+
+	# 3) Небо x7
+	rules.append({
+		"name": "Небо",
+		"multiplier": 7,
+		"variants": [[
+			Vector2i(0, 2),
+			Vector2i(1, 1), Vector2i(1, 3),
+			Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3), Vector2i(2, 4),
+		]],
+	})
+
+	# 4) Земля x7
+	rules.append({
+		"name": "Земля",
+		"multiplier": 7,
+		"variants": [[
+			Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(0, 3), Vector2i(0, 4),
+			Vector2i(1, 1), Vector2i(1, 3),
+			Vector2i(2, 2),
+		]],
+	})
+
+	# 5) Вверх x4
+	rules.append({
+		"name": "Вверх",
+		"multiplier": 4,
+		"variants": [[
+			Vector2i(0, 2),
+			Vector2i(1, 1), Vector2i(1, 3),
+			Vector2i(2, 0), Vector2i(2, 4),
+		]],
+	})
+
+	# 6) Вниз x4
+	rules.append({
+		"name": "Вниз",
+		"multiplier": 4,
+		"variants": [[
+			Vector2i(0, 0), Vector2i(0, 4),
+			Vector2i(1, 1), Vector2i(1, 3),
+			Vector2i(2, 2),
+		]],
+	})
+
+	# 7) Гор. XL x3 (любой ряд)
+	var horizontal_xl_variants: Array = []
+	for row_xl: int in range(3):
+		horizontal_xl_variants.append([
+			Vector2i(row_xl, 0), Vector2i(row_xl, 1), Vector2i(row_xl, 2), Vector2i(row_xl, 3), Vector2i(row_xl, 4),
+		])
+	rules.append({
+		"name": "Гор. XL",
+		"multiplier": 3,
+		"variants": horizontal_xl_variants,
+	})
+
+	# 8) Гор. L x2 (любой ряд, колонки 2..5)
+	var horizontal_l_variants: Array = []
+	for row_l: int in range(3):
+		horizontal_l_variants.append([
+			Vector2i(row_l, 1), Vector2i(row_l, 2), Vector2i(row_l, 3), Vector2i(row_l, 4),
+		])
+	rules.append({
+		"name": "Гор. L",
+		"multiplier": 2,
+		"variants": horizontal_l_variants,
+	})
+
+	# 9) Гор. x1 (любой ряд, центральные 3)
+	var horizontal_m_variants: Array = []
+	for row_m: int in range(3):
+		horizontal_m_variants.append([
+			Vector2i(row_m, 1), Vector2i(row_m, 2), Vector2i(row_m, 3),
+		])
+	rules.append({
+		"name": "Гор.",
+		"multiplier": 1,
+		"variants": horizontal_m_variants,
+	})
+
+	# 10) Верт. x1 (любая колонка)
+	var vertical_variants: Array = []
+	for col_v: int in range(5):
+		vertical_variants.append([
+			Vector2i(0, col_v), Vector2i(1, col_v), Vector2i(2, col_v),
+		])
+	rules.append({
+		"name": "Верт.",
+		"multiplier": 1,
+		"variants": vertical_variants,
+	})
+
+	# 11) Диаг. x1 (и зеркальная)
+	rules.append({
+		"name": "Диаг.",
+		"multiplier": 1,
+		"variants": [
+			[Vector2i(0, 3), Vector2i(1, 2), Vector2i(2, 1)],
+			[Vector2i(0, 1), Vector2i(1, 2), Vector2i(2, 3)],
+		],
+	})
+
+	return rules
 func _combo_points_fit(points: Array, board: Array) -> bool:
 	if board.size() < 3:
 		return false

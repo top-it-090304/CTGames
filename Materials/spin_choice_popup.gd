@@ -8,6 +8,16 @@ const OPTION_COLOR_HOVER: Color = Color(0.98, 0.98, 0.98, 1.0)
 const OPTION_COLOR_PRESSED: Color = Color(0.6, 0.6, 0.6, 1.0)
 const OPTION_COLOR_SELECTED: Color = Color(1.0, 1.0, 1.0, 1.0)
 
+@export_group("Click Zones")
+@export_range(0.0, 1.0, 0.001) var hit_x_min: float = 0.18
+@export_range(0.0, 1.0, 0.001) var hit_x_max: float = 0.82
+@export_range(0.0, 1.0, 0.001) var row_a_y: float = 0.565
+@export_range(0.01, 0.20, 0.001) var row_a_half: float = 0.070
+@export_range(0.0, 1.0, 0.001) var row_b_y: float = 0.655
+@export_range(0.01, 0.20, 0.001) var row_b_half: float = 0.070
+@export_range(0.0, 1.0, 0.001) var row_cancel_y: float = 0.740
+@export_range(0.01, 0.20, 0.001) var row_cancel_half: float = 0.070
+
 var _panel: Panel
 var _title: Label
 var _option_a: Button
@@ -48,7 +58,7 @@ func open_popup(
 	_option_b.disabled = false
 	_option_a.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_a_spins, _a_ticket_bonus, _a_cost]
 	_option_b.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_b_spins, _b_ticket_bonus, _b_cost]
-	_cancel.text = "Отмена"
+	_cancel.text = ""
 	_selected_option = 0
 	_refresh_option_visuals()
 	_bring_to_front()
@@ -105,17 +115,54 @@ func _on_cancel_pressed() -> void:
 func _apply_button_selection_colors(button: Button, selected: bool) -> void:
 	if button == null:
 		return
-	var color_normal: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_DEFAULT
-	var color_hover: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_HOVER
-	var color_pressed: Color = OPTION_COLOR_SELECTED if selected else OPTION_COLOR_PRESSED
-	button.add_theme_color_override("font_color", color_normal)
-	button.add_theme_color_override("font_hover_color", color_hover)
-	button.add_theme_color_override("font_pressed_color", color_pressed)
+	button.add_theme_color_override("font_color", OPTION_COLOR_DEFAULT)
+	button.add_theme_color_override("font_hover_color", OPTION_COLOR_HOVER)
+	button.add_theme_color_override("font_pressed_color", OPTION_COLOR_PRESSED)
+	if selected:
+		button.add_theme_color_override("font_outline_color", Color(1.0, 1.0, 1.0, 1.0))
+		button.add_theme_constant_override("outline_size", 5)
+	else:
+		button.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		button.add_theme_constant_override("outline_size", 3)
 
 func _refresh_option_visuals() -> void:
 	_apply_button_selection_colors(_option_a, _selected_option == 1 and (_option_a == null or not _option_a.disabled))
 	_apply_button_selection_colors(_option_b, _selected_option == 2 and (_option_b == null or not _option_b.disabled))
 	_apply_button_selection_colors(_cancel, false)
+
+func press_by_normalized_position(nx: float, ny: float) -> bool:
+	if not visible or _panel == null:
+		return false
+
+	# Calibrated hit window for the slot-machine screen on main camera view.
+	if nx < hit_x_min or nx > hit_x_max:
+		return false
+
+	var rows: Array[Dictionary] = [
+		{"name": "Option7Button", "y": row_a_y, "half": row_a_half},
+		{"name": "Option3Button", "y": row_b_y, "half": row_b_half},
+		{"name": "CancelButton", "y": row_cancel_y, "half": row_cancel_half},
+	]
+
+	var best_name: String = ""
+	var best_dist: float = INF
+	for row: Dictionary in rows:
+		var center_y: float = float(row.get("y", 0.0))
+		var half_h: float = float(row.get("half", 0.0))
+		var dist: float = absf(ny - center_y)
+		if dist <= half_h and dist < best_dist:
+			best_dist = dist
+			best_name = String(row.get("name", ""))
+
+	if best_name.is_empty():
+		return false
+
+	var btn: BaseButton = _panel.get_node_or_null(best_name) as BaseButton
+	if btn == null or btn.disabled:
+		return false
+
+	btn.emit_signal("pressed")
+	return true
 
 func _ensure_ui() -> void:
 	if _panel != null:
