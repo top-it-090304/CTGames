@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
+[ext_resource type="PackedScene" uid="uid://c6bd4qc56io2s" path="res://Objects/Envelopes.glb" id="27_a4hxe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -830,6 +831,9 @@ transform = Transform3D(0.3913597, 0, 0, 0, 0.39567637, 0, 0, 0, 0.40362674, -4.
 
 [node name="Root Scene2" parent="." unique_id=1628617727 instance=ExtResource("4_tiqx2")]
 transform = Transform3D(0.39135972, 0, 0, 0, 0.3552401, 0.17775464, 0, -0.17425333, 0.36237803, -4.6397686, 1.1063049, -2.4864635)
+
+[node name="Envelopes" parent="." unique_id=1425356408 instance=ExtResource("27_a4hxe")]
+transform = Transform3D(-0.26302075, 0, 0.056195863, 0, 0.2836941, 0, -0.051245164, 0, -0.2884307, -3.9350753, 1.1768548, -2.1099663)
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
