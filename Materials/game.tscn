@@ -194,6 +194,8 @@ weights = Array[float]([14.9, 19.4, 11.9, 14.9, 11.9, 19.4, 7.5])
 reels_row_path = NodePath("HBoxContainer")
 button_path = NodePath("../Button")
 label_path = NodePath("Label")
+allow_combo_stacking = null
+jackpot_overrides_other_hits = null
 
 [node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
 visible = false

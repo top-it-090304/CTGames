@@ -5,6 +5,7 @@ signal status_changed(text: String)
 signal hud_changed(money: int, spins_left: int, tickets: int)
 signal win_popup_requested(amount: int)
 signal spin_completed(win_amount: int)
+signal round_ended(round_number: int, interest_amount: int)
 
 @export var symbols: Array[Texture2D] = []
 @export var weights: Array[float] = []
@@ -24,6 +25,10 @@ signal spin_completed(win_amount: int)
 @export var bet_per_spin: int = 1
 @export var allow_combo_stacking: bool = true
 @export var jackpot_overrides_other_hits: bool = true
+
+@export_group("Round / Interest")
+@export var interest_percent: float = 7.0
+@export var tickets_per_round_end: int = 1
 
 const SYMBOL_VALUES: Dictionary = {
 	"lemon": 2,
@@ -69,6 +74,8 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var money: int = 0
 var spins_left: int = 0
 var tickets: int = 0
+var deposited_money: int = 0
+var round_number: int = 1
 
 var _last_target_grid: Array = []
 var _last_win_amount: int = 0
@@ -87,6 +94,8 @@ func _ready() -> void:
 	money = starting_money
 	spins_left = starting_spins
 	tickets = starting_tickets
+	deposited_money = 0
+	round_number = 1
 
 	_collect_reels()
 	_configure_slot_layout()
@@ -126,19 +135,13 @@ func request_spin() -> void:
 	if Engine.is_editor_hint() or _busy or input_locked:
 		return
 	if symbols.is_empty():
-		_set_status("error: no symbols")
+		_set_status("ERROR: NO SYMBOLS")
 		return
 	if _reels.is_empty():
-		_set_status("no reels")
+		_set_status("NO REELS")
 		return
 	if spins_left < spins_per_round:
 		_set_status("NO SPINS LEFT")
-		_emit_hud_changed()
-		return
-
-	var bet: int = maxi(bet_per_spin, 0)
-	if bet > 0 and money < bet:
-		_set_status("NO MONEY")
 		_emit_hud_changed()
 		return
 
@@ -163,14 +166,37 @@ func set_choice_overlay_active(active: bool) -> void:
 	if separators != null:
 		separators.visible = show_reels
 
+func deposit_money(amount: int) -> bool:
+	if amount <= 0:
+		return false
+	if money < amount:
+		return false
+	money -= amount
+	deposited_money += amount
+	_emit_hud_changed()
+	_set_status("DEPOSITED %d | TOTAL %d" % [amount, deposited_money])
+	return true
+
+func apply_round_interest() -> int:
+	if deposited_money <= 0:
+		return 0
+	var interest: int = int(floor(float(deposited_money) * interest_percent / 100.0))
+	if interest > 0:
+		money += interest
+	return interest
+
+func end_round() -> void:
+	var interest: int = apply_round_interest()
+	if tickets_per_round_end > 0:
+		tickets += tickets_per_round_end
+	round_number += 1
+	_emit_hud_changed()
+	_set_status("ROUND END | +%d%% = +%d" % [int(interest_percent), interest])
+	emit_signal("round_ended", round_number, interest)
+
 func _spin() -> void:
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
-
-	var bet: int = maxi(bet_per_spin, 0)
-	if bet > 0:
-		money -= bet
-		money = maxi(money, 0)
 
 	_busy = true
 	spins_left -= spins_per_round
@@ -209,6 +235,9 @@ func _spin() -> void:
 	_emit_hud_changed()
 	_busy = false
 	emit_signal("spin_completed", win_amount)
+
+	if spins_left <= 0:
+		end_round()
 
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
@@ -337,7 +366,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 		if not allow_combo_stacking and not hits.is_empty():
 			break
 
-	if not jackpot_hit.is_empty():
+	if not jackpot_hit.is_empty() and jackpot_overrides_other_hits:
 		var total_jackpot: int = int(jackpot_hit.get("win_amount", 0))
 		return {
 			"text": "WIN | Джекпот x10 | %s (Ф=%d) | BET %d | +%d" % [
@@ -351,14 +380,15 @@ func _evaluate_board(board: Array) -> Dictionary:
 			"hits": [jackpot_hit],
 		}
 
-	if jackpot_overrides_other_hits and not jackpot_hit.is_empty():
-		pass
+	if not jackpot_hit.is_empty() and allow_combo_stacking:
+		hits.append(jackpot_hit)
 
 	if hits.is_empty():
 		return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
 
 	var total: int = 0
 	var best_hit: Dictionary = hits[0]
+
 	for h: Dictionary in hits:
 		total += int(h.get("win_amount", 0))
 		if int(h.get("combo_multiplier", 0)) > int(best_hit.get("combo_multiplier", 0)):
@@ -376,7 +406,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 			int(h.get("win_amount", 0)),
 		])
 
-	var text: String = "WIN | BET %d | TOTAL +%d | %s" % [bet, total, " + ".join(parts)]
+	var text: String = "WIN | TOTAL +%d | %s" % [total, " + ".join(parts)]
 
 	return {
 		"text": text,
@@ -607,7 +637,14 @@ func _emit_hud_changed() -> void:
 	emit_signal("hud_changed", money, spins_left, tickets)
 
 func get_hud_state() -> Dictionary:
-	return {"money": money, "spins_left": spins_left, "tickets": tickets}
+	return {
+		"money": money,
+		"spins_left": spins_left,
+		"tickets": tickets,
+		"deposited_money": deposited_money,
+		"round_number": round_number,
+		"interest_percent": interest_percent,
+	}
 
 func get_money() -> int:
 	return money
@@ -617,6 +654,12 @@ func get_spins_left() -> int:
 
 func get_tickets() -> int:
 	return tickets
+
+func get_deposited_money() -> int:
+	return deposited_money
+
+func get_round_number() -> int:
+	return round_number
 
 func set_spins_left(value: int) -> void:
 	spins_left = maxi(value, 0)
