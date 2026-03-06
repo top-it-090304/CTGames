@@ -29,6 +29,8 @@
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
 [ext_resource type="PackedScene" uid="uid://c6bd4qc56io2s" path="res://Objects/Envelopes.glb" id="27_a4hxe"]
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
+[ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="30_xkq3k"]
+[ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -62,31 +64,31 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tn84i"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi5rp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuapk"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xkq3k"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmok7"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gd6a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0rgs"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm020"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ra3k1"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -106,7 +108,6 @@ albedo_texture = SubResource("ViewportTexture_fust2")
 
 [node name="Game" type="Node3D" unique_id=970350183]
 script = ExtResource("1_hudx2")
-slot_spin_area_name = null
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.285352, 0, -0.9896886)
@@ -204,10 +205,6 @@ weights = Array[float]([14.9, 19.4, 11.9, 14.9, 11.9, 19.4, 7.5])
 reels_row_path = NodePath("HBoxContainer")
 button_path = NodePath("../Button")
 label_path = NodePath("Label")
-allow_combo_stacking = null
-jackpot_overrides_other_hits = null
-interest_percent = null
-tickets_per_round_end = null
 
 [node name="Label" type="Label" parent="SubViewport/SlotUI" unique_id=717105141]
 visible = false
@@ -268,7 +265,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tn84i")
+theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -353,7 +350,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yi5rp")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uuapk")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -438,7 +435,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xkq3k")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -523,7 +520,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4gd6a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u0rgs")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -608,7 +605,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fm020")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ra3k1")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -854,6 +851,16 @@ transform = Transform3D(-0.26302075, 0, 0.056195863, 0, 0.2836941, 0, -0.0512451
 
 [node name="Root Scene3" parent="." unique_id=751196611 instance=ExtResource("28_tn84i")]
 transform = Transform3D(3.3191843, 0, 0, 0, 0.29119322, 3.0565648, 0, -3.0475721, 0.29205245, -3.7615168, 1.1665496, -1.817327)
+
+[node name="Стрелка1NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=429006024]
+position = Vector2(1063, 565.5)
+scale = Vector2(1.348485, 1.3865546)
+texture = ExtResource("30_xkq3k")
+
+[node name="Стрелка2NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=824532741]
+position = Vector2(90.49999, 565.5)
+scale = Vector2(1.3923078, 1.3865548)
+texture = ExtResource("31_4gd6a")
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
