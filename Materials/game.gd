@@ -42,6 +42,18 @@ func _ready() -> void:
 	if win_popup != null:
 		win_popup.visible = false
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenDrag:
+		var drag: InputEventScreenDrag = event as InputEventScreenDrag
+		_rotate_camera_by_drag(drag.relative.x)
+		return
+
+	if event is InputEventMouseMotion:
+		var mm: InputEventMouseMotion = event as InputEventMouseMotion
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+			_rotate_camera_by_drag(mm.relative.x)
+			return
+
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_intro_active():
 		return
@@ -64,6 +76,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 			_request_spin()
+
+func _rotate_camera_by_drag(delta_x: float) -> void:
+	if camera_3d == null:
+		return
+	camera_3d.rotate_y(-delta_x * 0.004)
 
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
 	if not _is_slot_machine_hit(screen_pos):

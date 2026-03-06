@@ -9,6 +9,7 @@ extends Node
 @export var debt_button_area_name: StringName = &"DepositButtonArea"
 @export var debt_button_animation_name: String = "button_press"
 @export var debt_button_animation_player_path: NodePath
+@export var debt_strict_button_only: bool = false
 
 @export_group("Spin Choices")
 @export var option_a_spins: int = 7
@@ -97,6 +98,17 @@ func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or _is_intro_active():
 		return
 
+	if event is InputEventScreenDrag:
+		var drag: InputEventScreenDrag = event as InputEventScreenDrag
+		_forward_camera_drag(drag.relative.x)
+		return
+
+	if event is InputEventMouseMotion:
+		var mm: InputEventMouseMotion = event as InputEventMouseMotion
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+			_forward_camera_drag(mm.relative.x)
+			return
+
 	if _popup_open():
 		_handle_popup_input(event)
 		return
@@ -115,6 +127,12 @@ func _input(event: InputEvent) -> void:
 		if st.pressed:
 			_try_interact(st.position)
 			return
+
+func _forward_camera_drag(delta_x: float) -> void:
+	if game_root == null:
+		return
+	if game_root.has_method("_rotate_camera_by_drag"):
+		game_root.call("_rotate_camera_by_drag", delta_x)
 
 func _handle_popup_input(event: InputEvent) -> void:
 	if popup == null:
@@ -143,7 +161,7 @@ func _handle_popup_input(event: InputEvent) -> void:
 
 	if event is InputEventScreenTouch:
 		var st: InputEventScreenTouch = event as InputEventScreenTouch
-		if st.pressed:
+		if not st.pressed:
 			_select_popup_option_by_screen_pos(st.position)
 			get_viewport().set_input_as_handled()
 		return
@@ -313,7 +331,8 @@ func _try_interact(screen_pos: Vector2) -> void:
 		return
 
 	if _node_matches_area(collider, debt_area) or _has_ancestor_named(collider, ["DebtMachine", "blockbench_export3"]):
-		if _is_debt_button_hit(collider):
+		var can_deposit: bool = _is_debt_button_hit(collider) or not debt_strict_button_only
+		if can_deposit:
 			_deposit_to_debt_machine()
 			get_viewport().set_input_as_handled()
 		elif game_root != null and game_root.has_method("_move_camera_to_hint"):
