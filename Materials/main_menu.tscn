@@ -1,24 +1,43 @@
 [gd_scene format=3 uid="uid://bkm6cqcetsu17"]
 
 [ext_resource type="Script" uid="uid://bo8fbib2ea34a" path="res://Materials/main_menu.gd" id="1_5cdph"]
+[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://textures/чёрнаячернота.png" id="2_j4gtj"]
+[ext_resource type="Texture2D" uid="uid://b764vd2en4vac" path="res://textures/jackpot_jail_logo.png" id="2_k6kip"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4gtj"]
+bg_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdk68"]
+bg_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
 
 [node name="MainMenu" type="Node2D" unique_id=1392286683]
 script = ExtResource("1_5cdph")
 
+[node name="Чёрнаячернота" type="Sprite2D" parent="." unique_id=545917318]
+position = Vector2(575, 322.5)
+scale = Vector2(10.159293, 8.012345)
+texture = ExtResource("2_j4gtj")
+
+[node name="JackpotJailLogo" type="Sprite2D" parent="." unique_id=229244312]
+position = Vector2(575, 198)
+texture = ExtResource("2_k6kip")
+
 [node name="Play" type="Button" parent="." unique_id=1866945757]
 offset_left = 425.0
-offset_top = 153.0
+offset_top = 310.0
 offset_right = 725.0
-offset_bottom = 278.0
+offset_bottom = 435.0
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_j4gtj")
 text = "Играть"
 
 [node name="Quit" type="Button" parent="." unique_id=1735833636]
 offset_left = 425.0
-offset_top = 430.0
+offset_top = 500.0
 offset_right = 725.0
-offset_bottom = 555.0
+offset_bottom = 625.0
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_jdk68")
 text = "Выйти"
 
 [connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
