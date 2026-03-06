@@ -67,7 +67,8 @@ func _ready() -> void:
 	_set_spins_left(0)
 
 	if not _is_intro_active():
-		call_deferred("_open_spin_choice")
+		call_deferred("_show_jackpot_jail_screen")
+
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -223,8 +224,14 @@ func _on_intro_active_changed(active: bool) -> void:
 		_close_popup()
 		return
 
-	if not round_active and not game_over:
-		call_deferred("_open_spin_choice")
+	if game_over:
+		return
+
+	if not round_active and _get_spins_left() <= 0:
+		call_deferred("_show_jackpot_jail_screen")
+	else:
+		_set_slot_locked(false)
+		_set_choice_overlay(false)
 
 func _on_spin_completed(_win_amount: int) -> void:
 	_try_finish_round_if_ready()
@@ -245,8 +252,7 @@ func _on_popup_option_selected(spins: int, cost: int, ticket_bonus: int) -> void
 func _on_popup_canceled() -> void:
 	if game_over:
 		return
-	_close_popup()
-	_set_slot_locked(false)
+	_show_jackpot_jail_screen()
 
 func request_spin_choice() -> void:
 	if game_over or round_active or _is_intro_active():
@@ -255,6 +261,19 @@ func request_spin_choice() -> void:
 
 func is_popup_open() -> bool:
 	return _popup_open()
+
+func _show_jackpot_jail_screen() -> void:
+	if popup == null or game_over or _is_intro_active():
+		return
+	if round_active:
+		return
+
+	_set_slot_locked(false)
+	_set_choice_overlay(true)
+	if popup.has_method("show_jackpot_jail"):
+		popup.call("show_jackpot_jail")
+	else:
+		_close_popup()
 
 func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
@@ -310,7 +329,7 @@ func _finish_round() -> void:
 			popup.call("show_game_over", debt_target, deposited)
 		return
 
-	_open_spin_choice()
+	_show_jackpot_jail_screen()
 
 func _try_interact(screen_pos: Vector2) -> void:
 	if camera_3d == null:

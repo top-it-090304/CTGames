@@ -8,6 +8,11 @@ const OPTION_COLOR_HOVER: Color = Color(0.98, 0.98, 0.98, 1.0)
 const OPTION_COLOR_PRESSED: Color = Color(0.6, 0.6, 0.6, 1.0)
 const OPTION_COLOR_SELECTED: Color = Color(1.0, 1.0, 1.0, 1.0)
 
+const MODE_CLOSED: int = 0
+const MODE_IDLE: int = 1
+const MODE_CHOICE: int = 2
+const MODE_GAME_OVER: int = 3
+
 @export_group("Click Zones")
 @export_range(0.0, 1.0, 0.001) var hit_x_min: float = 0.18
 @export_range(0.0, 1.0, 0.001) var hit_x_max: float = 0.82
@@ -32,6 +37,7 @@ var _b_spins: int = 0
 var _b_cost: int = 0
 var _b_ticket_bonus: int = 0
 var _selected_option: int = 0
+var _mode: int = MODE_CLOSED
 
 func _ready() -> void:
 	_ensure_ui()
@@ -53,23 +59,28 @@ func open_popup(
 	_b_cost = b_cost
 	_b_ticket_bonus = b_ticket_bonus
 
+	_mode = MODE_CHOICE
 	_title.text = "Сколько спинов?"
+	_set_choice_controls_visible(true)
 	_option_a.disabled = false
 	_option_b.disabled = false
 	_option_a.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_a_spins, _a_ticket_bonus, _a_cost]
 	_option_b.text = "%d Спина(-ов) +%d TOK (-%d Ф)" % [_b_spins, _b_ticket_bonus, _b_cost]
-	_cancel.text = ""
+	_cancel.text = "Отмена"
 	_selected_option = 0
 	_refresh_option_visuals()
 	_bring_to_front()
 	visible = true
 
 func close_popup() -> void:
+	_mode = MODE_CLOSED
 	visible = false
 
 func show_game_over(required_debt: int, deposited: int) -> void:
 	_ensure_ui()
+	_mode = MODE_GAME_OVER
 	_title.text = "Долг не погашен"
+	_set_choice_controls_visible(true)
 	_option_a.text = "Нужно: %d Ф" % required_debt
 	_option_b.text = "Внесено: %d Ф" % deposited
 	_cancel.text = "Закрыть"
@@ -80,8 +91,19 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 	_bring_to_front()
 	visible = true
 
+func show_jackpot_jail() -> void:
+	_ensure_ui()
+	_mode = MODE_IDLE
+	_title.text = "JACKPOT JAIL"
+	_set_choice_controls_visible(false)
+	_selected_option = 0
+	_bring_to_front()
+	visible = true
+
 func is_open() -> bool:
-	return visible
+	if not visible:
+		return false
+	return _mode == MODE_CHOICE or _mode == MODE_GAME_OVER
 
 func _bring_to_front() -> void:
 	var parent_node: Node = get_parent()
@@ -90,6 +112,8 @@ func _bring_to_front() -> void:
 	move_to_front()
 
 func _on_option_a_pressed() -> void:
+	if _mode != MODE_CHOICE:
+		return
 	if _option_a == null or _option_a.disabled:
 		return
 	if _selected_option != 1:
@@ -99,6 +123,8 @@ func _on_option_a_pressed() -> void:
 	emit_signal("option_selected", _a_spins, _a_cost, _a_ticket_bonus)
 
 func _on_option_b_pressed() -> void:
+	if _mode != MODE_CHOICE:
+		return
 	if _option_b == null or _option_b.disabled:
 		return
 	if _selected_option != 2:
@@ -130,8 +156,16 @@ func _refresh_option_visuals() -> void:
 	_apply_button_selection_colors(_option_b, _selected_option == 2 and (_option_b == null or not _option_b.disabled))
 	_apply_button_selection_colors(_cancel, false)
 
+func _set_choice_controls_visible(show: bool) -> void:
+	if _option_a != null:
+		_option_a.visible = show
+	if _option_b != null:
+		_option_b.visible = show
+	if _cancel != null:
+		_cancel.visible = show
+
 func press_by_normalized_position(nx: float, ny: float) -> bool:
-	if not visible or _panel == null:
+	if not is_open() or _panel == null:
 		return false
 
 	# Calibrated hit window for the slot-machine screen on main camera view.
