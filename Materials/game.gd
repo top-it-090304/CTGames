@@ -48,19 +48,50 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		var touch: InputEventScreenTouch = event as InputEventScreenTouch
 		if touch.pressed:
-			_request_spin()
+			_request_spin_from_screen(touch.position)
 			return
 
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
-			_request_spin()
+			_request_spin_from_screen(mb.position)
 			return
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 			_request_spin()
+
+func _request_spin_from_screen(screen_pos: Vector2) -> void:
+	if not _is_slot_machine_hit(screen_pos):
+		return
+	_request_spin()
+
+func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
+	if camera_3d == null:
+		return false
+
+	var machine: Node3D = _find_slot_machine()
+	if machine == null:
+		return false
+
+	var from: Vector3 = camera_3d.project_ray_origin(screen_pos)
+	var to: Vector3 = from + camera_3d.project_ray_normal(screen_pos) * 100.0
+	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
+	var result: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+	if result.is_empty():
+		return false
+
+	var collider: Node = result.get("collider") as Node
+	return _is_node_under(machine, collider)
+
+func _is_node_under(root: Node, node: Node) -> bool:
+	var current: Node = node
+	while current != null:
+		if current == root:
+			return true
+		current = current.get_parent()
+	return false
 
 func _request_spin() -> void:
 	if _is_intro_active():

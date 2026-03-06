@@ -6,6 +6,8 @@ extends Node
 @export var round_limit: int = 3
 @export var interest_percent: float = 7.0
 @export var deposit_step: int = 5
+@export var debt_button_area_name: StringName = &"DepositButtonArea"
+@export var debt_button_animation_name: String = "button_press"
 
 @export_group("Spin Choices")
 @export var option_a_spins: int = 7
@@ -24,6 +26,7 @@ var debt_machine: Node3D
 var ticket_machine: Node3D
 var debt_area: Area3D
 var ticket_area: Area3D
+var debt_button_area: Area3D
 
 var popup: Control
 var debt_viewport: SubViewport
@@ -309,8 +312,11 @@ func _try_interact(screen_pos: Vector2) -> void:
 		return
 
 	if _node_matches_area(collider, debt_area) or _has_ancestor_named(collider, ["DebtMachine", "blockbench_export3"]):
-		_deposit_to_debt_machine()
-		get_viewport().set_input_as_handled()
+		if _is_debt_button_hit(collider):
+			_deposit_to_debt_machine()
+			get_viewport().set_input_as_handled()
+		elif game_root != null and game_root.has_method("_move_camera_to_hint"):
+			game_root.call("_move_camera_to_hint", "debt_machine")
 		return
 
 	if _node_matches_area(collider, ticket_area) or _has_ancestor_named(collider, ["TicketMachine", "blockbench_export"]):
@@ -334,11 +340,121 @@ func _deposit_to_debt_machine() -> void:
 	if not _spend_money(amount):
 		return
 
+	_play_debt_button_press()
 	deposited += amount
 	if deposited >= debt_target and not early_bonus_given and rounds_left > 0:
 		_add_tickets(rounds_left)
 		early_bonus_given = true
 	_update_debt_ui()
+
+func _is_debt_button_hit(collider: Node) -> bool:
+	if collider == null:
+		return false
+
+	if debt_button_area == null:
+		return true
+
+	if _node_matches_area(collider, debt_button_area):
+		return true
+
+	var button_keywords: Array[String] = [
+		"button",
+		"btn",
+		"knop",
+		"кноп",
+		"deposit",
+		"pay",
+		"coin",
+		"insert",
+		"внос",
+	]
+
+	var current: Node = collider
+	while current != null:
+		if current == debt_machine:
+			break
+		var low: String = current.name.to_lower()
+		for key: String in button_keywords:
+			if low.contains(key):
+				return true
+		current = current.get_parent()
+
+	return false
+
+func _find_debt_button_area() -> Area3D:
+	if debt_machine == null:
+		return null
+
+	var direct: Area3D = debt_machine.get_node_or_null(str(debt_button_area_name)) as Area3D
+	if direct != null:
+		return direct
+
+	var candidates: Array[String] = [
+		"ButtonArea",
+		"ButtonInteractArea",
+		"DepositArea",
+		"PayButtonArea",
+	]
+	for path: String in candidates:
+		var area: Area3D = debt_machine.get_node_or_null(path) as Area3D
+		if area != null:
+			return area
+
+	return _find_area_by_name_part(debt_machine, ["button", "deposit", "pay", "coin", "insert"])
+
+func _find_area_by_name_part(root: Node, parts: Array[String]) -> Area3D:
+	for child: Node in root.get_children():
+		var area: Area3D = child as Area3D
+		if area != null:
+			var low: String = area.name.to_lower()
+			for part: String in parts:
+				if low.contains(part):
+					return area
+		var nested: Area3D = _find_area_by_name_part(child, parts)
+		if nested != null:
+			return nested
+	return null
+
+func _play_debt_button_press() -> void:
+	if debt_machine == null:
+		return
+
+	var anim: AnimationPlayer = _find_animation_player(debt_machine)
+	if anim == null:
+		return
+
+	var chosen: StringName = &""
+	if not debt_button_animation_name.is_empty() and anim.has_animation(StringName(debt_button_animation_name)):
+		chosen = StringName(debt_button_animation_name)
+	else:
+		var prefer_parts: Array[String] = ["button", "press", "deposit", "pay", "coin", "tap"]
+		for name_var: Variant in anim.get_animation_list():
+			var name_s: String = str(name_var)
+			var low: String = name_s.to_lower()
+			for part: String in prefer_parts:
+				if low.contains(part):
+					chosen = StringName(name_s)
+					break
+			if chosen != &"":
+				break
+
+		if chosen == &"":
+			var all: PackedStringArray = anim.get_animation_list()
+			if not all.is_empty():
+				chosen = StringName(all[0])
+
+	if chosen != &"":
+		anim.play(chosen)
+
+func _find_animation_player(root: Node) -> AnimationPlayer:
+	for child: Node in root.get_children():
+		var anim: AnimationPlayer = child as AnimationPlayer
+		if anim != null:
+			return anim
+		var nested: AnimationPlayer = _find_animation_player(child)
+		if nested != null:
+			return nested
+	return null
 
 func _ensure_popup() -> void:
 	if slot_ui == null:
@@ -428,6 +544,7 @@ func _apply_debt_viewport_to_screen() -> void:
 func _ensure_interact_areas() -> void:
 	debt_area = _ensure_machine_area(debt_machine)
 	ticket_area = _ensure_machine_area(ticket_machine)
+	debt_button_area = _find_debt_button_area()
 
 func _ensure_machine_area(machine: Node3D) -> Area3D:
 	if machine == null:
