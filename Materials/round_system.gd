@@ -8,6 +8,7 @@ extends Node
 @export var deposit_step: int = 5
 @export var debt_button_area_name: StringName = &"DepositButtonArea"
 @export var debt_button_animation_name: String = "button_press"
+@export var debt_button_animation_player_path: NodePath
 
 @export_group("Spin Choices")
 @export var option_a_spins: int = 7
@@ -416,10 +417,17 @@ func _find_area_by_name_part(root: Node, parts: Array[String]) -> Area3D:
 	return null
 
 func _play_debt_button_press() -> void:
-	if debt_machine == null:
-		return
+	var anim: AnimationPlayer = null
 
-	var anim: AnimationPlayer = _find_animation_player(debt_machine)
+	if debt_button_animation_player_path != NodePath(""):
+		anim = get_node_or_null(debt_button_animation_player_path) as AnimationPlayer
+
+	if anim == null and debt_machine != null:
+		anim = _find_animation_player(debt_machine)
+
+	if anim == null:
+		anim = _find_animation_player(self)
+
 	if anim == null:
 		return
 

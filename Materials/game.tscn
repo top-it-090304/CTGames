@@ -49,6 +49,8 @@ albedo_texture = ExtResource("2_62l5a")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lo5pb"]
 albedo_texture = ExtResource("2_62l5a")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_tn84i"]
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_tn84i"]
 viewport_path = NodePath("DebtViewport")
 
@@ -103,6 +105,7 @@ albedo_texture = SubResource("ViewportTexture_fust2")
 
 [node name="Game" type="Node3D" unique_id=970350183]
 script = ExtResource("1_hudx2")
+slot_spin_area_name = null
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.285352, 0, -0.9896886)
@@ -162,13 +165,18 @@ transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -3
 [node name="SlotMachine" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
 
+[node name="SpinButtonarea" type="Area3D" parent="SlotMachine" unique_id=1122607388]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachine/SpinButtonarea" unique_id=857213803]
+
 [node name="DebtMachine" parent="." unique_id=611159530 instance=ExtResource("5_ablru")]
 transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -1.7931515, 0.5121797, -2.4699512)
 
-[node name="InteractArea" type="Area3D" parent="DebtMachine" unique_id=1603461943]
+[node name="DepositButtonArea" type="Area3D" parent="DebtMachine" unique_id=1603461943]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DebtMachine/InteractArea" unique_id=573360212]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00038528442, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DebtMachine/DepositButtonArea" unique_id=573360212]
+transform = Transform3D(0.24, 0, -4.656613e-10, 0, 0.24, 0, 4.656613e-10, 0, 0.24, -0.6198497, 1.2524881, -0.23979592)
+shape = SubResource("BoxShape3D_tn84i")
 
 [node name="FocusPoint" type="Marker3D" parent="DebtMachine" unique_id=980007033]
 
@@ -770,17 +778,7 @@ transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9
 
 [node name="RoundSystem" type="Node3D" parent="." unique_id=634888334]
 script = ExtResource("24_i1y15")
-debt_target = null
-initial_deposited = null
-round_limit = null
-interest_percent = null
-deposit_step = null
-option_a_spins = null
-option_a_cost = null
-option_a_ticket_bonus = null
-option_b_spins = null
-option_b_cost = null
-option_b_ticket_bonus = null
+debt_button_animation_name = "AnimationPlayer"
 
 [node name="CameraTargets" type="Node3D" parent="." unique_id=48921000]
 
