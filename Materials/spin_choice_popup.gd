@@ -26,6 +26,7 @@ const MODE_GAME_OVER: int = 3
 @export_group("Idle Logo")
 @export var jackpot_jail_logo: Texture2D
 
+var _backdrop: ColorRect
 var _panel: Panel
 var _title: Label
 var _option_a: Button
@@ -178,10 +179,17 @@ func _set_choice_controls_visible(show: bool) -> void:
 		_cancel.visible = show
 
 func _set_idle_logo_visible(show: bool) -> void:
-	if _logo == null:
-		return
-	_logo.texture = jackpot_jail_logo
-	_logo.visible = show and jackpot_jail_logo != null
+	if _backdrop != null:
+		_backdrop.color = Color(0.0, 0.0, 0.0, 1.0) if show else Color(0.0, 0.0, 0.0, 0.0)
+
+	if _logo != null:
+		_logo.texture = jackpot_jail_logo
+		_logo.visible = show and jackpot_jail_logo != null
+		if _logo.visible:
+			_logo.move_to_front()
+
+	if _panel != null:
+		_panel.visible = (not show) or jackpot_jail_logo == null
 
 func press_by_normalized_position(nx: float, ny: float) -> bool:
 	if not is_open() or _panel == null:
@@ -229,14 +237,14 @@ func _ensure_ui() -> void:
 		if stale != null:
 			stale.queue_free()
 
-	var backdrop: ColorRect = get_node_or_null("Backdrop") as ColorRect
-	if backdrop == null:
-		backdrop = ColorRect.new()
-		backdrop.name = "Backdrop"
-		add_child(backdrop)
-	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	_backdrop = get_node_or_null("Backdrop") as ColorRect
+	if _backdrop == null:
+		_backdrop = ColorRect.new()
+		_backdrop.name = "Backdrop"
+		add_child(_backdrop)
+	_backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
+	_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	_panel = get_node_or_null("Panel") as Panel
 	if _panel == null:
@@ -283,21 +291,21 @@ func _ensure_ui() -> void:
 	_title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_title.scale = Vector2(1.04, 1.04)
 
-	_logo = _panel.get_node_or_null("JackpotLogo") as TextureRect
+	_logo = get_node_or_null("JackpotLogo") as TextureRect
 	if _logo == null:
 		_logo = TextureRect.new()
 		_logo.name = "JackpotLogo"
-		_panel.add_child(_logo)
-	_logo.anchor_left = 0.5
-	_logo.anchor_top = 0.5
-	_logo.anchor_right = 0.5
-	_logo.anchor_bottom = 0.5
-	_logo.offset_left = -280.0
-	_logo.offset_top = -128.0
-	_logo.offset_right = 280.0
-	_logo.offset_bottom = 128.0
-	_logo.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		add_child(_logo)
+	_logo.anchor_left = 0.0
+	_logo.anchor_top = 0.0
+	_logo.anchor_right = 1.0
+	_logo.anchor_bottom = 1.0
+	_logo.offset_left = 0.0
+	_logo.offset_top = 0.0
+	_logo.offset_right = 0.0
+	_logo.offset_bottom = 0.0
+	_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_logo.stretch_mode = TextureRect.STRETCH_SCALE
 	_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_logo.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_logo.visible = false

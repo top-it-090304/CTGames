@@ -183,9 +183,6 @@ func _on_intro_active_changed(active: bool) -> void:
 	else:
 		slot_ui.set("input_locked", active)
 
-	if not active and round_system != null and round_system.has_method("request_spin_choice"):
-		round_system.call_deferred("request_spin_choice")
-
 func _on_camera_hint_requested(hint: String) -> void:
 	_move_camera_to_hint(hint)
 
