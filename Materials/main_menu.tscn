@@ -40,5 +40,14 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_jdk68")
 text = "Выйти"
 
+[node name="Label" type="Label" parent="." unique_id=382064081]
+offset_left = 100.0
+offset_top = 509.0
+offset_right = 1050.0
+offset_bottom = 645.0
+theme_override_font_sizes/font_size = 40
+
+[node name="Timer" type="Timer" parent="." unique_id=1552894202]
+
 [connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
