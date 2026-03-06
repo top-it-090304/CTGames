@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://b6t75ekg4gwvh" path="res://Objects/machine.glb" id="14_g7uyw"]
 [ext_resource type="Script" uid="uid://c0bhoxadyfx8f" path="res://Materials/spin_choice_popup.gd" id="14_tiqx2"]
 [ext_resource type="Script" uid="uid://c006bisq4kty1" path="res://Materials/panel_6.gd" id="15_0m7j0"]
+[ext_resource type="Texture2D" uid="uid://b764vd2en4vac" path="res://textures/jackpot_jail_logo.png" id="16_yi5rp"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -226,6 +227,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("14_tiqx2")
+jackpot_jail_logo = ExtResource("16_yi5rp")
 
 [node name="Backdrop" type="ColorRect" parent="SubViewport/SlotUI/SpinChoicePopup" unique_id=1938862468]
 layout_mode = 0

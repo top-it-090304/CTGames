@@ -23,11 +23,15 @@ const MODE_GAME_OVER: int = 3
 @export_range(0.0, 1.0, 0.001) var row_cancel_y: float = 0.740
 @export_range(0.01, 0.20, 0.001) var row_cancel_half: float = 0.070
 
+@export_group("Idle Logo")
+@export var jackpot_jail_logo: Texture2D
+
 var _panel: Panel
 var _title: Label
 var _option_a: Button
 var _option_b: Button
 var _cancel: Button
+var _logo: TextureRect
 
 var _a_spins: int = 0
 var _a_cost: int = 0
@@ -60,6 +64,8 @@ func open_popup(
 	_b_ticket_bonus = b_ticket_bonus
 
 	_mode = MODE_CHOICE
+	_set_idle_logo_visible(false)
+	_title.visible = true
 	_title.text = "Сколько спинов?"
 	_set_choice_controls_visible(true)
 	_option_a.disabled = false
@@ -79,6 +85,8 @@ func close_popup() -> void:
 func show_game_over(required_debt: int, deposited: int) -> void:
 	_ensure_ui()
 	_mode = MODE_GAME_OVER
+	_set_idle_logo_visible(false)
+	_title.visible = true
 	_title.text = "Долг не погашен"
 	_set_choice_controls_visible(true)
 	_option_a.text = "Нужно: %d Ф" % required_debt
@@ -94,8 +102,13 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 func show_jackpot_jail() -> void:
 	_ensure_ui()
 	_mode = MODE_IDLE
-	_title.text = "JACKPOT JAIL"
 	_set_choice_controls_visible(false)
+	_set_idle_logo_visible(true)
+	if jackpot_jail_logo != null:
+		_title.visible = false
+	else:
+		_title.visible = true
+		_title.text = "JACKPOT JAIL"
 	_selected_option = 0
 	_bring_to_front()
 	visible = true
@@ -164,6 +177,12 @@ func _set_choice_controls_visible(show: bool) -> void:
 	if _cancel != null:
 		_cancel.visible = show
 
+func _set_idle_logo_visible(show: bool) -> void:
+	if _logo == null:
+		return
+	_logo.texture = jackpot_jail_logo
+	_logo.visible = show and jackpot_jail_logo != null
+
 func press_by_normalized_position(nx: float, ny: float) -> bool:
 	if not is_open() or _panel == null:
 		return false
@@ -205,7 +224,7 @@ func _ensure_ui() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
-	for stale_name: String in ["TitleLabel", "Option7Button", "Option3Button", "CancelButton"]:
+	for stale_name: String in ["TitleLabel", "JackpotLogo", "Option7Button", "Option3Button", "CancelButton"]:
 		var stale: Node = get_node_or_null(stale_name)
 		if stale != null:
 			stale.queue_free()
@@ -263,6 +282,25 @@ func _ensure_ui() -> void:
 	_title.add_theme_constant_override("outline_size", 3)
 	_title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_title.scale = Vector2(1.04, 1.04)
+
+	_logo = _panel.get_node_or_null("JackpotLogo") as TextureRect
+	if _logo == null:
+		_logo = TextureRect.new()
+		_logo.name = "JackpotLogo"
+		_panel.add_child(_logo)
+	_logo.anchor_left = 0.5
+	_logo.anchor_top = 0.5
+	_logo.anchor_right = 0.5
+	_logo.anchor_bottom = 0.5
+	_logo.offset_left = -280.0
+	_logo.offset_top = -128.0
+	_logo.offset_right = 280.0
+	_logo.offset_bottom = 128.0
+	_logo.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_logo.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_logo.visible = false
 
 	_option_a = _panel.get_node_or_null("Option7Button") as Button
 	if _option_a == null:
