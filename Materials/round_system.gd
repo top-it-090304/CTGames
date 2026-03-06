@@ -358,10 +358,29 @@ func _try_interact(screen_pos: Vector2) -> void:
 			game_root.call("_move_camera_to_hint", "debt_machine")
 		return
 
+	if _has_ancestor_named(collider, ["SlotMachine", "blockbench_export2"]):
+		_request_slot_machine_action()
+		get_viewport().set_input_as_handled()
+		return
+
 	if _node_matches_area(collider, ticket_area) or _has_ancestor_named(collider, ["TicketMachine", "blockbench_export"]):
 		if not game_over and not round_active and not _is_intro_active():
 			_open_spin_choice()
 			get_viewport().set_input_as_handled()
+
+func _request_slot_machine_action() -> void:
+	if game_over or _is_intro_active():
+		return
+
+	if _popup_open():
+		return
+
+	if game_root != null and game_root.has_method("_request_spin"):
+		game_root.call("_request_spin")
+		return
+
+	if slot_ui != null and slot_ui.has_method("request_spin"):
+		slot_ui.call("request_spin")
 
 func _deposit_to_debt_machine() -> void:
 	if game_over or deposited >= debt_target:

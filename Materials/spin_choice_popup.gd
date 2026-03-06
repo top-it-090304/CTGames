@@ -181,6 +181,8 @@ func _set_choice_controls_visible(show: bool) -> void:
 func _set_idle_logo_visible(show: bool) -> void:
 	if _backdrop != null:
 		_backdrop.color = Color(0.0, 0.0, 0.0, 1.0) if show else Color(0.0, 0.0, 0.0, 0.0)
+		# In idle logo mode let taps pass to 3D world (slot machine interaction).
+		_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE if show else Control.MOUSE_FILTER_STOP
 
 	if _logo != null:
 		_logo.texture = jackpot_jail_logo
@@ -195,35 +197,21 @@ func press_by_normalized_position(nx: float, ny: float) -> bool:
 	if not is_open() or _panel == null:
 		return false
 
-	# Calibrated hit window for the slot-machine screen on main camera view.
-	if nx < hit_x_min or nx > hit_x_max:
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		return false
 
-	var rows: Array[Dictionary] = [
-		{"name": "Option7Button", "y": row_a_y, "half": row_a_half},
-		{"name": "Option3Button", "y": row_b_y, "half": row_b_half},
-		{"name": "CancelButton", "y": row_cancel_y, "half": row_cancel_half},
-	]
+	var screen_pos: Vector2 = Vector2(nx * viewport_size.x, ny * viewport_size.y)
+	var order: Array[String] = ["Option7Button", "Option3Button", "CancelButton"]
+	for name: String in order:
+		var btn: BaseButton = _panel.get_node_or_null(name) as BaseButton
+		if btn == null or btn.disabled or not btn.visible:
+			continue
+		if btn.get_global_rect().has_point(screen_pos):
+			btn.emit_signal("pressed")
+			return true
 
-	var best_name: String = ""
-	var best_dist: float = INF
-	for row: Dictionary in rows:
-		var center_y: float = float(row.get("y", 0.0))
-		var half_h: float = float(row.get("half", 0.0))
-		var dist: float = absf(ny - center_y)
-		if dist <= half_h and dist < best_dist:
-			best_dist = dist
-			best_name = String(row.get("name", ""))
-
-	if best_name.is_empty():
-		return false
-
-	var btn: BaseButton = _panel.get_node_or_null(best_name) as BaseButton
-	if btn == null or btn.disabled:
-		return false
-
-	btn.emit_signal("pressed")
-	return true
+	return false
 
 func _ensure_ui() -> void:
 	if _panel != null:
