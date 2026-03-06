@@ -21,6 +21,8 @@ var cam_tween: Tween
 var rotate_left := false
 var rotate_right := false
 var rotation_speed := 2.0
+@export var slot_spin_area_name: StringName = &"SpinButtonArea"
+var slot_spin_area: Area3D
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -36,6 +38,7 @@ func _ready() -> void:
 	_connect_intro_overlay()
 	_sync_intro_lock()
 	_ensure_intro_started()
+	slot_spin_area = _find_slot_spin_area()
 	if win_popup != null:
 		win_popup.visible = false
 
@@ -71,10 +74,6 @@ func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 	if camera_3d == null:
 		return false
 
-	var machine: Node3D = _find_slot_machine()
-	if machine == null:
-		return false
-
 	var from: Vector3 = camera_3d.project_ray_origin(screen_pos)
 	var to: Vector3 = from + camera_3d.project_ray_normal(screen_pos) * 100.0
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
@@ -83,9 +82,20 @@ func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 		return false
 
 	var collider: Node = result.get("collider") as Node
+	if collider == null:
+		return false
+
+	if slot_spin_area != null:
+		return _is_node_under(slot_spin_area, collider)
+
+	var machine: Node3D = _find_slot_machine()
+	if machine == null:
+		return false
 	return _is_node_under(machine, collider)
 
 func _is_node_under(root: Node, node: Node) -> bool:
+	if root == null or node == null:
+		return false
 	var current: Node = node
 	while current != null:
 		if current == root:
@@ -271,6 +281,23 @@ func _find_slot_machine() -> Node3D:
 	if machine != null:
 		return machine
 	return get_node_or_null("blockbench_export2") as Node3D
+
+func _find_slot_spin_area() -> Area3D:
+	var machine: Node3D = _find_slot_machine()
+	if machine == null:
+		return null
+
+	var direct: Area3D = machine.get_node_or_null(str(slot_spin_area_name)) as Area3D
+	if direct != null:
+		return direct
+
+	var aliases: Array[String] = ["SpinArea", "SpinButtonArea", "ButtonArea", "InteractArea"]
+	for alias: String in aliases:
+		var area: Area3D = machine.get_node_or_null(alias) as Area3D
+		if area != null:
+			return area
+
+	return null
 
 func _resolve_animation_player() -> AnimationPlayer:
 	var machine: Node3D = _find_slot_machine()
