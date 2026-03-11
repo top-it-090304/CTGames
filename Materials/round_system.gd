@@ -9,7 +9,7 @@ extends Node
 @export var debt_button_area_name: StringName = &"DepositButtonArea"
 @export var debt_button_animation_name: String = "button_press"
 @export var debt_button_animation_player_path: NodePath
-@export var debt_strict_button_only: bool = false
+@export var debt_strict_button_only: bool = true
 
 @export_group("Spin Choices")
 @export var option_a_spins: int = 7
@@ -40,6 +40,7 @@ var game_over: bool = false
 var round_active: bool = false
 var early_bonus_given: bool = false
 var _finish_round_requested: bool = false
+var _last_deposit_frame: int = -1
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -97,6 +98,8 @@ func _finish_round_if_ready_deferred() -> void:
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or _is_intro_active():
+		return
+	if get_viewport().is_input_handled():
 		return
 
 	if event is InputEventScreenDrag:
@@ -395,6 +398,11 @@ func _deposit_to_debt_machine() -> void:
 	if amount <= 0:
 		return
 
+	var current_frame: int = Engine.get_process_frames()
+	if _last_deposit_frame == current_frame:
+		return
+	_last_deposit_frame = current_frame
+
 	if not _spend_money(amount):
 		return
 
@@ -488,9 +496,13 @@ func _play_debt_button_press() -> void:
 	if anim == null:
 		return
 
+	var requested_animation_name: String = debt_button_animation_name.strip_edges()
+	if requested_animation_name.to_lower() == "animationplayer":
+		requested_animation_name = ""
+
 	var chosen: StringName = &""
-	if not debt_button_animation_name.is_empty() and anim.has_animation(StringName(debt_button_animation_name)):
-		chosen = StringName(debt_button_animation_name)
+	if not requested_animation_name.is_empty() and anim.has_animation(StringName(requested_animation_name)):
+		chosen = StringName(requested_animation_name)
 	else:
 		var prefer_parts: Array[String] = ["button", "press", "deposit", "pay", "coin", "tap"]
 		for name_var: Variant in anim.get_animation_list():
@@ -610,6 +622,37 @@ func _ensure_interact_areas() -> void:
 	debt_area = _ensure_machine_area(debt_machine)
 	ticket_area = _ensure_machine_area(ticket_machine)
 	debt_button_area = _find_debt_button_area()
+	_connect_machine_area_signals()
+
+func _connect_machine_area_signals() -> void:
+	if debt_button_area != null:
+		debt_button_area.input_ray_pickable = true
+		var debt_cb: Callable = Callable(self, "_on_debt_button_area_input_event")
+		if not debt_button_area.input_event.is_connected(debt_cb):
+			debt_button_area.input_event.connect(debt_cb)
+
+func _on_debt_button_area_input_event(
+		_camera: Camera3D,
+		event: InputEvent,
+		_position: Vector3,
+		_normal: Vector3,
+		_shape_idx: int
+	) -> void:
+	if not _is_primary_press_event(event):
+		return
+	_deposit_to_debt_machine()
+	get_viewport().set_input_as_handled()
+
+func _is_primary_press_event(event: InputEvent) -> bool:
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		return mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT
+
+	if event is InputEventScreenTouch:
+		var st: InputEventScreenTouch = event as InputEventScreenTouch
+		return st.pressed
+
+	return false
 
 func _ensure_machine_area(machine: Node3D) -> Area3D:
 	if machine == null:
