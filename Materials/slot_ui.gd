@@ -41,13 +41,13 @@ const SYMBOL_VALUES: Dictionary = {
 }
 
 const SYMBOL_CHANCES: Dictionary = {
-	"lemon": 19.4,
-	"cherry": 19.4,
-	"clover": 14.9,
-	"bell": 14.9,
-	"diamond": 11.9,
-	"chest": 11.9,
-	"seven": 7.5,
+	"lemon": 20.0,
+	"cherry": 20.0,
+	"clover": 15.0,
+	"bell": 15.0,
+	"diamond": 11.5,
+	"chest": 11.5,
+	"seven": 7.0,
 }
 
 const SYMBOL_TITLES: Dictionary = {
@@ -236,9 +236,6 @@ func _spin() -> void:
 	_busy = false
 	emit_signal("spin_completed", win_amount)
 
-	if spins_left <= 0:
-		end_round()
-
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
 	for row: int in range(3):
@@ -293,16 +290,27 @@ func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
 		return null
 
 	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
-	if box != null:
+	var margin_node: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
+	if box != null and margin_node != null:
 		var safe_row: int = clampi(row, 0, 2)
-		var seen: int = 0
+		var target_y: float = reel.size.y * ((float(safe_row) + 0.5) / 3.0)
+		var best_dist: float = INF
+		var best_icon: TextureRect = null
+
 		for child: Node in box.get_children():
 			var icon: TextureRect = child as TextureRect
-			if icon == null:
+			if icon == null or icon.texture == null:
 				continue
-			if seen == safe_row and icon.texture != null:
-				return icon.texture
-			seen += 1
+
+			var top_y: float = margin_node.offset_top + box.position.y + icon.position.y
+			var center_y: float = top_y + (icon.size.y * 0.5)
+			var dist: float = absf(center_y - target_y)
+			if dist < best_dist:
+				best_dist = dist
+				best_icon = icon
+
+		if best_icon != null:
+			return best_icon.texture
 
 	if row == 1 and reel.has_method("get_middle_texture"):
 		return reel.call("get_middle_texture") as Texture2D
@@ -316,10 +324,6 @@ func _evaluate_board(board: Array) -> Dictionary:
 		_combo_rules = _build_combo_rules()
 
 	var bet: int = maxi(bet_per_spin, 1)
-	var sym_mult: float = maxf(symbol_multiplier, 0.0)
-
-	var hits: Array[Dictionary] = []
-	var jackpot_hit: Dictionary = {}
 
 	for combo: Dictionary in _combo_rules:
 		var variants: Array = combo.get("variants", [])
@@ -339,81 +343,31 @@ func _evaluate_board(board: Array) -> Dictionary:
 				continue
 
 			var symbol_value: int = _symbol_coin_value(symbol_index)
-			var raw_win: float = float(bet) * float(symbol_value) * float(combo_mult) * sym_mult
-			var win_amount: int = maxi(int(round(raw_win)), 0)
+			var win_amount: int = bet * symbol_value * combo_mult
 
-			var hit: Dictionary = {
-				"combo_id": combo_id,
-				"combo_name": combo_name,
-				"combo_multiplier": combo_mult,
-				"symbol_index": symbol_index,
-				"symbol_value": symbol_value,
+			return {
+				"text": "WIN | %s x%d | %s Ф=%d | BET %d | +%d" % [
+					combo_name,
+					combo_mult,
+					_symbol_title(symbol_index),
+					symbol_value,
+					bet,
+					win_amount,
+				],
 				"win_amount": win_amount,
-				"points": points,
+				"combo_id": combo_id,
+				"hit": {
+					"combo_id": combo_id,
+					"combo_name": combo_name,
+					"combo_multiplier": combo_mult,
+					"symbol_index": symbol_index,
+					"symbol_value": symbol_value,
+					"win_amount": win_amount,
+					"points": points,
+				},
 			}
 
-			if combo_id == "jackpot":
-				jackpot_hit = hit
-				break
-
-			hits.append(hit)
-
-			if not allow_combo_stacking:
-				break
-
-		if combo_id == "jackpot" and not jackpot_hit.is_empty():
-			break
-		if not allow_combo_stacking and not hits.is_empty():
-			break
-
-	if not jackpot_hit.is_empty() and jackpot_overrides_other_hits:
-		var total_jackpot: int = int(jackpot_hit.get("win_amount", 0))
-		return {
-			"text": "WIN | Джекпот x10 | %s (Ф=%d) | BET %d | +%d" % [
-				_symbol_title(int(jackpot_hit.get("symbol_index", -1))),
-				int(jackpot_hit.get("symbol_value", 0)),
-				bet,
-				total_jackpot
-			],
-			"win_amount": total_jackpot,
-			"combo_id": "jackpot",
-			"hits": [jackpot_hit],
-		}
-
-	if not jackpot_hit.is_empty() and allow_combo_stacking:
-		hits.append(jackpot_hit)
-
-	if hits.is_empty():
-		return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
-
-	var total: int = 0
-	var best_hit: Dictionary = hits[0]
-
-	for h: Dictionary in hits:
-		total += int(h.get("win_amount", 0))
-		if int(h.get("combo_multiplier", 0)) > int(best_hit.get("combo_multiplier", 0)):
-			best_hit = h
-		elif int(h.get("combo_multiplier", 0)) == int(best_hit.get("combo_multiplier", 0)) and int(h.get("symbol_value", 0)) > int(best_hit.get("symbol_value", 0)):
-			best_hit = h
-
-	var parts: Array[String] = []
-	for h: Dictionary in hits:
-		parts.append("%s x%d (%s Ф=%d) +%d" % [
-			String(h.get("combo_name", "")),
-			int(h.get("combo_multiplier", 1)),
-			_symbol_title(int(h.get("symbol_index", -1))),
-			int(h.get("symbol_value", 0)),
-			int(h.get("win_amount", 0)),
-		])
-
-	var text: String = "WIN | TOTAL +%d | %s" % [total, " + ".join(parts)]
-
-	return {
-		"text": text,
-		"win_amount": total,
-		"combo_id": String(best_hit.get("combo_id", "")),
-		"hits": hits,
-	}
+	return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
 
 func _uniform_symbol_index(board: Array, points: Array) -> int:
 	if points.is_empty():
