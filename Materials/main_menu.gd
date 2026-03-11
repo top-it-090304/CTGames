@@ -4,14 +4,18 @@ extends Node2D
 @onready var quit_button = $Quit
 @onready var message = $Label
 
+var play_locked
 var full_text = ""
 var char_index = 0
 var speed = 0.03
 
 func _on_play_pressed():
+	if play_locked:
+		return
 	get_tree().change_scene_to_file("res://Materials/game.tscn")
 
 func _on_quit_pressed():
+	play_locked = true
 	quit_button.visible = false
 	
 	full_text = "Думаешь так легко уйти от ответственности?"
@@ -31,7 +35,8 @@ func type_text():
 	await get_tree().create_timer(3).timeout
 	fade_out_text()
 	move_play_button()
-	
+	await get_tree().create_timer(2).timeout
+	play_locked = false
 func fade_out_text():
 	var tween = create_tween()
 	tween.tween_property(message, "modulate:a", 0.0, 2.0)
@@ -41,3 +46,4 @@ func move_play_button():
 	var tween = create_tween()
 	var target_y = get_viewport_rect().size.y * 0.6
 	tween.tween_property(play_button, "position:y", target_y, 1.5)
+	await tween.finished
