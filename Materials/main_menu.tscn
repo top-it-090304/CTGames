@@ -1,34 +1,58 @@
 [gd_scene format=3 uid="uid://bkm6cqcetsu17"]
 
 [ext_resource type="Script" uid="uid://bo8fbib2ea34a" path="res://Materials/main_menu.gd" id="1_5cdph"]
-[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://textures/чёрнаячернота.png" id="2_j4gtj"]
-[ext_resource type="Texture2D" uid="uid://b764vd2en4vac" path="res://textures/jackpot_jail_logo.png" id="2_k6kip"]
+[ext_resource type="Texture2D" uid="uid://cjhvomca0mqdv" path="res://textures/wall.png" id="2_j4gtj"]
+[ext_resource type="Texture2D" uid="uid://d0eug0onpabq0" path="res://textures/jackpot_jail_logo_nofon.png" id="3_j4gtj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4gtj"]
-bg_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+bg_color = Color(0.14117648, 0.14117648, 0.14117648, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.54901963, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1luex"]
+bg_color = Color(0.44326448, 0.44326448, 0.44326448, 0.44705883)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.654902, 0.3372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdk68"]
-bg_color = Color(0.03137255, 0.03137255, 0.03137255, 1)
+bg_color = Color(0.14117648, 0.14117648, 0.14117648, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.54901963, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51rob"]
+bg_color = Color(0.6, 0.6, 0.6, 0.44705883)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.654902, 0.3372549, 1)
 
 [node name="MainMenu" type="Node2D" unique_id=1392286683]
 script = ExtResource("1_5cdph")
 
-[node name="Чёрнаячернота" type="Sprite2D" parent="." unique_id=545917318]
-position = Vector2(575, 322.5)
-scale = Vector2(10.159293, 8.012345)
+[node name="Wall" type="Sprite2D" parent="." unique_id=1961945788]
+position = Vector2(574.4999, 347)
+scale = Vector2(1.063151, 1.0488281)
 texture = ExtResource("2_j4gtj")
-
-[node name="JackpotJailLogo" type="Sprite2D" parent="." unique_id=229244312]
-position = Vector2(575, 198)
-texture = ExtResource("2_k6kip")
 
 [node name="Play" type="Button" parent="." unique_id=1866945757]
 offset_left = 425.0
 offset_top = 310.0
 offset_right = 725.0
 offset_bottom = 435.0
+theme_override_colors/font_color = Color(0.827451, 0.827451, 0.827451, 1)
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_j4gtj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1luex")
 text = "Играть"
 
 [node name="Quit" type="Button" parent="." unique_id=1735833636]
@@ -36,8 +60,10 @@ offset_left = 425.0
 offset_top = 500.0
 offset_right = 725.0
 offset_bottom = 625.0
+theme_override_colors/font_color = Color(0.827451, 0.827451, 0.827451, 1)
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_jdk68")
+theme_override_styles/hover = SubResource("StyleBoxFlat_51rob")
 text = "Выйти"
 
 [node name="Label" type="Label" parent="." unique_id=382064081]
@@ -48,6 +74,10 @@ offset_bottom = 645.0
 theme_override_font_sizes/font_size = 40
 
 [node name="Timer" type="Timer" parent="." unique_id=1552894202]
+
+[node name="JackpotJailLogoNofon" type="Sprite2D" parent="." unique_id=2018784062]
+position = Vector2(576, 198)
+texture = ExtResource("3_j4gtj")
 
 [connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

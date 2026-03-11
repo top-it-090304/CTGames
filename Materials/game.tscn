@@ -162,7 +162,7 @@ fov = 95.7
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 
 [node name="Ashtray2" parent="." unique_id=1837193216 instance=ExtResource("4_i1y15")]
-transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -3.9714673, 1.1834722, -1.4913148)
+transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -3.9714673, 1.1281631, -1.4913148)
 
 [node name="SlotMachine" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
@@ -201,7 +201,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_gpbuv")
 symbols = Array[Texture2D]([ExtResource("5_sa7vf"), ExtResource("6_g7uyw"), ExtResource("7_0m7j0"), ExtResource("8_qk58f"), ExtResource("9_62l5a"), ExtResource("10_7l2bl"), ExtResource("11_3w25a")])
-weights = Array[float]([14.9, 19.4, 11.9, 14.9, 11.9, 19.4, 7.5])
+weights = Array[float]([15.0, 20.0, 11.5, 15.0, 11.5, 20.0, 7.0])
 reels_row_path = NodePath("HBoxContainer")
 button_path = NodePath("../Button")
 label_path = NodePath("Label")
@@ -847,7 +847,7 @@ transform = Transform3D(0.3913597, 0, 0, 0, 0.39567637, 0, 0, 0, 0.40362674, -4.
 transform = Transform3D(0.39135972, 0, 0, 0, 0.3552401, 0.17775464, 0, -0.17425333, 0.36237803, -4.6397686, 1.1063049, -2.4864635)
 
 [node name="Envelopes" parent="." unique_id=1425356408 instance=ExtResource("27_a4hxe")]
-transform = Transform3D(-0.26302075, 0, 0.056195863, 0, 0.2836941, 0, -0.051245164, 0, -0.2884307, -4.460924, 1.1768548, -1.9100482)
+transform = Transform3D(-0.26302075, 0, 0.056195863, 0, 0.2836941, 0, -0.051245164, 0, -0.2884307, -4.460924, 1.1316177, -1.9100482)
 
 [node name="Root Scene3" parent="." unique_id=751196611 instance=ExtResource("28_tn84i")]
 transform = Transform3D(3.3191843, 0, 0, 0, 0.29119322, 3.0565648, 0, -3.0475721, 0.29205245, -3.7615168, 1.1665496, -1.817327)
