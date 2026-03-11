@@ -324,6 +324,8 @@ func _evaluate_board(board: Array) -> Dictionary:
 		_combo_rules = _build_combo_rules()
 
 	var bet: int = maxi(bet_per_spin, 1)
+	var hits: Array[Dictionary] = []
+	var jackpot_hit: Dictionary = {}
 
 	for combo: Dictionary in _combo_rules:
 		var variants: Array = combo.get("variants", [])
@@ -345,29 +347,72 @@ func _evaluate_board(board: Array) -> Dictionary:
 			var symbol_value: int = _symbol_coin_value(symbol_index)
 			var win_amount: int = bet * symbol_value * combo_mult
 
-			return {
-				"text": "WIN | %s x%d | %s Ф=%d | BET %d | +%d" % [
-					combo_name,
-					combo_mult,
-					_symbol_title(symbol_index),
-					symbol_value,
-					bet,
-					win_amount,
-				],
-				"win_amount": win_amount,
+			var hit: Dictionary = {
 				"combo_id": combo_id,
-				"hit": {
-					"combo_id": combo_id,
-					"combo_name": combo_name,
-					"combo_multiplier": combo_mult,
-					"symbol_index": symbol_index,
-					"symbol_value": symbol_value,
-					"win_amount": win_amount,
-					"points": points,
-				},
+				"combo_name": combo_name,
+				"combo_multiplier": combo_mult,
+				"symbol_index": symbol_index,
+				"symbol_value": symbol_value,
+				"win_amount": win_amount,
+				"points": points,
 			}
 
-	return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
+			if combo_id == "jackpot":
+				jackpot_hit = hit
+				break
+
+			hits.append(hit)
+			if not allow_combo_stacking:
+				break
+
+		if combo_id == "jackpot" and not jackpot_hit.is_empty():
+			break
+		if not allow_combo_stacking and not hits.is_empty():
+			break
+
+	if not jackpot_hit.is_empty() and jackpot_overrides_other_hits:
+		return {
+			"text": "WIN | Джекпот x10 | %s Ф=%d | BET %d | +%d" % [
+				_symbol_title(int(jackpot_hit.get("symbol_index", -1))),
+				int(jackpot_hit.get("symbol_value", 0)),
+				bet,
+				int(jackpot_hit.get("win_amount", 0)),
+			],
+			"win_amount": int(jackpot_hit.get("win_amount", 0)),
+			"combo_id": "jackpot",
+			"hits": [jackpot_hit],
+		}
+
+	if not jackpot_hit.is_empty() and allow_combo_stacking:
+		hits.append(jackpot_hit)
+
+	if hits.is_empty():
+		return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
+
+	var total: int = 0
+	var best_hit: Dictionary = hits[0]
+	var parts: Array[String] = []
+	for hit_var: Variant in hits:
+		var hit: Dictionary = hit_var as Dictionary
+		total += int(hit.get("win_amount", 0))
+		parts.append("%s x%d (%s Ф=%d) +%d" % [
+			String(hit.get("combo_name", "")),
+			int(hit.get("combo_multiplier", 1)),
+			_symbol_title(int(hit.get("symbol_index", -1))),
+			int(hit.get("symbol_value", 0)),
+			int(hit.get("win_amount", 0)),
+		])
+		if int(hit.get("combo_multiplier", 0)) > int(best_hit.get("combo_multiplier", 0)):
+			best_hit = hit
+		elif int(hit.get("combo_multiplier", 0)) == int(best_hit.get("combo_multiplier", 0)) and int(hit.get("symbol_value", 0)) > int(best_hit.get("symbol_value", 0)):
+			best_hit = hit
+
+	return {
+		"text": "WIN | TOTAL +%d | %s" % [total, " + ".join(parts)],
+		"win_amount": total,
+		"combo_id": String(best_hit.get("combo_id", "")),
+		"hits": hits,
+	}
 
 func _uniform_symbol_index(board: Array, points: Array) -> int:
 	if points.is_empty():
@@ -486,14 +531,19 @@ func _build_combo_rules() -> Array[Dictionary]:
 		])
 	rules.append({"id": "vertical", "name": "Верт.", "multiplier": 1, "variants": vertical_variants})
 
+	var diag_variants: Array = []
+	for start_col: int in range(3):
+		diag_variants.append([
+			Vector2i(0, start_col), Vector2i(1, start_col + 1), Vector2i(2, start_col + 2),
+		])
+		diag_variants.append([
+			Vector2i(2, start_col), Vector2i(1, start_col + 1), Vector2i(0, start_col + 2),
+		])
 	rules.append({
 		"id": "diag",
 		"name": "Диаг.",
 		"multiplier": 1,
-		"variants": [
-			[Vector2i(0, 3), Vector2i(1, 2), Vector2i(2, 1)],
-			[Vector2i(0, 1), Vector2i(1, 2), Vector2i(2, 3)],
-		],
+		"variants": diag_variants,
 	})
 
 	return rules
