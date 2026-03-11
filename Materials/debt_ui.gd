@@ -43,6 +43,10 @@ func _ensure_ui() -> void:
 		frame.name = "Frame"
 		add_child(frame)
 	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	frame.position = Vector2.ZERO
+	frame.size = viewport_size
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.z_index = -100
 	frame.color = COLOR_BG
 
 	var left: float = 22.0
