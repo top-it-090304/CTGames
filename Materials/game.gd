@@ -14,6 +14,8 @@ var lbl_money: Label
 var lbl_spins: Label
 var lbl_tok: Label
 var win_popup: Label
+var ready_button: Button
+var totem_buy_panel: Panel
 
 var win_popup_tween: Tween
 var cam_tween: Tween
@@ -44,6 +46,8 @@ func _ready() -> void:
 	_sync_intro_lock()
 	_ensure_intro_started()
 	slot_spin_area = _find_slot_spin_area()
+	_bind_ready_button()
+	_update_ready_button_visibility()
 	if win_popup != null:
 		win_popup.visible = false
 
@@ -80,7 +84,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
-			_request_spin()
+			if ready_button != null and ready_button.visible:
+				_on_ready_button_pressed()
+			else:
+				_request_spin()
 
 func _rotate_camera_by_drag(delta_x: float) -> void:
 	if camera_3d == null:
@@ -89,6 +96,8 @@ func _rotate_camera_by_drag(delta_x: float) -> void:
 
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
 	if not _is_slot_machine_hit(screen_pos):
+		return
+	if slot_ui != null and slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
 		return
 	_request_spin()
 
@@ -125,6 +134,44 @@ func _is_node_under(root: Node, node: Node) -> bool:
 		current = current.get_parent()
 	return false
 
+func _bind_ready_button() -> void:
+	ready_button = get_node_or_null("UI/ReadyButton") as Button
+	totem_buy_panel = get_node_or_null("UI/TotemBuyPanel") as Panel
+	if ready_button == null:
+		return
+	var cb: Callable = Callable(self, "_on_ready_button_pressed")
+	if not ready_button.pressed.is_connected(cb):
+		ready_button.pressed.connect(cb)
+
+func _on_ready_button_pressed() -> void:
+	if ready_button == null:
+		return
+	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
+		return
+	if round_system != null and round_system.has_method("request_spin_choice"):
+		round_system.call("request_spin_choice")
+	_update_ready_button_visibility()
+
+func _is_totem_buy_panel_open() -> bool:
+	if totem_buy_panel == null:
+		totem_buy_panel = get_node_or_null("UI/TotemBuyPanel") as Panel
+	if totem_buy_panel == null:
+		return false
+	return totem_buy_panel.visible
+
+func _update_ready_button_visibility() -> void:
+	if ready_button == null:
+		return
+	var show: bool = false
+	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open():
+		var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
+		var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
+		var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
+		var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
+		show = not spinning and not round_active and not game_over and spins_left <= 0
+	ready_button.visible = show
+	ready_button.disabled = not show
+
 func _request_spin() -> void:
 	if _is_intro_active():
 		return
@@ -137,8 +184,6 @@ func _request_spin() -> void:
 		return
 
 	if slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
-		if round_system != null and round_system.has_method("request_spin_choice"):
-			round_system.call("request_spin_choice")
 		return
 
 	if slot_ui.has_method("request_spin"):
@@ -187,6 +232,7 @@ func _on_intro_active_changed(active: bool) -> void:
 		slot_ui.call("set_input_locked", active)
 	else:
 		slot_ui.set("input_locked", active)
+	_update_ready_button_visibility()
 
 func _on_camera_hint_requested(hint: String) -> void:
 	_move_camera_to_hint(hint)
@@ -347,6 +393,7 @@ func _sync_hud_from_slot() -> void:
 	)
 
 func _on_hud_changed(money: int, spins_left: int, tickets: int) -> void:
+	_update_ready_button_visibility()
 	if lbl_money != null:
 		lbl_money.text = "%s Ф" % _format_money(money)
 	if lbl_spins != null:
@@ -575,6 +622,7 @@ func _on_right_button_up():
 
 func _process(delta):
 	_update_hud_shake()
+	_update_ready_button_visibility()
 	if rotate_left:
 		$Camera3D.rotate_y(-rotation_speed * delta)
 	if rotate_right:

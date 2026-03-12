@@ -39,6 +39,7 @@
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
 [ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="30_xkq3k"]
 [ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
+[ext_resource type="Script" uid="uid://01du5b4o2mbh" path="res://Materials/ready_button.gd" id="31_uasde"]
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://voxel_lucky_cat.glb" id="33_uuapk"]
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
@@ -853,6 +854,17 @@ theme_override_fonts/font = ExtResource("23_nmok7")
 theme_override_font_sizes/font_size = 21
 text = "Закрыть"
 script = ExtResource("28_oat0n")
+
+[node name="ReadyButton" type="Button" parent="UI" unique_id=2086978882]
+offset_left = 493.0
+offset_top = 19.0
+offset_right = 704.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 48
+text = "READY?!"
+flat = true
+script = ExtResource("31_uasde")
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
