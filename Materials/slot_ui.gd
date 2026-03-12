@@ -80,6 +80,7 @@ var round_number: int = 1
 var _last_target_grid: Array = []
 var _last_win_amount: int = 0
 var _last_win_combo_id: String = ""
+var _totem_bonuses: Dictionary = {}
 
 func _ready() -> void:
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
@@ -371,14 +372,18 @@ func _evaluate_board(board: Array) -> Dictionary:
 			break
 
 	if not jackpot_hit.is_empty() and jackpot_overrides_other_hits:
+		var jackpot_total: int = int(jackpot_hit.get("win_amount", 0))
+		var jackpot_bonus: int = _total_flat_win_bonus()
+		if jackpot_total > 0 and jackpot_bonus > 0:
+			jackpot_total += jackpot_bonus
 		return {
 			"text": "WIN | Джекпот x10 | %s Ф=%d | BET %d | +%d" % [
 				_symbol_title(int(jackpot_hit.get("symbol_index", -1))),
 				int(jackpot_hit.get("symbol_value", 0)),
 				bet,
-				int(jackpot_hit.get("win_amount", 0)),
+				jackpot_total,
 			],
-			"win_amount": int(jackpot_hit.get("win_amount", 0)),
+			"win_amount": jackpot_total,
 			"combo_id": "jackpot",
 			"hits": [jackpot_hit],
 		}
@@ -406,6 +411,11 @@ func _evaluate_board(board: Array) -> Dictionary:
 			best_hit = hit
 		elif int(hit.get("combo_multiplier", 0)) == int(best_hit.get("combo_multiplier", 0)) and int(hit.get("symbol_value", 0)) > int(best_hit.get("symbol_value", 0)):
 			best_hit = hit
+
+	var totem_bonus: int = _total_flat_win_bonus()
+	if total > 0 and totem_bonus > 0:
+		total += totem_bonus
+		parts.append("Тотем +%d" % totem_bonus)
 
 	return {
 		"text": "WIN | TOTAL +%d | %s" % [total, " + ".join(parts)],
@@ -694,6 +704,25 @@ func spend_tickets(amount: int) -> bool:
 	tickets -= amount
 	_emit_hud_changed()
 	return true
+
+func add_totem_bonus(totem_id: String, bonus_type: String, bonus_value: int) -> void:
+	if totem_id.is_empty():
+		return
+	_totem_bonuses[totem_id] = {
+		"type": bonus_type,
+		"value": bonus_value,
+	}
+
+func has_totem_bonus(totem_id: String) -> bool:
+	return _totem_bonuses.has(totem_id)
+
+func _total_flat_win_bonus() -> int:
+	var total: int = 0
+	for bonus_var: Variant in _totem_bonuses.values():
+		var bonus: Dictionary = bonus_var as Dictionary
+		if String(bonus.get("type", "")) == "flat_win_bonus":
+			total += int(bonus.get("value", 0))
+	return total
 
 func format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))

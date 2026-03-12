@@ -28,6 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
 [ext_resource type="FontFile" uid="uid://ck38hek12mqvp" path="res://textures/pixeloidsans/PixeloidSans.ttf" id="23_nmok7"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
+[ext_resource type="Script" uid="uid://ddkboipj3ji5j" path="res://Materials/totem_buy_panel.gd" id="24_oat0n"]
 [ext_resource type="Script" uid="uid://b7ijl47o53ej1" path="res://Materials/title_label.gd" id="24_u0rgs"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
 [ext_resource type="Script" uid="uid://16s6asci84v0" path="res://Materials/price_label.gd" id="25_tc3b6"]
@@ -40,6 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://voxel_lucky_cat.glb" id="33_uuapk"]
+[ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -801,6 +803,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
+script = ExtResource("24_oat0n")
 
 [node name="TitleLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1257933572]
 layout_mode = 0
@@ -962,11 +965,12 @@ script = ExtResource("32_54luh")
 
 [node name="CatTotemShop" parent="TotemShop/ShopItems" unique_id=404527701 instance=ExtResource("33_uuapk")]
 transform = Transform3D(0.00094250584, 0, -0.4999991, 0, 0.5, 0, 0.4999991, 0, 0.00094250584, 0, 1.344554, -1.7162287)
+script = ExtResource("42_ln6k1")
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop" unique_id=932522524]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/CatTotemShop/InteractArea" unique_id=1998607231]
-transform = Transform3D(1.2, 0, 9.313226e-10, 0, 1.3, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
+transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
