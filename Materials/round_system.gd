@@ -265,6 +265,12 @@ func request_spin_choice() -> void:
 func is_popup_open() -> bool:
 	return _popup_open()
 
+func is_round_active() -> bool:
+	return round_active
+
+func is_game_over() -> bool:
+	return game_over
+
 func _show_jackpot_jail_screen() -> void:
 	if popup == null or game_over or _is_intro_active():
 		return
@@ -281,9 +287,6 @@ func _show_jackpot_jail_screen() -> void:
 func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
 		return
-
-	if game_root != null and game_root.has_method("_move_camera_to_hint"):
-		game_root.call("_move_camera_to_hint", "slot_machine")
 
 	_set_choice_overlay(true)
 	popup.call(
@@ -367,9 +370,7 @@ func _try_interact(screen_pos: Vector2) -> void:
 		return
 
 	if _node_matches_area(collider, ticket_area) or _has_ancestor_named(collider, ["TicketMachine", "blockbench_export"]):
-		if not game_over and not round_active and not _is_intro_active():
-			_open_spin_choice()
-			get_viewport().set_input_as_handled()
+		get_viewport().set_input_as_handled()
 
 func _request_slot_machine_action() -> void:
 	if game_over or _is_intro_active():
