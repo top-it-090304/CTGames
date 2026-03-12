@@ -42,6 +42,7 @@
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://voxel_lucky_cat.glb" id="33_uuapk"]
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
+[ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -183,9 +184,6 @@ transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.692434
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
-[node name="tabke" parent="tabke" unique_id=1082492904 instance=ExtResource("2_i6gxk")]
-transform = Transform3D(0.79996955, -0.008726536, 0, 0.006981229, 0.9999619, 0, 0, 0, 0.9, 2.8016126, -0.10243243, 0.03661386)
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
 transform = Transform3D(0.0063006436, 0, 0.99998015, 0, 1, 0, -0.99998015, 0, 0.0063006436, -2.6518383, 2.016616, -0.66935945)
 fov = 95.7
@@ -204,7 +202,7 @@ transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachine/SpinButtonarea" unique_id=857213803]
 
 [node name="DebtMachine" parent="." unique_id=611159530 instance=ExtResource("5_ablru")]
-transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -1.7931515, 0.5121797, -2.4699512)
+transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -2.2672462, 0.5121797, -2.4699512)
 
 [node name="DepositButtonArea" type="Area3D" parent="DebtMachine" unique_id=1603461943]
 
@@ -860,7 +858,7 @@ script = ExtResource("28_oat0n")
 script = ExtResource("19_m4sbs")
 
 [node name="TicketMachine" parent="." unique_id=29912408 instance=ExtResource("21_navue")]
-transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9984968, -2.798228, 0.57128525, -2.575203)
+transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9984968, -3.2626977, 0.96078527, -2.575203)
 
 [node name="InteractArea" type="Area3D" parent="TicketMachine" unique_id=267107733]
 
@@ -964,7 +962,7 @@ script = ExtResource("32_54luh")
 [node name="ShopItems" type="Node3D" parent="TotemShop" unique_id=1293203582]
 
 [node name="CatTotemShop" parent="TotemShop/ShopItems" unique_id=404527701 instance=ExtResource("33_uuapk")]
-transform = Transform3D(0.00094250584, 0, -0.4999991, 0, 0.5, 0, 0.4999991, 0, 0.00094250584, 0, 1.344554, -1.7162287)
+transform = Transform3D(0.00056550355, 0, -0.29999948, 0, 0.3, 0, 0.29999948, 0, 0.00056550355, -0.41117287, 1.15893, -1.524726)
 script = ExtResource("42_ln6k1")
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop" unique_id=932522524]
@@ -976,13 +974,13 @@ shape = SubResource("BoxShape3D_if7fe")
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
 
 [node name="ShopSpot1" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1471560995]
-transform = Transform3D(18.157892, 0, -8.383973, 0, 19.999998, 0, 8.383973, 0, 18.157892, -3.7209294, 1.189768, -1.4569579)
+transform = Transform3D(20.000002, 0, 0, 0, 19.999998, 0, 0, 0, 20.000002, -0.42740297, 1.0475365, -1.5209233)
 
 [node name="ShopSpot2" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1263735458]
-transform = Transform3D(19.8366, 0, -2.5513325, 0, 20, 0, 2.5513325, 0, 19.8366, -4.20226, 1.1940113, -1.8830879)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.0502722, -0.71720326)
 
 [node name="ShopSpot3" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=643058297]
-transform = Transform3D(18.507637, 0, 7.5807257, -0.31017712, 19.983252, 0.7572686, -7.574377, -0.81833094, 18.492138, -3.7667136, 1.1952143, 0.48081428)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.54833955, 1.0411022, 0.017848194)
 
 [node name="TotemDisplay" type="Node3D" parent="." unique_id=968665750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
@@ -992,16 +990,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
 [node name="OwnedSpots" type="Node3D" parent="TotemDisplay" unique_id=1768180064]
 
 [node name="OwnedSpot1" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=430991476]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 1.7505268, -1.37924, 0.53525305)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.7824894, -1.0287417, 0.395936)
 
 [node name="OwnedSpot2" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=1467994456]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 1.7, -1.37, -0.11299229)
+transform = Transform3D(-9.420237, 0, 17.642538, 0, 20, 0, -17.642538, 0, -9.420237, -2.4088988, -1.0087084, -2.0616384)
 
 [node name="OwnedSpot3" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=678054610]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 1.7263439, -1.3525051, -0.55282617)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.835939, -0.9875338, -1.1399736)
 
 [node name="OwnedSpot4" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=1598327493]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 2.008044, -1.3732051, -1.060326)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -2.5433269, 0.32619286, -0.7419686)
+
+[node name="Table_totem" parent="." unique_id=1533379306 instance=ExtResource("43_ln6k1")]
+transform = Transform3D(-6.556708e-08, 0, 1, 0, 1, 0, -1.5, 0, -4.371139e-08, -0.53905046, -0.048847437, -0.7567878)
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
