@@ -63,7 +63,7 @@ func _try_pick_item(screen_pos: Vector2) -> void:
 	var to: Vector3 = from + _camera_3d.project_ray_normal(screen_pos) * 100.0
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
 	query.collide_with_areas = true
-	query.collide_with_bodies = true
+	query.collide_with_bodies = false
 	var result: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
 	if result.is_empty():
 		return
