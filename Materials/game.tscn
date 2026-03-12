@@ -25,9 +25,15 @@
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
+[ext_resource type="FontFile" uid="uid://ck38hek12mqvp" path="res://textures/pixeloidsans/PixeloidSans.ttf" id="23_nmok7"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
+[ext_resource type="Script" uid="uid://b7ijl47o53ej1" path="res://Materials/title_label.gd" id="24_u0rgs"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
+[ext_resource type="Script" uid="uid://16s6asci84v0" path="res://Materials/price_label.gd" id="25_tc3b6"]
+[ext_resource type="Script" uid="uid://bax70berdicix" path="res://Materials/desc_label.gd" id="26_if7fe"]
 [ext_resource type="PackedScene" uid="uid://c6bd4qc56io2s" path="res://Objects/Envelopes.glb" id="27_a4hxe"]
+[ext_resource type="Script" uid="uid://8i7nkpkaqjde" path="res://Materials/buy_button.gd" id="27_mv4lk"]
+[ext_resource type="Script" uid="uid://b63cn3a1hjomo" path="res://Materials/close_button.gd" id="28_oat0n"]
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
 [ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="30_xkq3k"]
 [ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
@@ -107,6 +113,16 @@ viewport_path = NodePath("SubViewport")
 resource_local_to_scene = true
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_fust2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 2
+border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tc3b6"]
+font = ExtResource("23_nmok7")
+font_size = 27
+outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
 size = Vector3(1, 1.0234375, 1)
@@ -772,38 +788,64 @@ offset_right = 181.0
 offset_bottom = 648.0
 
 [node name="TotemBuyPanel" type="Panel" parent="UI" unique_id=1622409470]
-visible = false
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
 
 [node name="TitleLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1257933572]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 13.0
+offset_top = -335.0
+offset_right = 67.0
+offset_bottom = -302.0
 text = "Кот"
+label_settings = SubResource("LabelSettings_tc3b6")
+script = ExtResource("24_u0rgs")
 
 [node name="PriceLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1017563582]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 21.0
+offset_top = 55.0
+offset_right = 61.0
+offset_bottom = 78.0
+script = ExtResource("25_tc3b6")
 
 [node name="DescLabel" type="RichTextLabel" parent="UI/TotemBuyPanel" unique_id=1801157762]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-text = "После покупки кот дает бонус."
+offset_left = 6.0
+offset_top = -304.0
+offset_right = 271.0
+offset_bottom = -251.0
+theme_override_fonts/normal_font = ExtResource("23_nmok7")
+theme_override_font_sizes/normal_font_size = 19
+text = "+ 1 Ф к любому выигрышу"
+script = ExtResource("26_if7fe")
 
 [node name="BuyButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1227227659]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 8.0
+offset_top = -371.0
+offset_right = 100.0
+offset_bottom = -337.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 21
 text = "Купить"
+script = ExtResource("27_mv4lk")
 
 [node name="CloseButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1562681512]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 11.0
+offset_top = -269.0
+offset_right = 95.0
+offset_bottom = -238.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 21
 text = "Закрыть"
+script = ExtResource("28_oat0n")
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
@@ -905,6 +947,7 @@ scale = Vector2(1.3923078, 1.3865548)
 texture = ExtResource("31_4gd6a")
 
 [node name="TotemShop" type="Node3D" parent="." unique_id=1463476390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010355473, 0)
 script = ExtResource("32_54luh")
 
 [node name="FocusPoint" type="Marker3D" parent="TotemShop" unique_id=1451202883]
@@ -929,7 +972,7 @@ shape = SubResource("BoxShape3D_if7fe")
 [node name="ShopSpot3" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=643058297]
 
 [node name="TotemDisplay" type="Node3D" parent="." unique_id=968665750]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6008897, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
 
 [node name="OwnedItems" type="Node3D" parent="TotemDisplay" unique_id=428886846]
 
