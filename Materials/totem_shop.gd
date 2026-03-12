@@ -1,11 +1,137 @@
 extends Node3D
 
+@export var buy_panel_path: NodePath = ^"../UI/TotemBuyPanel"
+@export var shop_items_path: NodePath = ^"ShopItems"
+@export var owned_items_path: NodePath = ^"../TotemDisplay/OwnedItems"
+@export var owned_spots_path: NodePath = ^"../TotemDisplay/OwnedSpots"
+@export var slot_ui_path: NodePath = ^"../SubViewport/SlotUI"
+@export var round_system_path: NodePath = ^"../RoundSystem"
+@export var intro_overlay_path: NodePath = ^"../IntroOverlay"
 
-# Called when the node enters the scene tree for the first time.
+var _buy_panel: Panel
+var _shop_items: Node3D
+var _owned_items: Node3D
+var _owned_spots_root: Node3D
+var _slot_ui: Control
+var _round_system: Node
+var _intro_overlay: Node
+var _selected_item: Node3D
+var _owned_totems: Dictionary = {}
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
 func _ready() -> void:
-	pass # Replace with function body.
+	_rng.randomize()
+	_buy_panel = get_node_or_null(buy_panel_path) as Panel
+	_shop_items = get_node_or_null(shop_items_path) as Node3D
+	_owned_items = get_node_or_null(owned_items_path) as Node3D
+	_owned_spots_root = get_node_or_null(owned_spots_path) as Node3D
+	_slot_ui = get_node_or_null(slot_ui_path) as Control
+	_round_system = get_node_or_null(round_system_path)
+	_intro_overlay = get_node_or_null(intro_overlay_path)
 
+	_connect_buy_panel()
+	_connect_items()
+	_refresh_panel_tokens()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _connect_buy_panel() -> void:
+	if _buy_panel == null:
+		return
+	if _buy_panel.has_signal("buy_requested"):
+		var buy_cb: Callable = Callable(self, "_on_buy_requested")
+		if not _buy_panel.is_connected("buy_requested", buy_cb):
+			_buy_panel.connect("buy_requested", buy_cb)
+	if _buy_panel.has_signal("close_requested"):
+		var close_cb: Callable = Callable(self, "_on_close_requested")
+		if not _buy_panel.is_connected("close_requested", close_cb):
+			_buy_panel.connect("close_requested", close_cb)
+
+func _connect_items() -> void:
+	if _shop_items == null:
+		return
+	for child: Node in _shop_items.get_children():
+		var cb: Callable = Callable(self, "_on_item_pressed")
+		if child.has_signal("pressed") and not child.is_connected("pressed", cb):
+			child.connect("pressed", cb)
+
+func _on_item_pressed(item: Node3D) -> void:
+	if not _can_interact():
+		return
+	if item == null or not is_instance_valid(item):
+		return
+	_selected_item = item
+	if _buy_panel != null and _buy_panel.has_method("show_offer"):
+		_buy_panel.call("show_offer", item.call("get_offer_data"), _current_tokens())
+
+func _on_buy_requested() -> void:
+	if _selected_item == null or not is_instance_valid(_selected_item):
+		return
+	if _slot_ui == null or not _slot_ui.has_method("spend_tickets"):
+		return
+
+	var offer: Dictionary = _selected_item.call("get_offer_data") as Dictionary
+	var totem_id: String = String(offer.get("id", ""))
+	var price: int = int(offer.get("price", 0))
+	if totem_id.is_empty() or _owned_totems.has(totem_id):
+		return
+	if not bool(_slot_ui.call("spend_tickets", price)):
+		_refresh_panel_tokens()
+		return
+
+	_owned_totems[totem_id] = true
+	if _slot_ui.has_method("add_totem_bonus"):
+		_slot_ui.call(
+			"add_totem_bonus",
+			totem_id,
+			String(offer.get("bonus_type", "")),
+			int(offer.get("bonus_value", 0))
+		)
+
+	if _selected_item.has_method("set_shop_enabled"):
+		_selected_item.call("set_shop_enabled", false)
+
+	_move_item_to_owned_display(_selected_item)
+	_selected_item = null
+	if _buy_panel != null and _buy_panel.has_method("hide_panel"):
+		_buy_panel.call("hide_panel")
+
+func _on_close_requested() -> void:
+	_selected_item = null
+
+func _move_item_to_owned_display(item: Node3D) -> void:
+	if item == null or _owned_items == null:
+		return
+	var item_scale: Vector3 = item.scale
+	item.reparent(_owned_items, true)
+	var target_spot: Marker3D = _pick_owned_spot()
+	if target_spot != null:
+		item.global_position = target_spot.global_position
+		item.global_rotation = target_spot.global_rotation
+	item.scale = item_scale
+
+func _pick_owned_spot() -> Marker3D:
+	if _owned_spots_root == null:
+		return null
+	var spots: Array[Marker3D] = []
+	for child: Node in _owned_spots_root.get_children():
+		var marker: Marker3D = child as Marker3D
+		if marker != null:
+			spots.append(marker)
+	if spots.is_empty():
+		return null
+	return spots[_rng.randi_range(0, spots.size() - 1)]
+
+func _current_tokens() -> int:
+	if _slot_ui != null and _slot_ui.has_method("get_tickets"):
+		return int(_slot_ui.call("get_tickets"))
+	return 0
+
+func _refresh_panel_tokens() -> void:
+	if _buy_panel != null and _buy_panel.has_method("refresh_tokens"):
+		_buy_panel.call("refresh_tokens", _current_tokens())
+
+func _can_interact() -> bool:
+	if _intro_overlay != null and _intro_overlay.has_method("is_active") and bool(_intro_overlay.call("is_active")):
+		return false
+	if _round_system != null and _round_system.has_method("is_popup_open") and bool(_round_system.call("is_popup_open")):
+		return false
+	return true
