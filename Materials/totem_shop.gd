@@ -7,6 +7,7 @@ extends Node3D
 @export var slot_ui_path: NodePath = ^"../SubViewport/SlotUI"
 @export var round_system_path: NodePath = ^"../RoundSystem"
 @export var intro_overlay_path: NodePath = ^"../IntroOverlay"
+@export var camera_path: NodePath = ^"../Camera3D"
 
 var _buy_panel: Panel
 var _shop_items: Node3D
@@ -15,6 +16,7 @@ var _owned_spots_root: Node3D
 var _slot_ui: Control
 var _round_system: Node
 var _intro_overlay: Node
+var _camera_3d: Camera3D
 var _selected_item: Node3D
 var _owned_totems: Dictionary = {}
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -28,10 +30,64 @@ func _ready() -> void:
 	_slot_ui = get_node_or_null(slot_ui_path) as Control
 	_round_system = get_node_or_null(round_system_path)
 	_intro_overlay = get_node_or_null(intro_overlay_path)
+	_camera_3d = get_node_or_null(camera_path) as Camera3D
 
 	_connect_buy_panel()
 	_connect_items()
 	_refresh_panel_tokens()
+
+func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
+	if get_viewport().is_input_handled():
+		return
+
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_try_pick_item(mb.position)
+		return
+
+	if event is InputEventScreenTouch:
+		var st: InputEventScreenTouch = event as InputEventScreenTouch
+		if st.pressed:
+			_try_pick_item(st.position)
+
+func _try_pick_item(screen_pos: Vector2) -> void:
+	if not _can_interact():
+		return
+	if _camera_3d == null or _shop_items == null:
+		return
+
+	var from: Vector3 = _camera_3d.project_ray_origin(screen_pos)
+	var to: Vector3 = from + _camera_3d.project_ray_normal(screen_pos) * 100.0
+	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+	var result: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+	if result.is_empty():
+		return
+
+	var collider: Node = result.get("collider") as Node
+	if collider == null:
+		return
+
+	var item: Node3D = _resolve_item_from_collider(collider)
+	if item == null:
+		return
+
+	_on_item_pressed(item)
+	get_viewport().set_input_as_handled()
+
+func _resolve_item_from_collider(collider: Node) -> Node3D:
+	var current: Node = collider
+	while current != null:
+		if current == _shop_items:
+			return null
+		if current.get_parent() == _shop_items and current.has_method("get_offer_data"):
+			return current as Node3D
+		current = current.get_parent()
+	return null
 
 func _connect_buy_panel() -> void:
 	if _buy_panel == null:
