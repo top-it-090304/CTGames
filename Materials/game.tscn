@@ -172,14 +172,14 @@ material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=1819043525]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.5770316, 1.9278936, -1.0283227)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.1716938, 1.9278936, -1.0283227)
 material_override = SubResource("StandardMaterial3D_lo5pb")
 size = Vector3(0.2, 7.6313477, 7.423279)
 material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
 
 [node name="camera drone2" parent="." unique_id=413251090 instance=ExtResource("3_uuapk")]
-transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.6924341, -0.10784854, 0.6945769, 0, -1.3257022, 2.2742896, 2.8046956, -2.487281)
+transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.6924341, -0.10784854, 0.6945769, 0, -1.3257022, -0.080851495, 2.8046956, -2.487281)
 
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
