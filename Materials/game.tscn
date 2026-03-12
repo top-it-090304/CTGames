@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://fq7te7sr0l65" path="res://Objects/tabkle.glb" id="2_i6gxk"]
 [ext_resource type="Script" uid="uid://dotupo8hc1e86" path="res://Materials/panel_2.gd" id="3_fust2"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="3_gpbuv"]
+[ext_resource type="PackedScene" uid="uid://c2rqguikkedxi" path="res://Objects/camera drone.glb" id="3_uuapk"]
 [ext_resource type="PackedScene" uid="uid://c5iooqm66gbl7" path="res://Objects/Ashtray.glb" id="4_i1y15"]
 [ext_resource type="PackedScene" uid="uid://b1qisct7swvp4" path="res://Objects/Bottle.glb" id="4_tiqx2"]
 [ext_resource type="PackedScene" uid="uid://8bfaia2hqckq" path="res://Objects/ATM.glb" id="5_ablru"]
@@ -37,7 +38,7 @@
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
 [ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="30_xkq3k"]
 [ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
-[ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
+[ext_resource type="Script" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://voxel_lucky_cat.glb" id="33_uuapk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
@@ -72,18 +73,6 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuapk"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmok7"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -97,6 +86,18 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ra3k1"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tc3b6"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -171,6 +172,9 @@ material_override = SubResource("StandardMaterial3D_lo5pb")
 size = Vector3(0.2, 7.6313477, 7.423279)
 material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
+
+[node name="camera drone2" parent="." unique_id=413251090 instance=ExtResource("3_uuapk")]
+transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.6924341, -0.10784854, 0.6945769, 0, -1.3257022, 2.2742896, 2.8046956, -2.487281)
 
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
@@ -289,7 +293,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -374,7 +378,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_uuapk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u0rgs")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -459,7 +463,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ra3k1")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -544,7 +548,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_u0rgs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -629,7 +633,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ra3k1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tc3b6")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
