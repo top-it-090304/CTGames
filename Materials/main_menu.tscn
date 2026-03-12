@@ -3,13 +3,10 @@
 [ext_resource type="Script" uid="uid://bo8fbib2ea34a" path="res://Materials/main_menu.gd" id="1_5cdph"]
 [ext_resource type="Texture2D" uid="uid://cjhvomca0mqdv" path="res://textures/wall.png" id="2_j4gtj"]
 [ext_resource type="Texture2D" uid="uid://d0eug0onpabq0" path="res://textures/jackpot_jail_logo_nofon.png" id="3_j4gtj"]
+[ext_resource type="FontFile" uid="uid://ck38hek12mqvp" path="res://textures/pixeloidsans/PixeloidSans.ttf" id="3_jdk68"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4gtj"]
-bg_color = Color(0.14117648, 0.14117648, 0.14117648, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+bg_color = Color(0.14117648, 0.14117648, 0.14117648, 0.6901961)
 border_color = Color(1, 0.54901963, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1luex"]
@@ -21,11 +18,7 @@ border_width_bottom = 2
 border_color = Color(1, 0.654902, 0.3372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdk68"]
-bg_color = Color(0.14117648, 0.14117648, 0.14117648, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+bg_color = Color(0.14117648, 0.14117648, 0.14117648, 0.6901961)
 border_color = Color(1, 0.54901963, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51rob"]
@@ -50,6 +43,7 @@ offset_top = 310.0
 offset_right = 725.0
 offset_bottom = 435.0
 theme_override_colors/font_color = Color(0.827451, 0.827451, 0.827451, 1)
+theme_override_fonts/font = ExtResource("3_jdk68")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_j4gtj")
 theme_override_styles/hover = SubResource("StyleBoxFlat_1luex")
@@ -61,17 +55,19 @@ offset_top = 500.0
 offset_right = 725.0
 offset_bottom = 625.0
 theme_override_colors/font_color = Color(0.827451, 0.827451, 0.827451, 1)
+theme_override_fonts/font = ExtResource("3_jdk68")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_jdk68")
 theme_override_styles/hover = SubResource("StyleBoxFlat_51rob")
 text = "Выйти"
 
 [node name="Label" type="Label" parent="." unique_id=382064081]
-offset_left = 100.0
+offset_left = 114.0
 offset_top = 509.0
-offset_right = 1050.0
+offset_right = 1000.0
 offset_bottom = 645.0
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("3_jdk68")
+theme_override_font_sizes/font_size = 35
 
 [node name="Timer" type="Timer" parent="." unique_id=1552894202]
 
