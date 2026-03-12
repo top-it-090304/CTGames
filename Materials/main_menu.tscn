@@ -10,11 +10,7 @@ bg_color = Color(0.14117648, 0.14117648, 0.14117648, 0.6901961)
 border_color = Color(1, 0.54901963, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1luex"]
-bg_color = Color(0.44326448, 0.44326448, 0.44326448, 0.44705883)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+bg_color = Color(0.6, 0.6, 0.6, 0.3372549)
 border_color = Color(1, 0.654902, 0.3372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdk68"]
@@ -22,11 +18,7 @@ bg_color = Color(0.14117648, 0.14117648, 0.14117648, 0.6901961)
 border_color = Color(1, 0.54901963, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51rob"]
-bg_color = Color(0.6, 0.6, 0.6, 0.44705883)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+bg_color = Color(0.6, 0.6, 0.6, 0.3372549)
 border_color = Color(1, 0.654902, 0.3372549, 1)
 
 [node name="MainMenu" type="Node2D" unique_id=1392286683]
