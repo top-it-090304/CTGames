@@ -66,6 +66,18 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54luh"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuapk"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmok7"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -79,18 +91,6 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ra3k1"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tc3b6"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -170,7 +170,7 @@ fov = 95.7
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 
 [node name="Ashtray2" parent="." unique_id=1837193216 instance=ExtResource("4_i1y15")]
-transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -3.784338, 1.1281631, 0.42819524)
+transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -4.5508237, 1.1281631, -1.5258502)
 
 [node name="SlotMachine" parent="." unique_id=1718350174 instance=ExtResource("14_g7uyw")]
 transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -4.3711385e-08, -4.5562725, 0.45852017, -0.23754549)
@@ -273,7 +273,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_54luh")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -358,7 +358,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_u0rgs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uuapk")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -443,7 +443,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ra3k1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmok7")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -528,7 +528,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u0rgs")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -613,7 +613,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tc3b6")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ra3k1")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
