@@ -21,6 +21,11 @@ var cam_tween: Tween
 var rotate_left := false
 var rotate_right := false
 var rotation_speed := 2.0
+const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
+var _money_base_pos := Vector2.ZERO
+var _spins_base_pos := Vector2.ZERO
+var _tok_base_pos := Vector2.ZERO
+var _win_popup_base_pos := Vector2.ZERO
 @export var slot_spin_area_name: StringName = &"SpinButtonArea"
 var slot_spin_area: Area3D
 
@@ -456,20 +461,24 @@ func _configure_hud_visuals() -> void:
 		lbl_money.size = Vector2(356.0, 56.0)
 		lbl_money.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl_money.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_money.add_theme_font_override("font", PIXEL_FONT)
 		lbl_money.add_theme_font_size_override("font_size", 56)
 		lbl_money.add_theme_color_override("font_color", Color(1.0, 0.86, 0.08, 1.0))
 		lbl_money.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		lbl_money.add_theme_constant_override("outline_size", 6)
+		lbl_money.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 	if lbl_spins != null:
 		lbl_spins.position = Vector2(14.0, 84.0)
 		lbl_spins.size = Vector2(356.0, 44.0)
 		lbl_spins.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl_spins.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_spins.add_theme_font_override("font", PIXEL_FONT)
 		lbl_spins.add_theme_font_size_override("font_size", 48)
 		lbl_spins.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
 		lbl_spins.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		lbl_spins.add_theme_constant_override("outline_size", 3)
+		lbl_spins.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 	if hud_right != null:
 		hud_right.anchor_left = 1.0
@@ -487,10 +496,12 @@ func _configure_hud_visuals() -> void:
 		lbl_tok.size = Vector2(150.0, 44.0)
 		lbl_tok.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		lbl_tok.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		lbl_tok.add_theme_font_override("font", PIXEL_FONT)
 		lbl_tok.add_theme_font_size_override("font_size", 32)
 		lbl_tok.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
 		lbl_tok.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		lbl_tok.add_theme_constant_override("outline_size", 3)
+		lbl_tok.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 	if win_popup != null:
 		win_popup.anchor_left = 0.5
@@ -503,10 +514,17 @@ func _configure_hud_visuals() -> void:
 		win_popup.offset_bottom = 154.0
 		win_popup.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		win_popup.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		win_popup.add_theme_font_override("font", PIXEL_FONT)
 		win_popup.add_theme_font_size_override("font_size", 66)
 		win_popup.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
 		win_popup.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		win_popup.add_theme_constant_override("outline_size", 4)
+		win_popup.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+	_money_base_pos = lbl_money.position if lbl_money != null else Vector2.ZERO
+	_spins_base_pos = lbl_spins.position if lbl_spins != null else Vector2.ZERO
+	_tok_base_pos = lbl_tok.position if lbl_tok != null else Vector2.ZERO
+	_win_popup_base_pos = win_popup.position if win_popup != null else Vector2.ZERO
 
 func _hud_box_style() -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
@@ -516,6 +534,19 @@ func _hud_box_style() -> StyleBoxFlat:
 	style.corner_radius_bottom_left = 0
 	style.corner_radius_bottom_right = 0
 	return style
+
+func _update_hud_shake() -> void:
+	var t: float = float(Time.get_ticks_msec()) * 0.001
+	if lbl_money != null:
+		lbl_money.position = _money_base_pos + Vector2(sin(t * 2.6) * 0.8, cos(t * 3.1) * 0.55)
+	if lbl_spins != null:
+		lbl_spins.position = _spins_base_pos + Vector2(sin(t * 2.2 + 0.7) * 0.55, cos(t * 2.8 + 0.5) * 0.35)
+	if lbl_tok != null:
+		lbl_tok.position = _tok_base_pos + Vector2(sin(t * 2.5 + 1.1) * 0.65, cos(t * 3.0 + 0.2) * 0.45)
+	if win_popup != null and win_popup.visible:
+		win_popup.position = _win_popup_base_pos + Vector2(sin(t * 3.0 + 0.9) * 1.0, cos(t * 3.4 + 0.4) * 0.7)
+	elif win_popup != null:
+		win_popup.position = _win_popup_base_pos
 
 func _format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))
@@ -543,6 +574,7 @@ func _on_right_button_up():
 	rotate_right = false
 
 func _process(delta):
+	_update_hud_shake()
 	if rotate_left:
 		$Camera3D.rotate_y(-rotation_speed * delta)
 	if rotate_right:
