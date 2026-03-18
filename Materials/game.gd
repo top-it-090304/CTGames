@@ -148,6 +148,7 @@ func _on_ready_button_pressed() -> void:
 		return
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
+	_move_camera_to_hint("slot_machine")
 	if round_system != null and round_system.has_method("request_spin_choice"):
 		round_system.call("request_spin_choice")
 	_update_ready_button_visibility()
