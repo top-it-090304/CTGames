@@ -108,6 +108,8 @@ func _ready() -> void:
 		return
 
 	_rng.randomize()
+	if not is_in_group("slot_ui_highlight_target"):
+		add_to_group("slot_ui_highlight_target")
 	money = starting_money
 	spins_left = starting_spins
 	tickets = starting_tickets
@@ -884,6 +886,8 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 	clear_combo_highlight()
+	_highlight_palette_index = posmod(palette_index, _highlight_palettes.size())
+	_highlight_pulse_t = 0.0
 	if _highlight_overlay == null:
 		_ensure_highlight_overlay(reels_row.position, reels_row.size)
 
@@ -893,10 +897,18 @@ func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 		if point.y < 0 or point.y >= _reels.size():
 			continue
 		var icon: TextureRect = _reel_icon_for_row(_reels[point.y], point.x)
+		if icon == null:
+			continue
+		var frame: Control = _ensure_icon_highlight_frame(icon)
+		if frame != null:
+			frame.visible = true
+			if not _highlighted_icons.has(icon):
+				_highlighted_icons.append(icon)
 		var rect: Rect2 = _highlight_rect_for_icon(icon)
 		if rect.size.x > 8.0 and rect.size.y > 8.0:
 			rects.append(rect)
 
+	_refresh_icon_highlights()
 	if _highlight_overlay != null and _highlight_overlay.has_method("set_highlights"):
 		_highlight_overlay.call("set_highlights", rects, palette_index)
 
@@ -904,7 +916,8 @@ func clear_combo_highlight() -> void:
 	for icon: TextureRect in _highlighted_icons:
 		if icon == null:
 			continue
-		var frame: Panel = icon.get_node_or_null(HIT_FRAME_PATH) as Panel
+		icon.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		var frame: Control = icon.get_node_or_null(HIT_FRAME_PATH) as Control
 		if frame != null:
 			frame.visible = false
 	_highlighted_icons.clear()
@@ -923,22 +936,35 @@ func _highlight_rect_for_icon(icon: TextureRect) -> Rect2:
 		return Rect2(local_pos, icon_rect.size)
 	return Rect2(local_pos + inset, size)
 
-func _ensure_icon_highlight_frame(icon: TextureRect) -> Panel:
+func _ensure_icon_highlight_frame(icon: TextureRect) -> Control:
 	if icon == null:
 		return null
-	var frame: Panel = icon.get_node_or_null(HIT_FRAME_PATH) as Panel
+	var frame: Control = icon.get_node_or_null(HIT_FRAME_PATH) as Control
 	if frame == null:
-		frame = Panel.new()
+		frame = Control.new()
 		frame.name = String(HIT_FRAME_NAME)
 		icon.add_child(frame)
 		frame.set_anchors_preset(Control.PRESET_FULL_RECT)
-		frame.offset_left = 4.0
-		frame.offset_top = 4.0
-		frame.offset_right = -4.0
-		frame.offset_bottom = -4.0
+		frame.offset_left = 6.0
+		frame.offset_top = 6.0
+		frame.offset_right = -6.0
+		frame.offset_bottom = -6.0
 		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		frame.z_index = 20
+		frame.z_index = 40
 		frame.visible = false
+		frame.clip_contents = false
+
+		var fill_rect: ColorRect = ColorRect.new()
+		fill_rect.name = "Fill"
+		fill_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+		fill_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		frame.add_child(fill_rect)
+
+		for edge_name: String in ["Top", "Bottom", "Left", "Right", "Shine"]:
+			var edge_rect: ColorRect = ColorRect.new()
+			edge_rect.name = edge_name
+			edge_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			frame.add_child(edge_rect)
 	return frame
 
 func _refresh_icon_highlights() -> void:
@@ -949,30 +975,31 @@ func _refresh_icon_highlights() -> void:
 	var c1: Color = palette[1]
 	var t: float = 0.5 + 0.5 * sin(_highlight_pulse_t * HIGHLIGHT_PULSE_SPEED)
 	var edge: Color = c0.lerp(c1, t)
-	var fill: Color = Color(0.22, 0.02, 0.04, 0.24)
-	var shine: Color = Color(1.0, 1.0, 1.0, 0.14 + 0.08 * t)
+	var fill: Color = Color(0.42, 0.02, 0.04, 0.52)
+	var shine: Color = Color(1.0, 1.0, 0.72, 0.32 + 0.10 * t)
 
 	for icon: TextureRect in _highlighted_icons:
 		if icon == null:
 			continue
-		var frame: Panel = _ensure_icon_highlight_frame(icon)
+		var frame: Control = _ensure_icon_highlight_frame(icon)
 		if frame == null:
 			continue
 		var style: StyleBoxFlat = StyleBoxFlat.new()
 		style.bg_color = fill
 		style.border_color = edge
-		style.border_width_left = 5
-		style.border_width_top = 5
-		style.border_width_right = 5
-		style.border_width_bottom = 5
+		style.border_width_left = 8
+		style.border_width_top = 8
+		style.border_width_right = 8
+		style.border_width_bottom = 8
 		style.corner_radius_top_left = 6
 		style.corner_radius_top_right = 6
 		style.corner_radius_bottom_left = 6
 		style.corner_radius_bottom_right = 6
-		style.shadow_color = Color(edge.r, edge.g, edge.b, 0.45)
-		style.shadow_size = 7
+		style.shadow_color = Color(edge.r, edge.g, edge.b, 0.75)
+		style.shadow_size = 11
 		frame.add_theme_stylebox_override("panel", style)
 		frame.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		icon.self_modulate = Color(1.18, 1.14, 1.04, 1.0)
 
 func _rect_for_board_point(point: Vector2i) -> Rect2:
 	if point.y < 0 or point.y >= _reels.size():

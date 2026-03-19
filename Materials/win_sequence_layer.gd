@@ -37,6 +37,7 @@ func play_result(result: Dictionary) -> void:
 	if hits.is_empty() or total_win <= 0:
 		return
 
+	_clear_slot_highlight_direct()
 	emit_signal("highlight_cleared")
 	_sequence_token += 1
 	var token: int = _sequence_token
@@ -70,10 +71,13 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 		hits_total += int(hit.get("win_amount", 0))
 		var points: Array = hit.get("points", []) as Array
 		if points.is_empty():
+			_clear_slot_highlight_direct()
 			emit_signal("highlight_cleared")
 		else:
+			_show_slot_highlight_direct(points.duplicate(), palette_index)
 			emit_signal("hit_highlight_requested", points.duplicate(), palette_index)
 		await _show_combo_hit(token, hit)
+		_clear_slot_highlight_direct()
 		emit_signal("highlight_cleared")
 		if token != _sequence_token:
 			return
@@ -90,6 +94,7 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 		if token != _sequence_token:
 			return
 
+	_clear_slot_highlight_direct()
 	emit_signal("highlight_cleared")
 	await _show_total(token, total_win)
 	if token != _sequence_token:
@@ -101,10 +106,24 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 func _finish_sequence(token: int, total_win: int) -> void:
 	if token != _sequence_token:
 		return
+	_clear_slot_highlight_direct()
 	emit_signal("highlight_cleared")
 	_hide_all()
 	_active = false
 	emit_signal("sequence_finished", total_win)
+
+func _slot_ui_target() -> Node:
+	return get_tree().get_first_node_in_group("slot_ui_highlight_target")
+
+func _show_slot_highlight_direct(points: Array, palette_index: int) -> void:
+	var slot_ui: Node = _slot_ui_target()
+	if slot_ui != null and slot_ui.has_method("show_combo_highlight"):
+		slot_ui.call("show_combo_highlight", points, palette_index)
+
+func _clear_slot_highlight_direct() -> void:
+	var slot_ui: Node = _slot_ui_target()
+	if slot_ui != null and slot_ui.has_method("clear_combo_highlight"):
+		slot_ui.call("clear_combo_highlight")
 
 func _show_dim(token: int) -> void:
 	if _dim == null:
