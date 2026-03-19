@@ -295,28 +295,56 @@ func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
 	var margin_node: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
 	if box != null and margin_node != null:
 		var safe_row: int = clampi(row, 0, 2)
-		var target_y: float = reel.size.y * ((float(safe_row) + 0.5) / 3.0)
+		var target_y: float = _target_center_y_for_row(box, margin_node, safe_row)
 		var best_dist: float = INF
 		var best_icon: TextureRect = null
 
 		for child: Node in box.get_children():
 			var icon: TextureRect = child as TextureRect
-			if icon == null or icon.texture == null:
+			var visible_tex: Texture2D = _visible_texture_for_icon(icon)
+			if icon == null or visible_tex == null:
 				continue
 
 			var top_y: float = margin_node.offset_top + box.position.y + icon.position.y
-			var center_y: float = top_y + (icon.size.y * 0.5)
+			var center_y: float = top_y + (_icon_height(icon) * 0.5)
 			var dist: float = absf(center_y - target_y)
 			if dist < best_dist:
 				best_dist = dist
 				best_icon = icon
 
 		if best_icon != null:
-			return best_icon.texture
+			return _visible_texture_for_icon(best_icon)
 
 	if row == 1 and reel.has_method("get_middle_texture"):
 		return reel.call("get_middle_texture") as Texture2D
 	return null
+
+func _visible_texture_for_icon(icon: TextureRect) -> Texture2D:
+	if icon == null:
+		return null
+	var next_icon: TextureRect = icon.get_node_or_null("Next") as TextureRect
+	if next_icon != null and next_icon.texture != null and next_icon.modulate.a > 0.45:
+		return next_icon.texture
+	return icon.texture
+
+func _icon_height(icon: TextureRect) -> float:
+	if icon == null:
+		return 0.0
+	if icon.size.y > 0.0:
+		return icon.size.y
+	if icon.custom_minimum_size.y > 0.0:
+		return icon.custom_minimum_size.y
+	return 170.0
+
+func _target_center_y_for_row(box: VBoxContainer, margin_node: MarginContainer, row: int) -> float:
+	var first_icon: TextureRect = null
+	for child: Node in box.get_children():
+		first_icon = child as TextureRect
+		if first_icon != null:
+			break
+	var icon_height: float = _icon_height(first_icon)
+	var separation: float = float(box.get_theme_constant("separation"))
+	return margin_node.offset_top + (icon_height * 0.5) + float(row) * (icon_height + separation)
 
 func _evaluate_board(board: Array) -> Dictionary:
 	if not _board_is_3x5(board):
