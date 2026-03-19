@@ -897,10 +897,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -237.0
-offset_top = -31.0
-offset_right = 283.0
-offset_bottom = 119.0
+offset_left = -161.0
+offset_top = -231.0
+offset_right = 185.0
+offset_bottom = -140.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -917,10 +917,10 @@ horizontal_alignment = 1
 
 [node name="TotalPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=643676193]
 layout_mode = 0
-offset_left = 308.0
-offset_top = 294.0
-offset_right = 888.0
-offset_bottom = 484.0
+offset_left = 406.0
+offset_top = 86.0
+offset_right = 767.0
+offset_bottom = 194.0
 
 [node name="TotalTitleLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=2126401319]
 layout_mode = 0
@@ -1092,10 +1092,10 @@ layer = 10
 script = ExtResource("46_nt7fw")
 
 [node name="PausePanel" type="Panel" parent="PauseLayer" unique_id=1776531686]
-offset_left = 396.0
-offset_top = 169.0
-offset_right = 835.0
-offset_bottom = 483.0
+offset_left = 406.0
+offset_top = 162.0
+offset_right = 845.0
+offset_bottom = 476.0
 
 [node name="TitleLabel" type="Label" parent="PauseLayer/PausePanel" unique_id=948434368]
 layout_mode = 0
