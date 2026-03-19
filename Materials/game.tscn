@@ -870,6 +870,51 @@ text = "READY?!"
 flat = true
 script = ExtResource("31_uasde")
 
+[node name="WinSequenceLayer" type="Control" parent="UI" unique_id=1032020429]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dim" type="ColorRect" parent="UI/WinSequenceLayer" unique_id=128007144]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="ComboPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=2011231711]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ComboNameLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=1778185143]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ComboValueLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=655202734]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="TotalPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=643676193]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TotalTitleLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=2126401319]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="TotalValueLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=975195003]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
 
