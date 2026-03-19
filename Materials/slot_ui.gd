@@ -551,16 +551,18 @@ func _build_combo_rules() -> Array[Dictionary]:
 
 	var horizontal_l_variants: Array = []
 	for row_l: int in range(3):
-		horizontal_l_variants.append([
-			Vector2i(row_l, 1), Vector2i(row_l, 2), Vector2i(row_l, 3), Vector2i(row_l, 4),
-		])
+		for start_col_l: int in range(2):
+			horizontal_l_variants.append([
+				Vector2i(row_l, start_col_l), Vector2i(row_l, start_col_l + 1), Vector2i(row_l, start_col_l + 2), Vector2i(row_l, start_col_l + 3),
+			])
 	rules.append({"id": "horizontal_l", "name": "Гор. L", "multiplier": 2, "variants": horizontal_l_variants})
 
 	var horizontal_m_variants: Array = []
 	for row_m: int in range(3):
-		horizontal_m_variants.append([
-			Vector2i(row_m, 1), Vector2i(row_m, 2), Vector2i(row_m, 3),
-		])
+		for start_col_m: int in range(3):
+			horizontal_m_variants.append([
+				Vector2i(row_m, start_col_m), Vector2i(row_m, start_col_m + 1), Vector2i(row_m, start_col_m + 2),
+			])
 	rules.append({"id": "horizontal", "name": "Гор.", "multiplier": 1, "variants": horizontal_m_variants})
 
 	var vertical_variants: Array = []
