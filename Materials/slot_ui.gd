@@ -984,20 +984,43 @@ func _refresh_icon_highlights() -> void:
 		var frame: Control = _ensure_icon_highlight_frame(icon)
 		if frame == null:
 			continue
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.bg_color = fill
-		style.border_color = edge
-		style.border_width_left = 8
-		style.border_width_top = 8
-		style.border_width_right = 8
-		style.border_width_bottom = 8
-		style.corner_radius_top_left = 6
-		style.corner_radius_top_right = 6
-		style.corner_radius_bottom_left = 6
-		style.corner_radius_bottom_right = 6
-		style.shadow_color = Color(edge.r, edge.g, edge.b, 0.75)
-		style.shadow_size = 11
-		frame.add_theme_stylebox_override("panel", style)
+
+		var fill_rect: ColorRect = frame.get_node_or_null(^"Fill") as ColorRect
+		var top_rect: ColorRect = frame.get_node_or_null(^"Top") as ColorRect
+		var bottom_rect: ColorRect = frame.get_node_or_null(^"Bottom") as ColorRect
+		var left_rect: ColorRect = frame.get_node_or_null(^"Left") as ColorRect
+		var right_rect: ColorRect = frame.get_node_or_null(^"Right") as ColorRect
+		var shine_rect: ColorRect = frame.get_node_or_null(^"Shine") as ColorRect
+
+		var border_px: float = 8.0
+		var shine_px: float = 2.0
+		var w: float = maxf(frame.size.x, 0.0)
+		var h: float = maxf(frame.size.y, 0.0)
+
+		if fill_rect != null:
+			fill_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+			fill_rect.color = fill
+		if top_rect != null:
+			top_rect.position = Vector2.ZERO
+			top_rect.size = Vector2(w, border_px)
+			top_rect.color = edge
+		if bottom_rect != null:
+			bottom_rect.position = Vector2(0.0, h - border_px)
+			bottom_rect.size = Vector2(w, border_px)
+			bottom_rect.color = edge
+		if left_rect != null:
+			left_rect.position = Vector2.ZERO
+			left_rect.size = Vector2(border_px, h)
+			left_rect.color = edge
+		if right_rect != null:
+			right_rect.position = Vector2(w - border_px, 0.0)
+			right_rect.size = Vector2(border_px, h)
+			right_rect.color = edge
+		if shine_rect != null:
+			shine_rect.position = Vector2(border_px + 3.0, border_px + 3.0)
+			shine_rect.size = Vector2(maxf(w - (border_px + 3.0) * 2.0, 0.0), shine_px)
+			shine_rect.color = shine
+
 		frame.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
 		icon.self_modulate = Color(1.18, 1.14, 1.04, 1.0)
 
