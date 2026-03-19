@@ -2,6 +2,8 @@ extends Control
 
 signal sequence_started
 signal sequence_finished(total_win: int)
+signal hit_highlight_requested(points: Array, palette_index: int)
+signal highlight_cleared
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
@@ -35,6 +37,7 @@ func play_result(result: Dictionary) -> void:
 	if hits.is_empty() or total_win <= 0:
 		return
 
+	emit_signal("highlight_cleared")
 	_sequence_token += 1
 	var token: int = _sequence_token
 	_active = true
@@ -61,12 +64,20 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 		return
 
 	var hits_total: int = 0
+	var palette_index: int = 0
 	for hit_var: Variant in hits:
 		var hit: Dictionary = hit_var as Dictionary
 		hits_total += int(hit.get("win_amount", 0))
+		var points: Array = hit.get("points", []) as Array
+		if points.is_empty():
+			emit_signal("highlight_cleared")
+		else:
+			emit_signal("hit_highlight_requested", points.duplicate(), palette_index)
 		await _show_combo_hit(token, hit)
+		emit_signal("highlight_cleared")
 		if token != _sequence_token:
 			return
+		palette_index += 1
 
 	var bonus_amount: int = maxi(total_win - hits_total, 0)
 	if bonus_amount > 0:
@@ -79,6 +90,7 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 		if token != _sequence_token:
 			return
 
+	emit_signal("highlight_cleared")
 	await _show_total(token, total_win)
 	if token != _sequence_token:
 		return
@@ -89,6 +101,7 @@ func _play_sequence(token: int, result: Dictionary) -> void:
 func _finish_sequence(token: int, total_win: int) -> void:
 	if token != _sequence_token:
 		return
+	emit_signal("highlight_cleared")
 	_hide_all()
 	_active = false
 	emit_signal("sequence_finished", total_win)
@@ -209,41 +222,41 @@ func _apply_visuals() -> void:
 		_dim.color = Color(0.0, 0.0, 0.0, 1.0)
 		_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	_apply_panel_style(_combo_popup, Vector2(560.0, 150.0), Vector2(0.0, -34.0), Color(0.02, 0.02, 0.02, 0.93), Color(1.0, 0.48, 0.08, 1.0), 2)
-	_apply_panel_style(_total_popup, Vector2(620.0, 190.0), Vector2(0.0, 52.0), Color(0.0, 0.0, 0.0, 0.96), Color(1.0, 0.78, 0.12, 1.0), 3)
+	_apply_panel_style(_combo_popup, Vector2(248.0, 86.0), Vector2(0.0, -230.0), Color(0.02, 0.02, 0.02, 0.93), Color(1.0, 0.48, 0.08, 1.0), 2)
+	_apply_panel_style(_total_popup, Vector2(260.0, 94.0), Vector2(0.0, -230.0), Color(0.0, 0.0, 0.0, 0.96), Color(1.0, 0.78, 0.12, 1.0), 3)
 
-	_apply_label_style(_combo_name_label, 54, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 4)
-	_apply_label_style(_combo_value_label, 62, Color(1.0, 0.96, 0.94, 1.0), Color.BLACK, 4)
-	_apply_label_style(_total_title_label, 62, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 4)
-	_apply_label_style(_total_value_label, 84, Color(1.0, 0.86, 0.08, 1.0), Color.BLACK, 5)
+	_apply_label_style(_combo_name_label, 23, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 3)
+	_apply_label_style(_combo_value_label, 28, Color(1.0, 0.96, 0.94, 1.0), Color.BLACK, 3)
+	_apply_label_style(_total_title_label, 24, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 3)
+	_apply_label_style(_total_value_label, 31, Color(1.0, 0.86, 0.08, 1.0), Color.BLACK, 4)
 
 	if _combo_name_label != null:
 		_combo_name_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_combo_name_label.offset_left = 24.0
-		_combo_name_label.offset_top = 18.0
-		_combo_name_label.offset_right = -24.0
-		_combo_name_label.offset_bottom = 74.0
+		_combo_name_label.offset_left = 10.0
+		_combo_name_label.offset_top = 6.0
+		_combo_name_label.offset_right = -10.0
+		_combo_name_label.offset_bottom = 34.0
 
 	if _combo_value_label != null:
 		_combo_value_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_combo_value_label.offset_left = 24.0
-		_combo_value_label.offset_top = 78.0
-		_combo_value_label.offset_right = -24.0
-		_combo_value_label.offset_bottom = 136.0
+		_combo_value_label.offset_left = 10.0
+		_combo_value_label.offset_top = 38.0
+		_combo_value_label.offset_right = -10.0
+		_combo_value_label.offset_bottom = 74.0
 
 	if _total_title_label != null:
 		_total_title_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_total_title_label.offset_left = 24.0
-		_total_title_label.offset_top = 22.0
-		_total_title_label.offset_right = -24.0
-		_total_title_label.offset_bottom = 82.0
+		_total_title_label.offset_left = 10.0
+		_total_title_label.offset_top = 6.0
+		_total_title_label.offset_right = -10.0
+		_total_title_label.offset_bottom = 36.0
 
 	if _total_value_label != null:
 		_total_value_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_total_value_label.offset_left = 24.0
-		_total_value_label.offset_top = 86.0
-		_total_value_label.offset_right = -24.0
-		_total_value_label.offset_bottom = 164.0
+		_total_value_label.offset_left = 10.0
+		_total_value_label.offset_top = 38.0
+		_total_value_label.offset_right = -10.0
+		_total_value_label.offset_bottom = 82.0
 
 func _apply_panel_style(panel: Panel, panel_size: Vector2, centered_offset: Vector2, bg: Color, border: Color, border_px: int) -> void:
 	if panel == null:

@@ -82,6 +82,9 @@ var _last_target_grid: Array = []
 var _last_win_amount: int = 0
 var _last_win_combo_id: String = ""
 var _totem_bonuses: Dictionary = {}
+var _highlight_overlay: Control
+
+const SLOT_HIGHLIGHT_OVERLAY_SCRIPT: Script = preload("res://Materials/slot_highlight_overlay.gd")
 
 func _ready() -> void:
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
@@ -786,6 +789,7 @@ func _configure_slot_layout() -> void:
 
 	_ensure_frame(Rect2(reels_pos - Vector2(26.0, 26.0), reels_size + Vector2(52.0, 52.0)))
 	_ensure_separators(reels_pos, reel_size, gap)
+	_ensure_highlight_overlay(reels_pos, reels_size)
 
 	for reel: Panel in _reels:
 		reel.custom_minimum_size = reel_size
@@ -839,6 +843,58 @@ func _ensure_separators(reels_pos: Vector2, reel_size: Vector2, gap: float) -> v
 
 	move_child(root, get_child_count() - 1)
 	move_child(reels_row, get_child_count() - 1)
+
+func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
+	if _highlight_overlay == null:
+		_highlight_overlay = get_node_or_null("HighlightOverlay") as Control
+	if _highlight_overlay == null:
+		_highlight_overlay = SLOT_HIGHLIGHT_OVERLAY_SCRIPT.new() as Control
+		_highlight_overlay.name = "HighlightOverlay"
+		add_child(_highlight_overlay)
+	_highlight_overlay.position = reels_pos
+	_highlight_overlay.size = reels_size
+	_highlight_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	move_child(_highlight_overlay, get_child_count() - 1)
+
+func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
+	if _highlight_overlay == null:
+		_ensure_highlight_overlay(reels_row.position, reels_row.size)
+	var rects: Array[Rect2] = []
+	for point_var: Variant in points:
+		var point: Vector2i = point_var
+		var rect: Rect2 = _rect_for_board_point(point)
+		if rect.size.x > 0.0 and rect.size.y > 0.0:
+			rects.append(rect)
+	if _highlight_overlay != null and _highlight_overlay.has_method("set_highlights"):
+		_highlight_overlay.call("set_highlights", rects, palette_index)
+
+func clear_combo_highlight() -> void:
+	if _highlight_overlay != null and _highlight_overlay.has_method("clear_highlights"):
+		_highlight_overlay.call("clear_highlights")
+
+func _rect_for_board_point(point: Vector2i) -> Rect2:
+	if point.y < 0 or point.y >= _reels.size():
+		return Rect2()
+	if point.x < 0 or point.x >= 3:
+		return Rect2()
+	var reel: Panel = _reels[point.y]
+	if reel == null:
+		return Rect2()
+	var margin_node: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
+	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+	if margin_node == null or box == null:
+		return Rect2()
+	var first_icon: TextureRect = null
+	for child: Node in box.get_children():
+		first_icon = child as TextureRect
+		if first_icon != null:
+			break
+	var icon_width: float = first_icon.size.x if first_icon != null and first_icon.size.x > 0.0 else first_icon.custom_minimum_size.x if first_icon != null and first_icon.custom_minimum_size.x > 0.0 else 250.0
+	var icon_height: float = first_icon.size.y if first_icon != null and first_icon.size.y > 0.0 else first_icon.custom_minimum_size.y if first_icon != null and first_icon.custom_minimum_size.y > 0.0 else 170.0
+	var separation: float = float(box.get_theme_constant("separation"))
+	var x: float = reel.position.x + margin_node.offset_left - 6.0
+	var y: float = margin_node.offset_top + float(point.x) * (icon_height + separation) - 6.0
+	return Rect2(Vector2(x, y), Vector2(icon_width + 12.0, icon_height + 12.0))
 
 func _frame_style() -> StyleBoxFlat:
 	var style: StyleBoxFlat = StyleBoxFlat.new()

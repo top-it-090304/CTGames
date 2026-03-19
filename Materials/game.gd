@@ -147,9 +147,27 @@ func _bind_ready_button() -> void:
 
 func _bind_win_sequence_layer() -> void:
 	win_sequence_layer = get_node_or_null("UI/WinSequenceLayer") as Control
+	if win_sequence_layer == null:
+		return
+	if win_sequence_layer.has_signal("hit_highlight_requested"):
+		var hit_cb: Callable = Callable(self, "_on_win_highlight_requested")
+		if not win_sequence_layer.is_connected("hit_highlight_requested", hit_cb):
+			win_sequence_layer.connect("hit_highlight_requested", hit_cb)
+	if win_sequence_layer.has_signal("highlight_cleared"):
+		var clear_cb: Callable = Callable(self, "_on_win_highlight_cleared")
+		if not win_sequence_layer.is_connected("highlight_cleared", clear_cb):
+			win_sequence_layer.connect("highlight_cleared", clear_cb)
 
 func is_win_sequence_active() -> bool:
 	return win_sequence_layer != null and win_sequence_layer.has_method("is_playing") and bool(win_sequence_layer.call("is_playing"))
+
+func _on_win_highlight_requested(points: Array, palette_index: int) -> void:
+	if slot_ui != null and slot_ui.has_method("show_combo_highlight"):
+		slot_ui.call("show_combo_highlight", points, palette_index)
+
+func _on_win_highlight_cleared() -> void:
+	if slot_ui != null and slot_ui.has_method("clear_combo_highlight"):
+		slot_ui.call("clear_combo_highlight")
 
 func _on_ready_button_pressed() -> void:
 	if ready_button == null:
