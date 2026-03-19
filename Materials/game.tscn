@@ -1021,42 +1021,46 @@ transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -
 transform = Transform3D(-6.556708e-08, 0, 1, 0, 1, 0, -1.5, 0, -4.371139e-08, -0.53905046, -0.048847437, -0.7567878)
 
 [node name="PauseLayer" type="CanvasLayer" parent="." unique_id=2095371649]
+process_mode = 3
 layer = 10
 
 [node name="PausePanel" type="Panel" parent="PauseLayer" unique_id=1776531686]
-offset_left = 460.0
-offset_top = 180.0
-offset_right = 724.0
-offset_bottom = 379.0
+offset_left = 407.0
+offset_top = 165.0
+offset_right = 846.0
+offset_bottom = 479.0
 
 [node name="TitleLabel" type="Label" parent="PauseLayer/PausePanel" unique_id=948434368]
 layout_mode = 0
-offset_left = 78.0
-offset_top = 14.0
-offset_right = 206.0
-offset_bottom = 60.0
+offset_left = 156.0
+offset_top = 33.0
+offset_right = 364.0
+offset_bottom = 114.0
 text = "Пауза"
 
 [node name="ResumeButton" type="Button" parent="PauseLayer/PausePanel" unique_id=1537755512]
 layout_mode = 0
-offset_left = 89.0
-offset_top = 60.0
-offset_right = 130.0
-offset_bottom = 77.0
-
-[node name="QuitButton" type="Button" parent="PauseLayer/PausePanel" unique_id=419427370]
-layout_mode = 0
-offset_left = 100.0
-offset_top = 138.0
-offset_right = 139.0
-offset_bottom = 152.0
+offset_left = 112.0
+offset_top = 73.0
+offset_right = 223.0
+offset_bottom = 104.0
+text = "Продолжить"
 
 [node name="SettingButton" type="Button" parent="PauseLayer/PausePanel" unique_id=1309319643]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 89.0
-offset_right = 134.0
-offset_bottom = 120.0
+offset_left = 127.0
+offset_top = 135.0
+offset_right = 224.0
+offset_bottom = 166.0
+text = "Настройки"
+
+[node name="QuitButton" type="Button" parent="PauseLayer/PausePanel" unique_id=419427370]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 188.0
+offset_right = 203.0
+offset_bottom = 219.0
+text = "Выход"
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
