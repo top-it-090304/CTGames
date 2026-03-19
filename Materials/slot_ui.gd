@@ -851,9 +851,12 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 		_highlight_overlay = SLOT_HIGHLIGHT_OVERLAY_SCRIPT.new() as Control
 		_highlight_overlay.name = "HighlightOverlay"
 		add_child(_highlight_overlay)
+	_highlight_overlay.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	_highlight_overlay.position = reels_pos
 	_highlight_overlay.size = reels_size
 	_highlight_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_highlight_overlay.clip_contents = false
+	_highlight_overlay.z_index = 80
 	move_child(_highlight_overlay, get_child_count() - 1)
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
