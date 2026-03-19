@@ -6,6 +6,13 @@ var is_paused: bool = false
 var base_resume_pos:   Vector2
 var base_settings_pos: Vector2
 var base_quit_pos:     Vector2
+var quit_confirm_box: Panel
+var quit_confirm_label: RichTextLabel
+var quit_yes_btn: Button
+var quit_no_btn: Button
+var quit_choices: HBoxContainer
+var quit_confirm_base_pos: Vector2
+var quit_choices_base_pos: Vector2
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
@@ -15,13 +22,93 @@ func _ready() -> void:
 		return
 	pause_panel.visible = false
 	_configure_visuals()
+	_setup_quit_confirm()
+
+func _setup_quit_confirm() -> void:
+	quit_confirm_box = Panel.new()
+	quit_confirm_box.anchor_left   = 0.0
+	quit_confirm_box.anchor_right  = 1.0
+	quit_confirm_box.anchor_top    = 1.0
+	quit_confirm_box.anchor_bottom = 1.0
+	quit_confirm_box.offset_left   = 0.0
+	quit_confirm_box.offset_right  = 0.0
+	quit_confirm_box.offset_top    = -180.0
+	quit_confirm_box.offset_bottom = 0.0
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+	quit_confirm_box.add_theme_stylebox_override("panel", bg)
+	quit_confirm_box.visible = false
+	add_child(quit_confirm_box)
+
+	quit_confirm_label = RichTextLabel.new()
+	quit_confirm_label.anchor_left   = 0.0
+	quit_confirm_label.anchor_right  = 1.0
+	quit_confirm_label.anchor_top    = 0.0
+	quit_confirm_label.anchor_bottom = 1.0
+	quit_confirm_label.offset_left   = 34.0
+	quit_confirm_label.offset_right  = -34.0
+	quit_confirm_label.offset_top    = 22.0
+	quit_confirm_label.offset_bottom = -70.0
+	quit_confirm_label.bbcode_enabled = false
+	quit_confirm_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	quit_confirm_label.scroll_active = false
+	quit_confirm_label.add_theme_font_override("normal_font", PIXEL_FONT)
+	quit_confirm_label.add_theme_font_size_override("normal_font_size", 34)
+	quit_confirm_label.add_theme_color_override("default_color", Color(1.0, 1.0, 1.0, 1.0))
+	quit_confirm_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+	quit_confirm_label.add_theme_constant_override("outline_size", 3)
+	quit_confirm_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	quit_confirm_box.add_child(quit_confirm_label)
+
+	quit_choices = HBoxContainer.new()
+	quit_choices.anchor_left   = 1.0
+	quit_choices.anchor_right  = 1.0
+	quit_choices.anchor_top    = 1.0
+	quit_choices.anchor_bottom = 1.0
+	quit_choices.offset_left   = -230.0
+	quit_choices.offset_right  = -18.0
+	quit_choices.offset_top    = -106.0
+	quit_choices.offset_bottom = -46.0
+	quit_choices.alignment = BoxContainer.ALIGNMENT_END
+	quit_choices.add_theme_constant_override("separation", 20)
+	quit_confirm_box.add_child(quit_choices)
+
+	quit_yes_btn = Button.new()
+	quit_yes_btn.text = "Да"
+	quit_no_btn = Button.new()
+	quit_no_btn.text = "Нет"
+
+	for btn: Button in [quit_yes_btn, quit_no_btn]:
+		btn.flat = true
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.add_theme_font_override("font", PIXEL_FONT)
+		btn.add_theme_font_size_override("font_size", 56)
+		btn.add_theme_color_override("font_color",         Color(1.0, 1.0, 1.0, 1.0))
+		btn.add_theme_color_override("font_pressed_color", Color(0.8, 0.8, 0.8, 1.0))
+		btn.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+		btn.add_theme_constant_override("outline_size", 2)
+		btn.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		quit_choices.add_child(btn)
+
+	quit_yes_btn.pressed.connect(_on_quit_confirmed)
+	quit_no_btn.pressed.connect(_on_quit_cancelled)
+
+	# сохраняем базовые позиции ПОСЛЕ того как ноды созданы и добавлены
+	quit_confirm_base_pos = quit_confirm_label.position
+	quit_choices_base_pos = quit_choices.position
 
 	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
 	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
 	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
-	if resume_btn   != null: resume_btn.pressed.connect(_on_resume_pressed)
-	if settings_btn != null: settings_btn.pressed.connect(_on_settings_pressed)
-	if quit_btn     != null: quit_btn.pressed.connect(_on_quit_pressed)
+	if resume_btn   != null:
+		resume_btn.pressed.connect(_on_resume_pressed)
+		base_resume_pos = resume_btn.position
+	if settings_btn != null:
+		settings_btn.pressed.connect(_on_settings_pressed)
+		base_settings_pos = settings_btn.position
+	if quit_btn     != null:
+		quit_btn.pressed.connect(_on_quit_pressed)
+		base_quit_pos = quit_btn.position
 
 func _configure_visuals() -> void:
 	pause_panel.anchor_left   = 0.5
@@ -111,15 +198,11 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 	btn.add_theme_stylebox_override("normal",  normal)
 	btn.add_theme_stylebox_override("hover",   hover)
 	btn.add_theme_stylebox_override("pressed", pressed)
-	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
-	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
-	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
-	if resume_btn   != null: base_resume_pos   = resume_btn.position
-	if settings_btn != null: base_settings_pos = settings_btn.position
-	if quit_btn     != null: base_quit_pos     = quit_btn.position
+
 func _process(_delta: float) -> void:
 	if not is_paused:
 		return
+
 	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
 	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
 	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
@@ -129,6 +212,20 @@ func _process(_delta: float) -> void:
 		settings_btn.position = base_settings_pos + Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
 	if quit_btn     != null:
 		quit_btn.position     = base_quit_pos     + Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
+
+	if quit_confirm_box != null and quit_confirm_box.visible:
+		var t: float = float(Time.get_ticks_msec()) * 0.001
+		if quit_confirm_label != null:
+			quit_confirm_label.position = quit_confirm_base_pos + Vector2(
+				sin(t * 1.0) * 3.0,
+				cos(t * 1.5) * 2.0
+			)
+		if quit_choices != null:
+			quit_choices.position = quit_choices_base_pos + Vector2(
+				sin(t * 1.5 + 0.5) * 3.0,
+				cos(t * 2.0 + 0.5) * 2.0
+			)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if (event as InputEventKey).keycode == KEY_ESCAPE:
@@ -140,6 +237,8 @@ func _toggle_pause() -> void:
 	get_tree().paused = is_paused
 	if pause_panel != null:
 		pause_panel.visible = is_paused
+	if not is_paused and quit_confirm_box != null:
+		quit_confirm_box.visible = false
 
 func _on_resume_pressed() -> void:
 	is_paused = false
@@ -151,5 +250,26 @@ func _on_settings_pressed() -> void:
 	pass
 
 func _on_quit_pressed() -> void:
+	if pause_panel != null:
+		pause_panel.visible = false
+	quit_confirm_box.visible = true
+	_type_quit_text("Думаешь выйти из игры так просто?")
+
+func _type_quit_text(text: String) -> void:
+	quit_confirm_label.text = ""
+	quit_choices.visible = false
+	var char_i := 0
+	while char_i <= text.length():
+		quit_confirm_label.text = text.substr(0, char_i)
+		char_i += 1
+		await get_tree().create_timer(0.03).timeout
+	quit_choices.visible = true
+
+func _on_quit_confirmed() -> void:
 	get_tree().paused = false
 	get_tree().quit()
+
+func _on_quit_cancelled() -> void:
+	quit_confirm_box.visible = false
+	is_paused = false
+	get_tree().paused = false
