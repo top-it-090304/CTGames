@@ -84,6 +84,7 @@ func _setup_quit_confirm() -> void:
 		btn.add_theme_font_override("font", PIXEL_FONT)
 		btn.add_theme_font_size_override("font_size", 56)
 		btn.add_theme_color_override("font_color",         Color(1.0, 1.0, 1.0, 1.0))
+		btn.add_theme_color_override("font_hover_color",   Color(1.0, 0.86, 0.08, 1.0))
 		btn.add_theme_color_override("font_pressed_color", Color(0.8, 0.8, 0.8, 1.0))
 		btn.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		btn.add_theme_constant_override("outline_size", 2)
@@ -93,7 +94,6 @@ func _setup_quit_confirm() -> void:
 	quit_yes_btn.pressed.connect(_on_quit_confirmed)
 	quit_no_btn.pressed.connect(_on_quit_cancelled)
 
-	# сохраняем базовые позиции ПОСЛЕ того как ноды созданы и добавлены
 	quit_confirm_base_pos = quit_confirm_label.position
 	quit_choices_base_pos = quit_choices.position
 

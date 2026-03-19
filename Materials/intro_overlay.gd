@@ -189,8 +189,8 @@ func _setup_ui() -> void:
 		btn.mouse_filter = Control.MOUSE_FILTER_STOP
 		btn.add_theme_font_override("font", PIXEL_FONT)
 		btn.add_theme_font_size_override("font_size", 56)
-		btn.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95, 1.0))
-		btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0, 1.0))
+		btn.add_theme_color_override("font_color",         Color(0.95, 0.95, 0.95, 1.0))
+		btn.add_theme_color_override("font_hover_color",   Color(1.0, 0.86, 0.08, 1.0))
 		btn.add_theme_color_override("font_pressed_color", Color(0.75, 0.75, 0.75, 1.0))
 		btn.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1.0))
 		btn.add_theme_constant_override("outline_size", 2)
