@@ -16,6 +16,7 @@ var lbl_tok: Label
 var win_popup: Label
 var ready_button: Button
 var totem_buy_panel: Panel
+var win_sequence_layer: Control
 
 var win_popup_tween: Tween
 var cam_tween: Tween
@@ -47,6 +48,7 @@ func _ready() -> void:
 	_ensure_intro_started()
 	slot_spin_area = _find_slot_spin_area()
 	_bind_ready_button()
+	_bind_win_sequence_layer()
 	_update_ready_button_visibility()
 	if win_popup != null:
 		win_popup.visible = false
@@ -143,12 +145,17 @@ func _bind_ready_button() -> void:
 	if not ready_button.pressed.is_connected(cb):
 		ready_button.pressed.connect(cb)
 
+func _bind_win_sequence_layer() -> void:
+	win_sequence_layer = get_node_or_null("UI/WinSequenceLayer") as Control
+
+func is_win_sequence_active() -> bool:
+	return win_sequence_layer != null and win_sequence_layer.has_method("is_playing") and bool(win_sequence_layer.call("is_playing"))
+
 func _on_ready_button_pressed() -> void:
 	if ready_button == null:
 		return
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
-	_move_camera_to_hint("slot_machine")
 	if round_system != null and round_system.has_method("request_spin_choice"):
 		round_system.call("request_spin_choice")
 	_update_ready_button_visibility()
@@ -164,7 +171,7 @@ func _update_ready_button_visibility() -> void:
 	if ready_button == null:
 		return
 	var show: bool = false
-	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open():
+	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open() and not is_win_sequence_active():
 		var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
 		var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
 		var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
@@ -382,6 +389,10 @@ func _connect_slot_ui() -> void:
 		var on_popup: Callable = Callable(self, "_on_win_popup_requested")
 		if not slot_ui.is_connected("win_popup_requested", on_popup):
 			slot_ui.connect("win_popup_requested", on_popup)
+	if slot_ui.has_signal("win_sequence_requested"):
+		var on_sequence: Callable = Callable(self, "_on_win_sequence_requested")
+		if not slot_ui.is_connected("win_sequence_requested", on_sequence):
+			slot_ui.connect("win_sequence_requested", on_sequence)
 
 func _sync_hud_from_slot() -> void:
 	if slot_ui == null or not slot_ui.has_method("get_hud_state"):
@@ -416,6 +427,17 @@ func _on_win_popup_requested(amount: int) -> void:
 	tw.tween_interval(0.86)
 	tw.tween_property(win_popup, "modulate:a", 0.0, 0.28)
 	tw.finished.connect(_hide_win_popup)
+
+func _on_win_sequence_requested(result: Dictionary) -> void:
+	_update_ready_button_visibility()
+	if win_sequence_layer == null:
+		_bind_win_sequence_layer()
+	if win_sequence_layer == null or not win_sequence_layer.has_method("play_result"):
+		var amount: int = int(result.get("win_amount", 0))
+		if amount > 0:
+			_on_win_popup_requested(amount)
+		return
+	win_sequence_layer.call("play_result", result.duplicate(true))
 
 func _hide_win_popup() -> void:
 	if win_popup == null:

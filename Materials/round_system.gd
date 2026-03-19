@@ -83,6 +83,8 @@ func _try_finish_round_if_ready() -> void:
 		return
 	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
 		return
+	if game_root != null and game_root.has_method("is_win_sequence_active") and bool(game_root.call("is_win_sequence_active")):
+		return
 	_finish_round_requested = true
 	call_deferred("_finish_round_if_ready_deferred")
 
@@ -93,6 +95,8 @@ func _finish_round_if_ready_deferred() -> void:
 	if _get_spins_left() > 0:
 		return
 	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
+		return
+	if game_root != null and game_root.has_method("is_win_sequence_active") and bool(game_root.call("is_win_sequence_active")):
 		return
 	_finish_round()
 

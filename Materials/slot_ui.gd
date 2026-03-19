@@ -4,6 +4,7 @@ extends Control
 signal status_changed(text: String)
 signal hud_changed(money: int, spins_left: int, tickets: int)
 signal win_popup_requested(amount: int)
+signal win_sequence_requested(result: Dictionary)
 signal spin_completed(win_amount: int)
 signal round_ended(round_number: int, interest_amount: int)
 
@@ -230,7 +231,7 @@ func _spin() -> void:
 
 	if win_amount > 0:
 		money += win_amount
-		emit_signal("win_popup_requested", win_amount)
+		emit_signal("win_sequence_requested", result.duplicate(true))
 
 	_set_status(String(result.get("text", "DONE")))
 	_emit_hud_changed()
