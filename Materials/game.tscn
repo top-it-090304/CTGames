@@ -42,10 +42,11 @@
 [ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
 [ext_resource type="Script" uid="uid://01du5b4o2mbh" path="res://Materials/ready_button.gd" id="31_uasde"]
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
+[ext_resource type="Script" uid="uid://duhnls4b655nw" path="res://Materials/win_sequence_layer.gd" id="33_8k356"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://voxel_lucky_cat.glb" id="33_uuapk"]
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
-[ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
+[ext_resource type="Script" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -79,6 +80,12 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nt7fw"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8k356"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -98,12 +105,6 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yy33s"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1s43"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -301,7 +302,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8k356")
+theme_override_styles/panel = SubResource("StyleBoxFlat_nt7fw")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -386,7 +387,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8k356")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -471,7 +472,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -556,7 +557,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
+theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -641,7 +642,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -879,42 +880,61 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("33_8k356")
 
 [node name="Dim" type="ColorRect" parent="UI/WinSequenceLayer" unique_id=128007144]
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="ComboPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=2011231711]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ComboNameLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=1778185143]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -237.0
+offset_top = -31.0
+offset_right = 283.0
+offset_bottom = 119.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ComboValueLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=655202734]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 236.0
+offset_top = 48.0
+offset_right = 276.0
+offset_bottom = 97.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+text = "
+"
+horizontal_alignment = 1
 
 [node name="TotalPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=643676193]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 308.0
+offset_top = 294.0
+offset_right = 888.0
+offset_bottom = 484.0
 
 [node name="TotalTitleLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=2126401319]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+text = "TOTAL"
 
 [node name="TotalValueLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=975195003]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 680.0
+offset_top = 359.0
+offset_right = 720.0
+offset_bottom = 382.0
+horizontal_alignment = 1
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
@@ -1072,10 +1092,10 @@ layer = 10
 script = ExtResource("46_nt7fw")
 
 [node name="PausePanel" type="Panel" parent="PauseLayer" unique_id=1776531686]
-offset_left = 407.0
-offset_top = 165.0
-offset_right = 846.0
-offset_bottom = 479.0
+offset_left = 396.0
+offset_top = 169.0
+offset_right = 835.0
+offset_bottom = 483.0
 
 [node name="TitleLabel" type="Label" parent="PauseLayer/PausePanel" unique_id=948434368]
 layout_mode = 0
@@ -1095,10 +1115,10 @@ text = "Продолжить"
 
 [node name="SettingButton" type="Button" parent="PauseLayer/PausePanel" unique_id=1309319643]
 layout_mode = 0
-offset_left = 127.0
-offset_top = 135.0
-offset_right = 224.0
-offset_bottom = 166.0
+offset_left = 128.0
+offset_top = 138.0
+offset_right = 225.0
+offset_bottom = 169.0
 text = "Настройки"
 
 [node name="QuitButton" type="Button" parent="PauseLayer/PausePanel" unique_id=419427370]
