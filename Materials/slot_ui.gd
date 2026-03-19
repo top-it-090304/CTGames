@@ -83,8 +83,20 @@ var _last_win_amount: int = 0
 var _last_win_combo_id: String = ""
 var _totem_bonuses: Dictionary = {}
 var _highlight_overlay: Control
+var _highlighted_icons: Array[TextureRect] = []
+var _highlight_palette_index: int = 0
+var _highlight_pulse_t: float = 0.0
+var _highlight_palettes: Array[Array] = [
+	[Color(0.28, 1.0, 0.34, 1.0), Color(1.0, 0.95, 0.26, 1.0)],
+	[Color(0.24, 0.94, 1.0, 1.0), Color(0.26, 1.0, 0.76, 1.0)],
+	[Color(1.0, 0.34, 0.72, 1.0), Color(0.58, 0.92, 1.0, 1.0)],
+	[Color(1.0, 0.72, 0.14, 1.0), Color(1.0, 0.35, 0.16, 1.0)],
+]
 
 const SLOT_HIGHLIGHT_OVERLAY_SCRIPT: Script = preload("res://Materials/slot_highlight_overlay.gd")
+const HIT_FRAME_NAME: StringName = &"HitFrame"
+const HIT_FRAME_PATH: NodePath = ^"HitFrame"
+const HIGHLIGHT_PULSE_SPEED: float = 3.6
 
 func _ready() -> void:
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
@@ -113,6 +125,12 @@ func _ready() -> void:
 
 	if btn != null and not btn.pressed.is_connected(request_spin):
 		btn.pressed.connect(request_spin)
+
+func _process(delta: float) -> void:
+	if _highlighted_icons.is_empty():
+		return
+	_highlight_pulse_t += delta
+	_refresh_icon_highlights()
 
 func _collect_reels() -> void:
 	_reels.clear()
@@ -291,36 +309,41 @@ func _texture_for_index(index: int) -> Texture2D:
 	return symbols[index]
 
 func _reel_texture_for_row(reel: Panel, row: int) -> Texture2D:
+	var best_icon: TextureRect = _reel_icon_for_row(reel, row)
+	if best_icon != null:
+		return _visible_texture_for_icon(best_icon)
+	if row == 1 and reel != null and reel.has_method("get_middle_texture"):
+		return reel.call("get_middle_texture") as Texture2D
+	return null
+
+func _reel_icon_for_row(reel: Panel, row: int) -> TextureRect:
 	if reel == null:
 		return null
 
 	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
 	var margin_node: MarginContainer = reel.get_node_or_null("MarginContainer") as MarginContainer
-	if box != null and margin_node != null:
-		var safe_row: int = clampi(row, 0, 2)
-		var target_y: float = _target_center_y_for_row(box, margin_node, safe_row)
-		var best_dist: float = INF
-		var best_icon: TextureRect = null
+	if box == null or margin_node == null:
+		return null
 
-		for child: Node in box.get_children():
-			var icon: TextureRect = child as TextureRect
-			var visible_tex: Texture2D = _visible_texture_for_icon(icon)
-			if icon == null or visible_tex == null:
-				continue
+	var safe_row: int = clampi(row, 0, 2)
+	var target_y: float = _target_center_y_for_row(box, margin_node, safe_row)
+	var best_dist: float = INF
+	var best_icon: TextureRect = null
 
-			var top_y: float = margin_node.offset_top + box.position.y + icon.position.y
-			var center_y: float = top_y + (_icon_height(icon) * 0.5)
-			var dist: float = absf(center_y - target_y)
-			if dist < best_dist:
-				best_dist = dist
-				best_icon = icon
+	for child: Node in box.get_children():
+		var icon: TextureRect = child as TextureRect
+		var visible_tex: Texture2D = _visible_texture_for_icon(icon)
+		if icon == null or visible_tex == null:
+			continue
 
-		if best_icon != null:
-			return _visible_texture_for_icon(best_icon)
+		var top_y: float = margin_node.offset_top + box.position.y + icon.position.y
+		var center_y: float = top_y + (_icon_height(icon) * 0.5)
+		var dist: float = absf(center_y - target_y)
+		if dist < best_dist:
+			best_dist = dist
+			best_icon = icon
 
-	if row == 1 and reel.has_method("get_middle_texture"):
-		return reel.call("get_middle_texture") as Texture2D
-	return null
+	return best_icon
 
 func _visible_texture_for_icon(icon: TextureRect) -> Texture2D:
 	if icon == null:
@@ -860,20 +883,96 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 	move_child(_highlight_overlay, get_child_count() - 1)
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
+	clear_combo_highlight()
 	if _highlight_overlay == null:
 		_ensure_highlight_overlay(reels_row.position, reels_row.size)
+
 	var rects: Array[Rect2] = []
 	for point_var: Variant in points:
 		var point: Vector2i = point_var
-		var rect: Rect2 = _rect_for_board_point(point)
-		if rect.size.x > 0.0 and rect.size.y > 0.0:
+		if point.y < 0 or point.y >= _reels.size():
+			continue
+		var icon: TextureRect = _reel_icon_for_row(_reels[point.y], point.x)
+		var rect: Rect2 = _highlight_rect_for_icon(icon)
+		if rect.size.x > 8.0 and rect.size.y > 8.0:
 			rects.append(rect)
+
 	if _highlight_overlay != null and _highlight_overlay.has_method("set_highlights"):
 		_highlight_overlay.call("set_highlights", rects, palette_index)
 
 func clear_combo_highlight() -> void:
+	for icon: TextureRect in _highlighted_icons:
+		if icon == null:
+			continue
+		var frame: Panel = icon.get_node_or_null(HIT_FRAME_PATH) as Panel
+		if frame != null:
+			frame.visible = false
+	_highlighted_icons.clear()
 	if _highlight_overlay != null and _highlight_overlay.has_method("clear_highlights"):
 		_highlight_overlay.call("clear_highlights")
+
+func _highlight_rect_for_icon(icon: TextureRect) -> Rect2:
+	if icon == null or _highlight_overlay == null:
+		return Rect2()
+	var icon_rect: Rect2 = icon.get_global_rect()
+	var overlay_rect: Rect2 = _highlight_overlay.get_global_rect()
+	var local_pos: Vector2 = icon_rect.position - overlay_rect.position
+	var inset: Vector2 = Vector2(9.0, 9.0)
+	var size: Vector2 = icon_rect.size - inset * 2.0
+	if size.x <= 0.0 or size.y <= 0.0:
+		return Rect2(local_pos, icon_rect.size)
+	return Rect2(local_pos + inset, size)
+
+func _ensure_icon_highlight_frame(icon: TextureRect) -> Panel:
+	if icon == null:
+		return null
+	var frame: Panel = icon.get_node_or_null(HIT_FRAME_PATH) as Panel
+	if frame == null:
+		frame = Panel.new()
+		frame.name = String(HIT_FRAME_NAME)
+		icon.add_child(frame)
+		frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+		frame.offset_left = 4.0
+		frame.offset_top = 4.0
+		frame.offset_right = -4.0
+		frame.offset_bottom = -4.0
+		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		frame.z_index = 20
+		frame.visible = false
+	return frame
+
+func _refresh_icon_highlights() -> void:
+	if _highlighted_icons.is_empty():
+		return
+	var palette: Array = _highlight_palettes[_highlight_palette_index]
+	var c0: Color = palette[0]
+	var c1: Color = palette[1]
+	var t: float = 0.5 + 0.5 * sin(_highlight_pulse_t * HIGHLIGHT_PULSE_SPEED)
+	var edge: Color = c0.lerp(c1, t)
+	var fill: Color = Color(0.22, 0.02, 0.04, 0.24)
+	var shine: Color = Color(1.0, 1.0, 1.0, 0.14 + 0.08 * t)
+
+	for icon: TextureRect in _highlighted_icons:
+		if icon == null:
+			continue
+		var frame: Panel = _ensure_icon_highlight_frame(icon)
+		if frame == null:
+			continue
+		var style: StyleBoxFlat = StyleBoxFlat.new()
+		style.bg_color = fill
+		style.border_color = edge
+		style.border_width_left = 5
+		style.border_width_top = 5
+		style.border_width_right = 5
+		style.border_width_bottom = 5
+		style.corner_radius_top_left = 6
+		style.corner_radius_top_right = 6
+		style.corner_radius_bottom_left = 6
+		style.corner_radius_bottom_right = 6
+		style.shadow_color = Color(edge.r, edge.g, edge.b, 0.45)
+		style.shadow_size = 7
+		frame.add_theme_stylebox_override("panel", style)
+		frame.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 func _rect_for_board_point(point: Vector2i) -> Rect2:
 	if point.y < 0 or point.y >= _reels.size():
