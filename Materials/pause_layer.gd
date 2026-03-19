@@ -2,6 +2,10 @@ extends CanvasLayer
 
 var pause_panel: Panel
 var is_paused: bool = false
+@export var shake_strength := 1.5
+var base_resume_pos:   Vector2
+var base_settings_pos: Vector2
+var base_quit_pos:     Vector2
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
@@ -20,7 +24,6 @@ func _ready() -> void:
 	if quit_btn     != null: quit_btn.pressed.connect(_on_quit_pressed)
 
 func _configure_visuals() -> void:
-	# --- Панель по центру экрана (увеличена под 3 кнопки) ---
 	pause_panel.anchor_left   = 0.5
 	pause_panel.anchor_right  = 0.5
 	pause_panel.anchor_top    = 0.5
@@ -38,7 +41,6 @@ func _configure_visuals() -> void:
 	style.corner_radius_bottom_right = 12
 	pause_panel.add_theme_stylebox_override("panel", style)
 
-	# --- Заголовок ---
 	var title := pause_panel.get_node_or_null("TitleLabel") as Label
 	if title != null:
 		title.anchor_left   = 0.0
@@ -58,7 +60,6 @@ func _configure_visuals() -> void:
 		title.add_theme_constant_override("outline_size", 6)
 		title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
-	# --- Три кнопки равноудалённо ---
 	_configure_button("ResumeButton",   150.0)
 	_configure_button("SettingsButton", 270.0)
 	_configure_button("QuitButton",     390.0)
@@ -110,7 +111,24 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 	btn.add_theme_stylebox_override("normal",  normal)
 	btn.add_theme_stylebox_override("hover",   hover)
 	btn.add_theme_stylebox_override("pressed", pressed)
-
+	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
+	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
+	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
+	if resume_btn   != null: base_resume_pos   = resume_btn.position
+	if settings_btn != null: base_settings_pos = settings_btn.position
+	if quit_btn     != null: base_quit_pos     = quit_btn.position
+func _process(_delta: float) -> void:
+	if not is_paused:
+		return
+	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
+	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
+	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
+	if resume_btn   != null:
+		resume_btn.position   = base_resume_pos   + Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
+	if settings_btn != null:
+		settings_btn.position = base_settings_pos + Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
+	if quit_btn     != null:
+		quit_btn.position     = base_quit_pos     + Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if (event as InputEventKey).keycode == KEY_ESCAPE:
@@ -130,7 +148,7 @@ func _on_resume_pressed() -> void:
 		pause_panel.visible = false
 
 func _on_settings_pressed() -> void:
-	pass # сюда потом добавишь логику настроек
+	pass
 
 func _on_quit_pressed() -> void:
 	get_tree().paused = false
