@@ -229,8 +229,21 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if (event as InputEventKey).keycode == KEY_ESCAPE:
+			if not is_paused and _is_slot_spinning():
+				return
 			_toggle_pause()
 			get_viewport().set_input_as_handled()
+
+func _is_slot_spinning() -> bool:
+	var game := get_tree().get_root().get_node_or_null("Game")
+	if game == null:
+		return false
+	var slot_ui := game.get_node_or_null("SubViewport/SlotUI")
+	if slot_ui == null:
+		return false
+	if slot_ui.has_method("is_spinning"):
+		return bool(slot_ui.call("is_spinning"))
+	return false
 
 func _toggle_pause() -> void:
 	is_paused = !is_paused
