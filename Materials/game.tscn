@@ -186,6 +186,14 @@ metadata/_edit_group_ = true
 [node name="camera drone2" parent="." unique_id=413251090 instance=ExtResource("3_uuapk")]
 transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.6924341, -0.10784854, 0.6945769, 0, -1.3257022, -0.080851495, 2.8046956, -2.487281)
 
+[node name="SpotLight3D" type="SpotLight3D" parent="camera drone2" unique_id=1210280107]
+transform = Transform3D(0.14034843, -0.12042762, -0.77122355, -0.010547431, 0.5789497, -0.092323236, 0.6195121, 0.02855362, 0.10828109, 0.23679435, 0.01895845, 0.01272285)
+light_color = Color(1, 0, 0, 1)
+spot_range = 2.183
+spot_attenuation = -2.61
+spot_angle = 66.44
+spot_angle_attenuation = 2.297396
+
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
@@ -195,9 +203,6 @@ fov = 95.7
 
 [node name="Cigarette" parent="." unique_id=920580141 instance=ExtResource("5_be8xs")]
 transform = Transform3D(-2.798999, 0.5481619, -1.6411446, 0.92737055, 2.0820458, 0.1494647, 1.7857524, -0.22204883, -2.6499603, -3.7258506, 1.1262555, -1.6319855)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=846162415]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0554948, 2.5050197, 0)
 
 [node name="Ashtray2" parent="." unique_id=1837193216 instance=ExtResource("4_i1y15")]
 transform = Transform3D(0.19700629, 0, 0, 0, 0.18154782, 0, 0, 0, 0.17862403, -4.007402, 1.1281631, -1.4688448)
@@ -738,13 +743,6 @@ transform = Transform3D(-4.3711385e-08, 0.99999994, -4.3711385e-08, 0, -4.371138
 mesh = SubResource("PlaneMesh_j2xmt")
 surface_material_override/0 = SubResource("StandardMaterial3D_gpbuv")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1878562853]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7919872, 2.91191, -1.3254383)
-light_color = Color(1, 0.6666667, 0.22745098, 1)
-light_energy = 1.554
-light_indirect_energy = 1.871
-light_volumetric_fog_energy = 2.02
-
 [node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
 
 [node name="DialogueBox" type="Control" parent="UI" unique_id=1234789670]
@@ -1130,8 +1128,31 @@ offset_right = 203.0
 offset_bottom = 219.0
 text = "Выход"
 
-[node name="Sketchfab_Scene" parent="." unique_id=1833937596 instance=ExtResource("48_gwlxx")]
+[node name="LampBack" parent="." unique_id=1833937596 instance=ExtResource("48_gwlxx")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.54175377, 3.7760787, -0.60216796)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="LampBack" unique_id=107365575]
+transform = Transform3D(1, -4.3711054e-08, -4.3540496e-08, 4.3711054e-08, 0.0039095343, 0.9999924, -4.3540496e-08, -0.9999924, 0.0039095343, 0, -0.7117264, 0)
+light_energy = 3.137
+
+[node name="LampForce" parent="." unique_id=186443981 instance=ExtResource("48_gwlxx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.238761, 3.7760787, -0.2706356)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="LampForce" unique_id=210764182]
+transform = Transform3D(1, -4.3711054e-08, -4.3540496e-08, 4.3711054e-08, 0.0039095343, 0.9999924, -4.3540496e-08, -0.9999924, 0.0039095343, 0, -0.7117264, 0)
+light_energy = 3.137
+
+[node name="LampForce2" parent="." unique_id=65440110 instance=ExtResource("48_gwlxx")]
+transform = Transform3D(1, 0, 3.8213705e-15, 3.821371e-15, 4.3711385e-08, -0.99999994, 0, 0.99999994, 4.3711385e-08, -2.2440019, 1.8235426, 1.4894006)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="LampForce2" unique_id=422781543]
+transform = Transform3D(0.99951094, 0.00012221078, 0.031270918, -0.031271156, 0.0039076237, 0.9995033, -4.4907406e-08, -0.9999924, 0.0039095343, 0, -0.7117264, -1.1920929e-07)
+light_energy = 4.581
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=853753431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.329578, 2.4481401, -0.69044334)
+light_energy = 0.769
+light_indirect_energy = 0.581
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
