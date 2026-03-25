@@ -23,6 +23,13 @@ func _ready() -> void:
 	pause_panel.visible = false
 	_configure_visuals()
 	_setup_quit_confirm()
+	_setup_pause_button()
+
+func _setup_pause_button() -> void:
+	var pause_btn := get_node_or_null("PauseButton") as Button
+	if pause_btn == null:
+		return
+	pause_btn.pressed.connect(_on_pause_button_pressed)
 
 func _setup_quit_confirm() -> void:
 	quit_confirm_box = Panel.new()
@@ -226,13 +233,10 @@ func _process(_delta: float) -> void:
 				cos(t * 2.0 + 0.5) * 2.0
 			)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if (event as InputEventKey).keycode == KEY_ESCAPE:
-			if not is_paused and _is_slot_spinning():
-				return
-			_toggle_pause()
-			get_viewport().set_input_as_handled()
+func _on_pause_button_pressed() -> void:
+	if not is_paused and _is_slot_spinning():
+		return
+	_toggle_pause()
 
 func _is_slot_spinning() -> bool:
 	var game := get_tree().get_root().get_node_or_null("Game")
@@ -252,12 +256,18 @@ func _toggle_pause() -> void:
 		pause_panel.visible = is_paused
 	if not is_paused and quit_confirm_box != null:
 		quit_confirm_box.visible = false
+	var pause_btn := get_node_or_null("PauseButton") as Button
+	if pause_btn != null:
+		pause_btn.visible = not is_paused
 
 func _on_resume_pressed() -> void:
 	is_paused = false
 	get_tree().paused = false
 	if pause_panel != null:
 		pause_panel.visible = false
+	var pause_btn := get_node_or_null("PauseButton") as Button
+	if pause_btn != null:
+		pause_btn.visible = true
 
 func _on_settings_pressed() -> void:
 	pass
@@ -286,3 +296,6 @@ func _on_quit_cancelled() -> void:
 	quit_confirm_box.visible = false
 	is_paused = false
 	get_tree().paused = false
+	var pause_btn := get_node_or_null("PauseButton") as Button
+	if pause_btn != null:
+		pause_btn.visible = true
