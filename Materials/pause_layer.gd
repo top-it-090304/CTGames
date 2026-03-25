@@ -29,6 +29,54 @@ func _setup_pause_button() -> void:
 	var pause_btn := get_node_or_null("PauseButton") as Button
 	if pause_btn == null:
 		return
+
+	pause_btn.text = "≡"
+	pause_btn.flat = true
+	pause_btn.focus_mode = Control.FOCUS_NONE
+
+	pause_btn.anchor_left   = 0.0
+	pause_btn.anchor_right  = 0.0
+	pause_btn.anchor_top    = 0.0
+	pause_btn.anchor_bottom = 0.0
+	pause_btn.offset_left   = 16.0
+	pause_btn.offset_right  = 80.0
+	pause_btn.offset_top    = 136.0
+	pause_btn.offset_bottom = 220.0
+
+	pause_btn.add_theme_font_override("font", PIXEL_FONT)
+	pause_btn.add_theme_font_size_override("font_size", 112)
+	pause_btn.add_theme_color_override("font_color",         Color(1.0, 1.0, 1.0, 1.0))
+	pause_btn.add_theme_color_override("font_hover_color",   Color(1.0, 0.86, 0.08, 1.0))
+	pause_btn.add_theme_color_override("font_pressed_color", Color(0.8, 0.65, 0.0,  1.0))
+	pause_btn.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0,   1.0))
+	pause_btn.add_theme_constant_override("outline_size", 3)
+	pause_btn.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.0, 0.0, 0.0, 0.75)
+	normal.corner_radius_top_left     = 8
+	normal.corner_radius_top_right    = 8
+	normal.corner_radius_bottom_left  = 8
+	normal.corner_radius_bottom_right = 8
+
+	var hover := StyleBoxFlat.new()
+	hover.bg_color = Color(0.25, 0.22, 0.05, 1.0)
+	hover.corner_radius_top_left     = 8
+	hover.corner_radius_top_right    = 8
+	hover.corner_radius_bottom_left  = 8
+	hover.corner_radius_bottom_right = 8
+
+	var pressed := StyleBoxFlat.new()
+	pressed.bg_color = Color(0.18, 0.15, 0.02, 1.0)
+	pressed.corner_radius_top_left     = 8
+	pressed.corner_radius_top_right    = 8
+	pressed.corner_radius_bottom_left  = 8
+	pressed.corner_radius_bottom_right = 8
+
+	pause_btn.add_theme_stylebox_override("normal",  normal)
+	pause_btn.add_theme_stylebox_override("hover",   hover)
+	pause_btn.add_theme_stylebox_override("pressed", pressed)
+
 	pause_btn.pressed.connect(_on_pause_button_pressed)
 
 func _setup_quit_confirm() -> void:

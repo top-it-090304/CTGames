@@ -1125,8 +1125,8 @@ text = "Выход"
 [node name="PauseButton" type="Button" parent="PauseLayer" unique_id=1826468488]
 offset_left = 2.0
 offset_top = 148.0
-offset_right = 161.0
-offset_bottom = 259.0
+offset_right = 318.0
+offset_bottom = 329.0
 
 [node name="LampBack" parent="." unique_id=1833937596 instance=ExtResource("48_gwlxx")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.54175377, 3.7760787, -0.60216796)
