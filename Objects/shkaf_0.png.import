@@ -4,9 +4,8 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bqcyh7nkvbd1y"
 path.s3tc="res://.godot/imported/shkaf_0.png-7131504c5d76cf3df3212465c7512048.s3tc.ctex"
-path.etc2="res://.godot/imported/shkaf_0.png-7131504c5d76cf3df3212465c7512048.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -16,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/shkaf_0.png"
-dest_files=["res://.godot/imported/shkaf_0.png-7131504c5d76cf3df3212465c7512048.s3tc.ctex", "res://.godot/imported/shkaf_0.png-7131504c5d76cf3df3212465c7512048.etc2.ctex"]
+dest_files=["res://.godot/imported/shkaf_0.png-7131504c5d76cf3df3212465c7512048.s3tc.ctex"]
 
 [params]
 

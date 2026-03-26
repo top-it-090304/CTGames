@@ -4,9 +4,8 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0fpd7ge6lr"
 path.s3tc="res://.godot/imported/ATM_1.png-5bde6bff9e35252ad301c772252b973b.s3tc.ctex"
-path.etc2="res://.godot/imported/ATM_1.png-5bde6bff9e35252ad301c772252b973b.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -16,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/ATM_1.png"
-dest_files=["res://.godot/imported/ATM_1.png-5bde6bff9e35252ad301c772252b973b.s3tc.ctex", "res://.godot/imported/ATM_1.png-5bde6bff9e35252ad301c772252b973b.etc2.ctex"]
+dest_files=["res://.godot/imported/ATM_1.png-5bde6bff9e35252ad301c772252b973b.s3tc.ctex"]
 
 [params]
 

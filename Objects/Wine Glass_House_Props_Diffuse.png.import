@@ -4,9 +4,8 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cy56cmdjisvsg"
 path.s3tc="res://.godot/imported/Wine Glass_House_Props_Diffuse.png-7c692b839945291293201073fc4504bf.s3tc.ctex"
-path.etc2="res://.godot/imported/Wine Glass_House_Props_Diffuse.png-7c692b839945291293201073fc4504bf.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -16,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/Wine Glass_House_Props_Diffuse.png"
-dest_files=["res://.godot/imported/Wine Glass_House_Props_Diffuse.png-7c692b839945291293201073fc4504bf.s3tc.ctex", "res://.godot/imported/Wine Glass_House_Props_Diffuse.png-7c692b839945291293201073fc4504bf.etc2.ctex"]
+dest_files=["res://.godot/imported/Wine Glass_House_Props_Diffuse.png-7c692b839945291293201073fc4504bf.s3tc.ctex"]
 
 [params]
 

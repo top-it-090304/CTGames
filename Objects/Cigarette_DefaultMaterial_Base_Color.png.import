@@ -4,9 +4,8 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxr2sgjd0ag7f"
 path.s3tc="res://.godot/imported/Cigarette_DefaultMaterial_Base_Color.png-fdcd1125139e9246a1baa5654cf3c105.s3tc.ctex"
-path.etc2="res://.godot/imported/Cigarette_DefaultMaterial_Base_Color.png-fdcd1125139e9246a1baa5654cf3c105.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -16,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/Cigarette_DefaultMaterial_Base_Color.png"
-dest_files=["res://.godot/imported/Cigarette_DefaultMaterial_Base_Color.png-fdcd1125139e9246a1baa5654cf3c105.s3tc.ctex", "res://.godot/imported/Cigarette_DefaultMaterial_Base_Color.png-fdcd1125139e9246a1baa5654cf3c105.etc2.ctex"]
+dest_files=["res://.godot/imported/Cigarette_DefaultMaterial_Base_Color.png-fdcd1125139e9246a1baa5654cf3c105.s3tc.ctex"]
 
 [params]
 
