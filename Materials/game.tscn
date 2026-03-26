@@ -69,6 +69,9 @@ albedo_texture = ExtResource("2_62l5a")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lo5pb"]
 albedo_texture = ExtResource("2_62l5a")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_gwlxx"]
+size = Vector3(0.5258789, 0.9022522, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_tn84i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tn84i"]
@@ -80,12 +83,6 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlxx"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id0qs"]
 bg_color = Color(0, 0, 0, 1)
@@ -106,6 +103,12 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs0kc"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vf0s"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -140,6 +143,7 @@ size = Vector3(1, 1.0234375, 1)
 
 [node name="Game" type="Node3D" unique_id=970350183]
 script = ExtResource("1_hudx2")
+slot_spin_area_name = &"SpinButtonArea"
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1844057140]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.285352, 0, -0.9896886)
@@ -205,6 +209,8 @@ transform = Transform3D(-6.5523366e-08, 0, 0.99999994, 0, 1.499, 0, -1.499, 0, -
 [node name="SpinButtonarea" type="Area3D" parent="SlotMachine" unique_id=1122607388]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachine/SpinButtonarea" unique_id=857213803]
+transform = Transform3D(0.5, 0, 1.5099033e-14, 0, 0.5, 0, -1.1688428e-12, 0, 0.5, 0.592426, 0.81764334, 0.4398842)
+shape = SubResource("BoxShape3D_gwlxx")
 
 [node name="DebtMachine" parent="." unique_id=611159530 instance=ExtResource("5_ablru")]
 transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -2.2672462, 0.5121797, -2.4699512)
@@ -300,7 +306,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
+theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -385,7 +391,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -470,7 +476,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
+theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -555,7 +561,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -640,7 +646,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2vf0s")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18

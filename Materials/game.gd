@@ -29,7 +29,7 @@ var _money_base_pos := Vector2.ZERO
 var _spins_base_pos := Vector2.ZERO
 var _tok_base_pos := Vector2.ZERO
 var _win_popup_base_pos := Vector2.ZERO
-@export var slot_spin_area_name: StringName = &"SpinButtonArea"
+@export var slot_spin_area_name: StringName = &"SpinButtonarea"
 var slot_spin_area: Area3D
 
 func _ready() -> void:
@@ -97,19 +97,25 @@ func _rotate_camera_by_drag(delta_x: float) -> void:
 	camera_3d.rotate_y(-delta_x * 0.004)
 
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
-	if not _is_slot_machine_hit(screen_pos):
-		return
 	if slot_ui != null and slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
+		return
+	if not _is_slot_machine_hit(screen_pos):
 		return
 	_request_spin()
 
 func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 	if camera_3d == null:
 		return false
+	if slot_spin_area == null:
+		slot_spin_area = _find_slot_spin_area()
+	if slot_spin_area == null:
+		return false
 
 	var from: Vector3 = camera_3d.project_ray_origin(screen_pos)
 	var to: Vector3 = from + camera_3d.project_ray_normal(screen_pos) * 100.0
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
 	var result: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
 	if result.is_empty():
 		return false
@@ -118,13 +124,7 @@ func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 	if collider == null:
 		return false
 
-	if slot_spin_area != null:
-		return _is_node_under(slot_spin_area, collider)
-
-	var machine: Node3D = _find_slot_machine()
-	if machine == null:
-		return false
-	return _is_node_under(machine, collider)
+	return _is_node_under(slot_spin_area, collider)
 
 func _is_node_under(root: Node, node: Node) -> bool:
 	if root == null or node == null:
@@ -382,7 +382,7 @@ func _find_slot_spin_area() -> Area3D:
 	if direct != null:
 		return direct
 
-	var aliases: Array[String] = ["SpinArea", "SpinButtonArea", "ButtonArea", "InteractArea"]
+	var aliases: Array[String] = ["SpinButtonarea", "SpinArea", "SpinButtonArea", "ButtonArea", "InteractArea"]
 	for alias: String in aliases:
 		var area: Area3D = machine.get_node_or_null(alias) as Area3D
 		if area != null:
