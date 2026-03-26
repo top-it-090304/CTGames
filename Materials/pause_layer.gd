@@ -13,6 +13,7 @@ var quit_no_btn: Button
 var quit_choices: HBoxContainer
 var quit_confirm_base_pos: Vector2
 var quit_choices_base_pos: Vector2
+@onready var game = get_node("/root/Game")
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
@@ -78,6 +79,7 @@ func _setup_pause_button() -> void:
 	pause_btn.add_theme_stylebox_override("pressed", pressed)
 
 	pause_btn.pressed.connect(_on_pause_button_pressed)
+	pause_btn.visible = false
 
 func _setup_quit_confirm() -> void:
 	quit_confirm_box = Panel.new()
@@ -255,6 +257,9 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 	btn.add_theme_stylebox_override("pressed", pressed)
 
 func _process(_delta: float) -> void:
+	var pause_btn := get_node_or_null("PauseButton") as Button
+	if pause_btn and not is_paused:
+		pause_btn.visible = not game._is_intro_active()
 	if not is_paused:
 		return
 
