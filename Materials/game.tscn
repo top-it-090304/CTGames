@@ -48,6 +48,7 @@
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
 [ext_resource type="PackedScene" uid="uid://cyj4eu2q25hbe" path="res://Objects/Bell.glb" id="46_yy33s"]
+[ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://bnj4bjckqevj0" path="res://Objects/Gem Green.glb" id="47_r1s43"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 
@@ -1184,21 +1185,31 @@ script = ExtResource("42_ln6k1")
 transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
-[node name="Bell" parent="TotemShop/ShopItems" unique_id=18609142 instance=ExtResource("46_yy33s")]
+[node name="BellTotemShop" parent="TotemShop/ShopItems" unique_id=18609142 instance=ExtResource("46_yy33s")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.3763728, 1.3942306, 0.20876852)
+script = ExtResource("47_gs0kc")
+totem_id = "bell"
+title = "Колокол"
+description = "Увеличивает шанс Джекпота на 3 раунда"
+price_tokens = 4
 
-[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/Bell" unique_id=1937167590]
+[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/BellTotemShop" unique_id=1937167590]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Bell/InteractArea" unique_id=192272749]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/BellTotemShop/InteractArea" unique_id=192272749]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.09442258, 0)
 shape = SubResource("BoxShape3D_gs0kc")
 
-[node name="Diamond" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("47_r1s43")]
+[node name="DiamondTotemShop" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("47_r1s43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36747867, 1.4475718, -0.650048)
+script = ExtResource("47_gs0kc")
+totem_id = "diamond"
+title = "Изумруд"
+description = "Повышает уровень выпадения СУНДУКОВ и ВИШНИ"
+price_tokens = 2
 
-[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Diamond" unique_id=1144152159]
+[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/DiamondTotemShop" unique_id=1144152159]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Diamond/Area3D" unique_id=75787015]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/DiamondTotemShop/Area3D" unique_id=75787015]
 transform = Transform3D(0.56, 0, 0, 0, 0.56, 0, 0, 0, 0.56, -0.0088941455, -0.02869308, -0.0063804984)
 shape = SubResource("BoxShape3D_gs0kc")
 
