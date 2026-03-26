@@ -67,8 +67,9 @@ func _ready() -> void:
 	_update_debt_ui()
 	_set_spins_left(0)
 
-	if not _is_intro_active():
-		call_deferred("_show_jackpot_jail_screen")
+	if _is_intro_active():
+		_set_slot_locked(true)
+	call_deferred("_show_jackpot_jail_screen")
 
 
 func _process(_delta: float) -> void:
@@ -228,7 +229,7 @@ func _connect_signals() -> void:
 func _on_intro_active_changed(active: bool) -> void:
 	if active:
 		_set_slot_locked(true)
-		_close_popup()
+		call_deferred("_show_jackpot_jail_screen")
 		return
 
 	if game_over:
@@ -276,12 +277,12 @@ func is_game_over() -> bool:
 	return game_over
 
 func _show_jackpot_jail_screen() -> void:
-	if popup == null or game_over or _is_intro_active():
+	if popup == null or game_over:
 		return
 	if round_active:
 		return
 
-	_set_slot_locked(false)
+	_set_slot_locked(_is_intro_active())
 	_set_choice_overlay(true)
 	if popup.has_method("show_jackpot_jail"):
 		popup.call("show_jackpot_jail")

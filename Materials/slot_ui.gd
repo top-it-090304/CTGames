@@ -886,31 +886,7 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 	clear_combo_highlight()
-	_highlight_palette_index = posmod(palette_index, _highlight_palettes.size())
-	_highlight_pulse_t = 0.0
-	if _highlight_overlay == null:
-		_ensure_highlight_overlay(reels_row.position, reels_row.size)
-
-	var rects: Array[Rect2] = []
-	for point_var: Variant in points:
-		var point: Vector2i = point_var
-		if point.y < 0 or point.y >= _reels.size():
-			continue
-		var icon: TextureRect = _reel_icon_for_row(_reels[point.y], point.x)
-		if icon == null:
-			continue
-		var frame: Control = _ensure_icon_highlight_frame(icon)
-		if frame != null:
-			frame.visible = true
-			if not _highlighted_icons.has(icon):
-				_highlighted_icons.append(icon)
-		var rect: Rect2 = _highlight_rect_for_icon(icon)
-		if rect.size.x > 8.0 and rect.size.y > 8.0:
-			rects.append(rect)
-
-	_refresh_icon_highlights()
-	if _highlight_overlay != null and _highlight_overlay.has_method("set_highlights"):
-		_highlight_overlay.call("set_highlights", rects, palette_index)
+	return
 
 func clear_combo_highlight() -> void:
 	for icon: TextureRect in _highlighted_icons:
@@ -923,18 +899,6 @@ func clear_combo_highlight() -> void:
 	_highlighted_icons.clear()
 	if _highlight_overlay != null and _highlight_overlay.has_method("clear_highlights"):
 		_highlight_overlay.call("clear_highlights")
-
-func _highlight_rect_for_icon(icon: TextureRect) -> Rect2:
-	if icon == null or _highlight_overlay == null:
-		return Rect2()
-	var icon_rect: Rect2 = icon.get_global_rect()
-	var overlay_rect: Rect2 = _highlight_overlay.get_global_rect()
-	var local_pos: Vector2 = icon_rect.position - overlay_rect.position
-	var inset: Vector2 = Vector2(9.0, 9.0)
-	var size: Vector2 = icon_rect.size - inset * 2.0
-	if size.x <= 0.0 or size.y <= 0.0:
-		return Rect2(local_pos, icon_rect.size)
-	return Rect2(local_pos + inset, size)
 
 func _ensure_icon_highlight_frame(icon: TextureRect) -> Control:
 	if icon == null:

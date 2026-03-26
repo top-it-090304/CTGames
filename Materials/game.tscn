@@ -84,6 +84,12 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlxx"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id0qs"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
@@ -103,12 +109,6 @@ border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs0kc"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vf0s"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -306,7 +306,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
 script = ExtResource("3_fust2")
 max_speed = 1800.0
 accel_time = 0.18
@@ -391,7 +391,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
+theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
 script = ExtResource("12_k2kpc")
 max_speed = 1800.0
 accel_time = 0.18
@@ -476,7 +476,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
 script = ExtResource("13_sa7vf")
 max_speed = 1800.0
 accel_time = 0.18
@@ -561,7 +561,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
 script = ExtResource("14_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -646,7 +646,7 @@ clip_contents = true
 custom_minimum_size = Vector2(300, 540)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_2vf0s")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
 script = ExtResource("15_0m7j0")
 max_speed = 1800.0
 accel_time = 0.18
@@ -725,6 +725,134 @@ layout_mode = 2
 texture = ExtResource("11_3w25a")
 expand_mode = 3
 stretch_mode = 5
+
+[node name="HighlightLayer" type="Control" parent="SubViewport/SlotUI" unique_id=1625748059]
+visible = false
+z_index = 220
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Cell_0_0" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=883950470]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_5" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1099788636]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_6" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1577670335]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_7" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=257550826]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_8" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1326403727]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_9" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=14200713]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_10" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1931412115]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_11" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=795510008]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_12" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1067600388]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_13" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=915729161]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_14" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1725209520]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_15" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=2079112861]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_16" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=114347429]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_17" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=525600373]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
+
+[node name="Cell_0_18" type="Panel" parent="SubViewport/SlotUI/HighlightLayer" unique_id=1652623681]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 10.0
+offset_right = 281.0
+offset_bottom = 192.0
+mouse_filter = 2
 
 [node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
 visible = false
