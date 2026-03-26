@@ -734,6 +734,81 @@ func get_deposited_money() -> int:
 func get_round_number() -> int:
 	return round_number
 
+func debug_symbol_index_for_token(token: String) -> int:
+	var key: String = _canonical_symbol_key(token)
+	if key.is_empty():
+		return -1
+	for i: int in range(symbols.size()):
+		if _symbol_key(i) == key:
+			return i
+	return -1
+
+func debug_apply_and_evaluate_board(board: Array) -> Dictionary:
+	if not _board_is_3x5(board):
+		return {"text": "ERR BOARD", "win_amount": 0, "combo_id": "", "hits": []}
+	debug_preview_board(board)
+	return _evaluate_board(board)
+
+func debug_preview_board(board: Array) -> bool:
+	if not _board_is_3x5(board):
+		return false
+	_busy = false
+	clear_combo_highlight()
+	_last_target_grid = board.duplicate(true)
+	for col: int in range(mini(_reels.size(), 5)):
+		var reel: Panel = _reels[col]
+		var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+		if box == null:
+			continue
+		if box.get_child_count() >= 1:
+			_debug_force_icon_texture(box.get_child(0) as TextureRect, _texture_for_index(int(board[0][col])))
+		if box.get_child_count() >= 2:
+			_debug_force_icon_texture(box.get_child(1) as TextureRect, _texture_for_index(int(board[1][col])))
+		if box.get_child_count() >= 3:
+			_debug_force_icon_texture(box.get_child(2) as TextureRect, _texture_for_index(int(board[2][col])))
+		box.position.y = 0.0
+	_set_status("TEST BOARD")
+	return true
+
+func _debug_force_icon_texture(icon: TextureRect, texture: Texture2D) -> void:
+	if icon == null or texture == null:
+		return
+	icon.texture = texture
+	icon.modulate = Color(1.28, 1.24, 1.18, 1.0)
+	var glow: TextureRect = icon.get_node_or_null("Glow") as TextureRect
+	if glow != null:
+		glow.texture = texture
+		glow.modulate = Color(1.0, 0.08, 0.03, 0.52)
+	var next_icon: TextureRect = icon.get_node_or_null("Next") as TextureRect
+	if next_icon != null:
+		next_icon.texture = texture
+		next_icon.modulate = Color(1.28, 1.24, 1.18, 0.0)
+	var next_glow: TextureRect = icon.get_node_or_null("NextGlow") as TextureRect
+	if next_glow != null:
+		next_glow.texture = texture
+		next_glow.modulate = Color(1.0, 0.08, 0.03, 0.0)
+
+func _canonical_symbol_key(token: String) -> String:
+	var normalized: String = token.strip_edges().to_lower()
+	normalized = normalized.replace(".", "")
+	normalized = normalized.replace(",", "")
+	match normalized:
+		"1", "l", "lem", "lemon", "лим", "лимон":
+			return "lemon"
+		"2", "ch", "cher", "cherry", "виш", "вишня":
+			return "cherry"
+		"3", "cl", "clo", "clover", "клев", "клевер":
+			return "clover"
+		"4", "bel", "bell", "кол", "колокол":
+			return "bell"
+		"5", "dia", "diamond", "алм", "алмаз":
+			return "diamond"
+		"6", "chest", "сун", "сундук":
+			return "chest"
+		"7", "sev", "seven", "сем", "семерка", "семерки":
+			return "seven"
+	return ""
+
 func set_spins_left(value: int) -> void:
 	spins_left = maxi(value, 0)
 	_emit_hud_changed()

@@ -17,6 +17,7 @@ var win_popup: Label
 var ready_button: Button
 var totem_buy_panel: Panel
 var win_sequence_layer: Control
+var slot_test_console: Panel
 
 var win_popup_tween: Tween
 var cam_tween: Tween
@@ -42,6 +43,7 @@ func _ready() -> void:
 	_connect_slot_ui()
 	_sync_hud_from_slot()
 	_ensure_round_system()
+	_ensure_slot_test_console()
 	_ensure_camera_targets()
 	_connect_intro_overlay()
 	_sync_intro_lock()
@@ -66,6 +68,18 @@ func _input(event: InputEvent) -> void:
 			return
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key_event: InputEventKey = event as InputEventKey
+		if key_event.keycode == KEY_QUOTELEFT or key_event.keycode == KEY_ASCIITILDE:
+			_toggle_slot_test_console()
+			return
+		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
+			if ready_button != null and ready_button.visible:
+				_on_ready_button_pressed()
+			else:
+				_request_spin()
+			return
+
 	if _is_intro_active():
 		return
 	if _is_spin_choice_open():
@@ -83,13 +97,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			_request_spin_from_screen(mb.position)
 			return
 
-	if event is InputEventKey and event.pressed and not event.echo:
-		var key_event: InputEventKey = event as InputEventKey
-		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
-			if ready_button != null and ready_button.visible:
-				_on_ready_button_pressed()
-			else:
-				_request_spin()
 
 func _rotate_camera_by_drag(delta_x: float) -> void:
 	if camera_3d == null:
@@ -135,6 +142,30 @@ func _is_node_under(root: Node, node: Node) -> bool:
 			return true
 		current = current.get_parent()
 	return false
+
+func _ensure_slot_test_console() -> void:
+	var ui_root: Control = get_node_or_null("UI") as Control
+	if ui_root == null:
+		return
+	slot_test_console = ui_root.get_node_or_null("SlotTestConsole") as Panel
+	if slot_test_console == null:
+		slot_test_console = Panel.new()
+		slot_test_console.name = "SlotTestConsole"
+		ui_root.add_child(slot_test_console)
+	var script: Script = load("res://Materials/slot_test_console.gd")
+	if slot_test_console.get_script() != script:
+		slot_test_console.set_script(script)
+	if slot_test_console.has_method("set_slot_ui_target"):
+		slot_test_console.call_deferred("set_slot_ui_target", slot_ui)
+
+func _toggle_slot_test_console() -> void:
+	if slot_test_console == null:
+		_ensure_slot_test_console()
+	if slot_test_console == null:
+		return
+	slot_test_console.visible = not slot_test_console.visible
+	if slot_test_console.visible and slot_test_console.has_method("set_slot_ui_target"):
+		slot_test_console.call("set_slot_ui_target", slot_ui)
 
 func _bind_ready_button() -> void:
 	ready_button = get_node_or_null("UI/ReadyButton") as Button

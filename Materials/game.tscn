@@ -1309,13 +1309,6 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.2
 transform = Transform3D(1, -4.3711054e-08, -4.3540496e-08, 4.3711054e-08, 0.0039095343, 0.9999924, -4.3540496e-08, -0.9999924, 0.0039095343, 0, -0.7117264, 0)
 light_energy = 3.137
 
-[node name="LampForce2" parent="." unique_id=65440110 instance=ExtResource("48_gwlxx")]
-transform = Transform3D(1, 0, 3.8213705e-15, 3.821371e-15, 4.3711385e-08, -0.99999994, 0, 0.99999994, 4.3711385e-08, -2.2440019, 1.8235426, 1.4894006)
-
-[node name="SpotLight3D" type="SpotLight3D" parent="LampForce2" unique_id=422781543]
-transform = Transform3D(0.99951094, 0.00012221078, 0.031270918, -0.031271156, 0.0039076237, 0.9995033, -4.4907406e-08, -0.9999924, 0.0039095343, 0, -0.7117264, -1.1920929e-07)
-light_energy = 4.581
-
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=853753431]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.329578, 2.4481401, -0.69044334)
 light_energy = 0.769
