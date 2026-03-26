@@ -52,7 +52,7 @@ func _ensure_ui() -> void:
 	_apply_button = _ensure_button("ApplyButton", "Показать и проверить", Vector2(18.0, 252.0), Vector2(220.0, 42.0))
 	_jackpot_button = _ensure_button("JackpotButton", "Джекпот", Vector2(248.0, 252.0), Vector2(104.0, 42.0))
 	_clear_button = _ensure_button("ClearButton", "Очистить", Vector2(362.0, 252.0), Vector2(90.0, 42.0))
-	_close_button = _ensure_button("CloseButton", "Скрыть", Vector2(462.0, 252.0), Vector2(80.0, 42.0))
+	_close_button = _ensure_button("CloseButton", "X", Vector2(502.0, 10.0), Vector2(42.0, 36.0))
 
 	_result_label = get_node_or_null("ResultLabel") as RichTextLabel
 	if _result_label == null:
@@ -113,6 +113,18 @@ func _ensure_button(name: String, text_value: String, pos: Vector2, rect_size: V
 	button.add_theme_color_override("font_outline_color", Color.BLACK)
 	button.add_theme_constant_override("outline_size", 2)
 	button.add_theme_font_size_override("font_size", 18)
+	if name == "CloseButton":
+		button.add_theme_font_size_override("font_size", 20)
+		var close_style: StyleBoxFlat = StyleBoxFlat.new()
+		close_style.bg_color = Color(0.35, 0.08, 0.08, 1.0)
+		close_style.border_color = Color(1.0, 0.78, 0.78, 1.0)
+		close_style.border_width_left = 2
+		close_style.border_width_top = 2
+		close_style.border_width_right = 2
+		close_style.border_width_bottom = 2
+		button.add_theme_stylebox_override("normal", close_style)
+		button.add_theme_stylebox_override("hover", close_style)
+		button.add_theme_stylebox_override("pressed", close_style)
 	return button
 
 func _on_apply_pressed() -> void:

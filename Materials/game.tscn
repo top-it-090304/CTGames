@@ -51,6 +51,7 @@
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://bnj4bjckqevj0" path="res://Objects/Gem Green.glb" id="47_r1s43"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
+[ext_resource type="Script" uid="uid://b5ynyclm5gqg8" path="res://Materials/button_console.gd" id="52_gs0kc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1313,6 +1314,14 @@ light_energy = 3.137
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.329578, 2.4481401, -0.69044334)
 light_energy = 0.769
 light_indirect_energy = 0.581
+
+[node name="Button" type="Button" parent="." unique_id=351737438]
+offset_left = 13.0
+offset_top = 438.0
+offset_right = 69.0
+offset_bottom = 458.0
+text = "КОНСОЛЬ"
+script = ExtResource("52_gs0kc")
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]

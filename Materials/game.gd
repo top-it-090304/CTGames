@@ -56,6 +56,13 @@ func _ready() -> void:
 		win_popup.visible = false
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key_event: InputEventKey = event as InputEventKey
+		if key_event.keycode == KEY_TAB or key_event.physical_keycode == KEY_TAB:
+			_toggle_slot_test_console()
+			get_viewport().set_input_as_handled()
+			return
+
 	if event is InputEventScreenDrag:
 		var drag: InputEventScreenDrag = event as InputEventScreenDrag
 		_rotate_camera_by_drag(drag.relative.x)
@@ -70,9 +77,6 @@ func _input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
-		if key_event.keycode == KEY_QUOTELEFT or key_event.keycode == KEY_ASCIITILDE:
-			_toggle_slot_test_console()
-			return
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 			if ready_button != null and ready_button.visible:
 				_on_ready_button_pressed()
@@ -155,6 +159,9 @@ func _ensure_slot_test_console() -> void:
 	var script: Script = load("res://Materials/slot_test_console.gd")
 	if slot_test_console.get_script() != script:
 		slot_test_console.set_script(script)
+	if slot_test_console.has_method("_ensure_ui"):
+		slot_test_console.call("_ensure_ui")
+	slot_test_console.visible = false
 	if slot_test_console.has_method("set_slot_ui_target"):
 		slot_test_console.call_deferred("set_slot_ui_target", slot_ui)
 
@@ -164,8 +171,12 @@ func _toggle_slot_test_console() -> void:
 	if slot_test_console == null:
 		return
 	slot_test_console.visible = not slot_test_console.visible
-	if slot_test_console.visible and slot_test_console.has_method("set_slot_ui_target"):
-		slot_test_console.call("set_slot_ui_target", slot_ui)
+	if slot_test_console.visible:
+		var parent_node: Node = slot_test_console.get_parent()
+		if parent_node != null:
+			parent_node.move_child(slot_test_console, parent_node.get_child_count() - 1)
+		if slot_test_console.has_method("set_slot_ui_target"):
+			slot_test_console.call("set_slot_ui_target", slot_ui)
 
 func _bind_ready_button() -> void:
 	ready_button = get_node_or_null("UI/ReadyButton") as Button
