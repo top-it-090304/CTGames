@@ -47,6 +47,8 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
+[ext_resource type="PackedScene" uid="uid://cyj4eu2q25hbe" path="res://Objects/Bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://bnj4bjckqevj0" path="res://Objects/Gem Green.glb" id="47_r1s43"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
@@ -139,7 +141,9 @@ font_size = 27
 outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
-size = Vector3(1, 1.0234375, 1)
+size = Vector3(1, 0.68463135, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gs0kc"]
 
 [node name="Game" type="Node3D" unique_id=970350183]
 script = ExtResource("1_hudx2")
@@ -1180,16 +1184,34 @@ script = ExtResource("42_ln6k1")
 transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
+[node name="Bell" parent="TotemShop/ShopItems" unique_id=18609142 instance=ExtResource("46_yy33s")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.3763728, 1.3942306, 0.20876852)
+
+[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/Bell" unique_id=1937167590]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Bell/InteractArea" unique_id=192272749]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.09442258, 0)
+shape = SubResource("BoxShape3D_gs0kc")
+
+[node name="Diamond" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("47_r1s43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36747867, 1.4475718, -0.650048)
+
+[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Diamond" unique_id=1144152159]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Diamond/Area3D" unique_id=75787015]
+transform = Transform3D(0.56, 0, 0, 0, 0.56, 0, 0, 0, 0.56, -0.0088941455, -0.02869308, -0.0063804984)
+shape = SubResource("BoxShape3D_gs0kc")
+
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
 
 [node name="ShopSpot1" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1471560995]
 transform = Transform3D(20.000002, 0, 0, 0, 19.999998, 0, 0, 0, 20.000002, -0.42740297, 1.0475365, -1.5209233)
 
 [node name="ShopSpot2" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1263735458]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.0502722, -0.71720326)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.0502722, -0.613253)
 
 [node name="ShopSpot3" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=643058297]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.54833955, 1.0411022, 0.017848194)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5483396, 1.0411022, 0.19283766)
 
 [node name="TotemDisplay" type="Node3D" parent="." unique_id=968665750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
@@ -1270,7 +1292,7 @@ transform = Transform3D(1, -4.3711054e-08, -4.3540496e-08, 4.3711054e-08, 0.0039
 light_energy = 3.137
 
 [node name="LampForce" parent="." unique_id=186443981 instance=ExtResource("48_gwlxx")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.238761, 3.7760787, -0.2706356)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.238761, 4.3910584, -0.2706356)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="LampForce" unique_id=210764182]
 transform = Transform3D(1, -4.3711054e-08, -4.3540496e-08, 4.3711054e-08, 0.0039095343, 0.9999924, -4.3540496e-08, -0.9999924, 0.0039095343, 0, -0.7117264, 0)
