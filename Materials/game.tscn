@@ -88,31 +88,31 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlxx"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id0qs"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yy33s"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1s43"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs0kc"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vf0s"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4b4j"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omno6"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6p7f"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -298,440 +298,6 @@ layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
-custom_minimum_size = Vector2(1564, 540)
-layout_mode = 0
-offset_left = 200.0
-offset_top = 84.0
-offset_right = 1764.0
-offset_bottom = 624.0
-theme_override_constants/separation = 16
-
-[node name="Panel2" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1371510790]
-clip_contents = true
-custom_minimum_size = Vector2(300, 540)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
-script = ExtResource("3_fust2")
-max_speed = 1800.0
-accel_time = 0.18
-stop_time = 0.55
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2" unique_id=1265306406]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 275.0
-offset_bottom = 1242.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer" unique_id=1978296401]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1600128397]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=636497946]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=77746438]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=593643981]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1041830622]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=762576421]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1750990342]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Panel3" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1535404939]
-clip_contents = true
-custom_minimum_size = Vector2(300, 540)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
-script = ExtResource("12_k2kpc")
-max_speed = 1800.0
-accel_time = 0.18
-stop_time = 0.55
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3" unique_id=325626560]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 275.0
-offset_bottom = 1242.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer" unique_id=886598828]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1506754377]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=2122522707]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1634918489]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=111572360]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=125277088]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=990484620]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=58654553]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Panel4" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=900466939]
-clip_contents = true
-custom_minimum_size = Vector2(300, 540)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
-script = ExtResource("13_sa7vf")
-max_speed = 1800.0
-accel_time = 0.18
-stop_time = 0.55
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4" unique_id=1260188477]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 275.0
-offset_bottom = 1242.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer" unique_id=844146009]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=427976100]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1845341312]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=906233931]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1564721407]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=761420985]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=312222893]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1892909718]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Panel5" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=916677282]
-clip_contents = true
-custom_minimum_size = Vector2(300, 540)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
-script = ExtResource("14_0m7j0")
-max_speed = 1800.0
-accel_time = 0.18
-stop_time = 0.55
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5" unique_id=267820924]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 275.0
-offset_bottom = 1242.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer" unique_id=1040745070]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=2094393432]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=289770453]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1056986977]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=314457585]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=441102158]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=70757673]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1929893014]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Panel6" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=517089707]
-clip_contents = true
-custom_minimum_size = Vector2(300, 540)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
-script = ExtResource("15_0m7j0")
-max_speed = 1800.0
-accel_time = 0.18
-stop_time = 0.55
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6" unique_id=979237616]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 275.0
-offset_bottom = 1242.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer" unique_id=16976578]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1940952828]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("5_sa7vf")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=655164]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("6_g7uyw")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1350266363]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("7_0m7j0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1297181015]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("8_qk58f")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1482858452]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("9_62l5a")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1508293150]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("10_7l2bl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=22877894]
-modulate = Color(1.28, 1.24, 1.18, 1)
-texture_filter = 4
-custom_minimum_size = Vector2(250, 170)
-layout_mode = 2
-texture = ExtResource("11_3w25a")
-expand_mode = 3
-stretch_mode = 5
-
 [node name="HighlightLayer" type="Control" parent="SubViewport/SlotUI" unique_id=1625748059]
 visible = false
 z_index = 220
@@ -859,6 +425,440 @@ offset_top = 10.0
 offset_right = 281.0
 offset_bottom = 192.0
 mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=1598636965]
+custom_minimum_size = Vector2(1564, 540)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 84.0
+offset_right = 1764.0
+offset_bottom = 624.0
+theme_override_constants/separation = 16
+
+[node name="Panel2" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1371510790]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
+script = ExtResource("3_fust2")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2" unique_id=1265306406]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer" unique_id=1978296401]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1600128397]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=636497946]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=77746438]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=593643981]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1041830622]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=762576421]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel2/MarginContainer/VBoxContainer" unique_id=1750990342]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel3" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=1535404939]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2vf0s")
+script = ExtResource("12_k2kpc")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3" unique_id=325626560]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer" unique_id=886598828]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1506754377]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=2122522707]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=1634918489]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=111572360]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=125277088]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=990484620]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel3/MarginContainer/VBoxContainer" unique_id=58654553]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel4" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=900466939]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p4b4j")
+script = ExtResource("13_sa7vf")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4" unique_id=1260188477]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer" unique_id=844146009]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=427976100]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1845341312]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=906233931]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1564721407]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=761420985]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=312222893]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel4/MarginContainer/VBoxContainer" unique_id=1892909718]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel5" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=916677282]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_omno6")
+script = ExtResource("14_0m7j0")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5" unique_id=267820924]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer" unique_id=1040745070]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=2094393432]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=289770453]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1056986977]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=314457585]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=441102158]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=70757673]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel5/MarginContainer/VBoxContainer" unique_id=1929893014]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Panel6" type="Panel" parent="SubViewport/SlotUI/HBoxContainer" unique_id=517089707]
+clip_contents = true
+custom_minimum_size = Vector2(300, 540)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k6p7f")
+script = ExtResource("15_0m7j0")
+max_speed = 1800.0
+accel_time = 0.18
+stop_time = 0.55
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6" unique_id=979237616]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 275.0
+offset_bottom = 1242.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer" unique_id=16976578]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1940952828]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("5_sa7vf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=655164]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("6_g7uyw")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1350266363]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("7_0m7j0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1297181015]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("8_qk58f")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1482858452]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("9_62l5a")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect6" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=1508293150]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("10_7l2bl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect7" type="TextureRect" parent="SubViewport/SlotUI/HBoxContainer/Panel6/MarginContainer/VBoxContainer" unique_id=22877894]
+modulate = Color(1.28, 1.24, 1.18, 1)
+texture_filter = 4
+custom_minimum_size = Vector2(250, 170)
+layout_mode = 2
+texture = ExtResource("11_3w25a")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="Button" type="Button" parent="SubViewport" unique_id=2019399268]
 visible = false
@@ -1087,13 +1087,13 @@ debt_button_animation_name = "AnimationPlayer"
 
 [node name="CameraTargets" type="Node3D" parent="." unique_id=48921000]
 
-[node name="CamMain" type="Marker3D" parent="CameraTargets" unique_id=1941190960]
-
 [node name="CamDebt" type="Marker3D" parent="CameraTargets" unique_id=1824680857]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.017, -0.669)
 
 [node name="CamTickets" type="Marker3D" parent="CameraTargets" unique_id=2089826251]
 
 [node name="CamSlot" type="Marker3D" parent="CameraTargets" unique_id=1177043428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7948208, 1.4398408, -0.6386836)
 
 [node name="DebtViewport" type="SubViewport" parent="." unique_id=1115058972]
 size = Vector2i(1024, 512)

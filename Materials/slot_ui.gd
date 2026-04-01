@@ -96,7 +96,10 @@ var _highlight_palettes: Array[Array] = [
 const SLOT_HIGHLIGHT_OVERLAY_SCRIPT: Script = preload("res://Materials/slot_highlight_overlay.gd")
 const HIT_FRAME_NAME: StringName = &"HitFrame"
 const HIT_FRAME_PATH: NodePath = ^"HitFrame"
+const HIGHLIGHT_TINT_PATH: NodePath = ^"HitFrame/Fill"
 const HIGHLIGHT_PULSE_SPEED: float = 3.6
+const ICON_BASE_MODULATE: Color = Color(1.28, 1.24, 1.18, 1.0)
+const ICON_BASE_GLOW: Color = Color(1.0, 0.08, 0.03, 0.52)
 
 func _ready() -> void:
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
@@ -961,19 +964,84 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 	clear_combo_highlight()
-	return
+	if points.is_empty():
+		return
+	_highlight_palette_index = posmod(palette_index, _highlight_palettes.size())
+	_highlight_pulse_t = 0.0
+	for point_var: Variant in points:
+		var point: Vector2i = _point_to_board_cell(point_var)
+		if point.x < 0 or point.y < 0:
+			continue
+		if point.y >= _reels.size():
+			continue
+		var icon: TextureRect = _icon_for_board_cell(point)
+		if icon == null:
+			continue
+		if _highlighted_icons.has(icon):
+			continue
+		_highlighted_icons.append(icon)
+	_refresh_icon_highlights()
+
+func _icon_for_board_cell(point: Vector2i) -> TextureRect:
+	if point.x < 0 or point.x >= 3:
+		return null
+	if point.y < 0 or point.y >= _reels.size():
+		return null
+	var reel: Panel = _reels[point.y]
+	if reel == null:
+		return null
+	var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+	if box != null and point.x < box.get_child_count():
+		var direct_icon: TextureRect = box.get_child(point.x) as TextureRect
+		if direct_icon != null:
+			return direct_icon
+	return _reel_icon_for_row(reel, point.x)
+
+func _point_to_board_cell(point_var: Variant) -> Vector2i:
+	if point_var is Vector2i:
+		return point_var
+	if point_var is Vector2:
+		var p2: Vector2 = point_var as Vector2
+		return Vector2i(int(round(p2.x)), int(round(p2.y)))
+	if point_var is Array:
+		var arr: Array = point_var as Array
+		if arr.size() >= 2:
+			return Vector2i(int(arr[0]), int(arr[1]))
+	if point_var is Dictionary:
+		var d: Dictionary = point_var as Dictionary
+		if d.has("x") and d.has("y"):
+			return Vector2i(int(d.get("x", -1)), int(d.get("y", -1)))
+	return Vector2i(-1, -1)
 
 func clear_combo_highlight() -> void:
 	for icon: TextureRect in _highlighted_icons:
 		if icon == null:
 			continue
-		icon.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
+		_restore_icon_highlight_state(icon)
 		var frame: Control = icon.get_node_or_null(HIT_FRAME_PATH) as Control
 		if frame != null:
 			frame.visible = false
 	_highlighted_icons.clear()
 	if _highlight_overlay != null and _highlight_overlay.has_method("clear_highlights"):
 		_highlight_overlay.call("clear_highlights")
+
+func _restore_icon_highlight_state(icon: TextureRect) -> void:
+	if icon == null:
+		return
+	icon.modulate = ICON_BASE_MODULATE
+	icon.self_modulate = Color.WHITE
+
+	var glow: TextureRect = icon.get_node_or_null("Glow") as TextureRect
+	if glow != null:
+		glow.modulate = ICON_BASE_GLOW
+
+	var next_icon: TextureRect = icon.get_node_or_null("Next") as TextureRect
+	if next_icon != null:
+		next_icon.modulate = Color(ICON_BASE_MODULATE.r, ICON_BASE_MODULATE.g, ICON_BASE_MODULATE.b, 0.0)
+
+	var next_glow: TextureRect = icon.get_node_or_null("NextGlow") as TextureRect
+	if next_glow != null:
+		next_glow.modulate = Color(ICON_BASE_GLOW.r, ICON_BASE_GLOW.g, ICON_BASE_GLOW.b, 0.0)
 
 func _ensure_icon_highlight_frame(icon: TextureRect) -> Control:
 	if icon == null:
@@ -997,6 +1065,7 @@ func _ensure_icon_highlight_frame(icon: TextureRect) -> Control:
 		fill_rect.name = "Fill"
 		fill_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 		fill_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		fill_rect.z_index = 45
 		frame.add_child(fill_rect)
 
 		for edge_name: String in ["Top", "Bottom", "Left", "Right", "Shine"]:
@@ -1014,12 +1083,25 @@ func _refresh_icon_highlights() -> void:
 	var c1: Color = palette[1]
 	var t: float = 0.5 + 0.5 * sin(_highlight_pulse_t * HIGHLIGHT_PULSE_SPEED)
 	var edge: Color = c0.lerp(c1, t)
-	var fill: Color = Color(0.42, 0.02, 0.04, 0.52)
-	var shine: Color = Color(1.0, 1.0, 0.72, 0.32 + 0.10 * t)
+	var fill: Color = Color(edge.r, edge.g, edge.b, 0.20 + 0.16 * t)
+	var shine: Color = Color(1.0, 1.0, 0.72, 0.28 + 0.08 * t)
 
 	for icon: TextureRect in _highlighted_icons:
 		if icon == null:
 			continue
+
+		icon.modulate = Color(
+			maxf(ICON_BASE_MODULATE.r, edge.r * 1.15),
+			maxf(ICON_BASE_MODULATE.g, edge.g * 1.15),
+			maxf(ICON_BASE_MODULATE.b, edge.b * 1.10),
+			1.0
+		)
+		icon.self_modulate = Color.WHITE
+
+		var glow: TextureRect = icon.get_node_or_null("Glow") as TextureRect
+		if glow != null:
+			glow.modulate = Color(edge.r, edge.g, edge.b, 0.70 + 0.18 * t)
+
 		var frame: Control = _ensure_icon_highlight_frame(icon)
 		if frame == null:
 			continue
@@ -1035,6 +1117,7 @@ func _refresh_icon_highlights() -> void:
 		var shine_px: float = 2.0
 		var w: float = maxf(frame.size.x, 0.0)
 		var h: float = maxf(frame.size.y, 0.0)
+		var border_alpha: float = 0.72 + 0.16 * t
 
 		if fill_rect != null:
 			fill_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -1042,26 +1125,26 @@ func _refresh_icon_highlights() -> void:
 		if top_rect != null:
 			top_rect.position = Vector2.ZERO
 			top_rect.size = Vector2(w, border_px)
-			top_rect.color = edge
+			top_rect.color = Color(edge.r, edge.g, edge.b, border_alpha)
 		if bottom_rect != null:
 			bottom_rect.position = Vector2(0.0, h - border_px)
 			bottom_rect.size = Vector2(w, border_px)
-			bottom_rect.color = edge
+			bottom_rect.color = Color(edge.r, edge.g, edge.b, border_alpha)
 		if left_rect != null:
 			left_rect.position = Vector2.ZERO
 			left_rect.size = Vector2(border_px, h)
-			left_rect.color = edge
+			left_rect.color = Color(edge.r, edge.g, edge.b, border_alpha)
 		if right_rect != null:
 			right_rect.position = Vector2(w - border_px, 0.0)
 			right_rect.size = Vector2(border_px, h)
-			right_rect.color = edge
+			right_rect.color = Color(edge.r, edge.g, edge.b, border_alpha)
 		if shine_rect != null:
 			shine_rect.position = Vector2(border_px + 3.0, border_px + 3.0)
 			shine_rect.size = Vector2(maxf(w - (border_px + 3.0) * 2.0, 0.0), shine_px)
 			shine_rect.color = shine
 
+		frame.visible = true
 		frame.self_modulate = Color(1.0, 1.0, 1.0, 1.0)
-		icon.self_modulate = Color(1.18, 1.14, 1.04, 1.0)
 
 func _rect_for_board_point(point: Vector2i) -> Rect2:
 	if point.y < 0 or point.y >= _reels.size():
