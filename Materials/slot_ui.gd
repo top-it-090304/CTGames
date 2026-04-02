@@ -1059,13 +1059,20 @@ func format_money(value: int) -> String:
 
 func _configure_slot_layout() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	position = Vector2.ZERO
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = 0.0
+	offset_bottom = 0.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
-
-	_ensure_backdrop()
 
 	var viewport_size: Vector2 = get_viewport_rect().size
 	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
 		viewport_size = Vector2(1024.0, 768.0)
+	size = viewport_size
+	custom_minimum_size = viewport_size
+
+	_ensure_backdrop()
 
 	var reel_count: int = maxi(_reels.size(), 5)
 	var gap: float = 12.0

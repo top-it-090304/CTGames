@@ -243,22 +243,23 @@ func _ensure_ui() -> void:
 		_panel = Panel.new()
 		_panel.name = "Panel"
 		add_child(_panel)
-	_panel.anchor_left = 0.312
-	_panel.anchor_top = 0.474
+	_panel.anchor_left = 0.5
+	_panel.anchor_top = 0.5
 	_panel.anchor_right = 0.5
-	_panel.anchor_bottom = 0.571
+	_panel.anchor_bottom = 0.5
 	_panel.offset_left = -360.0
-	_panel.offset_top = -180.0
+	_panel.offset_top = -160.0
 	_panel.offset_right = 360.0
-	_panel.offset_bottom = 180.0
+	_panel.offset_bottom = 160.0
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.0, 0.0, 0.0, 1.0)
-	panel_style.border_width_left = 0
-	panel_style.border_width_top = 0
-	panel_style.border_width_right = 0
-	panel_style.border_width_bottom = 0
+	panel_style.border_width_left = 3
+	panel_style.border_width_top = 3
+	panel_style.border_width_right = 3
+	panel_style.border_width_bottom = 3
+	panel_style.border_color = Color(1.0, 0.52, 0.08, 1.0)
 	_panel.add_theme_stylebox_override("panel", panel_style)
 
 	_title = _panel.get_node_or_null("TitleLabel") as Label
@@ -266,22 +267,22 @@ func _ensure_ui() -> void:
 		_title = Label.new()
 		_title.name = "TitleLabel"
 		_panel.add_child(_title)
-	_title.anchor_left = 0.075
-	_title.anchor_top = -0.5
+	_title.anchor_left = 0.0
+	_title.anchor_top = 0.0
 	_title.anchor_right = 1.0
-	_title.anchor_bottom = 0.18
-	_title.offset_left = 20.0
-	_title.offset_top = 64.0
-	_title.offset_right = -20.0
-	_title.offset_bottom = 120.0
+	_title.anchor_bottom = 0.0
+	_title.offset_left = 24.0
+	_title.offset_top = 22.0
+	_title.offset_right = -24.0
+	_title.offset_bottom = 72.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 130)
+	_title.add_theme_font_size_override("font_size", 52)
 	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
 	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 	_title.add_theme_constant_override("outline_size", 3)
 	_title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_title.scale = Vector2(1.04, 1.04)
+	_title.scale = Vector2.ONE
 
 	_logo = get_node_or_null("JackpotLogo") as TextureRect
 	if _logo == null:
@@ -307,55 +308,55 @@ func _ensure_ui() -> void:
 		_option_a = Button.new()
 		_option_a.name = "Option7Button"
 		_panel.add_child(_option_a)
-	_option_a.anchor_left = 0.09
+	_option_a.anchor_left = 0.0
 	_option_a.anchor_right = 1.0
-	_option_a.anchor_top = -0.1
-	_option_a.anchor_bottom = 0.045
-	_option_a.offset_left = 26.0
-	_option_a.offset_top = 156.0
-	_option_a.offset_right = -26.0
-	_option_a.offset_bottom = 220.0
+	_option_a.anchor_top = 0.0
+	_option_a.anchor_bottom = 0.0
+	_option_a.offset_left = 34.0
+	_option_a.offset_top = 98.0
+	_option_a.offset_right = -34.0
+	_option_a.offset_bottom = 150.0
 
 	_option_b = _panel.get_node_or_null("Option3Button") as Button
 	if _option_b == null:
 		_option_b = Button.new()
 		_option_b.name = "Option3Button"
 		_panel.add_child(_option_b)
-	_option_b.anchor_left = 0.104
+	_option_b.anchor_left = 0.0
 	_option_b.anchor_right = 1.0
 	_option_b.anchor_top = 0.0
 	_option_b.anchor_bottom = 0.0
-	_option_b.offset_left = 26.0
-	_option_b.offset_top = 232.0
-	_option_b.offset_right = -26.0
-	_option_b.offset_bottom = 296.0
+	_option_b.offset_left = 34.0
+	_option_b.offset_top = 162.0
+	_option_b.offset_right = -34.0
+	_option_b.offset_bottom = 214.0
 
 	_cancel = _panel.get_node_or_null("CancelButton") as Button
 	if _cancel == null:
 		_cancel = Button.new()
 		_cancel.name = "CancelButton"
 		_panel.add_child(_cancel)
-	_cancel.anchor_left = 0.267
-	_cancel.anchor_right = 1.0
+	_cancel.anchor_left = 0.5
+	_cancel.anchor_right = 0.5
 	_cancel.anchor_top = 0.0
-	_cancel.anchor_bottom = 0.513
-	_cancel.offset_left = 160.0
-	_cancel.offset_top = 306.0
-	_cancel.offset_right = -160.0
-	_cancel.offset_bottom = 364.0
+	_cancel.anchor_bottom = 0.0
+	_cancel.offset_left = -110.0
+	_cancel.offset_top = 238.0
+	_cancel.offset_right = 110.0
+	_cancel.offset_bottom = 284.0
 
 	for b: Button in [_option_a, _option_b, _cancel]:
 		b.focus_mode = Control.FOCUS_NONE
 		b.flat = true
 		b.mouse_filter = Control.MOUSE_FILTER_STOP
-		b.add_theme_font_size_override("font_size", 90)
+		b.add_theme_font_size_override("font_size", 34)
 		b.add_theme_color_override("font_color", OPTION_COLOR_DEFAULT)
 		b.add_theme_color_override("font_hover_color", OPTION_COLOR_HOVER)
 		b.add_theme_color_override("font_pressed_color", OPTION_COLOR_PRESSED)
 		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
 		b.add_theme_constant_override("outline_size", 3)
 		b.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		b.scale = Vector2(1.02, 1.02)
+		b.scale = Vector2.ONE
 
 	_refresh_option_visuals()
 

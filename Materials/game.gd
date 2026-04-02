@@ -441,8 +441,7 @@ func _ensure_slot_screen_surface() -> void:
 			new_material.emission_energy_multiplier = 1.0
 			new_screen.material_override = new_material
 
-		var new_viewport_texture := ViewportTexture.new()
-		new_viewport_texture.viewport_path = slot_viewport.get_path()
+		var new_viewport_texture: ViewportTexture = slot_viewport.get_texture()
 		new_material.albedo_texture = new_viewport_texture
 		new_material.emission_texture = new_viewport_texture
 		return
@@ -474,8 +473,7 @@ func _ensure_slot_screen_surface() -> void:
 		material.emission_energy_multiplier = 1.0
 		overlay.material_override = material
 
-	var viewport_texture: ViewportTexture = ViewportTexture.new()
-	viewport_texture.viewport_path = slot_viewport.get_path()
+	var viewport_texture: ViewportTexture = slot_viewport.get_texture()
 	material.albedo_texture = viewport_texture
 	material.emission_texture = viewport_texture
 
