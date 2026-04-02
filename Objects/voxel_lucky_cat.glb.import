@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://3uijebt1cyr4"
-path="res://.godot/imported/voxel_lucky_cat.glb-61ca8a74fecb2b0bb0e1f7ba601039ed.scn"
+path="res://.godot/imported/voxel_lucky_cat.glb-f61350ea936501a7509129dfd5959342.scn"
 
 [deps]
 
-source_file="res://voxel_lucky_cat.glb"
-dest_files=["res://.godot/imported/voxel_lucky_cat.glb-61ca8a74fecb2b0bb0e1f7ba601039ed.scn"]
+source_file="res://Objects/voxel_lucky_cat.glb"
+dest_files=["res://.godot/imported/voxel_lucky_cat.glb-f61350ea936501a7509129dfd5959342.scn"]
 
 [params]
 
