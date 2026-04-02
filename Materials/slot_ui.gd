@@ -1075,15 +1075,17 @@ func _configure_slot_layout() -> void:
 	_ensure_backdrop()
 
 	var reel_count: int = maxi(_reels.size(), 5)
-	var gap: float = 12.0
-	var horizontal_margin: float = 110.0
-	var available_width: float = maxf(viewport_size.x - horizontal_margin * 2.0 - gap * float(reel_count - 1), 500.0)
+	var gap: float = 8.0
+	var horizontal_margin: float = 26.0
+	var top_margin: float = 28.0
+	var bottom_margin: float = 34.0
+	var available_width: float = maxf(viewport_size.x - horizontal_margin * 2.0 - gap * float(reel_count - 1), 640.0)
 	var reel_width: float = floor(available_width / float(reel_count))
-	var reel_height: float = clampf(viewport_size.y - 210.0, 360.0, 500.0)
+	var reel_height: float = clampf(viewport_size.y - top_margin - bottom_margin, 440.0, 706.0)
 	var reel_size: Vector2 = Vector2(reel_width, reel_height)
 	var reels_size: Vector2 = Vector2(float(reel_count) * reel_size.x + float(reel_count - 1) * gap, reel_size.y)
-	var reels_pos: Vector2 = Vector2((viewport_size.x - reels_size.x) * 0.5, 92.0)
-	var icon_size: Vector2 = Vector2(maxf(reel_width - 50.0, 84.0), floor((reel_height - 32.0 - float(2 * 6)) / 3.0))
+	var reels_pos: Vector2 = Vector2((viewport_size.x - reels_size.x) * 0.5, top_margin)
+	var icon_size: Vector2 = Vector2(maxf(reel_width - 22.0, 96.0), floor((reel_height - 26.0 - float(2 * 6)) / 3.0))
 
 	reels_row.position = reels_pos
 	reels_row.custom_minimum_size = reels_size

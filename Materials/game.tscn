@@ -8,6 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://b1qisct7swvp4" path="res://Objects/Bottle.glb" id="4_tiqx2"]
 [ext_resource type="PackedScene" uid="uid://8bfaia2hqckq" path="res://Objects/ATM.glb" id="5_ablru"]
 [ext_resource type="PackedScene" uid="uid://cjhyxjcaorxa8" path="res://Objects/Cigarette.glb" id="5_be8xs"]
+[ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
+[ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
+[ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
+[ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
+[ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
+[ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
+[ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -38,9 +45,9 @@
 [ext_resource type="Texture2D" uid="uid://v76gljo3ni1d" path="res://Objects/Untitled_Texture_SlotMachine.png" id="52_2vf0s"]
 [ext_resource type="Script" uid="uid://b5ynyclm5gqg8" path="res://Materials/button_console.gd" id="52_gs0kc"]
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
-[ext_resource type="Script" path="res://Materials/slot_ui.gd" id="54_slotui"]
-[ext_resource type="Script" path="res://Materials/spin_choice_popup.gd" id="55_spinpopup"]
-[ext_resource type="Script" path="res://Materials/slot_reel.gd" id="56_slotreel"]
+[ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
+[ext_resource type="Script" uid="uid://c0bhoxadyfx8f" path="res://Materials/spin_choice_popup.gd" id="55_spinpopup"]
+[ext_resource type="Script" uid="uid://dm6j5wyxcq6jt" path="res://Materials/slot_reel.gd" id="56_slotreel"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -73,6 +80,48 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlxx"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 9
+border_width_top = 9
+border_width_right = 9
+border_width_bottom = 9
+border_color = Color(1, 0.52, 0.08, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id0qs"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yy33s"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1s43"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs0kc"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vf0s"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
@@ -174,7 +223,15 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_a7e6r")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_gwlxx"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_id0qs"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_gwlxx")
+
 [sub_resource type="QuadMesh" id="QuadMesh_yci1l"]
+size = Vector2(1.38, 1.18)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tc3b6"]
 size = Vector3(1, 1, 0.36224365)
@@ -263,11 +320,14 @@ size = Vector2i(1024, 768)
 render_target_update_mode = 4
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
+custom_minimum_size = Vector2(1024, 768)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource("54_slotui")
+symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), ExtResource("8_qk58f"), ExtResource("5_sa7vf"), ExtResource("9_62l5a"), ExtResource("7_0m7j0"), ExtResource("11_3w25a")])
+weights = Array[float]([20.0, 20.0, 15.0, 15.0, 11.5, 11.5, 7.0])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
 
@@ -283,73 +343,11 @@ offset_bottom = 23.0
 
 [node name="SlotFrame" type="Panel" parent="SubViewport/SlotUI" unique_id=1609034206]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="SlotReels" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=2127281139]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Reel1" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1934921466]
-layout_mode = 2
-script = ExtResource("56_slotreel")
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel1" unique_id=1825040412]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel1/MarginContainer" unique_id=2121658715]
-layout_mode = 2
-
-[node name="Reel2" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1084642163]
-layout_mode = 2
-script = ExtResource("56_slotreel")
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel2" unique_id=412801395]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel2/MarginContainer" unique_id=373076406]
-layout_mode = 2
-
-[node name="Reel3" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1886846065]
-layout_mode = 2
-script = ExtResource("56_slotreel")
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel3" unique_id=903447608]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel3/MarginContainer" unique_id=1450540886]
-layout_mode = 2
-
-[node name="Reel4" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1937228345]
-layout_mode = 2
-script = ExtResource("56_slotreel")
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel4" unique_id=576568761]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel4/MarginContainer" unique_id=663494392]
-layout_mode = 2
-
-[node name="Reel5" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=350920985]
-layout_mode = 2
-script = ExtResource("56_slotreel")
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel5" unique_id=1472158106]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel5/MarginContainer" unique_id=2066509736]
-layout_mode = 2
+offset_top = 2.0
+offset_right = 1024.0
+offset_bottom = 760.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
 
 [node name="SpinChoicePopup" type="Control" parent="SubViewport/SlotUI" unique_id=1867878427]
 anchors_preset = 0
@@ -364,9 +362,128 @@ offset_bottom = 40.0
 script = ExtResource("33_8k356")
 
 [node name="StatusLabel" type="Label" parent="SubViewport/SlotUI" unique_id=1937195566]
+texture_filter = 1
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 64.0
+offset_top = 20.0
+offset_right = 960.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(1, 0.77, 0.38, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 24
+text = "READY"
+vertical_alignment = 1
+
+[node name="SlotReels" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=2127281139]
+custom_minimum_size = Vector2(972, 706)
+layout_mode = 0
+offset_left = 26.0
+offset_top = 28.0
+offset_right = 998.0
+offset_bottom = 734.0
+theme_override_constants/separation = 8
+
+[node name="Reel1" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1934921466]
+clip_contents = true
+custom_minimum_size = Vector2(188, 706)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
+script = ExtResource("56_slotreel")
+icon_size = Vector2(166, 222)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel1" unique_id=1825040412]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 191.0
+offset_bottom = 1378.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel1/MarginContainer" unique_id=2121658715]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Reel2" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1084642163]
+clip_contents = true
+custom_minimum_size = Vector2(188, 706)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
+script = ExtResource("56_slotreel")
+icon_size = Vector2(166, 222)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel2" unique_id=412801395]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 191.0
+offset_bottom = 1378.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel2/MarginContainer" unique_id=373076406]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Reel3" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1886846065]
+clip_contents = true
+custom_minimum_size = Vector2(188, 706)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
+script = ExtResource("56_slotreel")
+icon_size = Vector2(166, 222)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel3" unique_id=903447608]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 191.0
+offset_bottom = 1378.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel3/MarginContainer" unique_id=1450540886]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Reel4" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1937228345]
+clip_contents = true
+custom_minimum_size = Vector2(188, 706)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
+script = ExtResource("56_slotreel")
+icon_size = Vector2(166, 222)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel4" unique_id=576568761]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 191.0
+offset_bottom = 1378.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel4/MarginContainer" unique_id=663494392]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Reel5" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=350920985]
+clip_contents = true
+custom_minimum_size = Vector2(188, 706)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2vf0s")
+script = ExtResource("56_slotreel")
+icon_size = Vector2(166, 222)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel5" unique_id=1472158106]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 16.0
+offset_right = 191.0
+offset_bottom = 1378.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel5/MarginContainer" unique_id=2066509736]
+layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
 
@@ -834,7 +951,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 177.76407, -93.85546)
 mesh = SubResource("ArrayMesh_2c4sm")
 
 [node name="ScreenSurface" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=59441967]
-transform = Transform3D(-3.059797e-08, -0.060934674, 0.6947823, 0, 0.49627307, 0.085308544, -0.7, 2.6635392e-09, -3.0369897e-08, -3.981195, 2.065613, -0.31471005)
+transform = Transform3D(-2.6226834e-08, -0.051471714, 0.9630256, 0, 0.42690825, 0.116110615, -0.6, 2.2499e-09, -4.2095184e-08, -3.981195, 2.082, -0.309)
+material_override = SubResource("StandardMaterial3D_id0qs")
 mesh = SubResource("QuadMesh_yci1l")
 
 [node name="LeverArea" type="Area3D" parent="SlotMachineRoot" unique_id=456430284]
