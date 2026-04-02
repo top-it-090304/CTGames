@@ -45,6 +45,10 @@ var _selected_option: int = 0
 var _mode: int = MODE_CLOSED
 
 func _ready() -> void:
+	if jackpot_jail_logo == null:
+		jackpot_jail_logo = load("res://textures/jackpot_jail_logo_nofon.png") as Texture2D
+		if jackpot_jail_logo == null:
+			jackpot_jail_logo = load("res://textures/jackpot_jail_logo.png") as Texture2D
 	_ensure_ui()
 	visible = false
 

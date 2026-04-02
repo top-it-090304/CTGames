@@ -31,6 +31,14 @@ signal round_ended(round_number: int, interest_amount: int)
 @export var interest_percent: float = 7.0
 @export var tickets_per_round_end: int = 1
 
+@export_group("Editor Preview")
+@export var editor_preview_enabled: bool = false
+@export var editor_preview_show_grid: bool = true
+@export var editor_preview_show_labels: bool = true
+@export_enum("none", "horizontal", "vertical", "diag", "horizontal_l", "horizontal_xl", "up", "down", "sky", "earth", "eye", "jackpot") var editor_preview_combo: String = "none"
+@export_range(0, 20, 1) var editor_preview_variant: int = 0
+@export_range(0, 3, 1) var editor_preview_palette: int = 0
+
 const SYMBOL_VALUES: Dictionary = {
 	"lemon": 2,
 	"cherry": 2,
@@ -50,6 +58,8 @@ const SYMBOL_CHANCES: Dictionary = {
 	"chest": 11.5,
 	"seven": 7.0,
 }
+
+const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
 const SYMBOL_TITLES: Dictionary = {
 	"lemon": "Лимон",
@@ -83,6 +93,8 @@ var _last_win_amount: int = 0
 var _last_win_combo_id: String = ""
 var _totem_bonuses: Dictionary = {}
 var _highlight_overlay: Control
+var _editor_preview_layer: Control
+var _editor_preview_signature: String = ""
 var _highlighted_icons: Array[TextureRect] = []
 var _highlight_palette_index: int = 0
 var _highlight_pulse_t: float = 0.0
@@ -102,9 +114,11 @@ const ICON_BASE_MODULATE: Color = Color(1.28, 1.24, 1.18, 1.0)
 const ICON_BASE_GLOW: Color = Color(1.0, 0.08, 0.03, 0.52)
 
 func _ready() -> void:
+	_resolve_slot_paths()
+	_autoload_default_symbols()
 	reels_row = get_node_or_null(reels_row_path) as HBoxContainer
-	btn = get_node_or_null(button_path) as Button
-	label = get_node_or_null(label_path) as Label
+	btn = null if button_path.is_empty() else get_node_or_null(button_path) as Button
+	label = null if label_path.is_empty() else get_node_or_null(label_path) as Label
 
 	if reels_row == null:
 		push_error("reels_row is null: set reels_row_path in Inspector")
@@ -131,7 +145,35 @@ func _ready() -> void:
 	if btn != null and not btn.pressed.is_connected(request_spin):
 		btn.pressed.connect(request_spin)
 
+func _resolve_slot_paths() -> void:
+	if reels_row_path.is_empty():
+		reels_row_path = ^"SlotReels"
+	if label_path.is_empty():
+		label_path = ^"StatusLabel"
+
+func _autoload_default_symbols() -> void:
+	if not symbols.is_empty():
+		return
+	var default_paths: PackedStringArray = [
+		"res://textures/lemon.png",
+		"res://textures/cherry.png",
+		"res://textures/clover.png",
+		"res://textures/bell.png",
+		"res://textures/diamond.png",
+		"res://textures/chest.png",
+		"res://textures/seven.png",
+	]
+	for path: String in default_paths:
+		var tex: Texture2D = load(path) as Texture2D
+		if tex != null:
+			symbols.append(tex)
+	if weights.size() != symbols.size():
+		weights.resize(symbols.size())
+
 func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		_update_editor_preview_if_needed()
+		return
 	if _highlighted_icons.is_empty():
 		return
 	_highlight_pulse_t += delta
@@ -141,8 +183,148 @@ func _collect_reels() -> void:
 	_reels.clear()
 	for child: Node in reels_row.get_children():
 		var panel: Panel = child as Panel
-		if panel != null and panel.has_method("start_spin"):
+		if panel != null and (panel.has_method("start_spin") or Engine.is_editor_hint()):
 			_reels.append(panel)
+
+func _update_editor_preview_if_needed() -> void:
+	if not Engine.is_editor_hint():
+		return
+	if reels_row == null:
+		reels_row = get_node_or_null(reels_row_path) as HBoxContainer
+	if reels_row == null:
+		return
+	_collect_reels()
+	if _combo_rules.is_empty():
+		_combo_rules = _build_combo_rules()
+	var signature: String = _editor_preview_state_signature()
+	if signature == _editor_preview_signature:
+		return
+	_editor_preview_signature = signature
+	_refresh_editor_preview()
+
+func _editor_preview_state_signature() -> String:
+	var parts: PackedStringArray = PackedStringArray([
+		str(editor_preview_enabled),
+		str(editor_preview_show_grid),
+		str(editor_preview_show_labels),
+		editor_preview_combo,
+		str(editor_preview_variant),
+		str(editor_preview_palette),
+	])
+	if reels_row != null:
+		parts.append(str(reels_row.position))
+		parts.append(str(reels_row.size))
+	for row: int in range(3):
+		for col: int in range(mini(_reels.size(), 5)):
+			parts.append(str(_rect_for_board_point(Vector2i(row, col))))
+	return "|".join(parts)
+
+func _refresh_editor_preview() -> void:
+	var layer: Control = _ensure_editor_preview_layer()
+	if layer == null:
+		return
+	layer.visible = editor_preview_enabled
+	while layer.get_child_count() > 0:
+		layer.get_child(0).free()
+	if not editor_preview_enabled:
+		return
+
+	var active_points: Array[Vector2i] = _editor_preview_points()
+	var active_map: Dictionary = {}
+	for point: Vector2i in active_points:
+		active_map["%d:%d" % [point.x, point.y]] = true
+
+	for row: int in range(3):
+		for col: int in range(mini(_reels.size(), 5)):
+			var point := Vector2i(row, col)
+			var rect: Rect2 = _rect_for_board_point(point)
+			if rect.size == Vector2.ZERO:
+				continue
+			var selected: bool = active_map.has("%d:%d" % [row, col])
+			if not editor_preview_show_grid and not selected:
+				continue
+			var panel := Panel.new()
+			panel.position = rect.position
+			panel.size = rect.size
+			panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			panel.add_theme_stylebox_override("panel", _editor_preview_style(selected))
+			layer.add_child(panel)
+
+			if editor_preview_show_labels:
+				var label_node := Label.new()
+				label_node.text = _editor_preview_cell_label(row, col)
+				label_node.position = rect.position + Vector2(8.0, 6.0)
+				label_node.size = Vector2(64.0, 20.0)
+				label_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				label_node.add_theme_font_override("font", PIXEL_FONT)
+				label_node.add_theme_font_size_override("font_size", 15)
+				label_node.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 0.95) if selected else Color(0.95, 0.95, 0.95, 0.65))
+				label_node.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
+				label_node.add_theme_constant_override("outline_size", 2)
+				layer.add_child(label_node)
+
+func _ensure_editor_preview_layer() -> Control:
+	if _editor_preview_layer == null:
+		_editor_preview_layer = get_node_or_null("EditorPreviewLayer") as Control
+	if _editor_preview_layer == null:
+		_editor_preview_layer = Control.new()
+		_editor_preview_layer.name = "EditorPreviewLayer"
+		add_child(_editor_preview_layer)
+	_editor_preview_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_editor_preview_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_editor_preview_layer.z_index = 120
+	move_child(_editor_preview_layer, get_child_count() - 1)
+	return _editor_preview_layer
+
+func _editor_preview_points() -> Array[Vector2i]:
+	if editor_preview_combo == "none":
+		return []
+	if _combo_rules.is_empty():
+		_combo_rules = _build_combo_rules()
+	for combo_var: Variant in _combo_rules:
+		var combo: Dictionary = combo_var as Dictionary
+		if String(combo.get("id", "")) != editor_preview_combo:
+			continue
+		var variants: Array = combo.get("variants", [])
+		if variants.is_empty():
+			return []
+		var index: int = clampi(editor_preview_variant, 0, variants.size() - 1)
+		var points: Array[Vector2i] = []
+		for point_var: Variant in variants[index]:
+			var point: Vector2i = _point_to_board_cell(point_var)
+			if point.x >= 0 and point.y >= 0:
+				points.append(point)
+		return points
+	return []
+
+func _editor_preview_style(selected: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_left = 10
+	style.corner_radius_bottom_right = 10
+	if selected:
+		var palette: Array = _highlight_palettes[posmod(editor_preview_palette, _highlight_palettes.size())]
+		var edge: Color = palette[0]
+		style.bg_color = Color(edge.r, edge.g, edge.b, 0.18)
+		style.border_color = Color(edge.r, edge.g, edge.b, 0.95)
+		style.border_width_left = 6
+		style.border_width_top = 6
+		style.border_width_right = 6
+		style.border_width_bottom = 6
+	else:
+		style.bg_color = Color(1.0, 1.0, 1.0, 0.03)
+		style.border_color = Color(1.0, 0.55, 0.08, 0.40)
+		style.border_width_left = 2
+		style.border_width_top = 2
+		style.border_width_right = 2
+		style.border_width_bottom = 2
+	return style
+
+func _editor_preview_cell_label(row: int, col: int) -> String:
+	var row_names := ["A", "B", "C"]
+	var safe_row: int = clampi(row, 0, row_names.size() - 1)
+	return "%s%d" % [row_names[safe_row], col + 1]
 
 func _gui_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or _busy or input_locked:
@@ -687,6 +869,8 @@ func _symbol_key(index: int) -> String:
 	return raw_name
 
 func _set_status(text: String) -> void:
+	if label != null:
+		label.text = text
 	emit_signal("status_changed", text)
 
 func _hide_legacy_ui() -> void:
@@ -696,7 +880,7 @@ func _hide_legacy_ui() -> void:
 		btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	if label != null:
-		label.visible = false
+		label.visible = label.name == "StatusLabel"
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _apply_symbol_chance_weights() -> void:
@@ -879,11 +1063,20 @@ func _configure_slot_layout() -> void:
 
 	_ensure_backdrop()
 
+	var viewport_size: Vector2 = get_viewport_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		viewport_size = Vector2(1024.0, 768.0)
+
 	var reel_count: int = maxi(_reels.size(), 5)
-	var reel_size: Vector2 = Vector2(300.0, 540.0)
-	var gap: float = 16.0
+	var gap: float = 12.0
+	var horizontal_margin: float = 110.0
+	var available_width: float = maxf(viewport_size.x - horizontal_margin * 2.0 - gap * float(reel_count - 1), 500.0)
+	var reel_width: float = floor(available_width / float(reel_count))
+	var reel_height: float = clampf(viewport_size.y - 210.0, 360.0, 500.0)
+	var reel_size: Vector2 = Vector2(reel_width, reel_height)
 	var reels_size: Vector2 = Vector2(float(reel_count) * reel_size.x + float(reel_count - 1) * gap, reel_size.y)
-	var reels_pos: Vector2 = Vector2(200.0, 84.0)
+	var reels_pos: Vector2 = Vector2((viewport_size.x - reels_size.x) * 0.5, 92.0)
+	var icon_size: Vector2 = Vector2(maxf(reel_width - 50.0, 84.0), floor((reel_height - 32.0 - float(2 * 6)) / 3.0))
 
 	reels_row.position = reels_pos
 	reels_row.custom_minimum_size = reels_size
@@ -893,12 +1086,32 @@ func _configure_slot_layout() -> void:
 	_ensure_frame(Rect2(reels_pos - Vector2(26.0, 26.0), reels_size + Vector2(52.0, 52.0)))
 	_ensure_separators(reels_pos, reel_size, gap)
 	_ensure_highlight_overlay(reels_pos, reels_size)
+	_configure_status_label()
 
 	for reel: Panel in _reels:
 		reel.custom_minimum_size = reel_size
+		reel.size = reel_size
 		reel.clip_contents = true
 		reel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		reel.add_theme_stylebox_override("panel", _reel_style())
+		if reel.has_method("configure_visuals"):
+			reel.call("configure_visuals", icon_size, 6)
+
+func _configure_status_label() -> void:
+	if label == null or label.name != "StatusLabel":
+		return
+	label.visible = true
+	label.position = Vector2(64.0, 20.0)
+	label.size = Vector2(896.0, 34.0)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	label.add_theme_font_override("font", PIXEL_FONT)
+	label.add_theme_font_size_override("font_size", 24)
+	label.add_theme_color_override("font_color", Color(1.0, 0.77, 0.38, 1.0))
+	label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+	label.add_theme_constant_override("outline_size", 2)
 
 func _ensure_backdrop() -> void:
 	var backdrop: ColorRect = get_node_or_null("Backdrop") as ColorRect

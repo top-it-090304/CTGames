@@ -170,7 +170,7 @@ func _handle_popup_input(event: InputEvent) -> void:
 
 	if event is InputEventScreenTouch:
 		var st: InputEventScreenTouch = event as InputEventScreenTouch
-		if not st.pressed:
+		if st.pressed:
 			_select_popup_option_by_screen_pos(st.position)
 			get_viewport().set_input_as_handled()
 		return

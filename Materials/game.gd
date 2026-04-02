@@ -30,7 +30,7 @@ var _money_base_pos := Vector2.ZERO
 var _spins_base_pos := Vector2.ZERO
 var _tok_base_pos := Vector2.ZERO
 var _win_popup_base_pos := Vector2.ZERO
-@export var slot_spin_area_name: StringName = &"SpinButtonarea"
+@export var slot_spin_area_name: StringName = &"LeverArea"
 var slot_spin_area: Area3D
 
 func _ready() -> void:
@@ -189,7 +189,9 @@ func _bind_ready_button() -> void:
 		ready_button.pressed.connect(cb)
 
 func _bind_win_sequence_layer() -> void:
-	win_sequence_layer = get_node_or_null("UI/WinSequenceLayer") as Control
+	win_sequence_layer = get_node_or_null("SubViewport/SlotUI/WinSequenceLayer") as Control
+	if win_sequence_layer == null:
+		win_sequence_layer = get_node_or_null("UI/WinSequenceLayer") as Control
 	if win_sequence_layer == null:
 		return
 	if win_sequence_layer.has_signal("hit_highlight_requested"):
@@ -411,7 +413,10 @@ func _find_machine(primary: String, fallback: String) -> Node3D:
 	return get_node_or_null(fallback) as Node3D
 
 func _find_slot_machine() -> Node3D:
-	var machine: Node3D = get_node_or_null("SlotMachine") as Node3D
+	var machine: Node3D = get_node_or_null("SlotMachineRoot") as Node3D
+	if machine != null:
+		return machine
+	machine = get_node_or_null("SlotMachine") as Node3D
 	if machine != null:
 		return machine
 	return get_node_or_null("blockbench_export2") as Node3D
@@ -419,6 +424,27 @@ func _find_slot_machine() -> Node3D:
 func _ensure_slot_screen_surface() -> void:
 	var slot_viewport: SubViewport = get_node_or_null("SubViewport") as SubViewport
 	if slot_viewport == null:
+		return
+
+	var new_screen: MeshInstance3D = get_node_or_null("SlotMachineRoot/ScreenSurface") as MeshInstance3D
+	if new_screen != null:
+		var new_material: StandardMaterial3D = new_screen.material_override as StandardMaterial3D
+		if new_material == null:
+			new_material = StandardMaterial3D.new()
+			new_material.resource_local_to_scene = true
+			new_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			new_material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+			new_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+			new_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			new_material.emission_enabled = true
+			new_material.emission = Color.WHITE
+			new_material.emission_energy_multiplier = 1.0
+			new_screen.material_override = new_material
+
+		var new_viewport_texture := ViewportTexture.new()
+		new_viewport_texture.viewport_path = slot_viewport.get_path()
+		new_material.albedo_texture = new_viewport_texture
+		new_material.emission_texture = new_viewport_texture
 		return
 
 	var screen_mesh: MeshInstance3D = get_node_or_null("Mesh_Slotmachine/Mesh_SlotmachineScreen") as MeshInstance3D
@@ -491,7 +517,7 @@ func _find_slot_spin_area() -> Area3D:
 	if direct != null:
 		return direct
 
-	var aliases: Array[String] = ["SpinButtonarea", "SpinArea", "SpinButtonArea", "ButtonArea", "InteractArea"]
+	var aliases: Array[String] = ["LeverArea", "SpinButtonarea", "SpinArea", "SpinButtonArea", "ButtonArea", "InteractArea"]
 	for alias: String in aliases:
 		var area: Area3D = machine.get_node_or_null(alias) as Area3D
 		if area != null:
@@ -503,7 +529,10 @@ func _resolve_animation_player() -> AnimationPlayer:
 	var machine: Node3D = _find_slot_machine()
 	if machine == null:
 		return null
-	return machine.get_node_or_null("AnimationPlayer") as AnimationPlayer
+	var player: AnimationPlayer = machine.get_node_or_null("AnimationPlayer") as AnimationPlayer
+	if player != null:
+		return player
+	return machine.get_node_or_null("ModelRoot/AnimationPlayer") as AnimationPlayer
 
 func _connect_slot_ui() -> void:
 	if slot_ui == null:

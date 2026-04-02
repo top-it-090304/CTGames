@@ -24,6 +24,7 @@ var _active: bool = false
 var _sequence_token: int = 0
 
 func _ready() -> void:
+	_ensure_ui_tree()
 	_bind_nodes()
 	_apply_visuals()
 	_hide_all()
@@ -221,6 +222,40 @@ func _show_total(token: int, total_win: int) -> void:
 		return
 
 	_total_popup.visible = false
+
+func _ensure_ui_tree() -> void:
+	if get_node_or_null("Dim") == null:
+		var dim := ColorRect.new()
+		dim.name = "Dim"
+		add_child(dim)
+
+	var combo_popup: Panel = get_node_or_null("ComboPopup") as Panel
+	if combo_popup == null:
+		combo_popup = Panel.new()
+		combo_popup.name = "ComboPopup"
+		add_child(combo_popup)
+	if combo_popup.get_node_or_null("ComboNameLabel") == null:
+		var combo_name := Label.new()
+		combo_name.name = "ComboNameLabel"
+		combo_popup.add_child(combo_name)
+	if combo_popup.get_node_or_null("ComboValueLabel") == null:
+		var combo_value := Label.new()
+		combo_value.name = "ComboValueLabel"
+		combo_popup.add_child(combo_value)
+
+	var total_popup: Panel = get_node_or_null("TotalPopup") as Panel
+	if total_popup == null:
+		total_popup = Panel.new()
+		total_popup.name = "TotalPopup"
+		add_child(total_popup)
+	if total_popup.get_node_or_null("TotalTitleLabel") == null:
+		var total_title := Label.new()
+		total_title.name = "TotalTitleLabel"
+		total_popup.add_child(total_title)
+	if total_popup.get_node_or_null("TotalValueLabel") == null:
+		var total_value := Label.new()
+		total_value.name = "TotalValueLabel"
+		total_popup.add_child(total_value)
 
 func _bind_nodes() -> void:
 	_dim = get_node_or_null("Dim") as ColorRect
