@@ -399,7 +399,12 @@ func _deposit_to_debt_machine() -> void:
 	if available <= 0:
 		return
 
-	var amount: int = mini(deposit_step, available)
+	var reserve: int = _minimum_spin_reserve(available)
+	var depositable: int = maxi(available - reserve, 0)
+	if depositable <= 0:
+		return
+
+	var amount: int = mini(deposit_step, depositable)
 	amount = mini(amount, debt_target - deposited)
 	if amount <= 0:
 		return
@@ -733,6 +738,14 @@ func _get_spins_left() -> int:
 	if slot_ui != null and slot_ui.has_method("get_spins_left"):
 		return int(slot_ui.call("get_spins_left"))
 	return int(_get_hud().get("spins_left", 0))
+
+
+func _minimum_spin_reserve(available_money: int) -> int:
+	if available_money >= option_a_cost:
+		return option_a_cost
+	if available_money >= option_b_cost:
+		return option_b_cost
+	return available_money
 
 func _spend_money(amount: int) -> bool:
 	if slot_ui == null:

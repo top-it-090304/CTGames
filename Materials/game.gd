@@ -326,20 +326,14 @@ func _ensure_camera_targets() -> void:
 	_ensure_marker(root, "CamMain", camera_3d, null, Vector3.ZERO)
 	_ensure_marker(root, "CamDebt", camera_3d, _find_machine("DebtMachine", "blockbench_export3"), Vector3(0.0, 1.2, 2.2))
 	_ensure_marker(root, "CamTickets", camera_3d, _find_machine("TicketMachine", "blockbench_export"), Vector3(0.0, 1.2, 2.2))
-	_ensure_marker(root, "CamSlot", camera_3d, _find_slot_machine(), Vector3(0.0, 1.1, 2.0))
-	_ensure_marker(root, "CamTotems", camera_3d, _find_totem_shop(), Vector3(0.0, 1.1, 2.0))
+	_ensure_marker(root, "CamSlot", camera_3d, null, Vector3.ZERO)
 
 func _ensure_marker(root: Node3D, marker_name: String, cam: Camera3D, machine: Node3D, machine_offset: Vector3) -> void:
 	var marker: Marker3D = root.get_node_or_null(marker_name) as Marker3D
-	var created: bool = false
 	if marker == null:
 		marker = Marker3D.new()
 		marker.name = marker_name
 		root.add_child(marker)
-		created = true
-
-	if not created:
-		return
 
 	if marker_name == "CamMain" and cam != null:
 		marker.global_transform = cam.global_transform
@@ -400,14 +394,12 @@ func _hint_target(hint: String) -> Marker3D:
 		return null
 
 	match hint:
-		"debt_machine", "debt":
+		"debt_machine":
 			return root.get_node_or_null("CamDebt") as Marker3D
-		"ticket_machine", "tickets":
+		"ticket_machine":
 			return root.get_node_or_null("CamTickets") as Marker3D
-		"slot_machine", "slot":
+		"slot_machine":
 			return root.get_node_or_null("CamSlot") as Marker3D
-		"totem_shop", "totems", "totem":
-			return root.get_node_or_null("CamTotems") as Marker3D
 		_:
 			return root.get_node_or_null("CamMain") as Marker3D
 
@@ -422,18 +414,6 @@ func _find_slot_machine() -> Node3D:
 	if machine != null:
 		return machine
 	return get_node_or_null("blockbench_export2") as Node3D
-
-func _find_totem_shop() -> Node3D:
-	return get_node_or_null("TotemShop") as Node3D
-
-func show_slot_camera() -> void:
-	_move_camera_to_hint("slot_machine")
-
-func show_debt_camera() -> void:
-	_move_camera_to_hint("debt_machine")
-
-func show_totem_camera() -> void:
-	_move_camera_to_hint("totem_shop")
 
 func _find_slot_spin_area() -> Area3D:
 	var machine: Node3D = _find_slot_machine()
