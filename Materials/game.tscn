@@ -257,7 +257,6 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_qn1gn")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_2vf0s"]
-viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p4b4j"]
 resource_local_to_scene = true
@@ -343,7 +342,7 @@ mesh = SubResource("PlaneMesh_xkq3k")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
 transparent_bg = true
-size = Vector2i(2000, 720)
+size = Vector2i(1024, 768)
 render_target_update_mode = 4
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=1402576505]
@@ -1425,20 +1424,35 @@ offset_bottom = 458.0
 text = "КОНСОЛЬ"
 script = ExtResource("52_gs0kc")
 
-[node name="Mesh_Slotmachine" type="MeshInstance3D" parent="." unique_id=2146092062]
+[node name="Camera3D2" type="Camera3D" parent="." unique_id=710326557]
+transform = Transform3D(-0.6524291, 0, -0.75784975, 0, 1, 0, 0.75784975, 0, -0.6524291, 0, 0, 9.469673)
+
+[node name="SlotMachineRoot" type="Node3D" parent="." unique_id=413957351]
+
+[node name="ModelRoot" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=2146092062]
 transform = Transform3D(0.005, 0, 0, 0, 0.005, 0, 0, 0, 0.005, -4.353674, 1.1289105, -0.3067429)
 mesh = SubResource("ArrayMesh_omno6")
 surface_material_override/0 = SubResource("StandardMaterial3D_k6p7f")
 
-[node name="Mesh_SlotmachineLeva" type="Node3D" parent="Mesh_Slotmachine" unique_id=1718175648]
+[node name="Mesh_SlotmachineLeva" type="Node3D" parent="SlotMachineRoot/ModelRoot" unique_id=1718175648]
 
-[node name="Cube_004" type="MeshInstance3D" parent="Mesh_Slotmachine/Mesh_SlotmachineLeva" unique_id=1929367161]
+[node name="Cube_004" type="MeshInstance3D" parent="SlotMachineRoot/ModelRoot/Mesh_SlotmachineLeva" unique_id=1929367161]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 177.76407, -93.85546)
 mesh = SubResource("ArrayMesh_2c4sm")
 
-[node name="Mesh_SlotmachineScreen" type="MeshInstance3D" parent="Mesh_Slotmachine" unique_id=662134961]
+[node name="Mesh_SlotmachineScreen" type="MeshInstance3D" parent="SlotMachineRoot/ModelRoot" unique_id=662134961]
 mesh = SubResource("ArrayMesh_syuwj")
 surface_material_override/0 = SubResource("StandardMaterial3D_p4b4j")
+
+[node name="ScreenSurface" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=59441967]
+
+[node name="LeverArea" type="Area3D" parent="SlotMachineRoot" unique_id=456430284]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachineRoot" unique_id=728471463]
+
+[node name="FocusPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1781774373]
+
+[node name="SpinCameraPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1363419081]
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]

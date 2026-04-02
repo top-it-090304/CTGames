@@ -43,6 +43,7 @@ func _ready() -> void:
 	_connect_slot_ui()
 	_sync_hud_from_slot()
 	_ensure_round_system()
+	_ensure_slot_screen_surface()
 	_ensure_slot_test_console()
 	_ensure_camera_targets()
 	_connect_intro_overlay()
@@ -414,6 +415,72 @@ func _find_slot_machine() -> Node3D:
 	if machine != null:
 		return machine
 	return get_node_or_null("blockbench_export2") as Node3D
+
+func _ensure_slot_screen_surface() -> void:
+	var slot_viewport: SubViewport = get_node_or_null("SubViewport") as SubViewport
+	if slot_viewport == null:
+		return
+
+	var screen_mesh: MeshInstance3D = get_node_or_null("Mesh_Slotmachine/Mesh_SlotmachineScreen") as MeshInstance3D
+	if screen_mesh == null:
+		return
+
+	var aabb: AABB = screen_mesh.get_aabb()
+	if aabb.size == Vector3.ZERO:
+		return
+
+	var overlay: MeshInstance3D = screen_mesh.get_node_or_null("ViewportPlane") as MeshInstance3D
+	if overlay == null:
+		overlay = MeshInstance3D.new()
+		overlay.name = "ViewportPlane"
+		screen_mesh.add_child(overlay)
+
+	var material: StandardMaterial3D = overlay.material_override as StandardMaterial3D
+	if material == null:
+		material = StandardMaterial3D.new()
+		material.resource_local_to_scene = true
+		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		material.emission_enabled = true
+		material.emission = Color.WHITE
+		material.emission_energy_multiplier = 1.0
+		overlay.material_override = material
+
+	var viewport_texture: ViewportTexture = ViewportTexture.new()
+	viewport_texture.viewport_path = slot_viewport.get_path()
+	material.albedo_texture = viewport_texture
+	material.emission_texture = viewport_texture
+
+	var quad := QuadMesh.new()
+	var center: Vector3 = aabb.position + (aabb.size * 0.5)
+	var shrink: float = 0.96
+	var offset: float = 0.05
+	var thin_axis: int = _smallest_axis_index(aabb.size)
+
+	match thin_axis:
+		0:
+			quad.size = Vector2(maxf(aabb.size.z * shrink, 0.01), maxf(aabb.size.y * shrink, 0.01))
+			overlay.rotation_degrees = Vector3(0.0, 90.0, 0.0)
+			overlay.position = center + Vector3(aabb.size.x * 0.5 + offset, 0.0, 0.0)
+		1:
+			quad.size = Vector2(maxf(aabb.size.x * shrink, 0.01), maxf(aabb.size.z * shrink, 0.01))
+			overlay.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
+			overlay.position = center + Vector3(0.0, aabb.size.y * 0.5 + offset, 0.0)
+		_:
+			quad.size = Vector2(maxf(aabb.size.x * shrink, 0.01), maxf(aabb.size.y * shrink, 0.01))
+			overlay.rotation_degrees = Vector3.ZERO
+			overlay.position = center + Vector3(0.0, 0.0, aabb.size.z * 0.5 + offset)
+
+	overlay.mesh = quad
+
+func _smallest_axis_index(size: Vector3) -> int:
+	if size.x <= size.y and size.x <= size.z:
+		return 0
+	if size.y <= size.x and size.y <= size.z:
+		return 1
+	return 2
 
 func _find_slot_spin_area() -> Area3D:
 	var machine: Node3D = _find_slot_machine()
