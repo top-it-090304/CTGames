@@ -38,16 +38,22 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://cyj4eu2q25hbe" path="res://Objects/Bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
-[ext_resource type="PackedScene" uid="uid://bnj4bjckqevj0" path="res://Objects/Gem Green.glb" id="47_r1s43"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
+[ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
+[ext_resource type="PackedScene" uid="uid://yieuq50t5080" path="res://back/campana.tscn" id="49_gs0kc"]
+[ext_resource type="Texture2D" uid="uid://dxscuhmstrlii" path="res://Texture_SlotSymbolsAlt.png" id="49_p4b4j"]
+[ext_resource type="PackedScene" uid="uid://d3fgo8bdxgxjo" path="res://back/ciliegie_2.tscn" id="50_2vf0s"]
+[ext_resource type="PackedScene" uid="uid://cysytvxctuefp" path="res://back/treasure__1.tscn" id="51_p4b4j"]
 [ext_resource type="Texture2D" uid="uid://v76gljo3ni1d" path="res://Objects/Untitled_Texture_SlotMachine.png" id="52_2vf0s"]
 [ext_resource type="Script" uid="uid://b5ynyclm5gqg8" path="res://Materials/button_console.gd" id="52_gs0kc"]
+[ext_resource type="PackedScene" uid="uid://qpf6g33blhia" path="res://back/plane_1.tscn" id="52_omno6"]
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
+[ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
-[ext_resource type="Script" uid="uid://c0bhoxadyfx8f" path="res://Materials/spin_choice_popup.gd" id="55_spinpopup"]
-[ext_resource type="Script" uid="uid://dm6j5wyxcq6jt" path="res://Materials/slot_reel.gd" id="56_slotreel"]
+[ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
+[ext_resource type="Script" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -81,43 +87,46 @@ albedo_texture = SubResource("ViewportTexture_tn84i")
 [sub_resource type="PlaneMesh" id="PlaneMesh_xkq3k"]
 size = Vector2(0.7, 0.85)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwlxx"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 9
-border_width_top = 9
-border_width_right = 9
-border_width_bottom = 9
-border_color = Color(1, 0.52, 0.08, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qhtt"]
+albedo_texture = ExtResource("49_p4b4j")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id0qs"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r0umr"]
+albedo_texture = ExtResource("49_p4b4j")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yy33s"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gsmia"]
+albedo_texture = ExtResource("49_p4b4j")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bd2p1"]
+albedo_texture = ExtResource("49_p4b4j")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxyih"]
+albedo_texture = ExtResource("49_p4b4j")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4b4j"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1s43"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omno6"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs0kc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6p7f"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
 border_color = Color(1, 0.45, 0.05, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vf0s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2c4sm"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(1, 0.45, 0.05, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syuwj"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
 border_width_right = 1
@@ -223,12 +232,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_a7e6r")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_gwlxx"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_7mxcb"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_id0qs"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gs0kc"]
 resource_local_to_scene = true
-albedo_texture = SubResource("ViewportTexture_gwlxx")
+albedo_texture = SubResource("ViewportTexture_7mxcb")
 
 [sub_resource type="QuadMesh" id="QuadMesh_yci1l"]
 size = Vector2(1.38, 1.18)
@@ -289,7 +298,7 @@ transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.692434
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
-transform = Transform3D(0.0063006436, 0, 0.99998015, 0, 1, 0, -0.99998015, 0, 0.0063006436, -2.6518383, 2.016616, -0.66935945)
+transform = Transform3D(0.0063006436, 0, 0.99998015, 0, 1, 0, -0.99998015, 0, 0.0063006436, -2.5941563, 2.016616, -0.66935945)
 fov = 70.0
 
 [node name="Cigarette" parent="." unique_id=920580141 instance=ExtResource("5_be8xs")]
@@ -315,9 +324,209 @@ material_override = SubResource("StandardMaterial3D_yi5rp")
 mesh = SubResource("PlaneMesh_xkq3k")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
-transparent_bg = true
 size = Vector2i(1024, 768)
 render_target_update_mode = 4
+
+[node name="ScreenStage3D" type="Node3D" parent="SubViewport" unique_id=1180021201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.121334, 2.5341039, -4.10343)
+
+[node name="ScreenCamera" type="Camera3D" parent="SubViewport/ScreenStage3D" unique_id=332814221]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4870834, -0.920995, 4.963153)
+current = true
+fov = 53.6
+
+[node name="ScreenLight" type="DirectionalLight3D" parent="SubViewport/ScreenStage3D" unique_id=514226102]
+transform = Transform3D(0.8925389, -0.37364262, 0.25149208, 0, 0.5586018, 0.82943594, -0.45097968, -0.7402929, 0.49860397, 0, 0, 0)
+light_energy = 1.6
+
+[node name="RouletteRoot" type="Node3D" parent="SubViewport/ScreenStage3D" unique_id=1466145143]
+
+[node name="ReelsRoot" type="Node3D" parent="SubViewport/ScreenStage3D" unique_id=821663385]
+
+[node name="Reel1" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1678859943]
+
+[node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1126145142 instance=ExtResource("48_id0qs")]
+transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -4.9616604, 0, -1.0760002)
+material_override = SubResource("StandardMaterial3D_6qhtt")
+skeleton = NodePath("../../../../..")
+
+[node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1901113481 instance=ExtResource("49_gs0kc")]
+transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -5.16584, 4.5, -1.1610003)
+visible = false
+material_override = SubResource("StandardMaterial3D_r0umr")
+skeleton = NodePath("../../../../..")
+
+[node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1634129771 instance=ExtResource("50_2vf0s")]
+transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -5, 3, -1.191)
+visible = false
+material_override = SubResource("StandardMaterial3D_gsmia")
+skeleton = NodePath("../../../../..")
+
+[node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1629448856 instance=ExtResource("51_p4b4j")]
+transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -5, 1.5, -1.203)
+visible = false
+material_override = SubResource("StandardMaterial3D_bd2p1")
+skeleton = NodePath("../../../../..")
+
+[node name="Plane_1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1657531991 instance=ExtResource("52_omno6")]
+transform = Transform3D(-1.7484555e-07, 3.9675777, 0.5082584, 0, -0.5082584, 3.9675777, 4, 1.7342833e-07, 2.221668e-08, -5.042877, -1.5, -1.2189999)
+material_override = SubResource("StandardMaterial3D_nxyih")
+skeleton = NodePath("../../../../..")
+
+[node name="Diamond" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=323487317 instance=ExtResource("54_omno6")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -4.8519764, -3, -1.3270001)
+
+[node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1006161713 instance=ExtResource("55_omno6")]
+transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -5.5039864, 5.9999995, -1.0489998)
+visible = false
+
+[node name="Reel2" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=359296536]
+
+[node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=561627173 instance=ExtResource("48_id0qs")]
+transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -3.1336212, 0, -1.0760002)
+material_override = SubResource("StandardMaterial3D_6qhtt")
+skeleton = NodePath("../../../../..")
+
+[node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=2109974885 instance=ExtResource("49_gs0kc")]
+transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -3.337799, 4.5, -1.1610003)
+visible = false
+material_override = SubResource("StandardMaterial3D_r0umr")
+skeleton = NodePath("../../../../..")
+
+[node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=2050064348 instance=ExtResource("50_2vf0s")]
+transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -3.171959, 3, -1.191)
+visible = false
+material_override = SubResource("StandardMaterial3D_gsmia")
+skeleton = NodePath("../../../../..")
+
+[node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=1876649532 instance=ExtResource("51_p4b4j")]
+transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -3.171959, 1.5, -1.2030001)
+visible = false
+material_override = SubResource("StandardMaterial3D_bd2p1")
+skeleton = NodePath("../../../../..")
+
+[node name="Plane_1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=2094885276 instance=ExtResource("52_omno6")]
+transform = Transform3D(-1.7484555e-07, 3.9675777, 0.5082584, 0, -0.5082584, 3.9675777, 4, 1.7342833e-07, 2.221668e-08, -3.2148361, -1.5, -1.2189999)
+material_override = SubResource("StandardMaterial3D_nxyih")
+skeleton = NodePath("../../../../..")
+
+[node name="Diamond" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=545008738 instance=ExtResource("54_omno6")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -3.0239372, -3, -1.3270001)
+
+[node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=770715251 instance=ExtResource("55_omno6")]
+transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -3.6759453, 5.9999995, -1.0489998)
+visible = false
+
+[node name="Reel3" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1054090565]
+
+[node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1044029968 instance=ExtResource("48_id0qs")]
+transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -1.4295006, 0, -1.0760002)
+material_override = SubResource("StandardMaterial3D_6qhtt")
+skeleton = NodePath("../../../../..")
+
+[node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=876105526 instance=ExtResource("49_gs0kc")]
+transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -1.6336784, 4.5, -1.1610003)
+visible = false
+material_override = SubResource("StandardMaterial3D_r0umr")
+skeleton = NodePath("../../../../..")
+
+[node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1026482446 instance=ExtResource("50_2vf0s")]
+transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -1.4678383, 3, -1.191)
+visible = false
+material_override = SubResource("StandardMaterial3D_gsmia")
+skeleton = NodePath("../../../../..")
+
+[node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=555706992 instance=ExtResource("51_p4b4j")]
+transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -1.4678383, 1.5, -1.2030001)
+visible = false
+material_override = SubResource("StandardMaterial3D_bd2p1")
+skeleton = NodePath("../../../../..")
+
+[node name="Plane_1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=866195728 instance=ExtResource("52_omno6")]
+transform = Transform3D(-1.7484555e-07, 3.9675777, 0.5082584, 0, -0.5082584, 3.9675777, 4, 1.7342833e-07, 2.221668e-08, -1.5107155, -1.5, -1.2189999)
+material_override = SubResource("StandardMaterial3D_nxyih")
+skeleton = NodePath("../../../../..")
+
+[node name="Diamond" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=2106013079 instance=ExtResource("54_omno6")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -1.3198166, -3, -1.3270001)
+
+[node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1246306745 instance=ExtResource("55_omno6")]
+transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -1.9718246, 5.9999995, -1.0489998)
+visible = false
+
+[node name="Reel4" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=369294293]
+
+[node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=306665391 instance=ExtResource("48_id0qs")]
+transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, 0.2995634, 0, -1.0760002)
+material_override = SubResource("StandardMaterial3D_6qhtt")
+skeleton = NodePath("../../../../..")
+
+[node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=143117552 instance=ExtResource("49_gs0kc")]
+transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, 0.09538555, 4.5, -1.1610003)
+visible = false
+material_override = SubResource("StandardMaterial3D_r0umr")
+skeleton = NodePath("../../../../..")
+
+[node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=87028902 instance=ExtResource("50_2vf0s")]
+transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, 0.2612257, 3, -1.191)
+visible = false
+material_override = SubResource("StandardMaterial3D_gsmia")
+skeleton = NodePath("../../../../..")
+
+[node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1265616392 instance=ExtResource("51_p4b4j")]
+transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, 0.2612257, 1.5, -1.2030001)
+visible = false
+material_override = SubResource("StandardMaterial3D_bd2p1")
+skeleton = NodePath("../../../../..")
+
+[node name="Plane_1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=2072309597 instance=ExtResource("52_omno6")]
+transform = Transform3D(-1.7484555e-07, 3.9675777, 0.5082584, 0, -0.5082584, 3.9675777, 4, 1.7342833e-07, 2.221668e-08, 0.2183485, -1.5, -1.2189999)
+material_override = SubResource("StandardMaterial3D_nxyih")
+skeleton = NodePath("../../../../..")
+
+[node name="Diamond" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1335045173 instance=ExtResource("54_omno6")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0.4092474, -3, -1.3270001)
+
+[node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1056716795 instance=ExtResource("55_omno6")]
+transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -0.24276066, 5.9999995, -1.0489998)
+visible = false
+
+[node name="Reel5" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=208604821]
+
+[node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=477315429 instance=ExtResource("48_id0qs")]
+transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, 1.9664192, 0, -1.0760002)
+material_override = SubResource("StandardMaterial3D_6qhtt")
+skeleton = NodePath("../../../../..")
+
+[node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1623633792 instance=ExtResource("49_gs0kc")]
+transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, 1.7622414, 4.5, -1.1610003)
+visible = false
+material_override = SubResource("StandardMaterial3D_r0umr")
+skeleton = NodePath("../../../../..")
+
+[node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=2129229021 instance=ExtResource("50_2vf0s")]
+transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, 1.9280815, 3, -1.191)
+visible = false
+material_override = SubResource("StandardMaterial3D_gsmia")
+skeleton = NodePath("../../../../..")
+
+[node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1964408507 instance=ExtResource("51_p4b4j")]
+transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, 1.9280815, 1.5, -1.2030001)
+visible = false
+material_override = SubResource("StandardMaterial3D_bd2p1")
+skeleton = NodePath("../../../../..")
+
+[node name="Plane_1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=18323035 instance=ExtResource("52_omno6")]
+transform = Transform3D(-1.7484555e-07, 3.9675777, 0.5082584, 0, -0.5082584, 3.9675777, 4, 1.7342833e-07, 2.221668e-08, 1.8852043, -1.5, -1.2189999)
+material_override = SubResource("StandardMaterial3D_nxyih")
+skeleton = NodePath("../../../../..")
+
+[node name="Diamond" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=293971620 instance=ExtResource("54_omno6")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 2.0761032, -3, -1.3270001)
+
+[node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1400723554 instance=ExtResource("55_omno6")]
+transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, 1.4240952, 5.9999995, -1.0489998)
+visible = false
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
 custom_minimum_size = Vector2(1024, 768)
@@ -325,165 +534,21 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("54_slotui")
 symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), ExtResource("8_qk58f"), ExtResource("5_sa7vf"), ExtResource("9_62l5a"), ExtResource("7_0m7j0"), ExtResource("11_3w25a")])
 weights = Array[float]([20.0, 20.0, 15.0, 15.0, 11.5, 11.5, 7.0])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
+visual_stage_path = NodePath("CloverStage")
 
-[node name="LogoLayer" type="Control" parent="SubViewport/SlotUI" unique_id=402393472]
-anchors_preset = 0
+[node name="CloverStage" type="Control" parent="SubViewport/SlotUI" unique_id=1246282959]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="LogoLabel" type="Label" parent="SubViewport/SlotUI/LogoLayer" unique_id=142075760]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="SlotFrame" type="Panel" parent="SubViewport/SlotUI" unique_id=1609034206]
-layout_mode = 0
-offset_top = 2.0
-offset_right = 1024.0
-offset_bottom = 760.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gwlxx")
-
-[node name="SpinChoicePopup" type="Control" parent="SubViewport/SlotUI" unique_id=1867878427]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("55_spinpopup")
-
-[node name="WinSequenceLayer" type="Control" parent="SubViewport/SlotUI" unique_id=9941927]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("33_8k356")
-
-[node name="StatusLabel" type="Label" parent="SubViewport/SlotUI" unique_id=1937195566]
-texture_filter = 1
-layout_mode = 0
-offset_left = 64.0
-offset_top = 20.0
-offset_right = 960.0
-offset_bottom = 54.0
-theme_override_colors/font_color = Color(1, 0.77, 0.38, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 24
-text = "READY"
-vertical_alignment = 1
-
-[node name="SlotReels" type="HBoxContainer" parent="SubViewport/SlotUI" unique_id=2127281139]
-custom_minimum_size = Vector2(972, 706)
-layout_mode = 0
-offset_left = 26.0
-offset_top = 28.0
-offset_right = 998.0
-offset_bottom = 734.0
-theme_override_constants/separation = 8
-
-[node name="Reel1" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1934921466]
-clip_contents = true
-custom_minimum_size = Vector2(188, 706)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_id0qs")
-script = ExtResource("56_slotreel")
-icon_size = Vector2(166, 222)
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel1" unique_id=1825040412]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 191.0
-offset_bottom = 1378.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel1/MarginContainer" unique_id=2121658715]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Reel2" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1084642163]
-clip_contents = true
-custom_minimum_size = Vector2(188, 706)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yy33s")
-script = ExtResource("56_slotreel")
-icon_size = Vector2(166, 222)
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel2" unique_id=412801395]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 191.0
-offset_bottom = 1378.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel2/MarginContainer" unique_id=373076406]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Reel3" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1886846065]
-clip_contents = true
-custom_minimum_size = Vector2(188, 706)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r1s43")
-script = ExtResource("56_slotreel")
-icon_size = Vector2(166, 222)
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel3" unique_id=903447608]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 191.0
-offset_bottom = 1378.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel3/MarginContainer" unique_id=1450540886]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Reel4" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=1937228345]
-clip_contents = true
-custom_minimum_size = Vector2(188, 706)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gs0kc")
-script = ExtResource("56_slotreel")
-icon_size = Vector2(166, 222)
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel4" unique_id=576568761]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 191.0
-offset_bottom = 1378.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel4/MarginContainer" unique_id=663494392]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Reel5" type="Panel" parent="SubViewport/SlotUI/SlotReels" unique_id=350920985]
-clip_contents = true
-custom_minimum_size = Vector2(188, 706)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_2vf0s")
-script = ExtResource("56_slotreel")
-icon_size = Vector2(166, 222)
-
-[node name="MarginContainer" type="MarginContainer" parent="SubViewport/SlotUI/SlotReels/Reel5" unique_id=1472158106]
-layout_mode = 0
-offset_left = 25.0
-offset_top = 16.0
-offset_right = 191.0
-offset_bottom = 1378.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/SlotUI/SlotReels/Reel5/MarginContainer" unique_id=2066509736]
-layout_mode = 2
-theme_override_constants/separation = 6
+script = ExtResource("56_visualstage")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
 
@@ -811,7 +876,7 @@ price_tokens = 4
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.09442258, 0)
 shape = SubResource("BoxShape3D_gs0kc")
 
-[node name="DiamondTotemShop" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("47_r1s43")]
+[node name="DiamondTotemShop" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("54_omno6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36747867, 1.4475718, -0.650048)
 script = ExtResource("47_gs0kc")
 totem_id = "diamond"
@@ -934,9 +999,6 @@ offset_bottom = 458.0
 text = "КОНСОЛЬ"
 script = ExtResource("52_gs0kc")
 
-[node name="Camera3D2" type="Camera3D" parent="." unique_id=710326557]
-transform = Transform3D(-0.6524291, 0, -0.75784975, 0, 1, 0, 0.75784975, 0, -0.6524291, 0, 0, 9.469673)
-
 [node name="SlotMachineRoot" type="Node3D" parent="." unique_id=413957351]
 
 [node name="ModelRoot" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=2146092062]
@@ -951,8 +1013,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 177.76407, -93.85546)
 mesh = SubResource("ArrayMesh_2c4sm")
 
 [node name="ScreenSurface" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=59441967]
-transform = Transform3D(-2.6226834e-08, -0.051471714, 0.9630256, 0, 0.42690825, 0.116110615, -0.6, 2.2499e-09, -4.2095184e-08, -3.981195, 2.082, -0.309)
-material_override = SubResource("StandardMaterial3D_id0qs")
+transform = Transform3D(-2.6226834e-08, -0.051471714, 0.9630256, 0, 0.42690825, 0.116110615, -0.6, 2.2499e-09, -4.2095184e-08, -3.9720047, 2.0562458, -0.309)
+material_overlay = SubResource("StandardMaterial3D_gs0kc")
 mesh = SubResource("QuadMesh_yci1l")
 
 [node name="LeverArea" type="Area3D" parent="SlotMachineRoot" unique_id=456430284]
