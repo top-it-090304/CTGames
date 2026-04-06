@@ -29,8 +29,6 @@
 [ext_resource type="Script" uid="uid://8i7nkpkaqjde" path="res://Materials/buy_button.gd" id="27_mv4lk"]
 [ext_resource type="Script" uid="uid://b63cn3a1hjomo" path="res://Materials/close_button.gd" id="28_oat0n"]
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
-[ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="30_xkq3k"]
-[ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="31_4gd6a"]
 [ext_resource type="Script" uid="uid://01du5b4o2mbh" path="res://Materials/ready_button.gd" id="31_uasde"]
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="Script" uid="uid://duhnls4b655nw" path="res://Materials/win_sequence_layer.gd" id="33_8k356"]
@@ -38,7 +36,7 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/Bell.glb" id="46_yy33s"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
@@ -53,7 +51,7 @@
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
-[ext_resource type="Script" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
+[ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -101,36 +99,6 @@ albedo_texture = ExtResource("49_p4b4j")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxyih"]
 albedo_texture = ExtResource("49_p4b4j")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4b4j"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omno6"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6p7f"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2c4sm"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syuwj"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(1, 0.45, 0.05, 0.35)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
@@ -541,12 +509,12 @@ symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), Ext
 weights = Array[float]([20.0, 20.0, 15.0, 15.0, 11.5, 11.5, 7.0])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
-visual_stage_path = NodePath("CloverStage")
 
 [node name="CloverStage" type="Control" parent="SubViewport/SlotUI" unique_id=1246282959]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+z_index = 5
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("56_visualstage")
 
@@ -832,16 +800,6 @@ transform = Transform3D(-0.26302075, 0, 0.056195863, 0, 0.2836941, 0, -0.0512451
 
 [node name="Root Scene3" parent="." unique_id=751196611 instance=ExtResource("28_tn84i")]
 transform = Transform3D(3.3191843, 0, 0, 0, 0.29119322, 3.0565648, 0, -3.0475721, 0.29205245, -3.7615168, 1.1665496, -1.817327)
-
-[node name="Стрелка1NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=429006024]
-position = Vector2(1063, 565.5)
-scale = Vector2(1.348485, 1.3865546)
-texture = ExtResource("30_xkq3k")
-
-[node name="Стрелка2NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=824532741]
-position = Vector2(90.49999, 565.5)
-scale = Vector2(1.3923078, 1.3865548)
-texture = ExtResource("31_4gd6a")
 
 [node name="TotemShop" type="Node3D" parent="." unique_id=1463476390]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49418712, 0.53030854, 0)
