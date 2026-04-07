@@ -934,9 +934,6 @@ offset_bottom = 458.0
 text = "КОНСОЛЬ"
 script = ExtResource("52_gs0kc")
 
-[node name="Camera3D2" type="Camera3D" parent="." unique_id=710326557]
-transform = Transform3D(-0.6524291, 0, -0.75784975, 0, 1, 0, 0.75784975, 0, -0.6524291, 0, 0, 9.469673)
-
 [node name="SlotMachineRoot" type="Node3D" parent="." unique_id=413957351]
 
 [node name="ModelRoot" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=2146092062]
