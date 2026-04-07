@@ -2,7 +2,7 @@ extends Node3D
 
 const SYMBOL_KEYS: Array[String] = ["lemon", "cherry", "clover", "bell", "diamond", "chest", "seven"]
 
-@export var spin_acceleration: float = 34.0
+@export var spin_acceleration: float = 60.0
 @export var settle_snap_speed: float = 18.0
 @export var spin_visible_padding: float = 1.2
 @export var idle_visible_padding: float = 0.25
@@ -50,7 +50,7 @@ func begin_spin(target_keys: Array, spin_speed: float, settle_speed: float, tota
 	clear_highlight()
 	_spin_speed = maxf(spin_speed, 0.1)
 	_settle_speed = maxf(settle_speed, 0.1)
-	_current_speed = _spin_speed * 0.85
+	_current_speed = _spin_speed
 	_delay_remaining = maxf(delay, 0.0)
 	_current_offset = 0.0
 	_steps_remaining = maxi(total_cycles, _max_visible_index() + 3)

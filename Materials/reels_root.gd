@@ -2,8 +2,8 @@ extends Node3D
 
 const SYMBOL_KEYS: Array[String] = ["lemon", "cherry", "clover", "bell", "diamond", "chest", "seven"]
 
-@export var base_spin_speed: float = 17.0
-@export var reel_speed_step: float = 1.2
+@export var base_spin_speed: float = 24.0
+@export var reel_speed_step: float = 1.5
 @export var stop_stagger: float = 0.08
 @export var settle_speed: float = 13.5
 @export var random_cycles_min: int = 7

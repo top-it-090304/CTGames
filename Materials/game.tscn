@@ -36,7 +36,7 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/Bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
@@ -505,7 +505,7 @@ visible = false
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport/ScreenStage3D" unique_id=1535510590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3914833, -1.5528212, 3.5252903)
-light_energy = 4.975
+light_energy = 1.596
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
 custom_minimum_size = Vector2(1024, 768)
