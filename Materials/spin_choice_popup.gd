@@ -3,10 +3,11 @@ extends Control
 signal option_selected(spins: int, cost: int, ticket_bonus: int)
 signal canceled
 
-const OPTION_COLOR_DEFAULT: Color = Color(0.78, 0.78, 0.78, 1.0)
-const OPTION_COLOR_HOVER: Color = Color(0.98, 0.98, 0.98, 1.0)
-const OPTION_COLOR_PRESSED: Color = Color(0.6, 0.6, 0.6, 1.0)
-const OPTION_COLOR_SELECTED: Color = Color(1.0, 1.0, 1.0, 1.0)
+const OPTION_COLOR_DEFAULT: Color = Color(0.63, 0.63, 0.65, 1.0)
+const OPTION_COLOR_HOVER: Color = Color(0.84, 0.84, 0.86, 1.0)
+const OPTION_COLOR_PRESSED: Color = Color(0.48, 0.48, 0.5, 1.0)
+const OPTION_COLOR_SELECTED: Color = Color(0.92, 0.92, 0.94, 1.0)
+const TITLE_COLOR: Color = Color(1.0, 0.53, 0.08, 1.0)
 
 const MODE_CLOSED: int = 0
 const MODE_IDLE: int = 1
@@ -70,6 +71,7 @@ func open_popup(
 
 	_mode = MODE_CHOICE
 	_set_idle_logo_visible(false)
+	_backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
 	_title.visible = true
 	_title.text = "Сколько спинов?"
 	_set_choice_controls_visible(true)
@@ -91,6 +93,7 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 	_ensure_ui()
 	_mode = MODE_GAME_OVER
 	_set_idle_logo_visible(false)
+	_backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
 	_title.visible = true
 	_title.text = "Долг не погашен"
 	_set_choice_controls_visible(true)
@@ -159,15 +162,15 @@ func _on_cancel_pressed() -> void:
 func _apply_button_selection_colors(button: Button, selected: bool) -> void:
 	if button == null:
 		return
-	button.add_theme_color_override("font_color", OPTION_COLOR_DEFAULT)
+	button.add_theme_color_override("font_color", OPTION_COLOR_SELECTED if selected else OPTION_COLOR_DEFAULT)
 	button.add_theme_color_override("font_hover_color", OPTION_COLOR_HOVER)
 	button.add_theme_color_override("font_pressed_color", OPTION_COLOR_PRESSED)
 	if selected:
-		button.add_theme_color_override("font_outline_color", Color(1.0, 1.0, 1.0, 1.0))
-		button.add_theme_constant_override("outline_size", 5)
+		button.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.0))
+		button.add_theme_constant_override("outline_size", 0)
 	else:
-		button.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-		button.add_theme_constant_override("outline_size", 3)
+		button.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.0))
+		button.add_theme_constant_override("outline_size", 0)
 
 func _refresh_option_visuals() -> void:
 	_apply_button_selection_colors(_option_a, _selected_option == 1 and (_option_a == null or not _option_a.disabled))
@@ -219,10 +222,16 @@ func press_by_normalized_position(nx: float, ny: float) -> bool:
 
 func _ensure_ui() -> void:
 	if _panel != null:
+		_apply_layout()
 		return
 
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = 0.0
+	offset_bottom = 0.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	z_index = 120
 
 	for stale_name: String in ["TitleLabel", "JackpotLogo", "Option7Button", "Option3Button", "CancelButton"]:
 		var stale: Node = get_node_or_null(stale_name)
@@ -237,29 +246,27 @@ func _ensure_ui() -> void:
 	_backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
 	_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	_backdrop.z_index = 120
 
 	_panel = get_node_or_null("Panel") as Panel
 	if _panel == null:
 		_panel = Panel.new()
 		_panel.name = "Panel"
 		add_child(_panel)
-	_panel.anchor_left = 0.5
-	_panel.anchor_top = 0.5
-	_panel.anchor_right = 0.5
-	_panel.anchor_bottom = 0.5
-	_panel.offset_left = -360.0
-	_panel.offset_top = -160.0
-	_panel.offset_right = 360.0
-	_panel.offset_bottom = 160.0
+	_panel.z_index = 130
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.0, 0.0, 0.0, 1.0)
-	panel_style.border_width_left = 3
-	panel_style.border_width_top = 3
-	panel_style.border_width_right = 3
-	panel_style.border_width_bottom = 3
-	panel_style.border_color = Color(1.0, 0.52, 0.08, 1.0)
+	panel_style.border_width_left = 0
+	panel_style.border_width_top = 0
+	panel_style.border_width_right = 0
+	panel_style.border_width_bottom = 0
+	panel_style.border_color = Color(0.0, 0.0, 0.0, 0.0)
+	panel_style.corner_radius_top_left = 0
+	panel_style.corner_radius_top_right = 0
+	panel_style.corner_radius_bottom_left = 0
+	panel_style.corner_radius_bottom_right = 0
 	_panel.add_theme_stylebox_override("panel", panel_style)
 
 	_title = _panel.get_node_or_null("TitleLabel") as Label
@@ -278,9 +285,9 @@ func _ensure_ui() -> void:
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_title.add_theme_font_size_override("font_size", 52)
-	_title.add_theme_color_override("font_color", Color(1.0, 0.55, 0.12, 1.0))
-	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-	_title.add_theme_constant_override("outline_size", 3)
+	_title.add_theme_color_override("font_color", TITLE_COLOR)
+	_title.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.0))
+	_title.add_theme_constant_override("outline_size", 0)
 	_title.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_title.scale = Vector2.ONE
 
@@ -301,6 +308,7 @@ func _ensure_ui() -> void:
 	_logo.stretch_mode = TextureRect.STRETCH_SCALE
 	_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_logo.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_logo.z_index = 125
 	_logo.visible = false
 
 	_option_a = _panel.get_node_or_null("Option7Button") as Button
@@ -353,8 +361,10 @@ func _ensure_ui() -> void:
 		b.add_theme_color_override("font_color", OPTION_COLOR_DEFAULT)
 		b.add_theme_color_override("font_hover_color", OPTION_COLOR_HOVER)
 		b.add_theme_color_override("font_pressed_color", OPTION_COLOR_PRESSED)
-		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-		b.add_theme_constant_override("outline_size", 3)
+		b.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.0))
+		b.add_theme_constant_override("outline_size", 0)
+		b.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 		b.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		b.scale = Vector2.ONE
 
@@ -366,3 +376,82 @@ func _ensure_ui() -> void:
 		_option_b.pressed.connect(_on_option_b_pressed)
 	if not _cancel.pressed.is_connected(_on_cancel_pressed):
 		_cancel.pressed.connect(_on_cancel_pressed)
+
+	_apply_layout()
+
+func _apply_layout() -> void:
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = 0.0
+	offset_bottom = 0.0
+
+	if _panel == null:
+		return
+
+	var viewport_size: Vector2 = get_viewport_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		viewport_size = Vector2(1024.0, 768.0)
+
+	var inset_x: float = clampf(viewport_size.x * 0.035, 10.0, 28.0)
+	var inset_y: float = clampf(viewport_size.y * 0.035, 10.0, 28.0)
+	var content_width: float = viewport_size.x - inset_x * 2.0
+	var title_h: float = clampf(viewport_size.y * 0.14, 66.0, 118.0)
+	var title_gap: float = clampf(viewport_size.y * 0.025, 8.0, 20.0)
+	var button_h: float = clampf(viewport_size.y * 0.082, 36.0, 68.0)
+	var button_gap: float = clampf(viewport_size.y * 0.014, 6.0, 14.0)
+	var cancel_h: float = clampf(button_h * 0.94, 34.0, 62.0)
+	var top_start: float = clampf(viewport_size.y * 0.40, 150.0, 310.0)
+	var font_title: int = int(clampf(viewport_size.y * 0.078, 34.0, 70.0))
+	var font_button: int = int(clampf(viewport_size.y * 0.062, 24.0, 48.0))
+	var horizontal_pad: float = clampf(content_width * 0.05, 18.0, 42.0)
+
+	_panel.anchor_left = 0.0
+	_panel.anchor_top = 0.0
+	_panel.anchor_right = 1.0
+	_panel.anchor_bottom = 1.0
+	_panel.offset_left = inset_x
+	_panel.offset_top = inset_y
+	_panel.offset_right = -inset_x
+	_panel.offset_bottom = -inset_y
+
+	if _title != null:
+		_title.offset_left = horizontal_pad
+		_title.offset_top = top_start - title_h - title_gap
+		_title.offset_right = -horizontal_pad
+		_title.offset_bottom = top_start - title_gap
+		_title.add_theme_font_size_override("font_size", font_title)
+		_title.add_theme_color_override("font_color", TITLE_COLOR)
+
+	if _option_a != null:
+		_option_a.anchor_left = 0.0
+		_option_a.anchor_right = 1.0
+		_option_a.anchor_top = 0.0
+		_option_a.anchor_bottom = 0.0
+		_option_a.offset_left = horizontal_pad
+		_option_a.offset_top = top_start
+		_option_a.offset_right = -horizontal_pad
+		_option_a.offset_bottom = top_start + button_h
+		_option_a.add_theme_font_size_override("font_size", font_button)
+
+	if _option_b != null:
+		_option_b.anchor_left = 0.0
+		_option_b.anchor_right = 1.0
+		_option_b.anchor_top = 0.0
+		_option_b.anchor_bottom = 0.0
+		_option_b.offset_left = horizontal_pad
+		_option_b.offset_top = top_start + button_h + button_gap
+		_option_b.offset_right = -horizontal_pad
+		_option_b.offset_bottom = top_start + button_h * 2.0 + button_gap
+		_option_b.add_theme_font_size_override("font_size", font_button)
+
+	if _cancel != null:
+		_cancel.anchor_left = 0.0
+		_cancel.anchor_right = 1.0
+		_cancel.anchor_top = 0.0
+		_cancel.anchor_bottom = 0.0
+		_cancel.offset_left = horizontal_pad
+		_cancel.offset_top = top_start + button_h * 2.0 + button_gap * 2.0
+		_cancel.offset_right = -horizontal_pad
+		_cancel.offset_bottom = top_start + button_h * 2.0 + button_gap * 2.0 + cancel_h
+		_cancel.add_theme_font_size_override("font_size", int(clampf(font_button * 0.92, 22.0, 38.0)))

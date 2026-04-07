@@ -21,6 +21,7 @@ signal round_ended(round_number: int, interest_amount: int)
 @export var reels_row_path: NodePath
 @export var button_path: NodePath
 @export var label_path: NodePath
+@export var visual_stage_path: NodePath = ^"CloverStage"
 
 @export_group("Payout")
 @export var bet_per_spin: int = 1
@@ -96,6 +97,7 @@ var _highlight_overlay: Control
 var _editor_preview_layer: Control
 var _editor_preview_signature: String = ""
 var _highlighted_icons: Array[TextureRect] = []
+var _visual_stage: Control
 var _highlight_palette_index: int = 0
 var _highlight_pulse_t: float = 0.0
 var _highlight_palettes: Array[Array] = [
@@ -120,10 +122,6 @@ func _ready() -> void:
 	btn = null if button_path.is_empty() else get_node_or_null(button_path) as Button
 	label = null if label_path.is_empty() else get_node_or_null(label_path) as Label
 
-	if reels_row == null:
-		push_error("reels_row is null: set reels_row_path in Inspector")
-		return
-
 	_rng.randomize()
 	if not is_in_group("slot_ui_highlight_target"):
 		add_to_group("slot_ui_highlight_target")
@@ -138,6 +136,7 @@ func _ready() -> void:
 	_hide_legacy_ui()
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
+	_bind_visual_stage()
 	_combo_rules = _build_combo_rules()
 	_emit_hud_changed()
 	_set_status("READY")
@@ -150,6 +149,56 @@ func _resolve_slot_paths() -> void:
 		reels_row_path = ^"SlotReels"
 	if label_path.is_empty():
 		label_path = ^"StatusLabel"
+
+func _bind_visual_stage() -> void:
+	_visual_stage = get_node_or_null(visual_stage_path) as Control
+	if _visual_stage == null:
+		_apply_visual_stage_visibility(true)
+		return
+	_visual_stage.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_visual_stage.offset_left = 0.0
+	_visual_stage.offset_top = 0.0
+	_visual_stage.offset_right = 0.0
+	_visual_stage.offset_bottom = 0.0
+	_visual_stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_visual_stage.z_index = 5
+	var popup: Control = get_node_or_null("SpinChoicePopup") as Control
+	var win_layer: Control = get_node_or_null("WinSequenceLayer") as Control
+	var status_label: CanvasItem = get_node_or_null("StatusLabel") as CanvasItem
+	if popup != null and popup.get_parent() == self:
+		popup.z_index = 80
+		move_child(_visual_stage, maxi(popup.get_index() - 1, 0))
+	if win_layer != null:
+		win_layer.z_index = 70
+	if status_label != null:
+		status_label.z_index = 60
+	_sync_visual_stage_pool()
+	if _visual_stage.has_method("sync_layout"):
+		_visual_stage.call("sync_layout")
+	_apply_visual_stage_visibility(true)
+
+func _has_visual_stage() -> bool:
+	return _visual_stage != null
+
+func _sync_visual_stage_pool() -> void:
+	if _visual_stage != null and _visual_stage.has_method("set_symbol_pool"):
+		_visual_stage.call("set_symbol_pool", symbols, weights)
+
+func _apply_visual_stage_visibility(show_reels: bool) -> void:
+	var legacy_visible: bool = show_reels and not _has_visual_stage()
+	if reels_row != null:
+		reels_row.visible = legacy_visible
+
+	var frame: CanvasItem = get_node_or_null("SlotFrame") as CanvasItem
+	if frame != null:
+		frame.visible = legacy_visible
+
+	var separators: CanvasItem = get_node_or_null("Separators") as CanvasItem
+	if separators != null:
+		separators.visible = legacy_visible
+
+	if _visual_stage != null and _visual_stage.has_method("set_stage_visible"):
+		_visual_stage.call("set_stage_visible", show_reels)
 
 func _autoload_default_symbols() -> void:
 	if not symbols.is_empty():
@@ -181,6 +230,8 @@ func _process(delta: float) -> void:
 
 func _collect_reels() -> void:
 	_reels.clear()
+	if reels_row == null:
+		return
 	for child: Node in reels_row.get_children():
 		var panel: Panel = child as Panel
 		if panel != null and (panel.has_method("start_spin") or Engine.is_editor_hint()):
@@ -347,7 +398,7 @@ func request_spin() -> void:
 	if symbols.is_empty():
 		_set_status("ERROR: NO SYMBOLS")
 		return
-	if _reels.is_empty():
+	if _reels.is_empty() and not _has_visual_stage():
 		_set_status("NO REELS")
 		return
 	if spins_left < spins_per_round:
@@ -364,17 +415,7 @@ func set_input_locked(locked: bool) -> void:
 	input_locked = locked
 
 func set_choice_overlay_active(active: bool) -> void:
-	var show_reels: bool = not active
-	if reels_row != null:
-		reels_row.visible = show_reels
-
-	var frame: CanvasItem = get_node_or_null("SlotFrame") as CanvasItem
-	if frame != null:
-		frame.visible = show_reels
-
-	var separators: CanvasItem = get_node_or_null("Separators") as CanvasItem
-	if separators != null:
-		separators.visible = show_reels
+	_apply_visual_stage_visibility(not active)
 
 func deposit_money(amount: int) -> bool:
 	if amount <= 0:
@@ -407,29 +448,43 @@ func end_round() -> void:
 func _spin() -> void:
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
+	_sync_visual_stage_pool()
 
 	_busy = true
 	spins_left -= spins_per_round
 	_emit_hud_changed()
 	_set_status("SPINNING")
 
+	var reel_count: int = 5 if _has_visual_stage() else _reels.size()
+	reel_count = maxi(reel_count, _reels.size())
+	var target_board: Array = _generate_board_indices(3, reel_count)
+	if _visual_stage != null and _visual_stage.has_method("start_spin_with_board"):
+		_visual_stage.call("start_spin_with_board", target_board.duplicate(true))
+
 	for reel: Panel in _reels:
 		reel.start_spin()
 
 	await get_tree().create_timer(0.9).timeout
 
-	for reel: Panel in _reels:
-		if reel.has_method("stop_spin"):
+	for col: int in range(_reels.size()):
+		var reel: Panel = _reels[col]
+		var top_tex: Texture2D = _texture_for_index(int(target_board[0][col]))
+		var mid_tex: Texture2D = _texture_for_index(int(target_board[1][col]))
+		var bot_tex: Texture2D = _texture_for_index(int(target_board[2][col]))
+		if reel.has_method("stop_with_result"):
+			reel.call("stop_with_result", top_tex, mid_tex, bot_tex)
+		elif reel.has_method("stop_spin"):
 			reel.call("stop_spin")
-		elif reel.has_method("stop_with_result"):
-			reel.call("stop_with_result", null, null, null)
 		if reel.has_signal("stopped"):
 			await reel.stopped
 		else:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	var board: Array = _collect_board_indices_from_reels()
+	if _reels.is_empty() and _has_visual_stage():
+		await get_tree().create_timer(0.7).timeout
+
+	var board: Array = target_board.duplicate(true)
 	_last_target_grid = board.duplicate(true)
 
 	var result: Dictionary = _evaluate_board(board)
@@ -871,6 +926,8 @@ func _symbol_key(index: int) -> String:
 func _set_status(text: String) -> void:
 	if label != null:
 		label.text = text
+	if _visual_stage != null and _visual_stage.has_method("set_status_text"):
+		_visual_stage.call("set_status_text", text)
 	emit_signal("status_changed", text)
 
 func _hide_legacy_ui() -> void:
@@ -887,6 +944,7 @@ func _apply_symbol_chance_weights() -> void:
 	weights.resize(symbols.size())
 	for i: int in range(symbols.size()):
 		weights[i] = _chance_for_index(i)
+	_sync_visual_stage_pool()
 
 func _sync_reel_pools() -> void:
 	for reel: Panel in _reels:
@@ -942,6 +1000,8 @@ func debug_preview_board(board: Array) -> bool:
 	_busy = false
 	clear_combo_highlight()
 	_last_target_grid = board.duplicate(true)
+	if _visual_stage != null and _visual_stage.has_method("preview_board"):
+		_visual_stage.call("preview_board", board.duplicate(true))
 	for col: int in range(mini(_reels.size(), 5)):
 		var reel: Panel = _reels[col]
 		var box: VBoxContainer = reel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
@@ -1073,6 +1133,13 @@ func _configure_slot_layout() -> void:
 	custom_minimum_size = viewport_size
 
 	_ensure_backdrop()
+	_configure_status_label()
+
+	if reels_row == null:
+		if _visual_stage != null and _visual_stage.has_method("sync_layout"):
+			_visual_stage.call("sync_layout")
+		_apply_visual_stage_visibility(true)
+		return
 
 	var reel_count: int = maxi(_reels.size(), 5)
 	var gap: float = 8.0
@@ -1095,7 +1162,6 @@ func _configure_slot_layout() -> void:
 	_ensure_frame(Rect2(reels_pos - Vector2(26.0, 26.0), reels_size + Vector2(52.0, 52.0)))
 	_ensure_separators(reels_pos, reel_size, gap)
 	_ensure_highlight_overlay(reels_pos, reels_size)
-	_configure_status_label()
 
 	for reel: Panel in _reels:
 		reel.custom_minimum_size = reel_size
@@ -1105,6 +1171,9 @@ func _configure_slot_layout() -> void:
 		reel.add_theme_stylebox_override("panel", _reel_style())
 		if reel.has_method("configure_visuals"):
 			reel.call("configure_visuals", icon_size, 6)
+	if _visual_stage != null and _visual_stage.has_method("sync_layout"):
+		_visual_stage.call("sync_layout")
+	_apply_visual_stage_visibility(true)
 
 func _configure_status_label() -> void:
 	if label == null or label.name != "StatusLabel":
@@ -1130,7 +1199,7 @@ func _ensure_backdrop() -> void:
 		add_child(backdrop)
 		move_child(backdrop, 0)
 	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.0, 0.0, 0.0, 1.0)
+	backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
 
 func _ensure_frame(frame_rect: Rect2) -> void:
 	var frame: Panel = get_node_or_null("SlotFrame") as Panel
@@ -1186,6 +1255,8 @@ func _ensure_highlight_overlay(reels_pos: Vector2, reels_size: Vector2) -> void:
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 	clear_combo_highlight()
+	if _visual_stage != null and _visual_stage.has_method("show_combo_highlight"):
+		_visual_stage.call("show_combo_highlight", points, palette_index)
 	if points.is_empty():
 		return
 	_highlight_palette_index = posmod(palette_index, _highlight_palettes.size())
@@ -1236,6 +1307,8 @@ func _point_to_board_cell(point_var: Variant) -> Vector2i:
 	return Vector2i(-1, -1)
 
 func clear_combo_highlight() -> void:
+	if _visual_stage != null and _visual_stage.has_method("clear_combo_highlight"):
+		_visual_stage.call("clear_combo_highlight")
 	for icon: TextureRect in _highlighted_icons:
 		if icon == null:
 			continue
