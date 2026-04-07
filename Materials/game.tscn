@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
+[ext_resource type="Script" uid="uid://d2y1dh4y8kvwl" path="res://Materials/screen_frame_mesh.gd" id="18_2c4sm"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -103,6 +104,46 @@ albedo_texture = ExtResource("49_p4b4j")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxyih"]
 albedo_texture = ExtResource("49_p4b4j")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mxcb"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_rnwkk"]
+size = Vector2(9.2, 6.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7x08p"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.52, 0.08, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yovps"]
+size = Vector3(9.2, 0.22, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6rt0k"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.52, 0.08, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nb1du"]
+size = Vector3(9.2, 0.22, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_42vkw"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.52, 0.08, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cya74"]
+size = Vector3(0.22, 6.8, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4li4q"]
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.52, 0.08, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5bjtu"]
+size = Vector3(0.22, 6.8, 0.08)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
@@ -517,6 +558,35 @@ visible = false
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport/ScreenStage3D" unique_id=1535510590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3914833, -1.5528212, 3.5252903)
 light_energy = 1.596
+
+[node name="ScreenFrameRoot" type="Node3D" parent="SubViewport/ScreenStage3D" unique_id=1717696561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5103683, -1.5614638, -1.5866108)
+script = ExtResource("18_2c4sm")
+
+[node name="_generated_Backdrop" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1790899543]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("QuadMesh_rnwkk")
+
+[node name="_generated_Top" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=589687044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.271968, 0)
+material_override = SubResource("StandardMaterial3D_7x08p")
+mesh = SubResource("BoxMesh_yovps")
+
+[node name="_generated_Bottom" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=2119238406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.29, 0)
+material_override = SubResource("StandardMaterial3D_6rt0k")
+mesh = SubResource("BoxMesh_nb1du")
+
+[node name="_generated_Left" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1534142324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.49, 0, 0)
+material_override = SubResource("StandardMaterial3D_42vkw")
+mesh = SubResource("BoxMesh_cya74")
+
+[node name="_generated_Right" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=774312408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.49, 0, 0)
+material_override = SubResource("StandardMaterial3D_4li4q")
+mesh = SubResource("BoxMesh_5bjtu")
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
 custom_minimum_size = Vector2(1024, 768)
@@ -1008,7 +1078,7 @@ shape = SubResource("BoxShape3D_tc3b6")
 [node name="SpinCameraPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1363419081]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=241403847]
-transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 1, -5.8838434)
+transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 1, -6.78397)
 material_override = SubResource("StandardMaterial3D_2c4sm")
 mesh = SubResource("BoxMesh_syuwj")
 surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
