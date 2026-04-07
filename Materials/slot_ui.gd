@@ -464,7 +464,7 @@ func _spin() -> void:
 	for reel: Panel in _reels:
 		reel.start_spin()
 
-	await get_tree().create_timer(0.9).timeout
+	await get_tree().create_timer(0.15).timeout
 
 	for col: int in range(_reels.size()):
 		var reel: Panel = _reels[col]
@@ -481,8 +481,9 @@ func _spin() -> void:
 			await get_tree().create_timer(0.25).timeout
 		await get_tree().create_timer(0.08).timeout
 
-	if _reels.is_empty() and _has_visual_stage():
-		await get_tree().create_timer(0.7).timeout
+	if _has_visual_stage():
+		while _visual_stage != null and _visual_stage.has_method("is_spinning") and bool(_visual_stage.call("is_spinning")):
+			await get_tree().process_frame
 
 	var board: Array = target_board.duplicate(true)
 	_last_target_grid = board.duplicate(true)
