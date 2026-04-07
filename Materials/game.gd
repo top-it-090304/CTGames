@@ -22,9 +22,6 @@ var slot_test_console: Panel
 var win_popup_tween: Tween
 var cam_tween: Tween
 
-var rotate_left := false
-var rotate_right := false
-var rotation_speed := 2.0
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 var _money_base_pos := Vector2.ZERO
 var _spins_base_pos := Vector2.ZERO
@@ -783,24 +780,3 @@ func _format_money(value: int) -> String:
 			out = "." + out
 			count = 0
 	return out
-
-
-func _on_left_button_down():
-	rotate_left = true
-
-func _on_left_button_up():
-	rotate_left = false
-
-func _on_right_button_down():
-	rotate_right = true
-
-func _on_right_button_up():
-	rotate_right = false
-
-func _process(delta):
-	_update_hud_shake()
-	_update_ready_button_visibility()
-	if rotate_left:
-		$Camera3D.rotate_y(-rotation_speed * delta)
-	if rotate_right:
-		$Camera3D.rotate_y(rotation_speed * delta)
