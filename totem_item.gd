@@ -10,10 +10,20 @@ signal pressed(item: Node3D)
 @export var bonus_value: int = 1
 @export var interact_area_path: NodePath = ^"InteractArea"
 
+@export_group("Placement")
+@export var shop_position_offset: Vector3 = Vector3.ZERO
+@export var shop_rotation_offset_degrees: Vector3 = Vector3.ZERO
+@export var owned_position_offset: Vector3 = Vector3.ZERO
+@export var owned_rotation_offset_degrees: Vector3 = Vector3(0.0, 0.0, 0.0)
+
 var _interact_area: Area3D
 var _shop_enabled: bool = true
+var _base_global_rotation_degrees: Vector3
+var _base_scale: Vector3
 
 func _ready() -> void:
+	_base_global_rotation_degrees = global_rotation_degrees
+	_base_scale = scale
 	_interact_area = get_node_or_null(interact_area_path) as Area3D
 	if _interact_area == null:
 		push_warning("Totem item '%s' has no InteractArea" % name)
@@ -22,6 +32,12 @@ func _ready() -> void:
 	var cb: Callable = Callable(self, "_on_interact_input_event")
 	if not _interact_area.input_event.is_connected(cb):
 		_interact_area.input_event.connect(cb)
+
+func get_base_global_rotation_degrees() -> Vector3:
+	return _base_global_rotation_degrees
+
+func get_base_scale() -> Vector3:
+	return _base_scale
 
 func get_offer_data() -> Dictionary:
 	return {

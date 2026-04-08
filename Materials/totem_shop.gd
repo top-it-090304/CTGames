@@ -2,6 +2,7 @@ extends Node3D
 
 @export var buy_panel_path: NodePath = ^"../UI/TotemBuyPanel"
 @export var shop_items_path: NodePath = ^"ShopItems"
+@export var shop_spots_path: NodePath = ^"ShopSpots"
 @export var owned_items_path: NodePath = ^"../TotemDisplay/OwnedItems"
 @export var owned_spots_path: NodePath = ^"../TotemDisplay/OwnedSpots"
 @export var slot_ui_path: NodePath = ^"../SubViewport/SlotUI"
@@ -11,6 +12,7 @@ extends Node3D
 
 var _buy_panel: Panel
 var _shop_items: Node3D
+var _shop_spots_root: Node3D
 var _owned_items: Node3D
 var _owned_spots_root: Node3D
 var _slot_ui: Control
@@ -20,21 +22,36 @@ var _camera_3d: Camera3D
 var _selected_item: Node3D
 var _owned_totems: Dictionary = {}
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _owned_spot_used: Dictionary = {}
+var _shop_spot_used: Dictionary = {}
 
 func _ready() -> void:
 	_rng.randomize()
 	_buy_panel = get_node_or_null(buy_panel_path) as Panel
 	_shop_items = get_node_or_null(shop_items_path) as Node3D
+	_shop_spots_root = get_node_or_null(shop_spots_path) as Node3D
 	_owned_items = get_node_or_null(owned_items_path) as Node3D
 	_owned_spots_root = get_node_or_null(owned_spots_path) as Node3D
-	_slot_ui = get_node_or_null(slot_ui_path) as Control
+	_slot_ui = _resolve_slot_ui()
 	_round_system = get_node_or_null(round_system_path)
 	_intro_overlay = get_node_or_null(intro_overlay_path)
 	_camera_3d = get_node_or_null(camera_path) as Camera3D
 
 	_connect_buy_panel()
 	_connect_items()
+	_refresh_shop_layout()
 	_refresh_panel_tokens()
+
+func _resolve_slot_ui() -> Control:
+	if slot_ui_path != NodePath("") and not slot_ui_path.is_empty():
+		var direct: Control = get_node_or_null(slot_ui_path) as Control
+		if direct != null:
+			return direct
+	# Fallback for scenes where the exported NodePath was cleared.
+	var fallback: Control = get_node_or_null(^"../SubViewport/SlotUI") as Control
+	if fallback != null:
+		return fallback
+	return get_parent().get_node_or_null("SubViewport/SlotUI") as Control
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
@@ -146,6 +163,7 @@ func _on_buy_requested() -> void:
 		_selected_item.call("set_shop_enabled", false)
 
 	_move_item_to_owned_display(_selected_item)
+	_refresh_shop_layout()
 	_selected_item = null
 	if _buy_panel != null and _buy_panel.has_method("hide_panel"):
 		_buy_panel.call("hide_panel")
@@ -160,8 +178,19 @@ func _move_item_to_owned_display(item: Node3D) -> void:
 	item.reparent(_owned_items, true)
 	var target_spot: Marker3D = _pick_owned_spot()
 	if target_spot != null:
-		item.global_position = target_spot.global_position
-		item.global_rotation = target_spot.global_rotation
+		var local_offset: Vector3 = Vector3.ZERO
+		var rot_offset: Vector3 = Vector3.ZERO
+		if item.has_method("get"):
+			local_offset = item.get("owned_position_offset") as Vector3
+			rot_offset = item.get("owned_rotation_offset_degrees") as Vector3
+		var basis_no_scale: Basis = target_spot.global_transform.basis.orthonormalized()
+		item.global_position = target_spot.global_position + (basis_no_scale * local_offset)
+		# Keep the item's original orientation (as authored in the scene),
+		# and only apply optional per-item offset.
+		if item.has_method("get_base_global_rotation_degrees"):
+			item.global_rotation_degrees = item.call("get_base_global_rotation_degrees") as Vector3 + rot_offset
+		else:
+			item.global_rotation_degrees = item.global_rotation_degrees + rot_offset
 	item.scale = item_scale
 
 func _pick_owned_spot() -> Marker3D:
@@ -174,7 +203,16 @@ func _pick_owned_spot() -> Marker3D:
 			spots.append(marker)
 	if spots.is_empty():
 		return null
-	return spots[_rng.randi_range(0, spots.size() - 1)]
+	# Prefer free spots to avoid stacking items on the same marker.
+	var free: Array[Marker3D] = []
+	for s: Marker3D in spots:
+		if not _owned_spot_used.has(s.get_instance_id()):
+			free.append(s)
+	if free.is_empty():
+		return spots[_rng.randi_range(0, spots.size() - 1)]
+	var chosen: Marker3D = free[_rng.randi_range(0, free.size() - 1)]
+	_owned_spot_used[chosen.get_instance_id()] = true
+	return chosen
 
 func _current_tokens() -> int:
 	if _slot_ui != null and _slot_ui.has_method("get_tickets"):
@@ -191,3 +229,75 @@ func _can_interact() -> bool:
 	if _round_system != null and _round_system.has_method("is_popup_open") and bool(_round_system.call("is_popup_open")):
 		return false
 	return true
+
+func _refresh_shop_layout() -> void:
+	# Randomly place up to 3 not-owned items into ShopSpot1-3.
+	if _shop_items == null:
+		return
+	_shop_spot_used.clear()
+	if _shop_spots_root == null:
+		# No spots: just enable everything that's not owned.
+		for child: Node in _shop_items.get_children():
+			var item: Node3D = child as Node3D
+			if item == null or not item.has_method("get_offer_data"):
+				continue
+			var offer: Dictionary = item.call("get_offer_data") as Dictionary
+			var totem_id: String = String(offer.get("id", ""))
+			var enable: bool = not totem_id.is_empty() and not _owned_totems.has(totem_id)
+			if item.has_method("set_shop_enabled"):
+				item.call("set_shop_enabled", enable)
+		return
+
+	var spots: Array[Marker3D] = []
+	for child: Node in _shop_spots_root.get_children():
+		var m: Marker3D = child as Marker3D
+		if m != null and String(m.name).to_lower().begins_with("shopspot"):
+			spots.append(m)
+	spots.sort_custom(func(a: Marker3D, b: Marker3D) -> bool:
+		return String(a.name) < String(b.name)
+	)
+
+	var candidates: Array[Node3D] = []
+	for child: Node in _shop_items.get_children():
+		var item: Node3D = child as Node3D
+		if item == null or not item.has_method("get_offer_data"):
+			continue
+		var offer: Dictionary = item.call("get_offer_data") as Dictionary
+		var totem_id: String = String(offer.get("id", ""))
+		if totem_id.is_empty() or _owned_totems.has(totem_id):
+			if item.has_method("set_shop_enabled"):
+				item.call("set_shop_enabled", false)
+			continue
+		candidates.append(item)
+
+	# Disable all by default, then enable only chosen.
+	for item: Node3D in candidates:
+		if item.has_method("set_shop_enabled"):
+			item.call("set_shop_enabled", false)
+
+	if candidates.is_empty() or spots.is_empty():
+		return
+
+	candidates.shuffle()
+	var show_count: int = mini(3, mini(candidates.size(), spots.size()))
+	for i: int in range(show_count):
+		var item: Node3D = candidates[i]
+		var spot: Marker3D = spots[i]
+		# IMPORTANT: ShopSpot markers are scaled in the scene (often x20),
+		# so copying full transforms will skew the item. Copy only position + rotation.
+		var keep_scale: Vector3 = item.scale
+		var local_offset: Vector3 = Vector3.ZERO
+		var rot_offset: Vector3 = Vector3.ZERO
+		if item.has_method("get"):
+			local_offset = item.get("shop_position_offset") as Vector3
+			rot_offset = item.get("shop_rotation_offset_degrees") as Vector3
+		var basis_no_scale: Basis = spot.global_transform.basis.orthonormalized()
+		item.global_position = spot.global_position + (basis_no_scale * local_offset)
+		# Preserve authored orientation for nicer display.
+		if item.has_method("get_base_global_rotation_degrees"):
+			item.global_rotation_degrees = item.call("get_base_global_rotation_degrees") as Vector3 + rot_offset
+		else:
+			item.global_rotation_degrees = item.global_rotation_degrees + rot_offset
+		item.scale = keep_scale
+		if item.has_method("set_shop_enabled"):
+			item.call("set_shop_enabled", true)
