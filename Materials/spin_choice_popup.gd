@@ -47,7 +47,11 @@ var _mode: int = MODE_CLOSED
 
 func _ready() -> void:
 	if jackpot_jail_logo == null:
-		jackpot_jail_logo = load("res://textures/jackpot_jail_logo_nofon.png") as Texture2D
+		jackpot_jail_logo = load("res://textures/jackpot_jail_slot.png") as Texture2D
+		if jackpot_jail_logo == null:
+			jackpot_jail_logo = load("res://Objects/jackpot_jail_slot.png") as Texture2D
+		if jackpot_jail_logo == null:
+			jackpot_jail_logo = load("res://textures/jackpot_jail_logo_nofon.png") as Texture2D
 		if jackpot_jail_logo == null:
 			jackpot_jail_logo = load("res://textures/jackpot_jail_logo.png") as Texture2D
 	_ensure_ui()
@@ -112,11 +116,7 @@ func show_jackpot_jail() -> void:
 	_mode = MODE_IDLE
 	_set_choice_controls_visible(false)
 	_set_idle_logo_visible(true)
-	if jackpot_jail_logo != null:
-		_title.visible = false
-	else:
-		_title.visible = true
-		_title.text = "JACKPOT JAIL"
+	_title.visible = false
 	_selected_option = 0
 	_bring_to_front()
 	visible = true

@@ -19,6 +19,15 @@ extends Node
 @export var option_b_cost: int = 3
 @export var option_b_ticket_bonus: int = 2
 
+@export_group("Round Reward Sequence")
+@export var reward_sequence_enabled: bool = true
+@export var reward_camera_move_wait: float = 0.28
+@export var reward_emit_hold: float = 0.40
+@export var reward_return_wait: float = 0.20
+@export var reward_camera_move_duration: float = 0.30
+@export var reward_coin_mesh_scale: float = 0.12
+@export var reward_ticket_mesh_scale: float = 0.10
+
 var game_root: Node3D
 var slot_ui: Control
 var intro_overlay: Node
@@ -99,7 +108,7 @@ func _finish_round_if_ready_deferred() -> void:
 		return
 	if game_root != null and game_root.has_method("is_win_sequence_active") and bool(game_root.call("is_win_sequence_active")):
 		return
-	_finish_round()
+	await _finish_round()
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or _is_intro_active():
@@ -320,16 +329,20 @@ func _popup_open() -> bool:
 func _finish_round() -> void:
 	round_active = false
 	var interest_gain: int = _interest_amount()
+	var awarded_tickets: int = 0
 	if interest_gain > 0:
 		_add_money(interest_gain)
 	_add_tickets(1)
+	awarded_tickets += 1
 
 	rounds_left = maxi(rounds_left - 1, 0)
 
 	if deposited >= debt_target and not early_bonus_given and rounds_left > 0:
 		_add_tickets(rounds_left)
+		awarded_tickets += rounds_left
 		early_bonus_given = true
 
+	await _play_round_reward_sequence(interest_gain, awarded_tickets)
 	_update_debt_ui()
 
 	if rounds_left <= 0 and deposited < debt_target:
@@ -341,6 +354,228 @@ func _finish_round() -> void:
 		return
 
 	_show_jackpot_jail_screen()
+
+func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
+	if not reward_sequence_enabled:
+		return
+	if game_over:
+		return
+
+	_set_slot_locked(true)
+
+	if interest_gain > 0:
+		_move_camera_hint_safe("debt_machine", reward_camera_move_duration)
+		await get_tree().create_timer(maxf(reward_camera_move_wait, 0.01)).timeout
+		_play_machine_reward_anim(debt_machine, ["coin", "money", "cash", "pay", "insert"])
+		_emit_machine_reward(debt_machine, "coin")
+		await get_tree().create_timer(maxf(reward_emit_hold, 0.01)).timeout
+
+	if tickets_gain > 0:
+		_move_camera_hint_safe("ticket_machine", reward_camera_move_duration)
+		await get_tree().create_timer(maxf(reward_camera_move_wait, 0.01)).timeout
+		_play_machine_reward_anim(ticket_machine, ["ticket", "tok", "coupon", "print", "eject"])
+		_emit_machine_reward(ticket_machine, "ticket")
+		await get_tree().create_timer(maxf(reward_emit_hold, 0.01)).timeout
+
+	_move_camera_hint_safe("slot_machine", reward_camera_move_duration)
+	await get_tree().create_timer(maxf(reward_return_wait, 0.01)).timeout
+
+	if not _is_intro_active() and not game_over:
+		_set_slot_locked(false)
+
+func _move_camera_hint_safe(hint: String, duration: float = 0.6) -> void:
+	if game_root == null:
+		return
+	if game_root.has_method("_move_camera_to_hint_duration"):
+		game_root.call("_move_camera_to_hint_duration", hint, duration)
+		return
+	if game_root.has_method("_move_camera_to_hint"):
+		game_root.call("_move_camera_to_hint", hint)
+
+func _play_machine_reward_anim(machine: Node3D, preferred_parts: Array[String]) -> void:
+	if machine == null:
+		return
+	var anim: AnimationPlayer = _find_animation_player(machine)
+	if anim == null:
+		return
+
+	var chosen: StringName = &""
+	for name_var: Variant in anim.get_animation_list():
+		var name_s: String = str(name_var)
+		var low: String = name_s.to_lower()
+		for part: String in preferred_parts:
+			if low.contains(part):
+				chosen = StringName(name_s)
+				break
+		if chosen != &"":
+			break
+
+	if chosen == &"":
+		return
+	anim.play(chosen)
+
+func _emit_machine_reward(machine: Node3D, kind: String) -> void:
+	if machine == null:
+		return
+	var emitter: Node = _find_reward_emitter(machine, kind)
+	if emitter == null:
+		_spawn_fallback_reward(machine, kind)
+		return
+	if kind == "coin":
+		if emitter.has_method("emit_coins"):
+			emitter.call("emit_coins")
+			return
+		if emitter.has_method("emit_reward"):
+			emitter.call("emit_reward", "coin")
+			return
+		_spawn_fallback_reward(machine, kind)
+		return
+	if kind == "ticket":
+		if emitter.has_method("emit_ticket"):
+			emitter.call("emit_ticket")
+			return
+		if emitter.has_method("emit_reward"):
+			emitter.call("emit_reward", "ticket")
+			return
+		_spawn_fallback_reward(machine, kind)
+
+func _find_reward_emitter(root: Node, kind: String) -> Node:
+	if root == null:
+		return null
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		if kind == "coin":
+			if node.has_method("emit_coins") or node.has_method("emit_reward"):
+				return node
+		else:
+			if node.has_method("emit_ticket") or node.has_method("emit_reward"):
+				return node
+		for child: Node in node.get_children():
+			stack.append(child)
+	return null
+
+func _spawn_fallback_reward(machine: Node3D, kind: String) -> void:
+	if machine == null:
+		return
+	var mesh: Mesh = _resolve_reward_mesh(kind)
+	if mesh == null:
+		return
+	var spawn: Node3D = _find_spawn_marker(machine, kind)
+	var origin: Transform3D = spawn.global_transform if spawn != null else machine.global_transform
+	var up_axis: Vector3 = origin.basis.y.normalized()
+	var forward_axis: Vector3 = -origin.basis.z.normalized()
+	var right_axis: Vector3 = origin.basis.x.normalized()
+	var amount: int = 6 if kind == "coin" else 1
+	for i: int in range(amount):
+		var body := RigidBody3D.new()
+		body.mass = 0.05 if kind == "coin" else 0.04
+		body.linear_damp = 0.18
+		body.angular_damp = 0.24
+		body.continuous_cd = true
+		game_root.add_child(body)
+		body.global_transform = origin
+
+		var mesh_instance := MeshInstance3D.new()
+		mesh_instance.mesh = mesh
+		mesh_instance.scale = Vector3.ONE * (reward_coin_mesh_scale if kind == "coin" else reward_ticket_mesh_scale)
+		body.add_child(mesh_instance)
+
+		var shape := CollisionShape3D.new()
+		var sphere := SphereShape3D.new()
+		sphere.radius = 0.06
+		shape.shape = sphere
+		body.add_child(shape)
+
+		var side: float = randf_range(-0.22, 0.22)
+		var up: float = randf_range(0.32, 0.86)
+		var forward: float = randf_range(0.9, 1.35)
+		if kind == "ticket":
+			side *= 0.4
+			up *= 0.6
+			forward *= 0.8
+		body.global_position += forward_axis * 0.05 + up_axis * 0.03
+		var impulse_dir: Vector3 = (right_axis * side + up_axis * up + forward_axis * forward).normalized()
+		var impulse_power: float = randf_range(0.7, 1.45) if kind == "coin" else 0.95
+		body.apply_impulse(impulse_dir * impulse_power)
+		body.apply_torque_impulse(Vector3(
+			randf_range(-0.4, 0.4),
+			randf_range(-0.4, 0.4),
+			randf_range(-0.4, 0.4)
+		))
+		var ttl: float = 4.8 if kind == "coin" else 5.2
+		_destroy_after(body, ttl)
+
+func _resolve_reward_mesh(kind: String) -> Mesh:
+	if kind == "coin":
+		var money: Mesh = load("res://Objects/money.mesh") as Mesh
+		if money != null:
+			return money
+		var sphere := SphereMesh.new()
+		sphere.radius = 0.10
+		sphere.height = 0.20
+		return sphere
+
+	var ticket_scene_mesh: Mesh = _extract_mesh_from_scene("res://Objects/bilet.glb")
+	if ticket_scene_mesh != null:
+		return ticket_scene_mesh
+	var box := BoxMesh.new()
+	box.size = Vector3(0.22, 0.03, 0.10)
+	return box
+
+func _extract_mesh_from_scene(scene_path: String) -> Mesh:
+	var packed: PackedScene = load(scene_path) as PackedScene
+	if packed == null:
+		return null
+	var instance: Node = packed.instantiate()
+	if instance == null:
+		return null
+	var mesh: Mesh = _find_first_mesh_recursive(instance)
+	instance.queue_free()
+	return mesh
+
+func _find_first_mesh_recursive(root: Node) -> Mesh:
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		var mesh_node: MeshInstance3D = node as MeshInstance3D
+		if mesh_node != null and mesh_node.mesh != null:
+			return mesh_node.mesh
+		for child: Node in node.get_children():
+			stack.append(child)
+	return null
+
+func _destroy_after(node: Node, delay_sec: float) -> void:
+	var timer: SceneTreeTimer = get_tree().create_timer(maxf(delay_sec, 0.8))
+	timer.timeout.connect(func() -> void:
+		if is_instance_valid(node):
+			node.queue_free()
+	)
+
+func _find_spawn_marker(machine: Node3D, kind: String) -> Node3D:
+	if machine == null:
+		return null
+	var names: PackedStringArray = PackedStringArray(
+		["CoinSpawn", "Coinspawn", "coinspawn"] if kind == "coin"
+		else ["TicketSpawn", "Ticketspawn", "ticketspawn"]
+	)
+	for marker_name: String in names:
+		var node: Node3D = machine.get_node_or_null(marker_name) as Node3D
+		if node != null:
+			return node
+		var nested: Node3D = _find_node3d_by_name_recursive(machine, marker_name)
+		if nested != null:
+			return nested
+	return null
+
+func _find_node3d_by_name_recursive(root: Node, name_to_find: String) -> Node3D:
+	for child: Node in root.get_children():
+		if child.name == name_to_find:
+			return child as Node3D
+		var nested: Node3D = _find_node3d_by_name_recursive(child, name_to_find)
+		if nested != null:
+			return nested
+	return null
 
 func _try_interact(screen_pos: Vector2) -> void:
 	if camera_3d == null:

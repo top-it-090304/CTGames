@@ -362,6 +362,9 @@ func _machine_focus(machine: Node3D) -> Node3D:
 	return focus
 
 func _move_camera_to_hint(hint: String) -> void:
+	_move_camera_to_hint_duration(hint, 0.6)
+
+func _move_camera_to_hint_duration(hint: String, duration: float) -> void:
 	if camera_3d == null:
 		return
 
@@ -374,18 +377,19 @@ func _move_camera_to_hint(hint: String) -> void:
 
 	cam_tween = create_tween()
 	cam_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var move_time: float = clampf(duration, 0.08, 2.0)
 
 	cam_tween.parallel().tween_property(
 		camera_3d,
 		"global_position",
 		target.global_position,
-		0.6
+		move_time
 	)
 	cam_tween.parallel().tween_property(
 		camera_3d,
 		"global_rotation",
 		target.global_rotation,
-		0.6
+		move_time
 	)
 
 func _hint_target(hint: String) -> Marker3D:
