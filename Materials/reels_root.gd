@@ -10,15 +10,40 @@ const SYMBOL_KEYS: Array[String] = ["lemon", "cherry", "clover", "bell", "diamon
 @export var random_cycles_max: int = 10
 @export var frame_rams_root_path: NodePath = ^"../Node3D"
 @export var frame_node_prefix: String = "Rams"
+@export var frame_pulse_speed: float = 4.0
+@export var frame_pulse_dim_color: Color = Color(0.55, 0.08, 0.48, 1.0)
+@export var frame_pulse_bright_color: Color = Color(1.0, 0.14, 0.90, 1.0)
+@export var frame_emission_energy_min: float = 0.6
+@export var frame_emission_energy_max: float = 2.4
 
 var _reels: Array[Node3D] = []
 var _frame_nodes: Dictionary = {}
+var _active_frame_ids: Dictionary = {}
+var _frame_materials: Dictionary = {}
+var _pulse_t: float = 0.0
 
 func _ready() -> void:
 	randomize()
 	_bind_reels()
 	_bind_frame_rams()
 	_clear_frame_rams()
+
+func _process(delta: float) -> void:
+	if _active_frame_ids.is_empty():
+		return
+	_pulse_t += delta
+	var phase: float = 0.5 + 0.5 * sin(_pulse_t * frame_pulse_speed)
+	var pulse_color: Color = frame_pulse_dim_color.lerp(frame_pulse_bright_color, phase)
+	var pulse_energy: float = lerpf(frame_emission_energy_min, frame_emission_energy_max, phase)
+	for id_var: Variant in _active_frame_ids.keys():
+		var id: int = int(id_var)
+		var mat: BaseMaterial3D = _frame_materials.get(id) as BaseMaterial3D
+		if mat == null:
+			continue
+		mat.albedo_color = pulse_color
+		mat.emission_enabled = true
+		mat.emission = pulse_color
+		mat.emission_energy_multiplier = pulse_energy
 
 func sync_layout() -> void:
 	_bind_reels(true)
@@ -148,6 +173,7 @@ func _bind_frame_rams(force: bool = false) -> void:
 		var node: Node3D = root.get_node_or_null("%s%d" % [frame_node_prefix, i]) as Node3D
 		if node != null:
 			_frame_nodes[i] = node
+			_frame_materials[i] = _ensure_frame_material(node)
 
 func _frame_id_for_point(point: Vector2i) -> int:
 	# rows: top=0 -> Rams6..10, middle=1 -> Rams1..5, bottom=2 -> Rams11..15
@@ -166,17 +192,54 @@ func _frame_id_for_point(point: Vector2i) -> int:
 func _apply_frame_rams(active_ids: Dictionary) -> void:
 	if _frame_nodes.is_empty():
 		return
+	_active_frame_ids = active_ids.duplicate()
+	_pulse_t = 0.0
 	for id_var: Variant in _frame_nodes.keys():
 		var id: int = int(id_var)
 		var node: Node3D = _frame_nodes[id] as Node3D
 		if node == null:
 			continue
 		node.visible = active_ids.has(id)
+		var mat: BaseMaterial3D = _frame_materials.get(id) as BaseMaterial3D
+		if mat == null:
+			continue
+		if node.visible:
+			mat.albedo_color = frame_pulse_bright_color
+			mat.emission_enabled = true
+			mat.emission = frame_pulse_bright_color
+			mat.emission_energy_multiplier = frame_emission_energy_max
+		else:
+			mat.albedo_color = frame_pulse_dim_color
+			mat.emission_enabled = true
+			mat.emission = frame_pulse_dim_color
+			mat.emission_energy_multiplier = frame_emission_energy_min
 
 func _clear_frame_rams() -> void:
 	if _frame_nodes.is_empty():
 		return
+	_active_frame_ids.clear()
 	for node_var: Variant in _frame_nodes.values():
 		var node: Node3D = node_var as Node3D
 		if node != null:
 			node.visible = false
+
+func _ensure_frame_material(root: Node3D) -> BaseMaterial3D:
+	if root == null:
+		return null
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var current: Node = stack.pop_back()
+		var mesh_node: MeshInstance3D = current as MeshInstance3D
+		if mesh_node != null:
+			var material: BaseMaterial3D = mesh_node.material_override as BaseMaterial3D
+			if material == null and mesh_node.get_surface_override_material_count() > 0:
+				material = mesh_node.get_surface_override_material(0) as BaseMaterial3D
+			if material != null:
+				var cloned: BaseMaterial3D = material.duplicate() as BaseMaterial3D
+				if cloned != null:
+					cloned.resource_local_to_scene = true
+					mesh_node.material_override = cloned
+					return cloned
+		for child: Node in current.get_children():
+			stack.append(child)
+	return null

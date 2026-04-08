@@ -10,6 +10,12 @@ const SLOT_PREFIX: String = "_slot_"
 @export var slot_spacing_override: float = 0.0
 @export var vertical_center_offset: float = 0.0
 @export var symbol_scale_multiplier: float = 1.0
+@export var highlight_pulse_speed: float = 4.2
+@export var highlight_tint_dim: Color = Color(0.70, 0.42, 0.24, 1.0)
+@export var highlight_tint_bright: Color = Color(1.0, 0.92, 0.42, 1.0)
+@export var highlight_emission_min: float = 0.45
+@export var highlight_emission_max: float = 1.7
+@export var highlight_scale_boost: float = 1.08
 
 var _template_clones: Dictionary = {}
 var _template_transforms: Dictionary = {}
@@ -33,6 +39,10 @@ var _spacing: float = 1.5
 var _steps_remaining: int = 0
 var _is_spinning: bool = false
 var _is_settling: bool = false
+var _highlight_slot_index: int = -1
+var _highlight_t: float = 0.0
+var _base_materials: Dictionary = {}
+var _highlight_materials: Dictionary = {}
 
 func _ready() -> void:
 	randomize()
@@ -46,6 +56,8 @@ func _process(delta: float) -> void:
 		_update_spin(delta)
 	elif _is_settling:
 		_update_settle(delta)
+	if _highlight_slot_index >= 0:
+		_update_highlight_visual(delta)
 
 func sync_layout() -> void:
 	_setup_reel(true)
@@ -85,20 +97,23 @@ func highlight_row(row: int) -> void:
 	var slot_index: int = _visible_indices[row]
 	if slot_index < 0 or slot_index >= _runtime_nodes.size():
 		return
-	var node: Node3D = _runtime_nodes[slot_index]
-	if node != null:
-		node.scale *= 1.12
+	_highlight_slot_index = slot_index
+	_highlight_t = 0.0
+	_apply_highlight_state(slot_index, 1.0)
 
 func is_spinning() -> bool:
 	return _is_spinning or _is_settling or _delay_remaining > 0.0
 
 func clear_highlight() -> void:
+	_highlight_slot_index = -1
+	_highlight_t = 0.0
 	for i: int in range(mini(_runtime_nodes.size(), _runtime_keys.size())):
 		var node: Node3D = _runtime_nodes[i]
 		if node == null:
 			continue
 		var key: String = _runtime_keys[i]
 		node.transform = _scaled_template_transform_for_key(key)
+		_restore_materials_recursive(node)
 
 func _setup_reel(force: bool = false) -> void:
 	if force:
@@ -287,6 +302,7 @@ func _replace_symbol_at_index(index: int, key: String) -> void:
 	holder.add_child(replacement)
 	replacement.transform = _scaled_template_transform_for_key(key)
 	replacement.visible = old_node.visible
+	_collect_materials_recursive(replacement)
 	old_node.queue_free()
 	_runtime_nodes[index] = replacement
 	_runtime_keys[index] = key
@@ -313,6 +329,7 @@ func _apply_layout() -> void:
 			node.reparent(holder)
 		var key: String = _runtime_keys[i]
 		node.transform = _scaled_template_transform_for_key(key)
+		_collect_materials_recursive(node)
 
 func _apply_visibility(show_all: bool) -> void:
 	for i: int in range(mini(_runtime_nodes.size(), _slot_holders.size())):
@@ -426,3 +443,91 @@ func _symbol_key_from_node_name(node_name: String) -> String:
 	if normalized.contains("lemon"):
 		return "lemon"
 	return ""
+
+func _update_highlight_visual(delta: float) -> void:
+	if _highlight_slot_index < 0 or _highlight_slot_index >= _runtime_nodes.size():
+		return
+	_highlight_t += delta
+	var phase: float = 0.5 + 0.5 * sin(_highlight_t * highlight_pulse_speed)
+	_apply_highlight_state(_highlight_slot_index, phase)
+
+func _apply_highlight_state(slot_index: int, phase: float) -> void:
+	if slot_index < 0 or slot_index >= _runtime_nodes.size():
+		return
+	var node: Node3D = _runtime_nodes[slot_index]
+	if node == null:
+		return
+	var key: String = _runtime_keys[slot_index]
+	var base_transform: Transform3D = _scaled_template_transform_for_key(key)
+	var scale_factor: float = lerpf(1.0, highlight_scale_boost, phase)
+	base_transform.basis = base_transform.basis.scaled(Vector3.ONE * scale_factor)
+	node.transform = base_transform
+
+	var tint: Color = highlight_tint_dim.lerp(highlight_tint_bright, phase)
+	var emission_energy: float = lerpf(highlight_emission_min, highlight_emission_max, phase)
+	_apply_material_tint_recursive(node, tint, emission_energy)
+
+func _collect_materials_recursive(root: Node3D) -> void:
+	if root == null:
+		return
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var current: Node = stack.pop_back()
+		var mesh_node: MeshInstance3D = current as MeshInstance3D
+		if mesh_node != null:
+			var key: String = str(mesh_node.get_instance_id())
+			if not _base_materials.has(key):
+				var mat: BaseMaterial3D = mesh_node.material_override as BaseMaterial3D
+				if mat == null and mesh_node.get_surface_override_material_count() > 0:
+					mat = mesh_node.get_surface_override_material(0) as BaseMaterial3D
+				if mat != null:
+					var cloned: BaseMaterial3D = mat.duplicate() as BaseMaterial3D
+					if cloned != null:
+						cloned.resource_local_to_scene = true
+						mesh_node.material_override = cloned
+						_base_materials[key] = {
+							"albedo": cloned.albedo_color,
+							"emission_enabled": cloned.emission_enabled,
+							"emission": cloned.emission,
+							"emission_energy": cloned.emission_energy_multiplier,
+						}
+						_highlight_materials[key] = cloned
+		for child: Node in current.get_children():
+			stack.append(child)
+
+func _apply_material_tint_recursive(root: Node3D, tint: Color, emission_energy: float) -> void:
+	if root == null:
+		return
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var current: Node = stack.pop_back()
+		var mesh_node: MeshInstance3D = current as MeshInstance3D
+		if mesh_node != null:
+			var key: String = str(mesh_node.get_instance_id())
+			var mat: BaseMaterial3D = _highlight_materials.get(key) as BaseMaterial3D
+			if mat != null:
+				mat.albedo_color = tint
+				mat.emission_enabled = true
+				mat.emission = tint
+				mat.emission_energy_multiplier = emission_energy
+		for child: Node in current.get_children():
+			stack.append(child)
+
+func _restore_materials_recursive(root: Node3D) -> void:
+	if root == null:
+		return
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var current: Node = stack.pop_back()
+		var mesh_node: MeshInstance3D = current as MeshInstance3D
+		if mesh_node != null:
+			var key: String = str(mesh_node.get_instance_id())
+			var mat: BaseMaterial3D = _highlight_materials.get(key) as BaseMaterial3D
+			var base: Dictionary = _base_materials.get(key, {}) as Dictionary
+			if mat != null and not base.is_empty():
+				mat.albedo_color = base.get("albedo", Color.WHITE)
+				mat.emission_enabled = bool(base.get("emission_enabled", false))
+				mat.emission = base.get("emission", Color.BLACK)
+				mat.emission_energy_multiplier = float(base.get("emission_energy", 1.0))
+		for child: Node in current.get_children():
+			stack.append(child)
