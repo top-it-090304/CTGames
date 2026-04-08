@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
-[ext_resource type="Script" path="res://Materials/screen_frame_mesh.gd" id="18_2c4sm"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -51,12 +50,15 @@
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
-[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://чёрнаячернота.png" id="55_k6p7f"]
+[ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
+[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://textures/чёрнаячернота.png" id="55_k6p7f"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
-[ext_resource type="Script" path="res://Materials/reels_root.gd" id="57_reelsroot"]
-[ext_resource type="Script" path="res://Materials/reel_3d.gd" id="58_reel3d"]
+[ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
+[ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
+[ext_resource type="Texture2D" uid="uid://8fo74ewfgy7k" path="res://textures/TextureCircleShadowDarkRed.png" id="58_7mxcb"]
+[ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -108,42 +110,10 @@ albedo_texture = ExtResource("49_p4b4j")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7mxcb"]
 cull_mode = 2
 shading_mode = 0
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.52502203, 0.2569048, 0, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_rnwkk"]
-size = Vector2(9.2, 6.8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7x08p"]
-cull_mode = 2
-shading_mode = 0
-albedo_color = Color(1, 0.52, 0.08, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_yovps"]
-size = Vector3(9.2, 0.22, 0.08)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6rt0k"]
-cull_mode = 2
-shading_mode = 0
-albedo_color = Color(1, 0.52, 0.08, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_nb1du"]
-size = Vector3(9.2, 0.22, 0.08)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_42vkw"]
-cull_mode = 2
-shading_mode = 0
-albedo_color = Color(1, 0.52, 0.08, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_cya74"]
-size = Vector3(0.22, 6.8, 0.08)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4li4q"]
-cull_mode = 2
-shading_mode = 0
-albedo_color = Color(1, 0.52, 0.08, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_5bjtu"]
-size = Vector3(0.22, 6.8, 0.08)
+[sub_resource type="BoxMesh" id="BoxMesh_rnwkk"]
+size = Vector3(7, 0.22, 0.08)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
@@ -353,11 +323,11 @@ render_target_update_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.121334, 2.5341039, -4.10343)
 
 [node name="ScreenCamera" type="Camera3D" parent="SubViewport/ScreenStage3D" unique_id=332814221]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4870834, -0.76434135, 6.337789)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4870834, -0.3554561, 6.280814)
 projection = 1
 current = true
 fov = 53.6
-size = 6.782514
+size = 6.8680296
 
 [node name="RouletteRoot" type="Node3D" parent="SubViewport/ScreenStage3D" unique_id=1466145143]
 
@@ -375,19 +345,16 @@ skeleton = NodePath("../../../../..")
 
 [node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1901113481 instance=ExtResource("49_gs0kc")]
 transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -5.16584, 4.5, -1.1610003)
-visible = false
 material_override = SubResource("StandardMaterial3D_r0umr")
 skeleton = NodePath("../../../../..")
 
 [node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1634129771 instance=ExtResource("50_2vf0s")]
 transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -5, 3, -1.191)
-visible = false
 material_override = SubResource("StandardMaterial3D_gsmia")
 skeleton = NodePath("../../../../..")
 
 [node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1629448856 instance=ExtResource("51_p4b4j")]
 transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -5, 1.5, -1.203)
-visible = false
 material_override = SubResource("StandardMaterial3D_bd2p1")
 skeleton = NodePath("../../../../..")
 
@@ -400,8 +367,7 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -4.8519764, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1006161713 instance=ExtResource("55_omno6")]
-transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -5.5039864, 5.9999995, -1.0489998)
-visible = false
+transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -5.779089, 5.9999995, -1.0489998)
 
 [node name="Reel2" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=359296536]
 script = ExtResource("58_reel3d")
@@ -413,19 +379,16 @@ skeleton = NodePath("../../../../..")
 
 [node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=2109974885 instance=ExtResource("49_gs0kc")]
 transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -3.337799, 4.5, -1.1610003)
-visible = false
 material_override = SubResource("StandardMaterial3D_r0umr")
 skeleton = NodePath("../../../../..")
 
 [node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=2050064348 instance=ExtResource("50_2vf0s")]
 transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -3.171959, 3, -1.191)
-visible = false
 material_override = SubResource("StandardMaterial3D_gsmia")
 skeleton = NodePath("../../../../..")
 
 [node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=1876649532 instance=ExtResource("51_p4b4j")]
 transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -3.171959, 1.5, -1.2030001)
-visible = false
 material_override = SubResource("StandardMaterial3D_bd2p1")
 skeleton = NodePath("../../../../..")
 
@@ -438,8 +401,7 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -3.0239372, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=770715251 instance=ExtResource("55_omno6")]
-transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -3.6759453, 5.9999995, -1.0489998)
-visible = false
+transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -3.869835, 5.9999995, -1.0489998)
 
 [node name="Reel3" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1054090565]
 script = ExtResource("58_reel3d")
@@ -451,19 +413,16 @@ skeleton = NodePath("../../../../..")
 
 [node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=876105526 instance=ExtResource("49_gs0kc")]
 transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, -1.6336784, 4.5, -1.1610003)
-visible = false
 material_override = SubResource("StandardMaterial3D_r0umr")
 skeleton = NodePath("../../../../..")
 
 [node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1026482446 instance=ExtResource("50_2vf0s")]
 transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, -1.4678383, 3, -1.191)
-visible = false
 material_override = SubResource("StandardMaterial3D_gsmia")
 skeleton = NodePath("../../../../..")
 
 [node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=555706992 instance=ExtResource("51_p4b4j")]
 transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, -1.4678383, 1.5, -1.2030001)
-visible = false
 material_override = SubResource("StandardMaterial3D_bd2p1")
 skeleton = NodePath("../../../../..")
 
@@ -476,8 +435,7 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -1.3198166, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1246306745 instance=ExtResource("55_omno6")]
-transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -1.9718246, 5.9999995, -1.0489998)
-visible = false
+transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -2.1831512, 5.9999995, -1.0489998)
 
 [node name="Reel4" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=369294293]
 script = ExtResource("58_reel3d")
@@ -489,19 +447,16 @@ skeleton = NodePath("../../../../..")
 
 [node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=143117552 instance=ExtResource("49_gs0kc")]
 transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, 0.09538555, 4.5, -1.1610003)
-visible = false
 material_override = SubResource("StandardMaterial3D_r0umr")
 skeleton = NodePath("../../../../..")
 
 [node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=87028902 instance=ExtResource("50_2vf0s")]
 transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, 0.2612257, 3, -1.191)
-visible = false
 material_override = SubResource("StandardMaterial3D_gsmia")
 skeleton = NodePath("../../../../..")
 
 [node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1265616392 instance=ExtResource("51_p4b4j")]
 transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, 0.2612257, 1.5, -1.2030001)
-visible = false
 material_override = SubResource("StandardMaterial3D_bd2p1")
 skeleton = NodePath("../../../../..")
 
@@ -514,8 +469,7 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0.4092474, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1056716795 instance=ExtResource("55_omno6")]
-transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, -0.24276066, 5.9999995, -1.0489998)
-visible = false
+transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -0.6001377, 5.9999995, -1.0489998)
 
 [node name="Reel5" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=208604821]
 script = ExtResource("58_reel3d")
@@ -527,19 +481,16 @@ skeleton = NodePath("../../../../..")
 
 [node name="Campana" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1623633792 instance=ExtResource("49_gs0kc")]
 transform = Transform3D(4, 0, 0, 0, -0.50825834, 3.9675775, 0, -3.9675775, -0.50825834, 1.7622414, 4.5, -1.1610003)
-visible = false
 material_override = SubResource("StandardMaterial3D_r0umr")
 skeleton = NodePath("../../../../..")
 
 [node name="Ciliegie_2" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=2129229021 instance=ExtResource("50_2vf0s")]
 transform = Transform3D(-1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 0, 0, 3.9999998, 1.9280815, 3, -1.191)
-visible = false
 material_override = SubResource("StandardMaterial3D_gsmia")
 skeleton = NodePath("../../../../..")
 
 [node name="Treasure__1" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1964408507 instance=ExtResource("51_p4b4j")]
 transform = Transform3D(5.2453663e-07, 4, -1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, 4, -5.2453663e-07, 7.642742e-15, 1.9280815, 1.5, -1.2030001)
-visible = false
 material_override = SubResource("StandardMaterial3D_bd2p1")
 skeleton = NodePath("../../../../..")
 
@@ -552,41 +503,51 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 2.0761032, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1400723554 instance=ExtResource("55_omno6")]
-transform = Transform3D(1.1924881e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, 1.1924881e-08, -5.2125306e-16, 1.4240952, 5.9999995, -1.0489998)
-visible = false
+transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, 1.215167, 5.9999995, -0.8468337)
+
+[node name="_generated_Top2" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1678765337]
+transform = Transform3D(-4.3274273e-09, -0.017329995, -0.11342285, 0, 0.103559986, -0.018980471, 0.099, -7.575181e-10, -4.95787e-09, 11.1405115, 0.68344724, 3.7835786)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2" unique_id=1568048610]
+transform = Transform3D(0.07071068, 0.70710677, 0, -0.07071068, 0.70710677, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2" unique_id=1070230209]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2" unique_id=1662733174]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, -4.2593036, 0)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2/_generated_Top6" unique_id=2069201478]
+transform = Transform3D(0.07071068, 0.70710677, 0, -0.07071068, 0.70710677, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2/_generated_Top6" unique_id=690914854]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2" unique_id=2083252952]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot/_generated_Top2" unique_id=979326457]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport/ScreenStage3D" unique_id=1535510590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3914833, -1.5528212, 3.5252903)
 light_energy = 1.596
-
-[node name="ScreenFrameRoot" type="Node3D" parent="SubViewport/ScreenStage3D" unique_id=1717696561]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5103683, -1.5614638, -1.5866108)
-script = ExtResource("18_2c4sm")
-
-[node name="_generated_Backdrop" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=312390705]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04821968, -0.059999943)
-material_override = SubResource("StandardMaterial3D_7mxcb")
-mesh = SubResource("QuadMesh_rnwkk")
-
-[node name="_generated_Top" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=145803491]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.29, 0)
-material_override = SubResource("StandardMaterial3D_7x08p")
-mesh = SubResource("BoxMesh_yovps")
-
-[node name="_generated_Bottom" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=694336264]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.29, 0)
-material_override = SubResource("StandardMaterial3D_6rt0k")
-mesh = SubResource("BoxMesh_nb1du")
-
-[node name="_generated_Left" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1121348561]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.49, 0, 0)
-material_override = SubResource("StandardMaterial3D_42vkw")
-mesh = SubResource("BoxMesh_cya74")
-
-[node name="_generated_Right" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=264241534]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.49, 0, 0)
-material_override = SubResource("StandardMaterial3D_4li4q")
-mesh = SubResource("BoxMesh_5bjtu")
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
 custom_minimum_size = Vector2(1024, 768)
@@ -1052,7 +1013,7 @@ script = ExtResource("52_gs0kc")
 [node name="SlotMachineRoot" type="Node3D" parent="." unique_id=413957351]
 
 [node name="ModelRoot" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=2146092062]
-transform = Transform3D(0.005, 0, 0, 0, 0.005, 0, 0, 0, 0.005, -4.353674, 1.1289105, -0.3067429)
+transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, -4.4126434, 0.97110236, -0.32720086)
 mesh = SubResource("ArrayMesh_omno6")
 surface_material_override/0 = SubResource("StandardMaterial3D_k6p7f")
 
@@ -1063,7 +1024,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 177.76407, -93.85546)
 mesh = SubResource("ArrayMesh_2c4sm")
 
 [node name="ScreenSurface" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=59441967]
-transform = Transform3D(-2.6226834e-08, -0.051471714, 0.9630256, 0, 0.42690825, 0.116110615, -0.6, 2.2499e-09, -4.2095184e-08, -3.9720047, 2.0562458, -0.309)
+transform = Transform3D(-2.4041263e-08, -0.064638905, 1.007702, 0, 0.5361174, 0.12149719, -0.55, 2.8254563e-09, -4.4048054e-08, -3.9870343, 2.1066515, -0.3255572)
 material_overlay = SubResource("StandardMaterial3D_gs0kc")
 mesh = SubResource("QuadMesh_yci1l")
 
@@ -1077,12 +1038,87 @@ shape = SubResource("BoxShape3D_tc3b6")
 
 [node name="SpinCameraPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1363419081]
 
+[node name="Megafon" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=1870855242]
+transform = Transform3D(1.5237892e-05, 0.004641822, -2.3264151e-06, 0.0004378395, -2.68655e-10, 0.004981048, 0.0037794802, -1.8714576e-05, -0.00057702744, -2.187676, 3.16029, -2.7877998)
+mesh = ExtResource("55_2c4sm")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=241403847]
-transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 0.74113655, -6.78397)
+transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 1.2789068, -23.58215)
 material_override = SubResource("StandardMaterial3D_2c4sm")
 mesh = SubResource("BoxMesh_syuwj")
 surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
 script = ExtResource("56_k6p7f")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1856252268]
+transform = Transform3D(-4.371139e-08, 0.0009927574, 0.024027409, 0, 0.00012013705, -0.19855146, -1, -4.3394805e-11, -1.0502714e-09, -4.0146494, 2.3922398, -0.35887694)
+material_override = SubResource("StandardMaterial3D_2c4sm")
+mesh = SubResource("BoxMesh_syuwj")
+surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
+script = ExtResource("56_k6p7f")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=432625005]
+transform = Transform3D(-3.4969112e-08, 0.0009927574, 0.024027409, 0, 0.00012013705, -0.19855146, -0.8, -4.3394805e-11, -1.0502714e-09, -3.9391077, 1.7964683, -0.32509273)
+material_override = SubResource("StandardMaterial3D_2c4sm")
+mesh = SubResource("BoxMesh_syuwj")
+surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
+script = ExtResource("56_k6p7f")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=606693713]
+transform = Transform3D(-4.371139e-09, 0.0009927574, 0.07208223, 0, 0.00012013705, -0.5956544, -0.1, -4.3394805e-11, -3.1508145e-09, -3.9714406, 2.084995, 0.077141464)
+material_override = SubResource("StandardMaterial3D_2c4sm")
+mesh = SubResource("BoxMesh_syuwj")
+surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
+script = ExtResource("56_k6p7f")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." unique_id=1450225687]
+transform = Transform3D(-4.371139e-09, 0.0009927574, 0.08409593, 0, 0.00012013705, -0.69493014, -0.1, -4.3394805e-11, -3.67595e-09, -3.973552, 2.0892851, -0.7284128)
+material_override = SubResource("StandardMaterial3D_2c4sm")
+mesh = SubResource("BoxMesh_syuwj")
+surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
+script = ExtResource("56_k6p7f")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="." unique_id=436576462]
+transform = Transform3D(1.3374798e-15, -4.371139e-08, -1, -0.7, -4.371139e-08, 0, -3.059797e-08, 1, -4.371139e-08, -13.953748, 1.943725, -5.9010134)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="Sprite3D" type="Sprite3D" parent="_generated_Top3" unique_id=83498548]
+transform = Transform3D(0.5, 0, 0, 0, -8.7422775e-10, -0.08, 0, 0.02, -3.496911e-09, -2.3841858e-07, -1.4917145, -0.029431343)
+modulate = Color(0.26804733, 0, 0.008382548, 1)
+texture = ExtResource("58_7mxcb")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="." unique_id=1633112955]
+transform = Transform3D(1.3374798e-15, -4.371139e-08, -1, -0.7, -4.371139e-08, 0, -3.059797e-08, 1, -4.371139e-08, -15.708524, 1.943725, -5.9010134)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="Sprite3D" type="Sprite3D" parent="_generated_Top4" unique_id=768187621]
+transform = Transform3D(0.5, 0, 0, 0, -8.7422775e-10, -0.08, 0, 0.02, -3.496911e-09, -2.3841858e-07, -1.4917145, -0.029431343)
+modulate = Color(0.26804733, 0, 0.008382548, 1)
+texture = ExtResource("58_7mxcb")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="." unique_id=914873958]
+transform = Transform3D(1.3374798e-15, -4.371139e-08, -1, -0.7, -4.371139e-08, 0, -3.059797e-08, 1, -4.371139e-08, -17.414291, 1.943725, -5.9010134)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="Sprite3D" type="Sprite3D" parent="_generated_Top5" unique_id=227040046]
+transform = Transform3D(0.5, 0, 0, 0, -8.7422775e-10, -0.08, 0, 0.02, -3.496911e-09, -2.3841858e-07, -1.4917145, -0.029431343)
+modulate = Color(0.26804733, 0, 0.008382548, 1)
+texture = ExtResource("58_7mxcb")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="." unique_id=1867749977]
+transform = Transform3D(1.3374798e-15, -4.371139e-08, -1, -0.7, -4.371139e-08, 0, -3.059797e-08, 1, -4.371139e-08, -19.228764, 1.943725, -5.9010134)
+material_override = SubResource("StandardMaterial3D_7mxcb")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="Sprite3D" type="Sprite3D" parent="_generated_Top6" unique_id=620523118]
+transform = Transform3D(0.5, 0, 0, 0, -8.7422775e-10, -0.08, 0, 0.02, -3.496911e-09, -2.3841858e-07, -1.4917145, -0.029431343)
+modulate = Color(0.26804733, 0, 0.008382548, 1)
+texture = ExtResource("58_7mxcb")
+
+[node name="bans" parent="." unique_id=1326125751 instance=ExtResource("57_syuwj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.229446, 0, 15.307127)
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
