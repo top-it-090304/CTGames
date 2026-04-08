@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
-[ext_resource type="Script" uid="uid://d2y1dh4y8kvwl" path="res://Materials/screen_frame_mesh.gd" id="18_2c4sm"]
+[ext_resource type="Script" path="res://Materials/screen_frame_mesh.gd" id="18_2c4sm"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -37,7 +37,7 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/Bell.glb" id="46_yy33s"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
@@ -51,12 +51,12 @@
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
-[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://textures/чёрнаячернота.png" id="55_k6p7f"]
+[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://чёрнаячернота.png" id="55_k6p7f"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
-[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
-[ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
-[ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
+[ext_resource type="Script" path="res://Materials/reels_root.gd" id="57_reelsroot"]
+[ext_resource type="Script" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -563,27 +563,27 @@ light_energy = 1.596
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5103683, -1.5614638, -1.5866108)
 script = ExtResource("18_2c4sm")
 
-[node name="_generated_Backdrop" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1790899543]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06)
+[node name="_generated_Backdrop" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=312390705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04821968, -0.059999943)
 material_override = SubResource("StandardMaterial3D_7mxcb")
 mesh = SubResource("QuadMesh_rnwkk")
 
-[node name="_generated_Top" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=589687044]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.271968, 0)
+[node name="_generated_Top" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=145803491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.29, 0)
 material_override = SubResource("StandardMaterial3D_7x08p")
 mesh = SubResource("BoxMesh_yovps")
 
-[node name="_generated_Bottom" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=2119238406]
+[node name="_generated_Bottom" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=694336264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.29, 0)
 material_override = SubResource("StandardMaterial3D_6rt0k")
 mesh = SubResource("BoxMesh_nb1du")
 
-[node name="_generated_Left" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1534142324]
+[node name="_generated_Left" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=1121348561]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.49, 0, 0)
 material_override = SubResource("StandardMaterial3D_42vkw")
 mesh = SubResource("BoxMesh_cya74")
 
-[node name="_generated_Right" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=774312408]
+[node name="_generated_Right" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ScreenFrameRoot" unique_id=264241534]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.49, 0, 0)
 material_override = SubResource("StandardMaterial3D_4li4q")
 mesh = SubResource("BoxMesh_5bjtu")
@@ -1078,7 +1078,7 @@ shape = SubResource("BoxShape3D_tc3b6")
 [node name="SpinCameraPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1363419081]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=241403847]
-transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 1, -6.78397)
+transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 0.74113655, -6.78397)
 material_override = SubResource("StandardMaterial3D_2c4sm")
 mesh = SubResource("BoxMesh_syuwj")
 surface_material_override/0 = SubResource("StandardMaterial3D_syuwj")
