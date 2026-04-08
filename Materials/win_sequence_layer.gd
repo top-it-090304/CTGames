@@ -7,7 +7,7 @@ signal highlight_cleared
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
-@export var dim_alpha: float = 0.28
+@export var dim_alpha: float = 0.14
 @export var combo_hold_time: float = 0.46
 @export var combo_gap_time: float = 0.10
 @export var total_hold_time: float = 0.80
@@ -22,12 +22,19 @@ var _total_value_label: Label
 
 var _active: bool = false
 var _sequence_token: int = 0
+var _neon_t: float = 0.0
 
 func _ready() -> void:
 	_ensure_ui_tree()
 	_bind_nodes()
 	_apply_visuals()
 	_hide_all()
+
+func _process(delta: float) -> void:
+	if not _active:
+		return
+	_neon_t += delta
+	_update_neon_anim()
 
 func is_playing() -> bool:
 	return _active
@@ -154,23 +161,28 @@ func _show_combo_hit(token: int, hit: Dictionary) -> void:
 		return
 
 	var combo_name: String = String(hit.get("combo_name", "КОМБО")).to_upper()
-	var symbol_title: String = _symbol_title(int(hit.get("symbol_index", -1))).to_upper()
 	var win_amount: int = int(hit.get("win_amount", 0))
+	var combo_mult: int = int(hit.get("combo_multiplier", 0))
 
-	if symbol_title.is_empty():
-		_combo_name_label.text = combo_name
+	if combo_mult > 0:
+		_combo_name_label.text = "%s  x%d" % [combo_name, combo_mult]
 	else:
-		_combo_name_label.text = "%s  %s" % [combo_name, symbol_title]
-	_combo_value_label.text = "+%d Ф" % win_amount
+		_combo_name_label.text = combo_name
+	_combo_value_label.text = "+%d" % win_amount
 
 	_combo_popup.visible = true
 	_combo_popup.modulate.a = 0.0
-	_combo_popup.scale = Vector2(0.88, 0.88)
+	_combo_popup.scale = Vector2(0.84, 0.84)
+	_combo_value_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	_combo_name_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	_neon_t = 0.0
 
 	var intro: Tween = create_tween()
 	intro.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	intro.parallel().tween_property(_combo_popup, "scale", Vector2.ONE, 0.16)
+	intro.parallel().tween_property(_combo_popup, "scale", Vector2.ONE, 0.20)
 	intro.parallel().tween_property(_combo_popup, "modulate:a", 1.0, 0.12)
+	intro.parallel().tween_property(_combo_value_label, "modulate:a", 1.0, 0.10)
+	intro.parallel().tween_property(_combo_name_label, "modulate:a", 1.0, 0.10)
 	await intro.finished
 	if token != _sequence_token:
 		return
@@ -179,10 +191,18 @@ func _show_combo_hit(token: int, hit: Dictionary) -> void:
 	if token != _sequence_token:
 		return
 
+	var pulse: Tween = create_tween()
+	pulse.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property(_combo_popup, "scale", Vector2(1.03, 1.03), 0.08)
+	pulse.tween_property(_combo_popup, "scale", Vector2.ONE, 0.08)
+	await pulse.finished
+	if token != _sequence_token:
+		return
+
 	var outro: Tween = create_tween()
 	outro.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	outro.parallel().tween_property(_combo_popup, "scale", Vector2(1.03, 1.03), 0.10)
-	outro.parallel().tween_property(_combo_popup, "modulate:a", 0.0, 0.10)
+	outro.parallel().tween_property(_combo_popup, "scale", Vector2(1.07, 1.07), 0.12)
+	outro.parallel().tween_property(_combo_popup, "modulate:a", 0.0, 0.12)
 	await outro.finished
 	if token != _sequence_token:
 		return
@@ -194,17 +214,22 @@ func _show_total(token: int, total_win: int) -> void:
 	if _total_popup == null or _total_title_label == null or _total_value_label == null:
 		return
 
-	_total_title_label.text = "TOTAL"
-	_total_value_label.text = "+%d Ф" % total_win
+	_total_title_label.text = "ВЫИГРЫШ"
+	_total_value_label.text = "+%d" % total_win
 
 	_total_popup.visible = true
 	_total_popup.modulate.a = 0.0
-	_total_popup.scale = Vector2(0.82, 0.82)
+	_total_popup.scale = Vector2(0.76, 0.76)
+	_total_title_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	_total_value_label.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	_neon_t = 0.0
 
 	var intro: Tween = create_tween()
 	intro.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	intro.parallel().tween_property(_total_popup, "scale", Vector2.ONE, 0.20)
+	intro.parallel().tween_property(_total_popup, "scale", Vector2.ONE, 0.24)
 	intro.parallel().tween_property(_total_popup, "modulate:a", 1.0, 0.16)
+	intro.parallel().tween_property(_total_value_label, "modulate:a", 1.0, 0.10)
+	intro.parallel().tween_property(_total_title_label, "modulate:a", 1.0, 0.10)
 	await intro.finished
 	if token != _sequence_token:
 		return
@@ -213,10 +238,18 @@ func _show_total(token: int, total_win: int) -> void:
 	if token != _sequence_token:
 		return
 
+	var pulse: Tween = create_tween()
+	pulse.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property(_total_popup, "scale", Vector2(1.04, 1.04), 0.10)
+	pulse.tween_property(_total_popup, "scale", Vector2.ONE, 0.10)
+	await pulse.finished
+	if token != _sequence_token:
+		return
+
 	var outro: Tween = create_tween()
 	outro.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	outro.parallel().tween_property(_total_popup, "scale", Vector2(1.04, 1.04), 0.12)
-	outro.parallel().tween_property(_total_popup, "modulate:a", 0.0, 0.12)
+	outro.parallel().tween_property(_total_popup, "scale", Vector2(1.10, 1.10), 0.14)
+	outro.parallel().tween_property(_total_popup, "modulate:a", 0.0, 0.14)
 	await outro.finished
 	if token != _sequence_token:
 		return
@@ -276,41 +309,41 @@ func _apply_visuals() -> void:
 		_dim.color = Color(0.0, 0.0, 0.0, 1.0)
 		_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	_apply_panel_style(_combo_popup, Vector2(248.0, 86.0), Vector2(0.0, -230.0), Color(0.02, 0.02, 0.02, 0.93), Color(1.0, 0.48, 0.08, 1.0), 2)
-	_apply_panel_style(_total_popup, Vector2(260.0, 94.0), Vector2(0.0, -230.0), Color(0.0, 0.0, 0.0, 0.96), Color(1.0, 0.78, 0.12, 1.0), 3)
+	_apply_panel_style(_combo_popup, Vector2(560.0, 220.0), Vector2(0.0, -6.0), Color(0.0, 0.0, 0.0, 0.0), Color(0.0, 0.0, 0.0, 0.0), 0)
+	_apply_panel_style(_total_popup, Vector2(640.0, 260.0), Vector2(0.0, -6.0), Color(0.0, 0.0, 0.0, 0.0), Color(0.0, 0.0, 0.0, 0.0), 0)
 
-	_apply_label_style(_combo_name_label, 23, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 3)
-	_apply_label_style(_combo_value_label, 28, Color(1.0, 0.96, 0.94, 1.0), Color.BLACK, 3)
-	_apply_label_style(_total_title_label, 24, Color(1.0, 0.55, 0.12, 1.0), Color.BLACK, 3)
-	_apply_label_style(_total_value_label, 31, Color(1.0, 0.86, 0.08, 1.0), Color.BLACK, 4)
+	_apply_label_style(_combo_name_label, 28, Color(1.0, 0.96, 0.20, 1.0), Color(0.28, 0.0, 0.26, 1.0), 6)
+	_apply_label_style(_combo_value_label, 90, Color(1.0, 0.92, 0.22, 1.0), Color(1.0, 0.08, 0.92, 1.0), 12)
+	_apply_label_style(_total_title_label, 34, Color(1.0, 0.98, 0.34, 1.0), Color(0.35, 0.02, 0.32, 1.0), 8)
+	_apply_label_style(_total_value_label, 102, Color(1.0, 0.96, 0.24, 1.0), Color(1.0, 0.08, 0.92, 1.0), 13)
 
 	if _combo_name_label != null:
 		_combo_name_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_combo_name_label.offset_left = 10.0
-		_combo_name_label.offset_top = 6.0
-		_combo_name_label.offset_right = -10.0
-		_combo_name_label.offset_bottom = 34.0
+		_combo_name_label.offset_left = 0.0
+		_combo_name_label.offset_top = 12.0
+		_combo_name_label.offset_right = 0.0
+		_combo_name_label.offset_bottom = 62.0
 
 	if _combo_value_label != null:
-		_combo_value_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_combo_value_label.offset_left = 10.0
-		_combo_value_label.offset_top = 38.0
-		_combo_value_label.offset_right = -10.0
-		_combo_value_label.offset_bottom = 74.0
+		_combo_value_label.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_combo_value_label.offset_left = 0.0
+		_combo_value_label.offset_top = 40.0
+		_combo_value_label.offset_right = 0.0
+		_combo_value_label.offset_bottom = 0.0
 
 	if _total_title_label != null:
 		_total_title_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_total_title_label.offset_left = 10.0
-		_total_title_label.offset_top = 6.0
-		_total_title_label.offset_right = -10.0
-		_total_title_label.offset_bottom = 36.0
+		_total_title_label.offset_left = 0.0
+		_total_title_label.offset_top = 8.0
+		_total_title_label.offset_right = 0.0
+		_total_title_label.offset_bottom = 64.0
 
 	if _total_value_label != null:
-		_total_value_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-		_total_value_label.offset_left = 10.0
-		_total_value_label.offset_top = 38.0
-		_total_value_label.offset_right = -10.0
-		_total_value_label.offset_bottom = 82.0
+		_total_value_label.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_total_value_label.offset_left = 0.0
+		_total_value_label.offset_top = 56.0
+		_total_value_label.offset_right = 0.0
+		_total_value_label.offset_bottom = 0.0
 
 func _apply_panel_style(panel: Panel, panel_size: Vector2, centered_offset: Vector2, bg: Color, border: Color, border_px: int) -> void:
 	if panel == null:
@@ -378,3 +411,20 @@ func _hide_all() -> void:
 		_total_popup.visible = false
 		_total_popup.modulate.a = 1.0
 		_total_popup.scale = Vector2.ONE
+
+func _update_neon_anim() -> void:
+	var phase: float = 0.5 + 0.5 * sin(_neon_t * 5.2)
+	var edge_phase: float = 0.5 + 0.5 * sin(_neon_t * 4.1 + 1.2)
+	var glow_phase: float = 0.5 + 0.5 * sin(_neon_t * 6.0 + 0.6)
+
+	if _combo_value_label != null and _combo_popup != null and _combo_popup.visible:
+		var combo_main := Color(1.0, 0.84 + 0.12 * phase, 0.20 + 0.10 * edge_phase, _combo_value_label.modulate.a)
+		var combo_outline := Color(1.0, 0.06 + 0.20 * glow_phase, 0.92, 1.0)
+		_combo_value_label.add_theme_color_override("font_color", combo_main)
+		_combo_value_label.add_theme_color_override("font_outline_color", combo_outline)
+
+	if _total_value_label != null and _total_popup != null and _total_popup.visible:
+		var total_main := Color(1.0, 0.88 + 0.10 * phase, 0.22 + 0.10 * edge_phase, _total_value_label.modulate.a)
+		var total_outline := Color(1.0, 0.05 + 0.20 * glow_phase, 0.92, 1.0)
+		_total_value_label.add_theme_color_override("font_color", total_main)
+		_total_value_label.add_theme_color_override("font_outline_color", total_outline)

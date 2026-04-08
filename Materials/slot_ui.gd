@@ -101,7 +101,7 @@ var _visual_stage: Control
 var _highlight_palette_index: int = 0
 var _highlight_pulse_t: float = 0.0
 var _highlight_palettes: Array[Array] = [
-	[Color(0.28, 1.0, 0.34, 1.0), Color(1.0, 0.95, 0.26, 1.0)],
+	[Color(1.0, 0.05, 0.96, 1.0), Color(1.0, 0.80, 0.18, 1.0)],
 	[Color(0.24, 0.94, 1.0, 1.0), Color(0.26, 1.0, 0.76, 1.0)],
 	[Color(1.0, 0.34, 0.72, 1.0), Color(0.58, 0.92, 1.0, 1.0)],
 	[Color(1.0, 0.72, 0.14, 1.0), Color(1.0, 0.35, 0.16, 1.0)],
