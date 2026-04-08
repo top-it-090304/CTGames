@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dg2fvorj2edl5"
-path="res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"
+uid="uid://cn5ie1l5q6s8f"
+path="res://.godot/imported/Chili Pepper.glb-26b15c19ee986b295beed76f10105270.scn"
 
 [deps]
 
-source_file="res://Objects/Bell.glb"
-dest_files=["res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"]
+source_file="res://Objects/Chili Pepper.glb"
+dest_files=["res://.godot/imported/Chili Pepper.glb-26b15c19ee986b295beed76f10105270.scn"]
 
 [params]
 

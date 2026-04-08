@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dg2fvorj2edl5"
-path="res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"
+uid="uid://drachc203cjp3"
+path="res://.godot/imported/Fruit bowl.glb-080a3a9c4c9b6867aca95a2b3947f229.scn"
 
 [deps]
 
-source_file="res://Objects/Bell.glb"
-dest_files=["res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"]
+source_file="res://Objects/Fruit bowl.glb"
+dest_files=["res://.godot/imported/Fruit bowl.glb-080a3a9c4c9b6867aca95a2b3947f229.scn"]
 
 [params]
 
