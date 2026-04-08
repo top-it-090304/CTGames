@@ -62,6 +62,7 @@
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 [ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
 [ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
+[ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1749,6 +1750,18 @@ mesh = ExtResource("59_7mxcb")
 [node name="Polks" type="MeshInstance3D" parent="." unique_id=569826091]
 transform = Transform3D(0.0059999977, 0, 0, 0, -2.6226823e-10, 0.0059999963, 0, -0.0059999977, -2.6226815e-10, -4.407419, 1.0956316, -1.7962492)
 mesh = ExtResource("61_6qhtt")
+
+[node name="Zapiska" type="MeshInstance3D" parent="." unique_id=1774686175]
+transform = Transform3D(0.0024539372, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -1.5822904)
+mesh = ExtResource("63_gsmia")
+
+[node name="Zapiska2" type="MeshInstance3D" parent="." unique_id=1490804869]
+transform = Transform3D(0.0024539372, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -1.8785512)
+mesh = ExtResource("63_gsmia")
+
+[node name="Zapiska3" type="MeshInstance3D" parent="." unique_id=1625632267]
+transform = Transform3D(0.004935747, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -2.1812973)
+mesh = ExtResource("63_gsmia")
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
