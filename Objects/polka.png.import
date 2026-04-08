@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bam3rdplbtgeg"
-path.s3tc="res://.godot/imported/PackFree_34.png-d7c4ec1846b0f1c76282fec4846e5a46.s3tc.ctex"
+uid="uid://m8m131dx00mt"
+path.s3tc="res://.godot/imported/polka.png-408e01405d3caaf2a934d481face135a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Objects/PackFree_34.png"
-dest_files=["res://.godot/imported/PackFree_34.png-d7c4ec1846b0f1c76282fec4846e5a46.s3tc.ctex"]
+source_file="res://Objects/polka.png"
+dest_files=["res://.godot/imported/polka.png-408e01405d3caaf2a934d481face135a.s3tc.ctex"]
 
 [params]
 

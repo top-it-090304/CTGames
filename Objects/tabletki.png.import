@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2nri55onhtbg"
-path.s3tc="res://.godot/imported/PackFree_16.png-b3e179b9fabed7ad50b83201e572e9d6.s3tc.ctex"
+uid="uid://bam3rdplbtgeg"
+path.s3tc="res://.godot/imported/tabletki.png-96ff55ceaa8df584aa5da032d2b9f7c8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "32ec771f990718cc3af659dccebb31d1"
-}
 
 [deps]
 
-source_file="res://Objects/PackFree_16.png"
-dest_files=["res://.godot/imported/PackFree_16.png-b3e179b9fabed7ad50b83201e572e9d6.s3tc.ctex"]
+source_file="res://Objects/tabletki.png"
+dest_files=["res://.godot/imported/tabletki.png-96ff55ceaa8df584aa5da032d2b9f7c8.s3tc.ctex"]
 
 [params]
 

@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://64r72lvtbynw"
-path.s3tc="res://.godot/imported/PackFree_66.png-2a0083f068d1a8659cba6c0c6f4d1edf.s3tc.ctex"
+uid="uid://rogl6nfny06x"
+path.s3tc="res://.godot/imported/cigarettes.png-ba1e96fbfca0c8ba4f3c346538299571.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "d7751808cf65686cb64be333b57d043f"
-}
 
 [deps]
 
-source_file="res://textures/PackFree_66.png"
-dest_files=["res://.godot/imported/PackFree_66.png-2a0083f068d1a8659cba6c0c6f4d1edf.s3tc.ctex"]
+source_file="res://cigarettes.png"
+dest_files=["res://.godot/imported/cigarettes.png-ba1e96fbfca0c8ba4f3c346538299571.s3tc.ctex"]
 
 [params]
 
