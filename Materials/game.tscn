@@ -36,7 +36,7 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/Bell.glb" id="46_yy33s"]
+[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
@@ -51,9 +51,9 @@
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
-[ext_resource type="Texture2D" uid="uid://w06jb5rokd8l" path="res://textures/чёрнаячернота.png" id="55_k6p7f"]
+[ext_resource type="Texture2D" path="res://textures/чёрнаячернота.png" id="55_k6p7f"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
-[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
@@ -114,6 +114,12 @@ albedo_color = Color(0.52502203, 0.2569048, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rnwkk"]
 size = Vector3(7, 0.22, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rnwkk"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7x08p"]
+albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
@@ -339,7 +345,7 @@ script = ExtResource("57_reelsroot")
 script = ExtResource("58_reel3d")
 
 [node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1126145142 instance=ExtResource("48_id0qs")]
-transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -4.9616604, 0, -1.0760002)
+transform = Transform3D(-1.7484555e-07, 4, 1.7484555e-07, 0, -1.7484555e-07, 4, 4, 1.7484555e-07, 7.642742e-15, -4.9616604, 0, -1.0760002)
 material_override = SubResource("StandardMaterial3D_6qhtt")
 skeleton = NodePath("../../../../..")
 
@@ -367,13 +373,13 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -4.8519764, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel1" unique_id=1006161713 instance=ExtResource("55_omno6")]
-transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -5.779089, 5.9999995, -1.0489998)
+transform = Transform3D(-3.4969112e-08, 0.69282037, 0.39999998, 0, 0.39999998, -0.69282037, -0.8, -3.0284138e-08, -1.7484554e-08, -5.5492935, 5.9999995, -1.0489998)
 
 [node name="Reel2" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=359296536]
 script = ExtResource("58_reel3d")
 
 [node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=561627173 instance=ExtResource("48_id0qs")]
-transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -3.1336212, 0, -1.0760002)
+transform = Transform3D(-1.7484555e-07, 4, 1.7484555e-07, 0, -1.7484555e-07, 4, 4, 1.7484555e-07, 7.642742e-15, -3.1336212, 0, -1.0760002)
 material_override = SubResource("StandardMaterial3D_6qhtt")
 skeleton = NodePath("../../../../..")
 
@@ -401,13 +407,13 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -3.0239372, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel2" unique_id=770715251 instance=ExtResource("55_omno6")]
-transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -3.869835, 5.9999995, -1.0489998)
+transform = Transform3D(-3.4969112e-08, 0.69282037, 0.39999998, 0, 0.39999998, -0.69282037, -0.8, -3.0284138e-08, -1.7484554e-08, -3.6400375, 5.9999995, -1.0489998)
 
 [node name="Reel3" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1054090565]
 script = ExtResource("58_reel3d")
 
 [node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1044029968 instance=ExtResource("48_id0qs")]
-transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, -1.4295006, 0, -1.0760002)
+transform = Transform3D(-1.7484555e-07, 4, 1.7484555e-07, 0, -1.7484555e-07, 4, 4, 1.7484555e-07, 7.642742e-15, -1.4295006, 0, -1.0760002)
 material_override = SubResource("StandardMaterial3D_6qhtt")
 skeleton = NodePath("../../../../..")
 
@@ -435,13 +441,13 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -1.3198166, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel3" unique_id=1246306745 instance=ExtResource("55_omno6")]
-transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -2.1831512, 5.9999995, -1.0489998)
+transform = Transform3D(-3.4969112e-08, 0.69282037, 0.39999998, 0, 0.39999998, -0.69282037, -0.8, -3.0284138e-08, -1.7484554e-08, -1.9533539, 5.9999995, -1.0489998)
 
 [node name="Reel4" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=369294293]
 script = ExtResource("58_reel3d")
 
 [node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=306665391 instance=ExtResource("48_id0qs")]
-transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, 0.2995634, 0, -1.0760002)
+transform = Transform3D(-1.7484555e-07, 4, 1.7484555e-07, 0, -1.7484555e-07, 4, 4, 1.7484555e-07, 7.642742e-15, 0.2995634, 0, -1.0760002)
 material_override = SubResource("StandardMaterial3D_6qhtt")
 skeleton = NodePath("../../../../..")
 
@@ -469,13 +475,13 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0.4092474, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel4" unique_id=1056716795 instance=ExtResource("55_omno6")]
-transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, -0.6001377, 5.9999995, -1.0489998)
+transform = Transform3D(-3.4969112e-08, 0.69282037, 0.39999998, 0, 0.39999998, -0.69282037, -0.8, -3.0284138e-08, -1.7484554e-08, -0.3703413, 5.9999995, -1.0489998)
 
 [node name="Reel5" type="Node3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=208604821]
 script = ExtResource("58_reel3d")
 
 [node name="Lucky7" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=477315429 instance=ExtResource("48_id0qs")]
-transform = Transform3D(-1.7484555e-07, -4, 1.7484555e-07, 1.5285484e-14, 1.7484555e-07, 4, -4, 1.7484555e-07, 7.642742e-15, 1.9664192, 0, -1.0760002)
+transform = Transform3D(-1.7484555e-07, 4, 1.7484555e-07, 0, -1.7484555e-07, 4, 4, 1.7484555e-07, 7.642742e-15, 1.9664192, 0, -1.0760002)
 material_override = SubResource("StandardMaterial3D_6qhtt")
 skeleton = NodePath("../../../../..")
 
@@ -503,7 +509,7 @@ skeleton = NodePath("../../../../..")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 2.0761032, -3, -1.3270001)
 
 [node name="Lemon" parent="SubViewport/ScreenStage3D/ReelsRoot/Reel5" unique_id=1400723554 instance=ExtResource("55_omno6")]
-transform = Transform3D(-4.371139e-08, 0.86602545, 0.49999997, 0, 0.49999997, -0.86602545, -1, -3.7855173e-08, -2.1855692e-08, 1.215167, 5.9999995, -0.8468337)
+transform = Transform3D(-3.4969112e-08, 0.69282037, 0.39999998, 0, 0.39999998, -0.69282037, -0.8, -3.0284138e-08, -1.7484554e-08, 1.4449635, 5.9999995, -0.8468337)
 
 [node name="_generated_Top2" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/ReelsRoot" unique_id=1678765337]
 transform = Transform3D(-4.3274273e-09, -0.017329995, -0.11342285, 0, 0.103559986, -0.018980471, 0.099, -7.575181e-10, -4.95787e-09, 11.1405115, 0.68344724, 3.7835786)
@@ -548,6 +554,1406 @@ mesh = SubResource("BoxMesh_rnwkk")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport/ScreenStage3D" unique_id=1535510590]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3914833, -1.5528212, 3.5252903)
 light_energy = 1.596
+
+[node name="Rams" type="MeshInstance3D" parent="SubViewport/ScreenStage3D" unique_id=508042416]
+transform = Transform3D(0.18, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -4.967226, 0.17148638, -1.0858483)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1997967327]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1231437512]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1666268587]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/_generated_Top6" unique_id=267440978]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/_generated_Top6" unique_id=1587008850]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=321554873]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1824323995]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams2" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1640650571]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, 0, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2" unique_id=151418785]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2" unique_id=324645581]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2" unique_id=702118625]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2/_generated_Top6" unique_id=1507025701]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2/_generated_Top6" unique_id=1574945956]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2" unique_id=260685919]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams2" unique_id=1406079280]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1862403456]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, 0, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3" unique_id=1623401933]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3" unique_id=1948284083]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3" unique_id=783645961]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3/_generated_Top6" unique_id=391422453]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3/_generated_Top6" unique_id=103009251]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3" unique_id=1331002722]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams3" unique_id=235273737]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=191131418]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, 0, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4" unique_id=1266716676]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4" unique_id=12882621]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4" unique_id=326636639]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4/_generated_Top6" unique_id=2143073513]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4/_generated_Top6" unique_id=1581112095]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4" unique_id=259816636]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams4" unique_id=541700608]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1004989097]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, 0, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5" unique_id=898714485]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5" unique_id=1564153458]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5" unique_id=2064704765]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5/_generated_Top6" unique_id=944298008]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5/_generated_Top6" unique_id=2141009880]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5" unique_id=1882578364]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams5" unique_id=1115864047]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=474556789]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 4.913418, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6" unique_id=1517169636]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6" unique_id=1389017403]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6" unique_id=1078474589]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6/_generated_Top6" unique_id=887509630]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6/_generated_Top6" unique_id=1119830646]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6" unique_id=356873541]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams6" unique_id=752450643]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1744998373]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, 4.913418, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7" unique_id=1596162578]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7" unique_id=850702851]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7" unique_id=1323951010]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7/_generated_Top6" unique_id=1008592889]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7/_generated_Top6" unique_id=1257890068]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7" unique_id=999334354]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams7" unique_id=229097463]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams8" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=2023008876]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, 4.913418, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8" unique_id=940063394]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8" unique_id=1199652692]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8" unique_id=1027500844]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8/_generated_Top6" unique_id=1981975144]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8/_generated_Top6" unique_id=1018782119]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8" unique_id=1034112302]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams8" unique_id=1185823480]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams9" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=826317476]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, 4.913418, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9" unique_id=1505632940]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9" unique_id=1300176105]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9" unique_id=1335126141]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9/_generated_Top6" unique_id=1776829556]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9/_generated_Top6" unique_id=1542725807]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9" unique_id=1657876696]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams9" unique_id=1496694280]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams10" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=975998536]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, 4.913418, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10" unique_id=2138142807]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10" unique_id=1618431678]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10" unique_id=607207845]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10/_generated_Top6" unique_id=559676039]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10/_generated_Top6" unique_id=1327017389]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10" unique_id=1093240646]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams10" unique_id=373730911]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams11" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1123117210]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 9.918968, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11" unique_id=1558986148]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11" unique_id=1773955289]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11" unique_id=1254798369]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11/_generated_Top6" unique_id=227976069]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11/_generated_Top6" unique_id=1535504518]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11" unique_id=1988062137]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams11" unique_id=1320507986]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams12" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1539527250]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, 9.918968, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12" unique_id=167814011]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12" unique_id=504145229]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12" unique_id=53308041]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12/_generated_Top6" unique_id=567600548]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12/_generated_Top6" unique_id=630359288]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12" unique_id=839667682]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams12" unique_id=695968958]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams13" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=810092730]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, 9.918968, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13" unique_id=703553987]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13" unique_id=669382177]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13" unique_id=2033069087]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13/_generated_Top6" unique_id=1491209853]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13/_generated_Top6" unique_id=949517445]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13" unique_id=252923070]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams13" unique_id=1157274389]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams14" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=2038548972]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, 9.918968, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14" unique_id=941681370]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14" unique_id=1995495056]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14" unique_id=508398424]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14/_generated_Top6" unique_id=1475528182]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14/_generated_Top6" unique_id=2114862779]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14" unique_id=31142793]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams14" unique_id=1696819403]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams15" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=395699298]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, 9.918968, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15" unique_id=1240941194]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15" unique_id=620811457]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15" unique_id=999178685]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15/_generated_Top6" unique_id=602971830]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15/_generated_Top6" unique_id=1896909279]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15" unique_id=1459322794]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams15" unique_id=1419035200]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams16" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1712315738]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, -4.9442344, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16" unique_id=2054038811]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16" unique_id=857307552]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16" unique_id=417313215]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16/_generated_Top6" unique_id=1903038111]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16/_generated_Top6" unique_id=1913861132]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16" unique_id=1434738036]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams16" unique_id=1334370340]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams17" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1767238070]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, -4.9442344, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17" unique_id=1303610737]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17" unique_id=1680731191]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17" unique_id=972815259]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17/_generated_Top6" unique_id=727222890]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17/_generated_Top6" unique_id=26843754]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17" unique_id=930902067]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams17" unique_id=2122368759]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams18" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=875549781]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, -4.9442344, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18" unique_id=1673109984]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18" unique_id=400286305]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18" unique_id=1197888161]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18/_generated_Top6" unique_id=1639842964]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18/_generated_Top6" unique_id=491886916]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18" unique_id=458683542]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams18" unique_id=599615350]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams19" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1257628970]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, -4.9442344, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19" unique_id=1741136522]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19" unique_id=167728752]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19" unique_id=1321302718]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19/_generated_Top6" unique_id=204488743]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19/_generated_Top6" unique_id=1777505939]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19" unique_id=49690634]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams19" unique_id=1013968543]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams20" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1745997740]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, -4.9442344, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20" unique_id=1452481514]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20" unique_id=378590110]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20" unique_id=671728124]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20/_generated_Top6" unique_id=1819425297]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20/_generated_Top6" unique_id=1449843388]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20" unique_id=2004210060]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams20" unique_id=475474264]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams21" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1099269020]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, -9.953827, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21" unique_id=776653673]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21" unique_id=1242418623]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21" unique_id=1062093050]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21/_generated_Top6" unique_id=499854535]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21/_generated_Top6" unique_id=2121888331]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21" unique_id=1552985473]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams21" unique_id=1175961782]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams22" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=933386426]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, -9.953827, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22" unique_id=408332582]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22" unique_id=873503077]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22" unique_id=1685869876]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22/_generated_Top6" unique_id=1241550983]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22/_generated_Top6" unique_id=1751055808]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22" unique_id=1579184372]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams22" unique_id=1636507181]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams23" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=2092666855]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, -9.953827, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23" unique_id=1242715347]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23" unique_id=202237635]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23" unique_id=941856714]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23/_generated_Top6" unique_id=1282176036]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23/_generated_Top6" unique_id=1855606823]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23" unique_id=1456079110]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams23" unique_id=1677921300]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams24" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1708589041]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, -9.953827, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24" unique_id=985738350]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24" unique_id=503821959]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24" unique_id=107647829]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24/_generated_Top6" unique_id=66789163]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24/_generated_Top6" unique_id=909374571]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24" unique_id=1172214100]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams24" unique_id=1635338234]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams25" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1083204726]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, -9.953827, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25" unique_id=500803975]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25" unique_id=1011788883]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25" unique_id=1406348005]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25/_generated_Top6" unique_id=1718950726]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25/_generated_Top6" unique_id=859327438]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25" unique_id=2086086798]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams25" unique_id=2077380960]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams26" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1456883818]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 15.009747, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26" unique_id=696675379]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26" unique_id=1082878633]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26" unique_id=268794522]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26/_generated_Top6" unique_id=2075508983]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26/_generated_Top6" unique_id=836234855]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26" unique_id=2104084434]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams26" unique_id=1640636835]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams27" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=31592638]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 9.939384, 15.009747, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27" unique_id=412772927]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27" unique_id=774677660]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27" unique_id=1675524986]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27/_generated_Top6" unique_id=1101269257]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27/_generated_Top6" unique_id=1291332107]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27" unique_id=513647675]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams27" unique_id=267211965]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams28" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=751748154]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.504684, 15.009747, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28" unique_id=1471943787]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28" unique_id=763015314]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28" unique_id=1780030926]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28/_generated_Top6" unique_id=820219191]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28/_generated_Top6" unique_id=1088006692]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28" unique_id=1637114227]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams28" unique_id=1525113973]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams29" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=140091256]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.104439, 15.009747, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29" unique_id=828140936]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29" unique_id=741369217]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29" unique_id=1553033545]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29/_generated_Top6" unique_id=738880611]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29/_generated_Top6" unique_id=2033271308]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29" unique_id=84354162]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams29" unique_id=1855091255]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams30" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=19740951]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.68393, 15.009747, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30" unique_id=255197513]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30" unique_id=195781064]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30" unique_id=1558610630]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30/_generated_Top6" unique_id=1873964117]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30/_generated_Top6" unique_id=262731954]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30" unique_id=9529511]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams30" unique_id=212054189]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams31" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=872597080]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0.08029938, 19.894861, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31" unique_id=2108483036]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31" unique_id=495698119]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31" unique_id=1357981119]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31/_generated_Top6" unique_id=892400830]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31/_generated_Top6" unique_id=230365892]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31" unique_id=17279706]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams31" unique_id=1268618267]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams32" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1242531256]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 10.019684, 19.894861, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32" unique_id=1955657417]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32" unique_id=2024423617]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32" unique_id=464967627]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32/_generated_Top6" unique_id=1447420501]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32/_generated_Top6" unique_id=237303228]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32" unique_id=579774882]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams32" unique_id=253900415]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams33" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=2050587266]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 19.584984, 19.894861, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33" unique_id=1140894613]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33" unique_id=232026208]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33" unique_id=1988575469]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33/_generated_Top6" unique_id=652873164]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33/_generated_Top6" unique_id=408679330]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33" unique_id=1412717169]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams33" unique_id=1886875640]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams34" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=258917501]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 29.184738, 19.894861, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34" unique_id=2126455339]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34" unique_id=2055788893]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34" unique_id=1828636124]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34/_generated_Top6" unique_id=2007549104]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34/_generated_Top6" unique_id=1681487546]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34" unique_id=926266875]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams34" unique_id=1044021164]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="Rams35" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams" unique_id=1590086077]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 38.76423, 19.894861, 0)
+material_override = SubResource("StandardMaterial3D_rnwkk")
+mesh = SubResource("BoxMesh_rnwkk")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35" unique_id=742877619]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35" unique_id=238439570]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.012870163)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35" unique_id=1274829846]
+transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, 0, -4.2593036, 0)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top4" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35/_generated_Top6" unique_id=1017432320]
+transform = Transform3D(0.07071068, 0.7071067, 0, -0.07071068, 0.7071067, 0, 0, 0, 1, 3.6638947, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top5" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35/_generated_Top6" unique_id=1646602557]
+transform = Transform3D(0.07071068, -0.7071067, 0, 0.07071068, 0.7071067, 0, 0, 0, 1, -3.669035, -0.21459842, -0.007480383)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top3" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35" unique_id=1114388956]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, 3.8769522, -2.1343367, -2.6464462e-05)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
+
+[node name="_generated_Top7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/Rams/Rams35" unique_id=950364445]
+transform = Transform3D(-2.1855694e-08, 1, 0, -0.5, -4.371139e-08, 0, 0, 0, 1, -3.888853, -2.1343367, -0.006454468)
+mesh = SubResource("BoxMesh_rnwkk")
+surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="SlotUI" type="Control" parent="SubViewport" unique_id=465043297]
 custom_minimum_size = Vector2(1024, 768)
@@ -873,7 +2279,7 @@ script = ExtResource("42_ln6k1")
 transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
-[node name="BellTotemShop" parent="TotemShop/ShopItems" unique_id=18609142 instance=ExtResource("46_yy33s")]
+[node name="BellTotemShop" parent="TotemShop/ShopItems" unique_id=1687344228 instance=ExtResource("46_yy33s")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.3763728, 1.3942306, 0.20876852)
 script = ExtResource("47_gs0kc")
 totem_id = "bell"
