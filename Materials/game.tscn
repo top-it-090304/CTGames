@@ -39,12 +39,9 @@
 [ext_resource type="PackedScene" uid="uid://buk3ot5v4ey55" path="res://Objects/pony.glb" id="48_6qhtt"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
-[ext_resource type="Script" uid="uid://dsxtk73y2j6yf" path="res://Objects/pony.gd" id="49_bd2p1"]
 [ext_resource type="PackedScene" uid="uid://yieuq50t5080" path="res://back/campana.tscn" id="49_gs0kc"]
 [ext_resource type="Texture2D" uid="uid://dxscuhmstrlii" path="res://Texture_SlotSymbolsAlt.png" id="49_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://d3fgo8bdxgxjo" path="res://back/ciliegie_2.tscn" id="50_2vf0s"]
-[ext_resource type="PackedScene" uid="uid://cn5ie1l5q6s8f" path="res://Objects/Chili Pepper.glb" id="50_nxyih"]
-[ext_resource type="Script" uid="uid://dsmxxqd8s3q67" path="res://Objects/chili_pepper.gd" id="51_7x08p"]
 [ext_resource type="PackedScene" uid="uid://cysytvxctuefp" path="res://back/treasure__1.tscn" id="51_p4b4j"]
 [ext_resource type="Texture2D" uid="uid://v76gljo3ni1d" path="res://Objects/Untitled_Texture_SlotMachine.png" id="52_2vf0s"]
 [ext_resource type="Script" uid="uid://b5ynyclm5gqg8" path="res://Materials/button_console.gd" id="52_gs0kc"]
@@ -140,11 +137,6 @@ outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
 size = Vector3(1, 0.68463135, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_yovps"]
-size = Vector3(4.375012, 4.3998566, 4.00354)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6rt0k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vrulv"]
 resource_name = "SlotMachineMat_0"
@@ -291,7 +283,7 @@ material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=1819043525]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.16649997, 1.9238621, -1.034125)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.1716938, 1.9278936, -1.0283227)
 material_override = SubResource("StandardMaterial3D_lo5pb")
 size = Vector3(0.2, 7.6313477, 7.423279)
 material = SubResource("StandardMaterial3D_v06jb")
@@ -772,7 +764,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=2043707722]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -3.1781368, 1.67416, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -3.1781368, 1.733891, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -812,7 +804,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=702653482]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -1.4563828, 1.67416, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -1.4563828, 1.733891, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -852,7 +844,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams8" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=291199642]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 0.27157307, 1.67416, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 0.27157307, 1.733891, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -892,7 +884,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams9" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=655086063]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 1.995882, 1.67416, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 1.995882, 1.733891, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -932,7 +924,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams10" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=1573727494]
-transform = Transform3D(0.18, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -4.967226, 1.67416, -1.0858483)
+transform = Transform3D(0.18, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -4.967226, 1.733891, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -1494,35 +1486,20 @@ slot_ui_path = NodePath("")
 [node name="CatTotemShop" parent="TotemShop/ShopItems" unique_id=404527701 instance=ExtResource("33_uuapk")]
 transform = Transform3D(0.00084825524, 0, -0.44999918, 0, 0.45, 0, 0.44999918, 0, 0.00084825524, -0.41117287, 1.2616365, -1.7056524)
 script = ExtResource("42_ln6k1")
-shop_position_offset = Vector3(0, 0.2, -0.1)
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop" unique_id=932522524]
-transform = Transform3D(1, 0, 1.1641532e-10, 0, 1, 0, -1.1641532e-10, 0, 1, 0, -0.015429497, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/CatTotemShop/InteractArea" unique_id=1998607231]
-transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, 0.3584988, 0.00014543533)
+transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
-[node name="PonyTotemShop" parent="TotemShop/ShopItems" unique_id=949659163 instance=ExtResource("48_6qhtt")]
+[node name="pony" parent="TotemShop/ShopItems" unique_id=949659163 instance=ExtResource("48_6qhtt")]
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.38645744, 0.92570895, -0.94382226)
-script = ExtResource("49_bd2p1")
 
-[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/PonyTotemShop" unique_id=1282512781]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 49.412292, -1.6317444)
+[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/pony" unique_id=1282512781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 49.412292, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/PonyTotemShop/InteractArea" unique_id=134742963]
-transform = Transform3D(10.000001, 0, 0, 0, 10.000001, 0, 0, 0, 10.000001, 6.107147, 20.86174, 0.55537415)
-shape = SubResource("BoxShape3D_yovps")
-
-[node name="Chili Pepper" parent="TotemShop/ShopItems" unique_id=140137447 instance=ExtResource("50_nxyih")]
-transform = Transform3D(0.038629476, 0, 0.031745296, 0, 0.05, 0, -0.031745296, 0, 0.038629476, -0.3411274, 1.0492959, -0.18614161)
-script = ExtResource("51_7x08p")
-
-[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Chili Pepper" unique_id=890126806]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Chili Pepper/Area3D" unique_id=1882730577]
-transform = Transform3D(5.813703, 0, 8.136386, 0, 9.999996, 0, -8.136386, 0, 5.813703, 0, 7.1784763, 0)
-shape = SubResource("BoxShape3D_6rt0k")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/pony/InteractArea" unique_id=134742963]
 
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
 
@@ -1533,7 +1510,7 @@ transform = Transform3D(20.000002, 0, 0, 0, 19.999998, 0, 0, 0, 20.000002, -0.42
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.0502722, -0.613253)
 
 [node name="ShopSpot3" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=643058297]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.3015592, 1.0411022, 0.016323775)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5483396, 1.0411022, 0.19283766)
 
 [node name="TotemDisplay" type="Node3D" parent="." unique_id=968665750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
@@ -1543,16 +1520,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
 [node name="OwnedSpots" type="Node3D" parent="TotemDisplay" unique_id=1768180064]
 
 [node name="OwnedSpot1" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=430991476]
-transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.7824894, -1.0287417, 0.4079578)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.7824894, -1.0287417, 0.395936)
 
 [node name="OwnedSpot2" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=1467994456]
-transform = Transform3D(-9.420237, 0, 17.642538, 0, 20, 0, -17.642538, 0, -9.420237, -2.4088988, -0.3212235, -1.8094857)
+transform = Transform3D(-9.420237, 0, 17.642538, 0, 20, 0, -17.642538, 0, -9.420237, -2.4088988, -1.0087084, -2.0616384)
 
 [node name="OwnedSpot3" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=678054610]
-transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.6803468, -0.9875338, -1.4553444)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -1.835939, -0.9875338, -1.1399736)
 
 [node name="OwnedSpot4" type="Marker3D" parent="TotemDisplay/OwnedSpots" unique_id=1598327493]
-transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -2.4107513, 0.48960948, -0.7419686)
+transform = Transform3D(-8.742278e-07, 0, 20, 0, 20, 0, -20, 0, -8.742278e-07, -2.5433269, 0.32619286, -0.7419686)
 
 [node name="Table_totem" parent="." unique_id=1533379306 instance=ExtResource("43_ln6k1")]
 transform = Transform3D(-8.742278e-08, 0, 1, 0, 1.5, 0, -2, 0, -4.371139e-08, -0.84462273, -0.048847437, -1.0568852)
