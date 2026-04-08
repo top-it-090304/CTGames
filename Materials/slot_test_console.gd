@@ -6,6 +6,7 @@ var _hint: Label
 var _board_input: TextEdit
 var _apply_button: Button
 var _jackpot_button: Button
+var _self_test_button: Button
 var _clear_button: Button
 var _close_button: Button
 var _result_label: RichTextLabel
@@ -51,7 +52,8 @@ func _ensure_ui() -> void:
 
 	_apply_button = _ensure_button("ApplyButton", "Показать и проверить", Vector2(18.0, 252.0), Vector2(220.0, 42.0))
 	_jackpot_button = _ensure_button("JackpotButton", "Джекпот", Vector2(248.0, 252.0), Vector2(104.0, 42.0))
-	_clear_button = _ensure_button("ClearButton", "Очистить", Vector2(362.0, 252.0), Vector2(90.0, 42.0))
+	_self_test_button = _ensure_button("SelfTestButton", "Тест таблицы", Vector2(362.0, 252.0), Vector2(128.0, 42.0))
+	_clear_button = _ensure_button("ClearButton", "Очистить", Vector2(18.0, 306.0), Vector2(90.0, 42.0))
 	_close_button = _ensure_button("CloseButton", "X", Vector2(502.0, 10.0), Vector2(42.0, 36.0))
 
 	_result_label = get_node_or_null("ResultLabel") as RichTextLabel
@@ -59,8 +61,8 @@ func _ensure_ui() -> void:
 		_result_label = RichTextLabel.new()
 		_result_label.name = "ResultLabel"
 		add_child(_result_label)
-	_result_label.position = Vector2(18.0, 306.0)
-	_result_label.size = Vector2(524.0, 96.0)
+	_result_label.position = Vector2(18.0, 354.0)
+	_result_label.size = Vector2(524.0, 52.0)
 	_result_label.bbcode_enabled = false
 	_result_label.scroll_active = false
 	_result_label.fit_content = false
@@ -70,6 +72,8 @@ func _ensure_ui() -> void:
 		_apply_button.pressed.connect(_on_apply_pressed)
 	if not _jackpot_button.pressed.is_connected(_on_jackpot_pressed):
 		_jackpot_button.pressed.connect(_on_jackpot_pressed)
+	if not _self_test_button.pressed.is_connected(_on_self_test_pressed):
+		_self_test_button.pressed.connect(_on_self_test_pressed)
 	if not _clear_button.pressed.is_connected(_on_clear_pressed):
 		_clear_button.pressed.connect(_on_clear_pressed)
 	if not _close_button.pressed.is_connected(_on_close_pressed):
@@ -148,6 +152,20 @@ func _on_clear_pressed() -> void:
 	_board_input.text = ""
 	_result_label.text = "Здесь будет результат проверки."
 
+func _on_self_test_pressed() -> void:
+	if _slot_ui == null:
+		_result_label.text = "SlotUI не найден."
+		return
+	var report: Dictionary = _run_paytable_self_test()
+	var passed: int = int(report.get("passed", 0))
+	var total: int = int(report.get("total", 0))
+	var details: Array = report.get("details", []) as Array
+	var lines: Array[String] = []
+	lines.append("Тест таблицы: %d/%d" % [passed, total])
+	for detail_var: Variant in details:
+		lines.append(String(detail_var))
+	_result_label.text = "\n".join(lines)
+
 func _on_close_pressed() -> void:
 	visible = false
 
@@ -196,3 +214,106 @@ func _format_result(result: Dictionary) -> String:
 			int(hit.get("win_amount", 0)),
 		])
 	return "\n".join(lines)
+
+func _run_paytable_self_test() -> Dictionary:
+	var cases: Array[Dictionary] = _build_paytable_test_cases()
+	var passed: int = 0
+	var details: Array[String] = []
+	for case_var: Variant in cases:
+		var case_data: Dictionary = case_var as Dictionary
+		var parsed: Dictionary = _parse_board_text(String(case_data.get("board_text", "")))
+		if not bool(parsed.get("ok", false)):
+			details.append("FAIL %s: ошибка ввода (%s)" % [String(case_data.get("name", "")), String(parsed.get("error", ""))])
+			continue
+		var board: Array = parsed.get("board", []) as Array
+		var result: Dictionary = _slot_ui.call("debug_apply_and_evaluate_board", board) as Dictionary
+		var target_id: String = String(case_data.get("combo_id", ""))
+		var target_mult: int = int(case_data.get("multiplier", 1))
+		var got_hit: Dictionary = _first_hit_by_id(result.get("hits", []) as Array, target_id)
+		if got_hit.is_empty():
+			details.append("FAIL %s: не найдено комбо %s" % [String(case_data.get("name", "")), target_id])
+			continue
+		var got_mult: int = int(got_hit.get("combo_multiplier", -1))
+		if got_mult != target_mult:
+			details.append("FAIL %s: множитель %d, ожидалось %d" % [String(case_data.get("name", "")), got_mult, target_mult])
+			continue
+		passed += 1
+		details.append("OK   %s: %s x%d" % [String(case_data.get("name", "")), target_id, got_mult])
+	return {"passed": passed, "total": cases.size(), "details": details}
+
+func _first_hit_by_id(hits: Array, combo_id: String) -> Dictionary:
+	for hit_var: Variant in hits:
+		var hit: Dictionary = hit_var as Dictionary
+		if String(hit.get("combo_id", "")) == combo_id:
+			return hit
+	return {}
+
+func _build_paytable_test_cases() -> Array[Dictionary]:
+	return [
+		{
+			"name": "Гор. M",
+			"combo_id": "horizontal",
+			"multiplier": 1,
+			"board_text": "1 1 1 2 3\n4 5 6 7 2\n3 4 5 6 7",
+		},
+		{
+			"name": "Верт.",
+			"combo_id": "vertical",
+			"multiplier": 1,
+			"board_text": "1 2 3 4 5\n1 3 4 5 6\n1 4 5 6 7",
+		},
+		{
+			"name": "Диаг.",
+			"combo_id": "diag",
+			"multiplier": 1,
+			"board_text": "1 2 3 4 5\n6 1 4 5 7\n3 4 1 6 2",
+		},
+		{
+			"name": "Гор. L",
+			"combo_id": "horizontal_l",
+			"multiplier": 2,
+			"board_text": "2 2 2 2 4\n1 3 5 6 7\n4 5 6 7 1",
+		},
+		{
+			"name": "Гор. XL",
+			"combo_id": "horizontal_xl",
+			"multiplier": 3,
+			"board_text": "3 3 3 3 3\n1 2 4 5 6\n2 4 5 6 7",
+		},
+		{
+			"name": "Вверх",
+			"combo_id": "up",
+			"multiplier": 4,
+			"board_text": "2 3 1 4 5\n6 1 7 1 3\n1 5 6 7 1",
+		},
+		{
+			"name": "Вниз",
+			"combo_id": "down",
+			"multiplier": 4,
+			"board_text": "1 3 4 5 1\n6 1 7 1 2\n3 4 1 5 6",
+		},
+		{
+			"name": "Небо",
+			"combo_id": "sky",
+			"multiplier": 7,
+			"board_text": "2 3 1 4 5\n6 1 7 1 3\n1 1 1 1 1",
+		},
+		{
+			"name": "Земля",
+			"combo_id": "earth",
+			"multiplier": 7,
+			"board_text": "1 1 1 1 1\n6 1 7 1 3\n2 4 1 5 6",
+		},
+		{
+			"name": "Глаз",
+			"combo_id": "eye",
+			"multiplier": 8,
+			"board_text": "2 1 1 1 3\n1 1 4 1 1\n5 1 1 1 6",
+		},
+		{
+			"name": "Джекпот",
+			"combo_id": "jackpot",
+			"multiplier": 10,
+			"board_text": "1 1 1 1 1\n1 1 1 1 1\n1 1 1 1 1",
+		},
+	]

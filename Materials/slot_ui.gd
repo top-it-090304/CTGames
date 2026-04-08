@@ -624,6 +624,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 
 	var bet: int = maxi(bet_per_spin, 1)
 	var hits: Array[Dictionary] = []
+	var accepted_hits: Array[Dictionary] = []
 	var jackpot_hit: Dictionary = {}
 
 	for combo: Dictionary in _combo_rules:
@@ -689,6 +690,14 @@ func _evaluate_board(board: Array) -> Dictionary:
 	if not jackpot_hit.is_empty() and allow_combo_stacking:
 		hits.append(jackpot_hit)
 
+	for hit_var: Variant in hits:
+		var hit: Dictionary = hit_var as Dictionary
+		if _is_redundant_hit(hit, accepted_hits):
+			continue
+		accepted_hits.append(hit)
+
+	hits = accepted_hits
+
 	if hits.is_empty():
 		return {"text": "LOSE", "win_amount": 0, "combo_id": ""}
 
@@ -721,6 +730,43 @@ func _evaluate_board(board: Array) -> Dictionary:
 		"combo_id": String(best_hit.get("combo_id", "")),
 		"hits": hits,
 	}
+
+func _is_redundant_hit(candidate: Dictionary, accepted_hits: Array[Dictionary]) -> bool:
+	var candidate_points: Array = candidate.get("points", [])
+	if candidate_points.is_empty():
+		return true
+	var candidate_symbol: int = int(candidate.get("symbol_index", -1))
+	if candidate_symbol < 0:
+		return true
+	var candidate_set: Dictionary = _points_set(candidate_points)
+	for existing_var: Variant in accepted_hits:
+		var existing: Dictionary = existing_var as Dictionary
+		if int(existing.get("symbol_index", -1)) != candidate_symbol:
+			continue
+		var existing_points: Array = existing.get("points", [])
+		if existing_points.is_empty():
+			continue
+		var existing_set: Dictionary = _points_set(existing_points)
+		if _set_is_subset(candidate_set, existing_set):
+			return true
+	return false
+
+func _points_set(points: Array) -> Dictionary:
+	var out: Dictionary = {}
+	for point_var: Variant in points:
+		var point: Vector2i = _point_to_board_cell(point_var)
+		if point.x < 0 or point.y < 0:
+			continue
+		out["%d:%d" % [point.x, point.y]] = true
+	return out
+
+func _set_is_subset(a: Dictionary, b: Dictionary) -> bool:
+	if a.is_empty():
+		return true
+	for key_var: Variant in a.keys():
+		if not b.has(key_var):
+			return false
+	return true
 
 func _uniform_symbol_index(board: Array, points: Array) -> int:
 	if points.is_empty():
