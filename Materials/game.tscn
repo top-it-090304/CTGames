@@ -6,13 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://c2rqguikkedxi" path="res://Objects/camera drone.glb" id="3_uuapk"]
 [ext_resource type="PackedScene" uid="uid://b1qisct7swvp4" path="res://Objects/Bottle.glb" id="4_tiqx2"]
 [ext_resource type="PackedScene" uid="uid://8bfaia2hqckq" path="res://Objects/ATM.glb" id="5_ablru"]
-[ext_resource type="ArrayMesh" path="res://cigarettes.mesh" id="5_r0umr"]
+[ext_resource type="ArrayMesh" uid="uid://bmbopwfq6lna6" path="res://cigarettes.mesh" id="5_r0umr"]
 [ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
 [ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
 [ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
-[ext_resource type="Script" path="res://Materials/cash.gd" id="9_r0umr"]
+[ext_resource type="Script" uid="uid://i1f4bkjx5705" path="res://Materials/cash.gd" id="9_r0umr"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
@@ -62,7 +62,7 @@
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 [ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
 [ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
-[ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
+[ext_resource type="ArrayMesh" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1178,7 +1178,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("54_slotui")
 symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), ExtResource("8_qk58f"), ExtResource("5_sa7vf"), ExtResource("9_62l5a"), ExtResource("7_0m7j0"), ExtResource("11_3w25a")])
-weights = Array[float]([20.0, 20.0, 15.0, 15.0, 11.5, 11.5, 7.0])
+weights = Array[float]([19.0, 19.0, 14.7, 14.7, 12.0, 12.0, 8.6])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
 spin_outro_texture = ExtResource("28_gsmia")
