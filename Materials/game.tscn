@@ -52,12 +52,14 @@
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
+[ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
 [ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
 [ext_resource type="Texture2D" uid="uid://8fo74ewfgy7k" path="res://textures/TextureCircleShadowDarkRed.png" id="58_7mxcb"]
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
+[ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -290,6 +292,10 @@ metadata/_edit_group_ = true
 
 [node name="camera drone2" parent="." unique_id=413251090 instance=ExtResource("3_uuapk")]
 transform = Transform3D(-1.0443176, -0.2102039, -0.868331, -0.12970646, 1.6924341, -0.10784854, 0.6945769, 0, -1.3257022, -0.080851495, 2.8046956, -2.487281)
+
+[node name="Tabletki" type="MeshInstance3D" parent="." unique_id=1657972272]
+transform = Transform3D(0.004499999, 0, 0, 0, 5.3661946e-11, 0.004499999, 0, -0.004499999, 5.3661946e-11, -4.162732, 1.1188937, -2.0306268)
+mesh = ExtResource("55_rnwkk")
 
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
@@ -1725,6 +1731,10 @@ texture = ExtResource("58_7mxcb")
 
 [node name="bans" parent="." unique_id=1326125751 instance=ExtResource("57_syuwj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.229446, 0, 15.307127)
+
+[node name="Dver" type="MeshInstance3D" parent="." unique_id=1274731307]
+transform = Transform3D(-1.5736093e-10, 0.0033492884, 1.7197785e-10, 0, -1.4640204e-10, 0.0039343946, 0.0035999983, 1.4640204e-10, 7.51739e-18, -1.7630291, -0.29603267, 0.7225299)
+mesh = ExtResource("59_7mxcb")
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
