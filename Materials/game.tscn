@@ -60,6 +60,7 @@
 [ext_resource type="Texture2D" uid="uid://8fo74ewfgy7k" path="res://textures/TextureCircleShadowDarkRed.png" id="58_7mxcb"]
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 [ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
+[ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1736,6 +1737,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.229446, 0, 15.307127)
 [node name="Dver" type="MeshInstance3D" parent="." unique_id=1274731307]
 transform = Transform3D(-1.5736093e-10, 0.0033492884, 1.7197785e-10, 0, -1.4640204e-10, 0.0039343946, 0.0035999983, 1.4640204e-10, 7.51739e-18, -1.7630291, -0.29603267, 0.7225299)
 mesh = ExtResource("59_7mxcb")
+
+[node name="Polks" type="MeshInstance3D" parent="." unique_id=569826091]
+transform = Transform3D(0.0059999977, 0, 0, 0, -2.6226823e-10, 0.0059999963, 0, -0.0059999977, -2.6226815e-10, -4.407419, 1.0956316, -1.7962492)
+mesh = ExtResource("61_6qhtt")
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
