@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
 [ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
+[ext_resource type="Script" uid="uid://i1f4bkjx5705" path="res://Materials/cash.gd" id="9_r0umr"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
@@ -27,6 +28,7 @@
 [ext_resource type="Script" uid="uid://bax70berdicix" path="res://Materials/desc_label.gd" id="26_if7fe"]
 [ext_resource type="PackedScene" uid="uid://c6bd4qc56io2s" path="res://Objects/Envelopes.glb" id="27_a4hxe"]
 [ext_resource type="Script" uid="uid://8i7nkpkaqjde" path="res://Materials/buy_button.gd" id="27_mv4lk"]
+[ext_resource type="Texture2D" uid="uid://ct4blwksxrasy" path="res://FinalSpin.png" id="28_gsmia"]
 [ext_resource type="Script" uid="uid://b63cn3a1hjomo" path="res://Materials/close_button.gd" id="28_oat0n"]
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
 [ext_resource type="Script" uid="uid://01du5b4o2mbh" path="res://Materials/ready_button.gd" id="31_uasde"]
@@ -324,6 +326,12 @@ shape = SubResource("BoxShape3D_tn84i")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.12237692, 1.5958748, -0.15035176)
 material_override = SubResource("StandardMaterial3D_yi5rp")
 mesh = SubResource("PlaneMesh_xkq3k")
+
+[node name="cash" type="AnimationPlayer" parent="DebtMachine" unique_id=2000767562]
+script = ExtResource("9_r0umr")
+
+[node name="Coin_spawn" type="Marker3D" parent="DebtMachine" unique_id=691593857]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23809195, 0.4708681, -0.37878394)
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=523021724]
 size = Vector2i(1024, 768)
@@ -1174,6 +1182,7 @@ symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), Ext
 weights = Array[float]([20.0, 20.0, 15.0, 15.0, 11.5, 11.5, 7.0])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
+spin_outro_texture = ExtResource("28_gsmia")
 
 [node name="CloverStage" type="Control" parent="SubViewport/SlotUI" unique_id=1246282959]
 z_index = 5
@@ -1388,6 +1397,9 @@ transform = Transform3D(-0.9984968, 0, -0.05481085, 0, 1, 0, 0.05481085, 0, -0.9
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TicketMachine/InteractArea" unique_id=119889353]
 
 [node name="FocusPoint" type="Marker3D" parent="TicketMachine" unique_id=162385531]
+
+[node name="TicketSpawn" type="Marker3D" parent="TicketMachine" unique_id=1851796536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.008501768, 0.7247689, -0.32323813)
 
 [node name="RoundSystem" type="Node3D" parent="." unique_id=634888334]
 script = ExtResource("24_i1y15")
