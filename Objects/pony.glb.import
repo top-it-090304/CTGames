@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dg2fvorj2edl5"
-path="res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"
+uid="uid://buk3ot5v4ey55"
+path="res://.godot/imported/pony.glb-8754abef8b0f55663ea94983d88414d3.scn"
 
 [deps]
 
-source_file="res://Objects/Bell.glb"
-dest_files=["res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"]
+source_file="res://Objects/pony.glb"
+dest_files=["res://.godot/imported/pony.glb-8754abef8b0f55663ea94983d88414d3.scn"]
 
 [params]
 
