@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://rogl6nfny06x"
-path.s3tc="res://.godot/imported/cigarettes.png-ba1e96fbfca0c8ba4f3c346538299571.s3tc.ctex"
+path.s3tc="res://.godot/imported/cigarettes.png-e4d553f0f81cd8ca83b7dfa402fa152f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://cigarettes.png"
-dest_files=["res://.godot/imported/cigarettes.png-ba1e96fbfca0c8ba4f3c346538299571.s3tc.ctex"]
+source_file="res://Objects/cigarettes.png"
+dest_files=["res://.godot/imported/cigarettes.png-e4d553f0f81cd8ca83b7dfa402fa152f.s3tc.ctex"]
 
 [params]
 

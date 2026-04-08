@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://buk3ot5v4ey55"
-path="res://.godot/imported/pony.glb-8754abef8b0f55663ea94983d88414d3.scn"
+uid="uid://drachc203cjp3"
+path="res://.godot/imported/Fruit bowl.glb-e648f2d4ad5123820698f294e63bee75.scn"
 
 [deps]
 
-source_file="res://Objects/pony.glb"
-dest_files=["res://.godot/imported/pony.glb-8754abef8b0f55663ea94983d88414d3.scn"]
+source_file="res://totems/Fruit bowl.glb"
+dest_files=["res://.godot/imported/Fruit bowl.glb-e648f2d4ad5123820698f294e63bee75.scn"]
 
 [params]
 
