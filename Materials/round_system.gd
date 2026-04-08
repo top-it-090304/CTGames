@@ -21,10 +21,11 @@ extends Node
 
 @export_group("Round Reward Sequence")
 @export var reward_sequence_enabled: bool = true
-@export var reward_camera_move_wait: float = 0.28
-@export var reward_emit_hold: float = 0.40
-@export var reward_return_wait: float = 0.20
-@export var reward_camera_move_duration: float = 0.30
+@export var reward_camera_move_wait: float = 0.45
+@export var reward_emit_hold: float = 1.05
+@export var reward_return_wait: float = 0.35
+@export var reward_camera_move_duration: float = 0.42
+@export var reward_anim_speed_scale: float = 0.65
 @export var reward_coin_mesh_scale: float = 0.12
 @export var reward_ticket_mesh_scale: float = 0.10
 
@@ -48,6 +49,7 @@ var deposited: int = 0
 var game_over: bool = false
 var round_active: bool = false
 var early_bonus_given: bool = false
+var pending_interest_reward: int = 0
 var _finish_round_requested: bool = false
 var _last_deposit_frame: int = -1
 
@@ -331,7 +333,7 @@ func _finish_round() -> void:
 	var interest_gain: int = _interest_amount()
 	var awarded_tickets: int = 0
 	if interest_gain > 0:
-		_add_money(interest_gain)
+		pending_interest_reward += interest_gain
 	_add_tickets(1)
 	awarded_tickets += 1
 
@@ -351,6 +353,12 @@ func _finish_round() -> void:
 		_set_choice_overlay(true)
 		if popup != null and popup.has_method("show_game_over"):
 			popup.call("show_game_over", debt_target, deposited)
+		return
+
+	if pending_interest_reward > 0:
+		# Wait for player to collect the money from the debt machine.
+		_set_slot_locked(true)
+		_set_choice_overlay(false)
 		return
 
 	_show_jackpot_jail_screen()
@@ -380,7 +388,7 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 	_move_camera_hint_safe("slot_machine", reward_camera_move_duration)
 	await get_tree().create_timer(maxf(reward_return_wait, 0.01)).timeout
 
-	if not _is_intro_active() and not game_over:
+	if not _is_intro_active() and not game_over and pending_interest_reward <= 0:
 		_set_slot_locked(false)
 
 func _move_camera_hint_safe(hint: String, duration: float = 0.6) -> void:
@@ -398,6 +406,8 @@ func _play_machine_reward_anim(machine: Node3D, preferred_parts: Array[String]) 
 	var anim: AnimationPlayer = _find_animation_player(machine)
 	if anim == null:
 		return
+	# Slow down reward animations a bit (cash/coin/ticket eject).
+	anim.speed_scale = clampf(reward_anim_speed_scale, 0.05, 4.0)
 
 	var chosen: StringName = &""
 	for name_var: Variant in anim.get_animation_list():
@@ -596,11 +606,19 @@ func _try_interact(screen_pos: Vector2) -> void:
 		return
 
 	if _node_matches_area(collider, debt_area) or _has_ancestor_named(collider, ["DebtMachine", "blockbench_export3"]):
+		# If there's a pending reward, allow collecting by clicking anywhere on the machine.
+		if pending_interest_reward > 0:
+			_collect_pending_interest_reward()
+			get_viewport().set_input_as_handled()
+			return
+
 		var can_deposit: bool = _is_debt_button_hit(collider) or not debt_strict_button_only
 		if can_deposit:
 			_deposit_to_debt_machine()
 			get_viewport().set_input_as_handled()
-		elif game_root != null and game_root.has_method("_move_camera_to_hint"):
+			return
+
+		if game_root != null and game_root.has_method("_move_camera_to_hint"):
 			game_root.call("_move_camera_to_hint", "debt_machine")
 		return
 
@@ -625,6 +643,19 @@ func _request_slot_machine_action() -> void:
 
 	if slot_ui != null and slot_ui.has_method("request_spin"):
 		slot_ui.call("request_spin")
+
+func _collect_pending_interest_reward() -> void:
+	if game_over or _is_intro_active():
+		return
+	if pending_interest_reward <= 0:
+		return
+	var amount: int = pending_interest_reward
+	pending_interest_reward = 0
+	_add_money(amount)
+	_update_debt_ui()
+	if not round_active:
+		_set_slot_locked(false)
+		call_deferred("_show_jackpot_jail_screen")
 
 func _deposit_to_debt_machine() -> void:
 	if game_over or deposited >= debt_target:
