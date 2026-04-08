@@ -4,7 +4,9 @@ extends Node
 @export var debt_target: int = 75
 @export var initial_deposited: int = 30
 @export var round_limit: int = 3
-@export var interest_percent: float = 7.0
+@export var interest_percent_base: float = 7.0
+@export var interest_percent_per_coin: float = 0.08
+@export var interest_percent_max: float = 25.0
 @export var deposit_step: int = 5
 @export var debt_button_area_name: StringName = &"DepositButtonArea"
 @export var debt_button_animation_name: String = "button_press"
@@ -76,6 +78,7 @@ func _ready() -> void:
 	_ensure_popup()
 	_connect_signals()
 	_update_debt_ui()
+	_sync_slot_symbol_multiplier()
 	_set_spins_left(0)
 
 	if _is_intro_active():
@@ -653,6 +656,7 @@ func _collect_pending_interest_reward() -> void:
 	pending_interest_reward = 0
 	_add_money(amount)
 	_update_debt_ui()
+	_sync_slot_symbol_multiplier()
 	if not round_active:
 		_set_slot_locked(false)
 		call_deferred("_show_jackpot_jail_screen")
@@ -685,10 +689,18 @@ func _deposit_to_debt_machine() -> void:
 
 	_play_debt_button_press()
 	deposited += amount
+	_sync_slot_symbol_multiplier()
 	if deposited >= debt_target and not early_bonus_given and rounds_left > 0:
 		_add_tickets(rounds_left)
 		early_bonus_given = true
 	_update_debt_ui()
+
+func _sync_slot_symbol_multiplier() -> void:
+	if slot_ui == null:
+		return
+	var mult: float = 1.0 + (_current_interest_percent() / 100.0)
+	mult = clampf(mult, 1.0, 5.0)
+	slot_ui.set("symbol_multiplier", mult)
 
 func _is_debt_button_hit(collider: Node) -> bool:
 	if collider == null:
@@ -964,10 +976,16 @@ func _update_debt_ui() -> void:
 		return
 	var interest_gain: int = _interest_amount()
 	if debt_ui.has_method("set_data"):
-		debt_ui.call("set_data", rounds_left, debt_target, deposited, interest_percent, interest_gain)
+		debt_ui.call("set_data", rounds_left, debt_target, deposited, _current_interest_percent(), interest_gain)
 
 func _interest_amount() -> int:
-	return maxi(int(floor((float(deposited) * interest_percent) / 100.0)), 0)
+	return maxi(int(floor((float(deposited) * _current_interest_percent()) / 100.0)), 0)
+
+func _current_interest_percent() -> float:
+	var base: float = maxf(interest_percent_base, 0.0)
+	var per_coin: float = maxf(interest_percent_per_coin, 0.0)
+	var pct: float = base + float(maxi(deposited, 0)) * per_coin
+	return clampf(pct, 0.0, maxf(interest_percent_max, 0.0))
 
 func _is_intro_active() -> bool:
 	if intro_overlay == null or not intro_overlay.has_method("is_active"):

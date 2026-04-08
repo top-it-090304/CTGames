@@ -108,6 +108,8 @@ func _rotate_camera_by_drag(delta_x: float) -> void:
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
 	if slot_ui != null and slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
 		return
+	if is_win_sequence_active():
+		return
 	if not _is_slot_machine_hit(screen_pos):
 		return
 	_request_spin()
@@ -244,6 +246,8 @@ func _request_spin() -> void:
 	if _is_intro_active():
 		return
 	if _is_spin_choice_open():
+		return
+	if is_win_sequence_active():
 		return
 	if slot_ui == null:
 		return

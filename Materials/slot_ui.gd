@@ -60,13 +60,14 @@ const SYMBOL_VALUES: Dictionary = {
 }
 
 const SYMBOL_CHANCES: Dictionary = {
-	"lemon": 20.0,
-	"cherry": 20.0,
-	"clover": 15.0,
-	"bell": 15.0,
-	"diamond": 11.5,
-	"chest": 11.5,
-	"seven": 7.0,
+	# Tuned: slightly fewer small hits, slightly more big hits + jackpot.
+	"lemon": 19.0,
+	"cherry": 19.0,
+	"clover": 14.7,
+	"bell": 14.7,
+	"diamond": 12.0,
+	"chest": 12.0,
+	"seven": 8.6,
 }
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
@@ -722,7 +723,8 @@ func _evaluate_board(board: Array) -> Dictionary:
 				continue
 
 			var symbol_value: int = _symbol_coin_value(symbol_index)
-			var win_amount: int = bet * symbol_value * combo_mult
+			var mult: float = maxf(symbol_multiplier, 1.0)
+			var win_amount: int = int(round(float(bet * symbol_value * combo_mult) * mult))
 
 			var hit: Dictionary = {
 				"combo_id": combo_id,
@@ -730,6 +732,7 @@ func _evaluate_board(board: Array) -> Dictionary:
 				"combo_multiplier": combo_mult,
 				"symbol_index": symbol_index,
 				"symbol_value": symbol_value,
+				"symbol_multiplier": mult,
 				"win_amount": win_amount,
 				"points": points,
 			}
