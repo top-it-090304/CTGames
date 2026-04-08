@@ -10,6 +10,7 @@ const SYMBOL_KEYS: Array[String] = ["lemon", "cherry", "clover", "bell", "diamon
 @export var random_cycles_max: int = 10
 @export var frame_rams_root_path: NodePath = ^"../Node3D"
 @export var frame_node_prefix: String = "Rams"
+@export var frame_use_spatial_mapping: bool = true
 @export var frame_pulse_speed: float = 4.0
 @export var frame_pulse_dim_color: Color = Color(0.55, 0.08, 0.48, 1.0)
 @export var frame_pulse_bright_color: Color = Color(1.0, 0.14, 0.90, 1.0)
@@ -160,6 +161,7 @@ func _to_point(point_var: Variant) -> Vector2i:
 func _bind_frame_rams(force: bool = false) -> void:
 	if force:
 		_frame_nodes.clear()
+		_frame_materials.clear()
 	if not _frame_nodes.is_empty():
 		return
 	var root: Node3D = get_node_or_null(frame_rams_root_path) as Node3D
@@ -169,6 +171,35 @@ func _bind_frame_rams(force: bool = false) -> void:
 			root = fallback
 	if root == null:
 		return
+	var candidates: Array[Node3D] = []
+	for child: Node in root.get_children():
+		var node: Node3D = child as Node3D
+		if node == null:
+			continue
+		if not node.name.begins_with(frame_node_prefix):
+			continue
+		candidates.append(node)
+	if frame_use_spatial_mapping and candidates.size() >= 15:
+		var sorted_by_y: Array[Node3D] = candidates.duplicate()
+		sorted_by_y.sort_custom(func(a: Node3D, b: Node3D) -> bool:
+			return a.position.y > b.position.y
+		)
+		var top15: Array[Node3D] = sorted_by_y.slice(0, 15)
+		for row: int in range(3):
+			var row_nodes: Array[Node3D] = []
+			for col_idx: int in range(5):
+				var index: int = row * 5 + col_idx
+				if index < top15.size():
+					row_nodes.append(top15[index])
+			row_nodes.sort_custom(func(a: Node3D, b: Node3D) -> bool:
+				return a.position.x < b.position.x
+			)
+			for col: int in range(mini(row_nodes.size(), 5)):
+				var id: int = row * 5 + col + 1
+				var node: Node3D = row_nodes[col]
+				_frame_nodes[id] = node
+				_frame_materials[id] = _ensure_frame_material(node)
+		return
 	for i: int in range(1, 16):
 		var node: Node3D = root.get_node_or_null("%s%d" % [frame_node_prefix, i]) as Node3D
 		if node != null:
@@ -176,18 +207,11 @@ func _bind_frame_rams(force: bool = false) -> void:
 			_frame_materials[i] = _ensure_frame_material(node)
 
 func _frame_id_for_point(point: Vector2i) -> int:
-	# rows: top=0 -> Rams6..10, middle=1 -> Rams1..5, bottom=2 -> Rams11..15
 	if point.y < 0 or point.y > 4:
 		return -1
-	match point.x:
-		0:
-			return 6 + point.y
-		1:
-			return 1 + point.y
-		2:
-			return 11 + point.y
-		_:
-			return -1
+	if point.x < 0 or point.x > 2:
+		return -1
+	return point.x * 5 + point.y + 1
 
 func _apply_frame_rams(active_ids: Dictionary) -> void:
 	if _frame_nodes.is_empty():

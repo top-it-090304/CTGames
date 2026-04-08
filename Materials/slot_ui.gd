@@ -40,6 +40,15 @@ signal round_ended(round_number: int, interest_amount: int)
 @export_range(0, 20, 1) var editor_preview_variant: int = 0
 @export_range(0, 3, 1) var editor_preview_palette: int = 0
 
+@export_group("Spin FX")
+@export var spin_intro_enabled: bool = false
+@export var spin_outro_enabled: bool = false
+@export var spin_intro_texture: Texture2D
+@export var spin_outro_texture: Texture2D
+@export var spin_fx_fade_in: float = 0.08
+@export var spin_fx_hold_time: float = 0.34
+@export var spin_fx_fade_out: float = 0.10
+
 const SYMBOL_VALUES: Dictionary = {
 	"lemon": 2,
 	"cherry": 2,
@@ -98,6 +107,7 @@ var _editor_preview_layer: Control
 var _editor_preview_signature: String = ""
 var _highlighted_icons: Array[TextureRect] = []
 var _visual_stage: Control
+var _spin_fx_overlay: TextureRect
 var _highlight_palette_index: int = 0
 var _highlight_pulse_t: float = 0.0
 var _highlight_palettes: Array[Array] = [
@@ -133,6 +143,8 @@ func _ready() -> void:
 
 	_collect_reels()
 	_configure_slot_layout()
+	_autoload_spin_fx_textures()
+	_ensure_spin_fx_overlay()
 	_hide_legacy_ui()
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
@@ -402,7 +414,6 @@ func request_spin() -> void:
 		_set_status("NO REELS")
 		return
 	if spins_left < spins_per_round:
-		_set_status("NO SPINS LEFT")
 		_emit_hud_changed()
 		return
 
@@ -446,11 +457,16 @@ func end_round() -> void:
 	emit_signal("round_ended", round_number, interest)
 
 func _spin() -> void:
+	# Lock immediately so repeated taps cannot queue multiple spins
+	# while intro FX is playing.
+	_busy = true
+
+	if spin_intro_enabled:
+		await _play_spin_fx(spin_intro_texture)
+
 	_apply_symbol_chance_weights()
 	_sync_reel_pools()
 	_sync_visual_stage_pool()
-
-	_busy = true
 	spins_left -= spins_per_round
 	_emit_hud_changed()
 	_set_status("SPINNING")
@@ -485,6 +501,9 @@ func _spin() -> void:
 		while _visual_stage != null and _visual_stage.has_method("is_spinning") and bool(_visual_stage.call("is_spinning")):
 			await get_tree().process_frame
 
+	if spin_outro_enabled:
+		await _play_spin_fx(spin_outro_texture)
+
 	var board: Array = target_board.duplicate(true)
 	_last_target_grid = board.duplicate(true)
 
@@ -501,6 +520,64 @@ func _spin() -> void:
 	_emit_hud_changed()
 	_busy = false
 	emit_signal("spin_completed", win_amount)
+
+func _autoload_spin_fx_textures() -> void:
+	if spin_intro_texture == null:
+		var intro_candidates: PackedStringArray = [
+			"res://textures/jackpot_jail_slot.png",
+			"res://Objects/jackpot_jail_slot.png",
+		]
+		for path: String in intro_candidates:
+			var tex: Texture2D = load(path) as Texture2D
+			if tex != null:
+				spin_intro_texture = tex
+				break
+	if spin_outro_texture == null:
+		spin_outro_texture = load("res://FinalSpin.png") as Texture2D
+
+func _ensure_spin_fx_overlay() -> void:
+	if _spin_fx_overlay == null:
+		_spin_fx_overlay = get_node_or_null("SpinFxOverlay") as TextureRect
+	if _spin_fx_overlay == null:
+		_spin_fx_overlay = TextureRect.new()
+		_spin_fx_overlay.name = "SpinFxOverlay"
+		add_child(_spin_fx_overlay)
+	_spin_fx_overlay.set_anchors_preset(Control.PRESET_CENTER)
+	_spin_fx_overlay.custom_minimum_size = Vector2(500.0, 220.0)
+	_spin_fx_overlay.size = Vector2(500.0, 220.0)
+	_spin_fx_overlay.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	_spin_fx_overlay.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_spin_fx_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spin_fx_overlay.z_index = 95
+	_spin_fx_overlay.visible = false
+	_spin_fx_overlay.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	move_child(_spin_fx_overlay, get_child_count() - 1)
+
+func _play_spin_fx(texture: Texture2D) -> void:
+	if texture == null:
+		return
+	_ensure_spin_fx_overlay()
+	if _spin_fx_overlay == null:
+		return
+	_spin_fx_overlay.texture = texture
+	_spin_fx_overlay.visible = true
+	_spin_fx_overlay.modulate.a = 0.0
+
+	var fade_in_t: float = maxf(spin_fx_fade_in, 0.01)
+	var hold_t: float = maxf(spin_fx_hold_time, 0.0)
+	var fade_out_t: float = maxf(spin_fx_fade_out, 0.01)
+
+	var tw_in: Tween = create_tween()
+	tw_in.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw_in.tween_property(_spin_fx_overlay, "modulate:a", 1.0, fade_in_t)
+	await tw_in.finished
+	if hold_t > 0.0:
+		await get_tree().create_timer(hold_t).timeout
+	var tw_out: Tween = create_tween()
+	tw_out.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tw_out.tween_property(_spin_fx_overlay, "modulate:a", 0.0, fade_out_t)
+	await tw_out.finished
+	_spin_fx_overlay.visible = false
 
 func _collect_board_indices_from_reels() -> Array:
 	var board: Array = [[], [], []]
