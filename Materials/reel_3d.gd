@@ -1,19 +1,24 @@
 extends Node3D
 
 const SYMBOL_KEYS: Array[String] = ["lemon", "cherry", "clover", "bell", "diamond", "chest", "seven"]
+const SLOT_PREFIX: String = "_slot_"
 
 @export var spin_acceleration: float = 60.0
 @export var settle_snap_speed: float = 18.0
 @export var spin_visible_padding: float = 1.2
 @export var idle_visible_padding: float = 0.25
-@export var slot_spacing_override: float = 2.4
+@export var slot_spacing_override: float = 0.0
 @export var vertical_center_offset: float = 0.0
-@export var symbol_scale_multiplier: float = 1.18
+@export var symbol_scale_multiplier: float = 1.0
 
 var _template_clones: Dictionary = {}
 var _template_transforms: Dictionary = {}
+var _slot_holders: Array[Node3D] = []
+var _source_slot_origins: Array[Vector3] = []
+var _slot_local_transforms: Array[Transform3D] = []
 var _slot_positions: Array[float] = []
 var _visible_indices: Array[int] = []
+var _column_center: Vector3 = Vector3.ZERO
 
 var _runtime_nodes: Array[Node3D] = []
 var _runtime_keys: Array[String] = []
@@ -93,67 +98,127 @@ func clear_highlight() -> void:
 		if node == null:
 			continue
 		var key: String = _runtime_keys[i]
-		var template_transform: Transform3D = _scaled_template_transform_for_key(key)
-		var transform_copy: Transform3D = template_transform
-		transform_copy.origin.y = _slot_positions[i]
-		node.transform = transform_copy
+		node.transform = _scaled_template_transform_for_key(key)
 
 func _setup_reel(force: bool = false) -> void:
 	if force:
 		_template_clones.clear()
 		_template_transforms.clear()
+		_slot_holders.clear()
+		_source_slot_origins.clear()
+		_slot_local_transforms.clear()
 		_slot_positions.clear()
 		_visible_indices.clear()
 		_runtime_nodes.clear()
 		_runtime_keys.clear()
+		_column_center = Vector3.ZERO
 	if not _runtime_nodes.is_empty():
 		return
 
-	var reel_nodes: Array[Dictionary] = []
+	_slot_holders = _collect_slot_holders()
+	if _slot_holders.is_empty():
+		_slot_holders = _create_slot_holders_from_direct_children()
+	if _slot_holders.is_empty():
+		return
+
+	_slot_holders.sort_custom(func(a: Node3D, b: Node3D) -> bool:
+		return a.position.y > b.position.y
+	)
+
+	_source_slot_origins.clear()
+	_slot_local_transforms.clear()
+	_slot_positions.clear()
+	_runtime_nodes.clear()
+	_runtime_keys.clear()
+
+	for holder: Node3D in _slot_holders:
+		var holder_origin: Vector3 = holder.position
+		holder.transform = Transform3D.IDENTITY
+		holder.position = holder_origin
+		_source_slot_origins.append(holder.position)
+		var symbol: Node3D = _slot_symbol(holder)
+		if symbol == null:
+			continue
+		symbol.transform.origin = Vector3.ZERO
+		_slot_local_transforms.append(symbol.transform)
+		var key: String = _symbol_key_from_node_name(symbol.name)
+		if key.is_empty():
+			continue
+		if not _template_clones.has(key):
+			var clone: Node3D = symbol.duplicate() as Node3D
+			if clone != null:
+				clone.visible = true
+				clone.transform.origin = Vector3.ZERO
+				_template_clones[key] = clone
+				_template_transforms[key] = clone.transform
+		_runtime_nodes.append(symbol)
+		_runtime_keys.append(key)
+
+	_column_center = _detect_column_center(_source_slot_origins)
+	_apply_slot_positions()
+	_visible_indices = _detect_visible_indices()
+	_apply_layout()
+	_apply_visibility(false)
+
+func _collect_slot_holders() -> Array[Node3D]:
+	var holders: Array[Node3D] = []
+	for child: Node in get_children():
+		var node_3d: Node3D = child as Node3D
+		if node_3d != null and node_3d.name.begins_with(SLOT_PREFIX):
+			holders.append(node_3d)
+	return holders
+
+func _create_slot_holders_from_direct_children() -> Array[Node3D]:
+	var source_nodes: Array[Node3D] = []
 	for child: Node in get_children():
 		var node_3d: Node3D = child as Node3D
 		if node_3d == null:
 			continue
+		if node_3d.name.begins_with(SLOT_PREFIX):
+			continue
 		var key: String = _symbol_key_from_node_name(node_3d.name)
 		if key.is_empty():
 			continue
-		reel_nodes.append({
-			"node": node_3d,
-			"key": key,
-			"y": node_3d.position.y,
-		})
-		if not _template_clones.has(key):
-			var clone: Node3D = node_3d.duplicate() as Node3D
-			if clone != null:
-				clone.visible = true
-				_template_clones[key] = clone
-				_template_transforms[key] = clone.transform
+		source_nodes.append(node_3d)
 
-	if reel_nodes.is_empty():
-		return
-
-	reel_nodes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		return float(a["y"]) > float(b["y"])
+	source_nodes.sort_custom(func(a: Node3D, b: Node3D) -> bool:
+		return a.position.y > b.position.y
 	)
 
-	var source_positions: Array[float] = []
-	for reel_node: Dictionary in reel_nodes:
-		source_positions.append(float(reel_node["y"]))
+	var holders: Array[Node3D] = []
+	for i: int in range(source_nodes.size()):
+		var symbol: Node3D = source_nodes[i]
+		var original_transform: Transform3D = symbol.transform
+		var holder := Node3D.new()
+		holder.name = "%s%02d" % [SLOT_PREFIX, i]
+		add_child(holder)
+		holder.transform = Transform3D.IDENTITY
+		holder.position = original_transform.origin
+		symbol.reparent(holder)
+		symbol.transform = Transform3D(original_transform.basis, Vector3.ZERO)
+		holders.append(holder)
+	return holders
 
+func _apply_slot_positions() -> void:
 	_slot_positions.clear()
-	_runtime_nodes.clear()
-	_runtime_keys.clear()
-	_spacing = slot_spacing_override if slot_spacing_override > 0.0 else _detect_spacing_from_values(source_positions)
-	var middle_index: float = (float(reel_nodes.size()) - 1.0) * 0.5
-	var row_index: int = 0
-	for reel_node: Dictionary in reel_nodes:
-		_slot_positions.append((middle_index - float(row_index)) * _spacing + vertical_center_offset)
-		_runtime_nodes.append(reel_node["node"] as Node3D)
-		_runtime_keys.append(String(reel_node["key"]))
-		row_index += 1
-	_visible_indices = _detect_visible_indices()
-	_apply_layout()
-	_apply_visibility(false)
+	if _slot_holders.is_empty():
+		return
+	var source_y_values: Array[float] = []
+	for origin_value: Vector3 in _source_slot_origins:
+		source_y_values.append(origin_value.y)
+	_spacing = _detect_spacing_from_values(source_y_values)
+	var middle_index: float = (float(_slot_holders.size()) - 1.0) * 0.5
+	for i: int in range(_slot_holders.size()):
+		var holder: Node3D = _slot_holders[i]
+		var origin_value: Vector3 = _source_slot_origins[i]
+		origin_value.x = _column_center.x
+		origin_value.z = _column_center.z
+		if slot_spacing_override > 0.0:
+			origin_value.y = (middle_index - float(i)) * slot_spacing_override + vertical_center_offset
+		else:
+			origin_value.y = _source_slot_origins[i].y + vertical_center_offset
+		holder.position = origin_value
+		_slot_positions.append(origin_value.y)
 
 func _build_preview_layout(target_keys: Array) -> Array[String]:
 	var keys: Array[String] = []
@@ -205,27 +270,26 @@ func _advance_step() -> void:
 		return
 	var next_key: String = _queue.pop_front()
 	var bottom_index: int = _runtime_nodes.size() - 1
-	var recycled_node: Node3D = _replace_symbol_at_index(bottom_index, next_key)
+	_replace_symbol_at_index(bottom_index, next_key)
+	var recycled_node: Node3D = _runtime_nodes.pop_at(bottom_index)
 	var recycled_key: String = _runtime_keys.pop_at(bottom_index)
-	_runtime_nodes.pop_at(bottom_index)
 	_runtime_nodes.push_front(recycled_node)
 	_runtime_keys.push_front(recycled_key)
 	_steps_remaining -= 1
 	_apply_layout()
 
-func _replace_symbol_at_index(index: int, key: String) -> Node3D:
-	if index < 0 or index >= _runtime_nodes.size():
-		return Node3D.new()
+func _replace_symbol_at_index(index: int, key: String) -> void:
+	if index < 0 or index >= _runtime_nodes.size() or index >= _slot_holders.size():
+		return
+	var holder: Node3D = _slot_holders[index]
 	var old_node: Node3D = _runtime_nodes[index]
-	var transform_copy: Transform3D = old_node.transform
 	var replacement: Node3D = _instantiate_symbol(key)
-	add_child(replacement)
-	replacement.transform = transform_copy
+	holder.add_child(replacement)
+	replacement.transform = _scaled_template_transform_for_key(key)
 	replacement.visible = old_node.visible
 	old_node.queue_free()
 	_runtime_nodes[index] = replacement
 	_runtime_keys[index] = key
-	return replacement
 
 func _instantiate_symbol(key: String) -> Node3D:
 	var template: Node3D = _template_clones.get(key) as Node3D
@@ -240,25 +304,32 @@ func _instantiate_symbol(key: String) -> Node3D:
 	return instance
 
 func _apply_layout() -> void:
-	for i: int in range(mini(_runtime_nodes.size(), _slot_positions.size())):
+	for i: int in range(mini(_runtime_nodes.size(), _slot_holders.size())):
+		var holder: Node3D = _slot_holders[i]
 		var node: Node3D = _runtime_nodes[i]
-		if node == null:
+		if holder == null or node == null:
 			continue
+		if node.get_parent() != holder:
+			node.reparent(holder)
 		var key: String = _runtime_keys[i]
-		var transform_copy: Transform3D = _scaled_template_transform_for_key(key)
-		transform_copy.origin.y = _slot_positions[i]
-		node.transform = transform_copy
+		node.transform = _scaled_template_transform_for_key(key)
 
 func _apply_visibility(show_all: bool) -> void:
-	for i: int in range(_runtime_nodes.size()):
+	for i: int in range(mini(_runtime_nodes.size(), _slot_holders.size())):
 		var node: Node3D = _runtime_nodes[i]
-		if node == null:
+		var holder: Node3D = _slot_holders[i]
+		if node == null or holder == null:
 			continue
-		var actual_y: float = 0.0
-		if i < _slot_positions.size():
-			actual_y = _slot_positions[i] + _current_offset
+		var actual_y: float = holder.position.y + _current_offset
 		var visibility_limit: float = _spacing * (2.0 + spin_visible_padding if show_all else 1.0 + idle_visible_padding)
 		node.visible = absf(actual_y) <= visibility_limit
+
+func _slot_symbol(holder: Node3D) -> Node3D:
+	for child: Node in holder.get_children():
+		var node_3d: Node3D = child as Node3D
+		if node_3d != null:
+			return node_3d
+	return null
 
 func _template_transform_for_key(key: String) -> Transform3D:
 	if _template_transforms.has(key):
@@ -273,6 +344,14 @@ func _scaled_template_transform_for_key(key: String) -> Transform3D:
 		return transform_value
 	transform_value.basis = transform_value.basis.scaled(Vector3.ONE * symbol_scale_multiplier)
 	return transform_value
+
+func _slot_transform_for_index(index: int) -> Transform3D:
+	if index >= 0 and index < _slot_local_transforms.size():
+		var transform_value: Transform3D = _slot_local_transforms[index]
+		if not is_equal_approx(symbol_scale_multiplier, 1.0):
+			transform_value.basis = transform_value.basis.scaled(Vector3.ONE * symbol_scale_multiplier)
+		return transform_value
+	return Transform3D.IDENTITY
 
 func _detect_spacing_from_values(values: Array[float]) -> float:
 	if values.size() < 2:
@@ -297,6 +376,26 @@ func _detect_visible_indices() -> Array[int]:
 	for pair: Dictionary in pairs:
 		result.append(int(pair["index"]))
 	return result
+
+func _detect_column_center(origins: Array[Vector3]) -> Vector3:
+	if origins.is_empty():
+		return Vector3.ZERO
+	var x_values: Array[float] = []
+	var z_values: Array[float] = []
+	for origin: Vector3 in origins:
+		x_values.append(origin.x)
+		z_values.append(origin.z)
+	return Vector3(_median_value(x_values), 0.0, _median_value(z_values))
+
+func _median_value(values: Array[float]) -> float:
+	if values.is_empty():
+		return 0.0
+	var sorted_values: Array[float] = values.duplicate()
+	sorted_values.sort()
+	var middle: int = sorted_values.size() / 2
+	if sorted_values.size() % 2 == 1:
+		return sorted_values[middle]
+	return (sorted_values[middle - 1] + sorted_values[middle]) * 0.5
 
 func _max_visible_index() -> int:
 	var result: int = 0
