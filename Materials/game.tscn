@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://c2rqguikkedxi" path="res://Objects/camera drone.glb" id="3_uuapk"]
 [ext_resource type="PackedScene" uid="uid://b1qisct7swvp4" path="res://Objects/Bottle.glb" id="4_tiqx2"]
 [ext_resource type="PackedScene" uid="uid://8bfaia2hqckq" path="res://Objects/ATM.glb" id="5_ablru"]
-[ext_resource type="ArrayMesh" uid="uid://bmbopwfq6lna6" path="res://cigarettes.mesh" id="5_r0umr"]
 [ext_resource type="Texture2D" uid="uid://qsn034sqsik5" path="res://textures/bell.png" id="5_sa7vf"]
 [ext_resource type="Texture2D" uid="uid://x7mjw6xlvs5c" path="res://textures/cherry.png" id="6_g7uyw"]
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
@@ -37,8 +36,7 @@
 [ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
-[ext_resource type="PackedScene" uid="uid://dg2fvorj2edl5" path="res://Objects/bell.glb" id="46_yy33s"]
-[ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="47_gs0kc"]
+[ext_resource type="PackedScene" uid="uid://buk3ot5v4ey55" path="res://Objects/pony.glb" id="48_6qhtt"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
 [ext_resource type="PackedScene" uid="uid://yieuq50t5080" path="res://back/campana.tscn" id="49_gs0kc"]
@@ -62,7 +60,7 @@
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
 [ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
 [ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
-[ext_resource type="ArrayMesh" path="res://Objects/zapiska.mesh" id="63_gsmia"]
+[ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -139,8 +137,6 @@ outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
 size = Vector3(1, 0.68463135, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_gs0kc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vrulv"]
 resource_name = "SlotMachineMat_0"
@@ -302,7 +298,6 @@ mesh = ExtResource("55_rnwkk")
 
 [node name="Cigarettes" type="MeshInstance3D" parent="." unique_id=958944478]
 transform = Transform3D(0.006480001, 0, 0, 0, -2.8324984e-10, 0.006480001, 0, -0.006480001, -2.8324984e-10, -4.0792484, 1.0668353, -1.5602431)
-mesh = ExtResource("5_r0umr")
 
 [node name="tabke" parent="." unique_id=38310727 instance=ExtResource("2_i6gxk")]
 transform = Transform3D(1.4, 0, 0, 0, 1.5, 0, 0, 0, 2.5, -3.59874, 0.16332346, 0.29342827)
@@ -1498,33 +1493,13 @@ script = ExtResource("42_ln6k1")
 transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
 shape = SubResource("BoxShape3D_if7fe")
 
-[node name="BellTotemShop" parent="TotemShop/ShopItems" unique_id=1687344228 instance=ExtResource("46_yy33s")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.3763728, 1.3942306, 0.20876852)
-script = ExtResource("47_gs0kc")
-totem_id = "bell"
-title = "Колокол"
-description = "Увеличивает шанс Джекпота на 3 раунда"
-price_tokens = 4
+[node name="pony" parent="TotemShop/ShopItems" unique_id=949659163 instance=ExtResource("48_6qhtt")]
+transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.38645744, 0.92570895, -0.94382226)
 
-[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/BellTotemShop" unique_id=1937167590]
+[node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/pony" unique_id=1282512781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 49.412292, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/BellTotemShop/InteractArea" unique_id=192272749]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.09442258, 0)
-shape = SubResource("BoxShape3D_gs0kc")
-
-[node name="DiamondTotemShop" parent="TotemShop/ShopItems" unique_id=1351315911 instance=ExtResource("54_omno6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36747867, 1.4475718, -0.650048)
-script = ExtResource("47_gs0kc")
-totem_id = "diamond"
-title = "Изумруд"
-description = "Повышает уровень выпадения СУНДУКОВ и ВИШНИ"
-price_tokens = 2
-
-[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/DiamondTotemShop" unique_id=1144152159]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/DiamondTotemShop/Area3D" unique_id=75787015]
-transform = Transform3D(0.56, 0, 0, 0, 0.56, 0, 0, 0, 0.56, -0.0088941455, -0.02869308, -0.0063804984)
-shape = SubResource("BoxShape3D_gs0kc")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/pony/InteractArea" unique_id=134742963]
 
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
 
