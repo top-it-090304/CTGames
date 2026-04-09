@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlsto1uwe73xg"
 path.s3tc="res://.godot/imported/Walls_Texture_WallHole.png-3f3054d3cee5e397bb33dd8be4aa1b78.s3tc.ctex"
+path.etc2="res://.godot/imported/Walls_Texture_WallHole.png-3f3054d3cee5e397bb33dd8be4aa1b78.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/Walls_Texture_WallHole.png"
-dest_files=["res://.godot/imported/Walls_Texture_WallHole.png-3f3054d3cee5e397bb33dd8be4aa1b78.s3tc.ctex"]
+dest_files=["res://.godot/imported/Walls_Texture_WallHole.png-3f3054d3cee5e397bb33dd8be4aa1b78.s3tc.ctex", "res://.godot/imported/Walls_Texture_WallHole.png-3f3054d3cee5e397bb33dd8be4aa1b78.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://3q0vilmk7jtk"
 path.s3tc="res://.godot/imported/Gem Green_Atlas_Pirate.png-c93b5ed985fad2e93b8fc8a3b5dd97b5.s3tc.ctex"
+path.etc2="res://.godot/imported/Gem Green_Atlas_Pirate.png-c93b5ed985fad2e93b8fc8a3b5dd97b5.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/Gem Green_Atlas_Pirate.png"
-dest_files=["res://.godot/imported/Gem Green_Atlas_Pirate.png-c93b5ed985fad2e93b8fc8a3b5dd97b5.s3tc.ctex"]
+dest_files=["res://.godot/imported/Gem Green_Atlas_Pirate.png-c93b5ed985fad2e93b8fc8a3b5dd97b5.s3tc.ctex", "res://.godot/imported/Gem Green_Atlas_Pirate.png-c93b5ed985fad2e93b8fc8a3b5dd97b5.etc2.ctex"]
 
 [params]
 

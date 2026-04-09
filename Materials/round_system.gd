@@ -327,14 +327,16 @@ func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
 		return
 
+	var effective_cost_a: int = _effective_spin_choice_cost(option_a_cost)
+	var effective_cost_b: int = _effective_spin_choice_cost(option_b_cost)
 	_set_choice_overlay(true)
 	popup.call(
 		"open_popup",
 		option_a_spins,
-		option_a_cost,
+		effective_cost_a,
 		option_a_ticket_bonus,
 		option_b_spins,
-		option_b_cost,
+		effective_cost_b,
 		option_b_ticket_bonus
 	)
 	_set_slot_locked(true)
@@ -1158,11 +1160,24 @@ func _get_spins_left() -> int:
 
 
 func _minimum_spin_reserve(available_money: int) -> int:
-	if available_money >= option_a_cost:
-		return option_a_cost
-	if available_money >= option_b_cost:
-		return option_b_cost
+	var cost_a: int = _effective_spin_choice_cost(option_a_cost)
+	var cost_b: int = _effective_spin_choice_cost(option_b_cost)
+	if available_money >= cost_a:
+		return cost_a
+	if available_money >= cost_b:
+		return cost_b
 	return available_money
+
+func _effective_spin_choice_cost(base_cost: int) -> int:
+	var discount: int = _slot_bonus_value("spin_cost_discount")
+	return maxi(base_cost - discount, 1)
+
+func _slot_bonus_value(bonus_type: String) -> int:
+	if slot_ui == null:
+		return 0
+	if slot_ui.has_method("get_total_bonus_value"):
+		return int(slot_ui.call("get_total_bonus_value", bonus_type))
+	return 0
 
 func _spend_money(amount: int) -> bool:
 	if slot_ui == null:

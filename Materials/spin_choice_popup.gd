@@ -112,6 +112,7 @@ func show_game_over(required_debt: int, deposited: int) -> void:
 	_cancel.text = "Закрыть"
 	_cancel.visible = false
 	_selected_option = 1
+	_apply_layout()
 	_refresh_option_visuals()
 	_bring_to_front()
 	visible = true
@@ -165,6 +166,8 @@ func _on_option_b_pressed() -> void:
 	emit_signal("option_selected", _b_spins, _b_cost, _b_ticket_bonus)
 
 func _on_cancel_pressed() -> void:
+	if _mode == MODE_FAIL_RETRY:
+		return
 	_selected_option = 0
 	_refresh_option_visuals()
 	emit_signal("canceled")
@@ -440,6 +443,31 @@ func _apply_layout() -> void:
 		_title.offset_bottom = top_start - title_gap
 		_title.add_theme_font_size_override("font_size", font_title)
 		_title.add_theme_color_override("font_color", TITLE_COLOR)
+
+	if _mode == MODE_FAIL_RETRY:
+		if _title != null:
+			_title.offset_top = clampf(viewport_size.y * 0.30, 90.0, 250.0)
+			_title.offset_bottom = _title.offset_top + clampf(viewport_size.y * 0.12, 64.0, 110.0)
+		if _option_a != null:
+			var w: float = clampf(viewport_size.x * 0.40, 260.0, 520.0)
+			var h: float = clampf(viewport_size.y * 0.10, 52.0, 86.0)
+			var y: float = clampf(viewport_size.y * 0.48, 190.0, 420.0)
+			_option_a.anchor_left = 0.5
+			_option_a.anchor_right = 0.5
+			_option_a.anchor_top = 0.0
+			_option_a.anchor_bottom = 0.0
+			_option_a.offset_left = -w * 0.5
+			_option_a.offset_right = w * 0.5
+			_option_a.offset_top = y
+			_option_a.offset_bottom = y + h
+			_option_a.add_theme_font_size_override("font_size", int(clampf(font_button * 1.05, 28.0, 52.0)))
+			_option_a.visible = true
+			_option_a.disabled = false
+		if _option_b != null:
+			_option_b.visible = false
+		if _cancel != null:
+			_cancel.visible = false
+		return
 
 	if _option_a != null:
 		_option_a.anchor_left = 0.0

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyan4tj5qimgi"
 path.s3tc="res://.godot/imported/zapiska.png-35ea5302d398c4d7e52fa3fd47c60978.s3tc.ctex"
+path.etc2="res://.godot/imported/zapiska.png-35ea5302d398c4d7e52fa3fd47c60978.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Objects/zapiska.png"
-dest_files=["res://.godot/imported/zapiska.png-35ea5302d398c4d7e52fa3fd47c60978.s3tc.ctex"]
+dest_files=["res://.godot/imported/zapiska.png-35ea5302d398c4d7e52fa3fd47c60978.s3tc.ctex", "res://.godot/imported/zapiska.png-35ea5302d398c4d7e52fa3fd47c60978.etc2.ctex"]
 
 [params]
 

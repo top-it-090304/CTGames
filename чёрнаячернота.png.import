@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://w06jb5rokd8l"
 path.s3tc="res://.godot/imported/чёрнаячернота.png-885b54a80f967e49278e85a166f7ee11.s3tc.ctex"
+path.etc2="res://.godot/imported/чёрнаячернота.png-885b54a80f967e49278e85a166f7ee11.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://чёрнаячернота.png"
-dest_files=["res://.godot/imported/чёрнаячернота.png-885b54a80f967e49278e85a166f7ee11.s3tc.ctex"]
+dest_files=["res://.godot/imported/чёрнаячернота.png-885b54a80f967e49278e85a166f7ee11.s3tc.ctex", "res://.godot/imported/чёрнаячернота.png-885b54a80f967e49278e85a166f7ee11.etc2.ctex"]
 
 [params]
 

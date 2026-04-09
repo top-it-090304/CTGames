@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckj8yyeditin"
 path.s3tc="res://.godot/imported/Untitled_Texture_SlotMachine_KnobEmissionMap.png-c66d7d04a0ac55d8cbe61c6881d97f93.s3tc.ctex"
+path.etc2="res://.godot/imported/Untitled_Texture_SlotMachine_KnobEmissionMap.png-c66d7d04a0ac55d8cbe61c6881d97f93.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png"
-dest_files=["res://.godot/imported/Untitled_Texture_SlotMachine_KnobEmissionMap.png-c66d7d04a0ac55d8cbe61c6881d97f93.s3tc.ctex"]
+dest_files=["res://.godot/imported/Untitled_Texture_SlotMachine_KnobEmissionMap.png-c66d7d04a0ac55d8cbe61c6881d97f93.s3tc.ctex", "res://.godot/imported/Untitled_Texture_SlotMachine_KnobEmissionMap.png-c66d7d04a0ac55d8cbe61c6881d97f93.etc2.ctex"]
 
 [params]
 

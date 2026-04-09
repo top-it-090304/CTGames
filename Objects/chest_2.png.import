@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ow8h4hs2hpis"
 path.s3tc="res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.s3tc.ctex"
+path.etc2="res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/chest_2.png"
-dest_files=["res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.s3tc.ctex"]
+dest_files=["res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.s3tc.ctex", "res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.etc2.ctex"]
 
 [params]
 

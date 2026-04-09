@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhwi3w0fq5616"
 path.s3tc="res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.s3tc.ctex"
+path.etc2="res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Objects/clover_0.png"
-dest_files=["res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.s3tc.ctex"]
+dest_files=["res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.s3tc.ctex", "res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.etc2.ctex"]
 
 [params]
 

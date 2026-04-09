@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://3vs4v7pga1fw"
 path.s3tc="res://.godot/imported/lemon_0.png-53ac97d3aec0be6f1541a38e2c7a7178.s3tc.ctex"
+path.etc2="res://.godot/imported/lemon_0.png-53ac97d3aec0be6f1541a38e2c7a7178.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://lemon_0.png"
-dest_files=["res://.godot/imported/lemon_0.png-53ac97d3aec0be6f1541a38e2c7a7178.s3tc.ctex"]
+dest_files=["res://.godot/imported/lemon_0.png-53ac97d3aec0be6f1541a38e2c7a7178.s3tc.ctex", "res://.godot/imported/lemon_0.png-53ac97d3aec0be6f1541a38e2c7a7178.etc2.ctex"]
 
 [params]
 

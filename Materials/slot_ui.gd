@@ -759,6 +759,9 @@ func _evaluate_board(board: Array) -> Dictionary:
 		var jackpot_bonus: int = _total_flat_win_bonus()
 		if jackpot_total > 0 and jackpot_bonus > 0:
 			jackpot_total += jackpot_bonus
+		var win_mult_pct: int = _total_bonus_value("win_multiplier_percent")
+		if jackpot_total > 0 and win_mult_pct != 0:
+			jackpot_total = int(round(float(jackpot_total) * (1.0 + float(win_mult_pct) / 100.0)))
 		return {
 			"text": "WIN | Джекпот x10 | %s Ф=%d | BET %d | +%d" % [
 				_symbol_title(int(jackpot_hit.get("symbol_index", -1))),
@@ -808,6 +811,10 @@ func _evaluate_board(board: Array) -> Dictionary:
 		total += totem_bonus
 		parts.append("Тотем +%d" % totem_bonus)
 
+	var win_mult_percent: int = _total_bonus_value("win_multiplier_percent")
+	if total > 0 and win_mult_percent != 0:
+		total = int(round(float(total) * (1.0 + float(win_mult_percent) / 100.0)))
+		parts.append("x%+d%%" % win_mult_percent)
 	return {
 		"text": "WIN | TOTAL +%d | %s" % [total, " + ".join(parts)],
 		"win_amount": total,
@@ -1039,6 +1046,7 @@ func _chance_for_index(index: int) -> float:
 		chance += float(big_symbol_bias) * 2.2
 	if jackpot_bias > 0 and key == "seven":
 		chance += float(jackpot_bias) * 1.8
+	chance += float(_total_bonus_value("symbol_bias:%s" % key))
 	return chance
 
 func _symbol_title(index: int) -> String:
@@ -1231,29 +1239,50 @@ func spend_tickets(amount: int) -> bool:
 func add_totem_bonus(totem_id: String, bonus_type: String, bonus_value: int) -> void:
 	if totem_id.is_empty():
 		return
-	_totem_bonuses[totem_id] = {
+	var entry: Dictionary = {
 		"type": bonus_type,
 		"value": bonus_value,
 	}
+	var existing_var: Variant = _totem_bonuses.get(totem_id, [])
+	var entries: Array = []
+	if existing_var is Array:
+		entries = (existing_var as Array).duplicate(true)
+	elif existing_var is Dictionary:
+		entries = [existing_var]
+	entries.append(entry)
+	_totem_bonuses[totem_id] = entries
 
 func has_totem_bonus(totem_id: String) -> bool:
 	return _totem_bonuses.has(totem_id)
 
 func _total_flat_win_bonus() -> int:
 	var total: int = 0
-	for bonus_var: Variant in _totem_bonuses.values():
-		var bonus: Dictionary = bonus_var as Dictionary
+	for bonus: Dictionary in _all_bonus_entries():
 		if String(bonus.get("type", "")) == "flat_win_bonus":
 			total += int(bonus.get("value", 0))
 	return total
 
 func _total_bonus_value(bonus_type: String) -> int:
 	var total: int = 0
-	for bonus_var: Variant in _totem_bonuses.values():
-		var bonus: Dictionary = bonus_var as Dictionary
+	for bonus: Dictionary in _all_bonus_entries():
 		if String(bonus.get("type", "")) == bonus_type:
 			total += int(bonus.get("value", 0))
 	return total
+
+func _all_bonus_entries() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for bonus_var: Variant in _totem_bonuses.values():
+		if bonus_var is Dictionary:
+			out.append(bonus_var as Dictionary)
+			continue
+		if bonus_var is Array:
+			for sub_var: Variant in (bonus_var as Array):
+				if sub_var is Dictionary:
+					out.append(sub_var as Dictionary)
+	return out
+
+func get_total_bonus_value(bonus_type: String) -> int:
+	return _total_bonus_value(bonus_type)
 
 func format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))

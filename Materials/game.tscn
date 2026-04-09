@@ -28,28 +28,35 @@
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="Script" uid="uid://duhnls4b655nw" path="res://Materials/win_sequence_layer.gd" id="33_8k356"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://Objects/voxel_lucky_cat.glb" id="33_uuapk"]
-[ext_resource type="Script" uid="uid://cfv8k0p4oub4j" path="res://totem_item.gd" id="42_ln6k1"]
+[ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="41_7mxcb"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
+[ext_resource type="Script" uid="uid://bht7rwfq4b7iq" path="res://Objects/cat_totem.gd" id="43_rnwkk"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
 [ext_resource type="PackedScene" uid="uid://buk3ot5v4ey55" path="res://Objects/pony.glb" id="48_6qhtt"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
 [ext_resource type="PackedScene" uid="uid://dacacdw04hvct" path="res://back/lucky_7.tscn" id="48_id0qs"]
+[ext_resource type="PackedScene" uid="uid://dcjmu2biw2qem" path="res://Objects/Flower.glb" id="48_nxyih"]
+[ext_resource type="Script" uid="uid://di500p2xetbnl" path="res://Objects/flower.gd" id="49_7x08p"]
 [ext_resource type="Script" uid="uid://dsxtk73y2j6yf" path="res://Objects/pony.gd" id="49_bd2p1"]
 [ext_resource type="PackedScene" uid="uid://yieuq50t5080" path="res://back/campana.tscn" id="49_gs0kc"]
 [ext_resource type="Texture2D" uid="uid://dxscuhmstrlii" path="res://Texture_SlotSymbolsAlt.png" id="49_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://d3fgo8bdxgxjo" path="res://back/ciliegie_2.tscn" id="50_2vf0s"]
 [ext_resource type="PackedScene" uid="uid://cn5ie1l5q6s8f" path="res://Objects/Chili Pepper.glb" id="50_nxyih"]
+[ext_resource type="PackedScene" uid="uid://bnj4bjckqevj0" path="res://Objects/Gem Green.glb" id="50_yovps"]
+[ext_resource type="Script" uid="uid://c70p4wsoocujq" path="res://Objects/gem_green.gd" id="51_6rt0k"]
 [ext_resource type="Script" uid="uid://dsmxxqd8s3q67" path="res://Objects/chili_pepper.gd" id="51_7x08p"]
 [ext_resource type="PackedScene" uid="uid://cysytvxctuefp" path="res://back/treasure__1.tscn" id="51_p4b4j"]
 [ext_resource type="Texture2D" uid="uid://v76gljo3ni1d" path="res://Objects/Untitled_Texture_SlotMachine.png" id="52_2vf0s"]
+[ext_resource type="PackedScene" uid="uid://d7a2283acxvh" path="res://Objects/Pill.glb" id="52_nb1du"]
 [ext_resource type="PackedScene" uid="uid://qpf6g33blhia" path="res://back/plane_1.tscn" id="52_omno6"]
+[ext_resource type="Script" uid="uid://dx286u7wgsduv" path="res://Objects/pill.gd" id="53_42vkw"]
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
-[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
@@ -175,11 +182,17 @@ font_size = 27
 outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
-size = Vector3(1, 0.68463135, 1)
+size = Vector3(1.0966797, 0.68463135, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gsmia"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bd2p1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cya74"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4li4q"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5bjtu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vrulv"]
 resource_name = "SlotMachineMat_0"
@@ -811,7 +824,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams6" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=2043707722]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -3.1781368, 1.733891, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -3.1781368, 1.6401448, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -851,7 +864,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams7" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=702653482]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -1.4563828, 1.733891, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, -1.4563828, 1.6401448, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -891,7 +904,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams8" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=291199642]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 0.27157307, 1.733891, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 0.27157307, 1.6401448, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -931,7 +944,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams9" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=655086063]
-transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 1.995882, 1.733891, -1.0858483)
+transform = Transform3D(0.18000002, 0, 0, 0, 0.30000004, 0, 0, 0, 0.30000004, 1.995882, 1.6401448, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -971,7 +984,7 @@ mesh = SubResource("BoxMesh_rnwkk")
 surface_material_override/0 = SubResource("StandardMaterial3D_7x08p")
 
 [node name="Rams10" type="MeshInstance3D" parent="SubViewport/ScreenStage3D/FrameRams" unique_id=1573727494]
-transform = Transform3D(0.18, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -4.967226, 1.733891, -1.0858483)
+transform = Transform3D(0.18, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -4.967226, 1.6401448, -1.0858483)
 material_override = SubResource("StandardMaterial3D_rnwkk")
 mesh = SubResource("BoxMesh_rnwkk")
 
@@ -1538,30 +1551,30 @@ slot_ui_path = NodePath("")
 [node name="FocusPoint" type="Marker3D" parent="TotemShop" unique_id=1451202883]
 
 [node name="ShopItems" type="Node3D" parent="TotemShop" unique_id=1293203582]
+script = ExtResource("41_7mxcb")
 
 [node name="CatTotemShop" parent="TotemShop/ShopItems" unique_id=404527701 instance=ExtResource("33_uuapk")]
-transform = Transform3D(0.00084825524, 0, -0.44999918, 0, 0.45, 0, 0.44999918, 0, 0.00084825524, -0.41117287, 1.2616365, -1.7056524)
-script = ExtResource("42_ln6k1")
-shop_position_offset = Vector3(0, 0.18, 0.02)
-owned_position_offset = Vector3(0, 0.12, 0)
+transform = Transform3D(0.00084825524, 0, -0.44999918, 0, 0.45, 0, 0.44999918, 0, 0.00084825524, -0.19100308, 1.2616365, -1.7056524)
+script = ExtResource("43_rnwkk")
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop" unique_id=932522524]
+transform = Transform3D(1, 0, 1.1641532e-10, 0, 1, 0, -1.1641532e-10, 0, 1, 0, 0.056812525, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/CatTotemShop/InteractArea" unique_id=1998607231]
-transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.077148676, -0.08809924, 0.00014542462)
+transform = Transform3D(1.2, 0, 9.313226e-10, 0, 2, 0, -9.313226e-10, 0, 1.2, 0.040783167, -0.03417349, -3.2186508e-05)
 shape = SubResource("BoxShape3D_if7fe")
 
 [node name="pony" parent="TotemShop/ShopItems" unique_id=949659163 instance=ExtResource("48_6qhtt")]
-transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.38645744, 0.92570895, -0.94382226)
+transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.38645744, 1.0195124, -0.94382226)
 script = ExtResource("49_bd2p1")
 shop_position_offset = Vector3(0, 0.1, 0)
 owned_position_offset = Vector3(0, 0.08, 0)
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/pony" unique_id=1282512781]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 49.412292, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 78.923096, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/pony/InteractArea" unique_id=134742963]
-transform = Transform3D(150.00002, 0, 0, 0, 150.00002, 0, 0, 0, 150.00002, 19.147156, 46.2193, 0)
+transform = Transform3D(150.00002, 0, 0, 0, 150.00002, 0, 0, 0, 150.00002, 19.147156, 24.305359, 0)
 shape = SubResource("BoxShape3D_gsmia")
 
 [node name="Chili Pepper" parent="TotemShop/ShopItems" unique_id=140137447 instance=ExtResource("50_nxyih")]
@@ -1571,21 +1584,56 @@ shop_position_offset = Vector3(0, 0.05, 0)
 owned_position_offset = Vector3(0, 0.04, 0)
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Chili Pepper" unique_id=2094166622]
+transform = Transform3D(1, 0, 2.9802322e-08, 0, 0.9999998, 0, -2.9802322e-08, 0, 1, 0, -0.25243187, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Chili Pepper/Area3D" unique_id=1251672155]
 transform = Transform3D(10, 0, 0, 0, 9.999997, 0, 0, 0, 10, -2.1132355, 4.8495293, -2.4224453)
 shape = SubResource("BoxShape3D_bd2p1")
 
+[node name="Flower" parent="TotemShop/ShopItems" unique_id=1799918443 instance=ExtResource("48_nxyih")]
+transform = Transform3D(-8.742278e-09, 0, 0.2, 0, 0.2, 0, -0.2, 0, -8.742278e-09, -0.42424244, 1.1949809, -0.15282077)
+visible = false
+script = ExtResource("49_7x08p")
+
+[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Flower" unique_id=502607156]
+transform = Transform3D(0.99999994, 0, -3.5527137e-15, 0, 0.99999994, 0, 3.5527137e-15, 0, 0.99999994, 0, -0.19465446, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Flower/Area3D" unique_id=1242632559]
+transform = Transform3D(1.9999999, 0, -7.1054274e-15, 0, 1.9999999, 0, 7.1054274e-15, 0, 1.9999999, 0, 0.5685835, 0)
+shape = SubResource("BoxShape3D_cya74")
+
+[node name="GemGreen" parent="TotemShop/ShopItems" unique_id=725491464 instance=ExtResource("50_yovps")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -0.39989424, 1.2678535, -0.9282892)
+visible = false
+script = ExtResource("51_6rt0k")
+
+[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/GemGreen" unique_id=1175550867]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/GemGreen/Area3D" unique_id=1392623938]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.07383776, 0)
+shape = SubResource("BoxShape3D_4li4q")
+
+[node name="Pill" parent="TotemShop/ShopItems" unique_id=489052035 instance=ExtResource("52_nb1du")]
+transform = Transform3D(9.239616, 0, -17.737799, 0, 20, 0, 17.737799, 0, 9.239616, -0.328336, 1.161771, -1.762338)
+visible = false
+script = ExtResource("53_42vkw")
+
+[node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Pill" unique_id=1091761815]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TotemShop/ShopItems/Pill/Area3D" unique_id=955661293]
+transform = Transform3D(0.029999997, 0, 9.313226e-10, 0, 0.03, 0, -9.313226e-10, 0, 0.029999997, 0.0036106333, 0, 0.0018807799)
+shape = SubResource("BoxShape3D_5bjtu")
+
 [node name="ShopSpots" type="Node3D" parent="TotemShop" unique_id=932385481]
 
 [node name="ShopSpot1" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1471560995]
-transform = Transform3D(20.000002, 0, 0, 0, 19.999998, 0, 0, 0, 20.000002, -0.42740297, 1.0475365, -1.5209233)
+transform = Transform3D(20.000002, 0, 0, 0, 19.999998, 0, 0, 0, 20.000002, -0.42740297, 1.0069335, -1.5209233)
 
 [node name="ShopSpot2" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=1263735458]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.0502722, -0.613253)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5175042, 1.010685, -0.77869475)
 
 [node name="ShopSpot3" type="Marker3D" parent="TotemShop/ShopSpots" unique_id=643058297]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5483396, 1.0411022, 0.19283766)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.5483396, 1.0862393, -0.012745798)
 
 [node name="TotemDisplay" type="Node3D" parent="." unique_id=968665750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9062752, 2.4229121, 0)
