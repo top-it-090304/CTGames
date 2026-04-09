@@ -13,6 +13,10 @@ var _current_offer: Dictionary = {}
 
 func _ready() -> void:
 	visible = false
+	if desc_label != null:
+		desc_label.scroll_active = false
+		desc_label.fit_content = true
+		desc_label.bbcode_enabled = true
 	if buy_button != null and not buy_button.pressed.is_connected(_on_buy_pressed):
 		buy_button.pressed.connect(_on_buy_pressed)
 	if close_button != null and not close_button.pressed.is_connected(_on_close_pressed):

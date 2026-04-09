@@ -16,6 +16,15 @@ signal pressed(item: Node3D)
 @export var owned_position_offset: Vector3 = Vector3.ZERO
 @export var owned_rotation_offset_degrees: Vector3 = Vector3(0.0, 0.0, 0.0)
 
+@export_group("Placement By Shop Spot")
+@export var use_shop_spot_overrides: bool = false
+@export var shop_position_offset_spot1: Vector3 = Vector3.ZERO
+@export var shop_position_offset_spot2: Vector3 = Vector3.ZERO
+@export var shop_position_offset_spot3: Vector3 = Vector3.ZERO
+@export var shop_rotation_offset_degrees_spot1: Vector3 = Vector3.ZERO
+@export var shop_rotation_offset_degrees_spot2: Vector3 = Vector3.ZERO
+@export var shop_rotation_offset_degrees_spot3: Vector3 = Vector3.ZERO
+
 var _interact_area: Area3D
 var _shop_enabled: bool = true
 var _base_global_rotation_degrees: Vector3

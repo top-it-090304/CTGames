@@ -1024,7 +1024,14 @@ func _symbol_coin_value(index: int) -> int:
 
 func _chance_for_index(index: int) -> float:
 	var key: String = _symbol_key(index)
-	return float(SYMBOL_CHANCES.get(key, 1.0))
+	var chance: float = float(SYMBOL_CHANCES.get(key, 1.0))
+	var big_symbol_bias: int = _total_bonus_value("big_symbol_bias")
+	var jackpot_bias: int = _total_bonus_value("jackpot_bias")
+	if big_symbol_bias > 0 and (key == "diamond" or key == "chest"):
+		chance += float(big_symbol_bias) * 2.2
+	if jackpot_bias > 0 and key == "seven":
+		chance += float(jackpot_bias) * 1.8
+	return chance
 
 func _symbol_title(index: int) -> String:
 	var key: String = _symbol_key(index)
@@ -1229,6 +1236,14 @@ func _total_flat_win_bonus() -> int:
 	for bonus_var: Variant in _totem_bonuses.values():
 		var bonus: Dictionary = bonus_var as Dictionary
 		if String(bonus.get("type", "")) == "flat_win_bonus":
+			total += int(bonus.get("value", 0))
+	return total
+
+func _total_bonus_value(bonus_type: String) -> int:
+	var total: int = 0
+	for bonus_var: Variant in _totem_bonuses.values():
+		var bonus: Dictionary = bonus_var as Dictionary
+		if String(bonus.get("type", "")) == bonus_type:
 			total += int(bonus.get("value", 0))
 	return total
 

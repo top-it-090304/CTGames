@@ -224,6 +224,8 @@ func _refresh_panel_tokens() -> void:
 		_buy_panel.call("refresh_tokens", _current_tokens())
 
 func _can_interact() -> bool:
+	if _buy_panel != null and _buy_panel.has_method("is_open") and bool(_buy_panel.call("is_open")):
+		return false
 	if _intro_overlay != null and _intro_overlay.has_method("is_active") and bool(_intro_overlay.call("is_active")):
 		return false
 	if _round_system != null and _round_system.has_method("is_popup_open") and bool(_round_system.call("is_popup_open")):
@@ -289,8 +291,9 @@ func _refresh_shop_layout() -> void:
 		var local_offset: Vector3 = Vector3.ZERO
 		var rot_offset: Vector3 = Vector3.ZERO
 		if item.has_method("get"):
-			local_offset = item.get("shop_position_offset") as Vector3
-			rot_offset = item.get("shop_rotation_offset_degrees") as Vector3
+			var placement: Dictionary = _resolve_shop_placement_for_spot(item, i)
+			local_offset = placement.get("position", Vector3.ZERO) as Vector3
+			rot_offset = placement.get("rotation", Vector3.ZERO) as Vector3
 		var basis_no_scale: Basis = spot.global_transform.basis.orthonormalized()
 		item.global_position = spot.global_position + (basis_no_scale * local_offset)
 		# Preserve authored orientation for nicer display.
@@ -301,3 +304,26 @@ func _refresh_shop_layout() -> void:
 		item.scale = keep_scale
 		if item.has_method("set_shop_enabled"):
 			item.call("set_shop_enabled", true)
+
+func _resolve_shop_placement_for_spot(item: Node3D, spot_index: int) -> Dictionary:
+	var fallback_pos: Vector3 = item.get("shop_position_offset") as Vector3
+	var fallback_rot: Vector3 = item.get("shop_rotation_offset_degrees") as Vector3
+	if not bool(item.get("use_shop_spot_overrides")):
+		return {"position": fallback_pos, "rotation": fallback_rot}
+	match spot_index:
+		0:
+			return {
+				"position": item.get("shop_position_offset_spot1") as Vector3,
+				"rotation": item.get("shop_rotation_offset_degrees_spot1") as Vector3,
+			}
+		1:
+			return {
+				"position": item.get("shop_position_offset_spot2") as Vector3,
+				"rotation": item.get("shop_rotation_offset_degrees_spot2") as Vector3,
+			}
+		2:
+			return {
+				"position": item.get("shop_position_offset_spot3") as Vector3,
+				"rotation": item.get("shop_rotation_offset_degrees_spot3") as Vector3,
+			}
+	return {"position": fallback_pos, "rotation": fallback_rot}

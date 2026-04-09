@@ -47,7 +47,6 @@
 [ext_resource type="Script" uid="uid://dsmxxqd8s3q67" path="res://Objects/chili_pepper.gd" id="51_7x08p"]
 [ext_resource type="PackedScene" uid="uid://cysytvxctuefp" path="res://back/treasure__1.tscn" id="51_p4b4j"]
 [ext_resource type="Texture2D" uid="uid://v76gljo3ni1d" path="res://Objects/Untitled_Texture_SlotMachine.png" id="52_2vf0s"]
-[ext_resource type="Script" uid="uid://b5ynyclm5gqg8" path="res://Materials/button_console.gd" id="52_gs0kc"]
 [ext_resource type="PackedScene" uid="uid://qpf6g33blhia" path="res://back/plane_1.tscn" id="52_omno6"]
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
@@ -128,9 +127,14 @@ albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 2
-border_width_right = 1
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tc3b6"]
@@ -1252,65 +1256,75 @@ offset_bottom = 648.0
 flat = true
 
 [node name="TotemBuyPanel" type="Panel" parent="UI" unique_id=1622409470]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -140.0
+offset_right = 180.0
+offset_bottom = 140.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
 script = ExtResource("24_oat0n")
 
 [node name="TitleLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1257933572]
 layout_mode = 0
-offset_left = 13.0
-offset_top = -335.0
-offset_right = 67.0
-offset_bottom = -302.0
+offset_left = 22.0
+offset_top = 20.0
+offset_right = 338.0
+offset_bottom = 62.0
 text = "Кот"
 label_settings = SubResource("LabelSettings_tc3b6")
-script = ExtResource("24_u0rgs")
+autowrap_mode = 3
 
 [node name="PriceLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1017563582]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 55.0
-offset_right = 61.0
-offset_bottom = 78.0
-script = ExtResource("25_tc3b6")
+offset_left = 18.0
+offset_top = 60.0
+offset_right = 338.0
+offset_bottom = 92.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+autowrap_mode = 3
 
 [node name="DescLabel" type="RichTextLabel" parent="UI/TotemBuyPanel" unique_id=1801157762]
 layout_mode = 0
-offset_left = 6.0
-offset_top = -304.0
-offset_right = 271.0
-offset_bottom = -251.0
+offset_left = 18.0
+offset_top = 100.0
+offset_right = 338.0
+offset_bottom = 192.0
 theme_override_fonts/normal_font = ExtResource("23_nmok7")
-theme_override_font_sizes/normal_font_size = 19
+theme_override_font_sizes/normal_font_size = 17
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
 text = "+ 1 Ф к любому выигрышу"
-script = ExtResource("26_if7fe")
 
 [node name="BuyButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1227227659]
 layout_mode = 0
-offset_left = 8.0
-offset_top = -371.0
-offset_right = 100.0
-offset_bottom = -337.0
+offset_left = 22.0
+offset_top = 220.0
+offset_right = 166.0
+offset_bottom = 258.0
 theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 18
 text = "Купить"
-script = ExtResource("27_mv4lk")
 
 [node name="CloseButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1562681512]
 layout_mode = 0
-offset_left = 11.0
-offset_top = -269.0
-offset_right = 95.0
-offset_bottom = -238.0
+offset_left = 194.0
+offset_top = 220.0
+offset_right = 338.0
+offset_bottom = 258.0
 theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 18
 text = "Закрыть"
-script = ExtResource("28_oat0n")
 
 [node name="ReadyButton" type="Button" parent="UI" unique_id=2086978882]
 offset_left = 493.0
@@ -1493,6 +1507,8 @@ slot_ui_path = NodePath("")
 [node name="CatTotemShop" parent="TotemShop/ShopItems" unique_id=404527701 instance=ExtResource("33_uuapk")]
 transform = Transform3D(0.00084825524, 0, -0.44999918, 0, 0.45, 0, 0.44999918, 0, 0.00084825524, -0.41117287, 1.2616365, -1.7056524)
 script = ExtResource("42_ln6k1")
+shop_position_offset = Vector3(0, 0.18, 0.02)
+owned_position_offset = Vector3(0, 0.12, 0)
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop" unique_id=932522524]
 
@@ -1503,6 +1519,8 @@ shape = SubResource("BoxShape3D_if7fe")
 [node name="pony" parent="TotemShop/ShopItems" unique_id=949659163 instance=ExtResource("48_6qhtt")]
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.38645744, 0.92570895, -0.94382226)
 script = ExtResource("49_bd2p1")
+shop_position_offset = Vector3(0, 0.1, 0)
+owned_position_offset = Vector3(0, 0.08, 0)
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/pony" unique_id=1282512781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 49.412292, 0)
@@ -1514,6 +1532,8 @@ shape = SubResource("BoxShape3D_gsmia")
 [node name="Chili Pepper" parent="TotemShop/ShopItems" unique_id=140137447 instance=ExtResource("50_nxyih")]
 transform = Transform3D(0.03286876, 0, 0.03767817, 0, 0.05, 0, -0.03767817, 0, 0.03286876, -0.1991992, 0.98487526, -0.059213758)
 script = ExtResource("51_7x08p")
+shop_position_offset = Vector3(0, 0.05, 0)
+owned_position_offset = Vector3(0, 0.04, 0)
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Chili Pepper" unique_id=2094166622]
 
@@ -1621,14 +1641,6 @@ light_energy = 3.137
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.329578, 2.4481401, -0.69044334)
 light_energy = 0.769
 light_indirect_energy = 0.581
-
-[node name="Button" type="Button" parent="." unique_id=351737438]
-offset_left = 13.0
-offset_top = 438.0
-offset_right = 69.0
-offset_bottom = 458.0
-text = "КОНСОЛЬ"
-script = ExtResource("52_gs0kc")
 
 [node name="SlotMachineRoot" type="Node3D" parent="." unique_id=413957351]
 
