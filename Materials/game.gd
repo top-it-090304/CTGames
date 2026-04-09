@@ -2,7 +2,7 @@
 extends Node3D
 
 @onready var slot_ui: Control = $SubViewport/SlotUI
-@onready var animation_player: AnimationPlayer = _resolve_animation_player()
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var intro_overlay: Node = get_node_or_null("IntroOverlay")
 @onready var camera_3d: Camera3D = get_node_or_null("Camera3D") as Camera3D
 @onready var round_system: Node = get_node_or_null("RoundSystem")
