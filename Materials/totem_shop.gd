@@ -9,6 +9,8 @@ extends Node3D
 @export var round_system_path: NodePath = ^"../RoundSystem"
 @export var intro_overlay_path: NodePath = ^"../IntroOverlay"
 @export var camera_path: NodePath = ^"../Camera3D"
+@export var randomize_shop_items: bool = false
+@export_range(1, 12, 1) var max_visible_shop_items: int = 3
 
 var _buy_panel: Panel
 var _shop_items: Node3D
@@ -233,7 +235,8 @@ func _can_interact() -> bool:
 	return true
 
 func _refresh_shop_layout() -> void:
-	# Randomly place up to 3 not-owned items into ShopSpot1-3.
+	# Place not-owned items into ShopSpot markers.
+	# Default order is deterministic (scene order), randomization optional.
 	if _shop_items == null:
 		return
 	_shop_spot_used.clear()
@@ -280,8 +283,9 @@ func _refresh_shop_layout() -> void:
 	if candidates.is_empty() or spots.is_empty():
 		return
 
-	candidates.shuffle()
-	var show_count: int = mini(3, mini(candidates.size(), spots.size()))
+	if randomize_shop_items:
+		candidates.shuffle()
+	var show_count: int = mini(maxi(max_visible_shop_items, 1), mini(candidates.size(), spots.size()))
 	for i: int in range(show_count):
 		var item: Node3D = candidates[i]
 		var spot: Marker3D = spots[i]

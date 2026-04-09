@@ -2,6 +2,7 @@ extends Control
 
 signal option_selected(spins: int, cost: int, ticket_bonus: int)
 signal canceled
+signal replay_requested
 
 const OPTION_COLOR_DEFAULT: Color = Color(0.63, 0.63, 0.65, 1.0)
 const OPTION_COLOR_HOVER: Color = Color(0.84, 0.84, 0.86, 1.0)
@@ -13,6 +14,7 @@ const MODE_CLOSED: int = 0
 const MODE_IDLE: int = 1
 const MODE_CHOICE: int = 2
 const MODE_GAME_OVER: int = 3
+const MODE_FAIL_RETRY: int = 4
 
 @export_group("Click Zones")
 @export_range(0.0, 1.0, 0.001) var hit_x_min: float = 0.18
@@ -47,13 +49,13 @@ var _mode: int = MODE_CLOSED
 
 func _ready() -> void:
 	if jackpot_jail_logo == null:
-		jackpot_jail_logo = load("res://textures/jackpot_jail_slot.png") as Texture2D
+		jackpot_jail_logo = load("res://textures/jackpot_jail_logo.png") as Texture2D
+		if jackpot_jail_logo == null:
+			jackpot_jail_logo = load("res://textures/jackpot_jail_slot.png") as Texture2D
 		if jackpot_jail_logo == null:
 			jackpot_jail_logo = load("res://Objects/jackpot_jail_slot.png") as Texture2D
 		if jackpot_jail_logo == null:
 			jackpot_jail_logo = load("res://textures/jackpot_jail_logo_nofon.png") as Texture2D
-		if jackpot_jail_logo == null:
-			jackpot_jail_logo = load("res://textures/jackpot_jail_logo.png") as Texture2D
 	_ensure_ui()
 	visible = false
 
@@ -95,18 +97,21 @@ func close_popup() -> void:
 
 func show_game_over(required_debt: int, deposited: int) -> void:
 	_ensure_ui()
-	_mode = MODE_GAME_OVER
+	_mode = MODE_FAIL_RETRY
 	_set_idle_logo_visible(false)
-	_backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
+	_backdrop.color = Color(0.0, 0.0, 0.0, 0.85)
 	_title.visible = true
-	_title.text = "Долг не погашен"
+	_title.text = "У вас недостаточно денег!"
 	_set_choice_controls_visible(true)
-	_option_a.text = "Нужно: %d Ф" % required_debt
-	_option_b.text = "Внесено: %d Ф" % deposited
-	_cancel.text = "Закрыть"
-	_option_a.disabled = true
+	var shortfall: int = maxi(required_debt - deposited, 0)
+	_option_a.text = "Переиграть"
+	_option_a.disabled = false
+	_option_b.visible = true
 	_option_b.disabled = true
-	_selected_option = 0
+	_option_b.text = "Не хватает: %d Ф" % shortfall if shortfall > 0 else "Долг: %d Ф" % required_debt
+	_cancel.text = "Закрыть"
+	_cancel.visible = false
+	_selected_option = 1
 	_refresh_option_visuals()
 	_bring_to_front()
 	visible = true
@@ -124,7 +129,7 @@ func show_jackpot_jail() -> void:
 func is_open() -> bool:
 	if not visible:
 		return false
-	return _mode == MODE_CHOICE or _mode == MODE_GAME_OVER
+	return _mode == MODE_CHOICE or _mode == MODE_GAME_OVER or _mode == MODE_FAIL_RETRY
 
 func _bring_to_front() -> void:
 	var parent_node: Node = get_parent()
@@ -133,6 +138,9 @@ func _bring_to_front() -> void:
 	move_to_front()
 
 func _on_option_a_pressed() -> void:
+	if _mode == MODE_FAIL_RETRY:
+		emit_signal("replay_requested")
+		return
 	if _mode != MODE_CHOICE:
 		return
 	if _option_a == null or _option_a.disabled:
@@ -144,6 +152,8 @@ func _on_option_a_pressed() -> void:
 	emit_signal("option_selected", _a_spins, _a_cost, _a_ticket_bonus)
 
 func _on_option_b_pressed() -> void:
+	if _mode == MODE_FAIL_RETRY:
+		return
 	if _mode != MODE_CHOICE:
 		return
 	if _option_b == null or _option_b.disabled:
@@ -174,7 +184,16 @@ func _apply_button_selection_colors(button: Button, selected: bool) -> void:
 
 func _refresh_option_visuals() -> void:
 	_apply_button_selection_colors(_option_a, _selected_option == 1 and (_option_a == null or not _option_a.disabled))
-	_apply_button_selection_colors(_option_b, _selected_option == 2 and (_option_b == null or not _option_b.disabled))
+	if _mode == MODE_FAIL_RETRY and _option_b != null and _option_b.disabled:
+		# Show as plain dim info text, not as a pressable button.
+		_option_b.add_theme_color_override("font_color", Color(0.55, 0.55, 0.57, 1.0))
+		_option_b.add_theme_color_override("font_hover_color", Color(0.55, 0.55, 0.57, 1.0))
+		_option_b.add_theme_color_override("font_pressed_color", Color(0.55, 0.55, 0.57, 1.0))
+		_option_b.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	else:
+		_apply_button_selection_colors(_option_b, _selected_option == 2 and (_option_b == null or not _option_b.disabled))
+		if _option_b != null:
+			_option_b.mouse_filter = Control.MOUSE_FILTER_STOP
 	_apply_button_selection_colors(_cancel, false)
 
 func _set_choice_controls_visible(show: bool) -> void:
@@ -188,7 +207,6 @@ func _set_choice_controls_visible(show: bool) -> void:
 func _set_idle_logo_visible(show: bool) -> void:
 	if _backdrop != null:
 		_backdrop.color = Color(0.0, 0.0, 0.0, 1.0) if show else Color(0.0, 0.0, 0.0, 0.0)
-		# In idle logo mode let taps pass to 3D world (slot machine interaction).
 		_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE if show else Control.MOUSE_FILTER_STOP
 
 	if _logo != null:

@@ -20,14 +20,9 @@
 [ext_resource type="FontFile" uid="uid://ck38hek12mqvp" path="res://textures/pixeloidsans/PixeloidSans.ttf" id="23_nmok7"]
 [ext_resource type="Script" uid="uid://cmssp3g1utcy1" path="res://Materials/round_system.gd" id="24_i1y15"]
 [ext_resource type="Script" uid="uid://ddkboipj3ji5j" path="res://Materials/totem_buy_panel.gd" id="24_oat0n"]
-[ext_resource type="Script" uid="uid://b7ijl47o53ej1" path="res://Materials/title_label.gd" id="24_u0rgs"]
 [ext_resource type="Script" uid="uid://dp7y365kkfh4p" path="res://Materials/debt_ui.gd" id="25_a4hxe"]
-[ext_resource type="Script" uid="uid://16s6asci84v0" path="res://Materials/price_label.gd" id="25_tc3b6"]
-[ext_resource type="Script" uid="uid://bax70berdicix" path="res://Materials/desc_label.gd" id="26_if7fe"]
 [ext_resource type="PackedScene" uid="uid://c6bd4qc56io2s" path="res://Objects/Envelopes.glb" id="27_a4hxe"]
-[ext_resource type="Script" uid="uid://8i7nkpkaqjde" path="res://Materials/buy_button.gd" id="27_mv4lk"]
 [ext_resource type="Texture2D" uid="uid://ct4blwksxrasy" path="res://FinalSpin.png" id="28_gsmia"]
-[ext_resource type="Script" uid="uid://b63cn3a1hjomo" path="res://Materials/close_button.gd" id="28_oat0n"]
 [ext_resource type="PackedScene" uid="uid://cjrwowv1y66vk" path="res://Objects/Wine Glass.glb" id="28_tn84i"]
 [ext_resource type="Script" uid="uid://01du5b4o2mbh" path="res://Materials/ready_button.gd" id="31_uasde"]
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
@@ -131,11 +126,11 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
+border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tc3b6"]
 font = ExtResource("23_nmok7")
@@ -1187,6 +1182,8 @@ symbols = Array[Texture2D]([ExtResource("10_7l2bl"), ExtResource("6_g7uyw"), Ext
 weights = Array[float]([19.0, 19.0, 14.7, 14.7, 12.0, 12.0, 8.6])
 reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
+combo_symbol_boost = null
+jackpot_symbol_boost = null
 spin_outro_texture = ExtResource("28_gsmia")
 
 [node name="CloverStage" type="Control" parent="SubViewport/SlotUI" unique_id=1246282959]
@@ -1286,9 +1283,9 @@ offset_left = 18.0
 offset_top = 60.0
 offset_right = 338.0
 offset_bottom = 92.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("23_nmok7")
 theme_override_font_sizes/font_size = 18
-theme_override_colors/font_color = Color(1, 1, 1, 1)
 autowrap_mode = 3
 
 [node name="DescLabel" type="RichTextLabel" parent="UI/TotemBuyPanel" unique_id=1801157762]
@@ -1297,14 +1294,13 @@ offset_left = 18.0
 offset_top = 100.0
 offset_right = 338.0
 offset_bottom = 192.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("23_nmok7")
 theme_override_font_sizes/normal_font_size = 17
-theme_override_colors/default_color = Color(1, 1, 1, 1)
 bbcode_enabled = true
+text = "+ 1 Ф к любому выигрышу"
 fit_content = true
 scroll_active = false
-autowrap_mode = 3
-text = "+ 1 Ф к любому выигрышу"
 
 [node name="BuyButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1227227659]
 layout_mode = 0

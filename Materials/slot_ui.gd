@@ -65,13 +65,13 @@ const SYMBOL_VALUES: Dictionary = {
 
 const SYMBOL_CHANCES: Dictionary = {
 	# Tuned: slightly fewer small hits, slightly more big hits + jackpot.
-	"lemon": 19.0,
-	"cherry": 19.0,
-	"clover": 14.7,
-	"bell": 14.7,
-	"diamond": 12.0,
-	"chest": 12.0,
-	"seven": 8.6,
+	"lemon": 21.0,
+	"cherry": 21.0,
+	"clover": 17.7,
+	"bell": 15.7,
+	"diamond": 13.0,
+	"chest": 14.0,
+	"seven": 9.6,
 }
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")

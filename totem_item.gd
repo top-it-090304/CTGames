@@ -35,6 +35,8 @@ func _ready() -> void:
 	_base_scale = scale
 	_interact_area = get_node_or_null(interact_area_path) as Area3D
 	if _interact_area == null:
+		_interact_area = _find_first_area3d(self)
+	if _interact_area == null:
 		push_warning("Totem item '%s' has no InteractArea" % name)
 		return
 	_interact_area.input_ray_pickable = true
@@ -47,6 +49,16 @@ func get_base_global_rotation_degrees() -> Vector3:
 
 func get_base_scale() -> Vector3:
 	return _base_scale
+
+func _find_first_area3d(root: Node) -> Area3D:
+	for child: Node in root.get_children():
+		var area: Area3D = child as Area3D
+		if area != null:
+			return area
+		var nested: Area3D = _find_first_area3d(child)
+		if nested != null:
+			return nested
+	return null
 
 func get_offer_data() -> Dictionary:
 	return {

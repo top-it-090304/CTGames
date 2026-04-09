@@ -1,7 +1,7 @@
 extends Node
 
 @export_group("Debt")
-@export var debt_target: int = 75
+@export var debt_target: int = 55
 @export var initial_deposited: int = 30
 @export var round_limit: int = 3
 @export var debt_target_growth_flat: int = 12
@@ -57,6 +57,7 @@ var pending_interest_reward: int = 0
 var _finish_round_requested: bool = false
 var _last_deposit_frame: int = -1
 var _awaiting_final_deposit: bool = false
+var _completing_cycle: bool = false
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -169,27 +170,27 @@ func _handle_popup_input(event: InputEvent) -> void:
 		match key_event.keycode:
 			KEY_1:
 				_press_popup_button("Option7Button")
-				get_viewport().set_input_as_handled()
+				_safe_set_input_handled()
 			KEY_2:
 				_press_popup_button("Option3Button")
-				get_viewport().set_input_as_handled()
+				_safe_set_input_handled()
 			KEY_ESCAPE, KEY_BACK:
 				_press_popup_button("CancelButton")
-				get_viewport().set_input_as_handled()
+				_safe_set_input_handled()
 		return
 
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			_select_popup_option_by_screen_pos(mb.position)
-			get_viewport().set_input_as_handled()
+			_safe_set_input_handled()
 		return
 
 	if event is InputEventScreenTouch:
 		var st: InputEventScreenTouch = event as InputEventScreenTouch
 		if st.pressed:
 			_select_popup_option_by_screen_pos(st.position)
-			get_viewport().set_input_as_handled()
+			_safe_set_input_handled()
 		return
 
 func _select_popup_option_by_screen_pos(screen_pos: Vector2) -> void:
@@ -242,11 +243,21 @@ func _connect_signals() -> void:
 			var ccb: Callable = Callable(self, "_on_popup_canceled")
 			if not popup.is_connected("canceled", ccb):
 				popup.connect("canceled", ccb)
+		if popup.has_signal("replay_requested"):
+			var rcb: Callable = Callable(self, "_on_popup_replay_requested")
+			if not popup.is_connected("replay_requested", rcb):
+				popup.connect("replay_requested", rcb)
 
 func _on_intro_active_changed(active: bool) -> void:
 	if active:
 		_set_slot_locked(true)
-		call_deferred("_show_jackpot_jail_screen")
+		if not _completing_cycle:
+			call_deferred("_show_jackpot_jail_screen")
+		return
+
+	if _completing_cycle:
+		_completing_cycle = false
+		call_deferred("_start_next_debt_cycle")
 		return
 
 	if game_over:
@@ -279,8 +290,14 @@ func _on_popup_canceled() -> void:
 		return
 	_show_jackpot_jail_screen()
 
+func _on_popup_replay_requested() -> void:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return
+	tree.call_deferred("reload_current_scene")
+
 func request_spin_choice() -> void:
-	if game_over or round_active or _is_intro_active():
+	if game_over or round_active or _awaiting_final_deposit or _is_intro_active():
 		return
 	_open_spin_choice()
 
@@ -299,7 +316,7 @@ func _show_jackpot_jail_screen() -> void:
 	if round_active:
 		return
 
-	_set_slot_locked(_is_intro_active())
+	_set_slot_locked(_is_intro_active() or _awaiting_final_deposit)
 	_set_choice_overlay(true)
 	if popup.has_method("show_jackpot_jail"):
 		popup.call("show_jackpot_jail")
@@ -336,6 +353,7 @@ func _popup_open() -> bool:
 
 func _finish_round() -> void:
 	round_active = false
+	_set_spins_left(0)
 	var interest_gain: int = _interest_amount()
 	var awarded_tickets: int = 0
 	if interest_gain > 0:
@@ -358,11 +376,14 @@ func _finish_round() -> void:
 		var can_cover_now: bool = (_get_money() + pending_interest_reward) >= remaining_needed
 		if can_cover_now:
 			_awaiting_final_deposit = true
+			_set_spins_left(0)
 			_set_slot_locked(true)
 			_set_choice_overlay(true)
 			_update_debt_ui()
+			call_deferred("_show_jackpot_jail_screen")
 			return
 		game_over = true
+		_set_spins_left(0)
 		_set_slot_locked(true)
 		_set_choice_overlay(true)
 		if popup != null and popup.has_method("show_game_over"):
@@ -402,7 +423,7 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 	_move_camera_hint_safe("slot_machine", reward_camera_move_duration)
 	await get_tree().create_timer(maxf(reward_return_wait, 0.01)).timeout
 
-	if not _is_intro_active() and not game_over and pending_interest_reward <= 0:
+	if not _is_intro_active() and not game_over and pending_interest_reward <= 0 and not _awaiting_final_deposit:
 		_set_slot_locked(false)
 
 func _move_camera_hint_safe(hint: String, duration: float = 0.6) -> void:
@@ -645,7 +666,7 @@ func _try_interact(screen_pos: Vector2) -> void:
 		get_viewport().set_input_as_handled()
 
 func _request_slot_machine_action() -> void:
-	if game_over or _is_intro_active():
+	if game_over or _awaiting_final_deposit or _is_intro_active():
 		return
 
 	if _popup_open():
@@ -669,7 +690,8 @@ func _collect_pending_interest_reward() -> void:
 	_update_debt_ui()
 	_sync_slot_symbol_multiplier()
 	if not round_active:
-		_set_slot_locked(false)
+		if not _awaiting_final_deposit:
+			_set_slot_locked(false)
 		call_deferred("_show_jackpot_jail_screen")
 
 func _deposit_to_debt_machine() -> void:
@@ -686,6 +708,8 @@ func _deposit_to_debt_machine() -> void:
 		return
 
 	var amount: int = mini(deposit_step, depositable)
+	if _awaiting_final_deposit:
+		amount = mini(depositable, debt_target - deposited)
 	amount = mini(amount, debt_target - deposited)
 	if amount <= 0:
 		return
@@ -701,19 +725,84 @@ func _deposit_to_debt_machine() -> void:
 	_play_debt_button_press()
 	deposited += amount
 	_sync_slot_symbol_multiplier()
-	if deposited >= debt_target and not early_bonus_given and rounds_left > 0:
-		_add_tickets(rounds_left)
-		early_bonus_given = true
 	_update_debt_ui()
+
+	# Early completion: player paid off the full debt before rounds ran out.
+	if deposited >= debt_target and not early_bonus_given and rounds_left > 0:
+		early_bonus_given = true
+		var bonus_money: int = _interest_amount()
+		var bonus_tickets: int = rounds_left + 1  # remaining rounds + current round end ticket
+		_complete_debt_cycle(bonus_money, bonus_tickets, true)
+		return
+
+	# Normal completion: final deposit fulfilled after all rounds were played.
 	if _awaiting_final_deposit and rounds_left <= 0 and deposited >= debt_target:
+		_complete_debt_cycle(0, 0, false)
+		return
+	# Safety: if still awaiting deposit but can no longer cover the remaining debt — game over.
+	if _awaiting_final_deposit and deposited < debt_target:
+		var remaining_after: int = debt_target - deposited
+		var can_still_cover: bool = (_get_money() + pending_interest_reward) >= remaining_after
+		if not can_still_cover:
+			game_over = true
+			_awaiting_final_deposit = false
+			_set_spins_left(0)
+			_set_slot_locked(true)
+			_set_choice_overlay(true)
+			if popup != null and popup.has_method("show_game_over"):
+				popup.call("show_game_over", debt_target, deposited)
+			return
+
+func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) -> void:
+	round_active = false
+	_set_spins_left(0)
+
+	# Auto-collect any uncollected interest reward.
+	var total_money: int = extra_money + pending_interest_reward
+	pending_interest_reward = 0
+
+	if total_money > 0:
+		_add_money(total_money)
+	if bonus_tickets > 0:
+		_add_tickets(bonus_tickets)
+
+	_update_debt_ui()
+
+	# Build the congratulation text.
+	var reward_parts: PackedStringArray = PackedStringArray()
+	if total_money > 0:
+		reward_parts.append("+%d Ф" % total_money)
+	if bonus_tickets > 0:
+		reward_parts.append("+%d TOK" % bonus_tickets)
+
+	var prefix: String = "досрочно " if is_early else ""
+	var reward_text: String = ""
+	if not reward_parts.is_empty():
+		reward_text = " Тебе предоставляется награда: %s" % " ".join(reward_parts)
+
+	var dialogue_text: String = "Поздравляю! Ты %sзакончил дедлайн!%s" % [prefix, reward_text]
+
+	_completing_cycle = true
+	_set_slot_locked(true)
+	_close_popup()
+	_set_choice_overlay(true)
+
+	if intro_overlay != null and intro_overlay.has_method("start"):
+		var steps: Array[Dictionary] = [{"text": dialogue_text}]
+		intro_overlay.call("start", steps)
+	else:
+		# Fallback if no dialogue system available.
+		_completing_cycle = false
 		_start_next_debt_cycle()
 
 func _start_next_debt_cycle() -> void:
 	_awaiting_final_deposit = false
 	rounds_left = maxi(round_limit, 1)
 	early_bonus_given = false
+	pending_interest_reward = 0
 	debt_target = _next_debt_target(debt_target)
 	deposited = 0
+	_set_spins_left(0)
 	_update_debt_ui()
 	_set_choice_overlay(false)
 	_show_jackpot_jail_screen()
@@ -1153,3 +1242,10 @@ func _has_ancestor_named(node: Node, names: Array[String]) -> bool:
 				return true
 		current = current.get_parent()
 	return false
+
+func _safe_set_input_handled() -> void:
+	if not is_inside_tree():
+		return
+	var vp: Viewport = get_viewport()
+	if vp != null:
+		vp.set_input_as_handled()
