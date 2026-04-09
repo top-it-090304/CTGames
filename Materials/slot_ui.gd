@@ -28,6 +28,10 @@ signal round_ended(round_number: int, interest_amount: int)
 @export var allow_combo_stacking: bool = true
 @export var jackpot_overrides_other_hits: bool = true
 
+@export_group("Drop Tuning")
+@export var combo_symbol_boost: float = 1.06
+@export var jackpot_symbol_boost: float = 1.04
+
 @export_group("Round / Interest")
 @export var interest_percent: float = 7.0
 @export var tickets_per_round_end: int = 1
@@ -1025,6 +1029,10 @@ func _symbol_coin_value(index: int) -> int:
 func _chance_for_index(index: int) -> float:
 	var key: String = _symbol_key(index)
 	var chance: float = float(SYMBOL_CHANCES.get(key, 1.0))
+	if key == "bell" or key == "diamond" or key == "chest":
+		chance *= maxf(combo_symbol_boost, 0.1)
+	if key == "seven":
+		chance *= maxf(jackpot_symbol_boost, 0.1)
 	var big_symbol_bias: int = _total_bonus_value("big_symbol_bias")
 	var jackpot_bias: int = _total_bonus_value("jackpot_bias")
 	if big_symbol_bias > 0 and (key == "diamond" or key == "chest"):

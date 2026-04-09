@@ -12,13 +12,21 @@ var deposited_title_label: Label
 var deposited_value_label: Label
 var interest_title_label: Label
 var interest_value_label: Label
+var status_line_label: Label
 
 
 func _ready() -> void:
 	_ensure_ui()
 
 
-func set_data(rounds_left: int, debt_target: int, deposited: int, interest_percent: float, interest_amount: int) -> void:
+func set_data(
+		rounds_left: int,
+		debt_target: int,
+		deposited: int,
+		interest_percent: float,
+		interest_amount: int,
+		status_line: String = ""
+	) -> void:
 	_ensure_ui()
 	rounds_left_label.text = "☠ %d ROUNDS LEFT ☠" % maxi(rounds_left, 0)
 	debt_title_label.text = "DEBT:"
@@ -27,6 +35,8 @@ func set_data(rounds_left: int, debt_target: int, deposited: int, interest_perce
 	deposited_value_label.text = "%d Ф" % maxi(deposited, 0)
 	interest_title_label.text = "INTEREST:"
 	interest_value_label.text = "%.1f%% (%dФ)" % [interest_percent, maxi(interest_amount, 0)]
+	status_line_label.text = status_line
+	status_line_label.visible = not status_line.strip_edges().is_empty()
 
 
 func _ensure_ui() -> void:
@@ -65,6 +75,7 @@ func _ensure_ui() -> void:
 	deposited_value_label = _ensure_label("DepositedValueLabel", Vector2(left + 258.0, 160.0), Vector2(width - 258.0, 58.0), 56, COLOR_VALUE, HORIZONTAL_ALIGNMENT_RIGHT)
 	interest_title_label = _ensure_label("InterestTitleLabel", Vector2(left, 252.0), Vector2(250.0, 44.0), 28, COLOR_TITLE, HORIZONTAL_ALIGNMENT_LEFT)
 	interest_value_label = _ensure_label("InterestValueLabel", Vector2(left + 258.0, 276.0), Vector2(width - 258.0, 36.0), 32, COLOR_TITLE, HORIZONTAL_ALIGNMENT_RIGHT)
+	status_line_label = _ensure_label("StatusLineLabel", Vector2(left, 344.0), Vector2(width, 34.0), 22, COLOR_TITLE, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _ensure_line(name: String, pos: Vector2, line_size: Vector2) -> ColorRect:

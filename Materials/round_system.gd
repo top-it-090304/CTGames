@@ -4,6 +4,8 @@ extends Node
 @export var debt_target: int = 75
 @export var initial_deposited: int = 30
 @export var round_limit: int = 3
+@export var debt_target_growth_flat: int = 12
+@export var debt_target_growth_percent: float = 18.0
 @export var interest_percent_base: float = 7.0
 @export var interest_percent_per_coin: float = 0.08
 @export var interest_percent_max: float = 25.0
@@ -54,6 +56,7 @@ var early_bonus_given: bool = false
 var pending_interest_reward: int = 0
 var _finish_round_requested: bool = false
 var _last_deposit_frame: int = -1
+var _awaiting_final_deposit: bool = false
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -351,6 +354,14 @@ func _finish_round() -> void:
 	_update_debt_ui()
 
 	if rounds_left <= 0 and deposited < debt_target:
+		var remaining_needed: int = debt_target - deposited
+		var can_cover_now: bool = (_get_money() + pending_interest_reward) >= remaining_needed
+		if can_cover_now:
+			_awaiting_final_deposit = true
+			_set_slot_locked(true)
+			_set_choice_overlay(true)
+			_update_debt_ui()
+			return
 		game_over = true
 		_set_slot_locked(true)
 		_set_choice_overlay(true)
@@ -669,7 +680,7 @@ func _deposit_to_debt_machine() -> void:
 	if available <= 0:
 		return
 
-	var reserve: int = _minimum_spin_reserve(available)
+	var reserve: int = 0 if _awaiting_final_deposit else _minimum_spin_reserve(available)
 	var depositable: int = maxi(available - reserve, 0)
 	if depositable <= 0:
 		return
@@ -694,6 +705,24 @@ func _deposit_to_debt_machine() -> void:
 		_add_tickets(rounds_left)
 		early_bonus_given = true
 	_update_debt_ui()
+	if _awaiting_final_deposit and rounds_left <= 0 and deposited >= debt_target:
+		_start_next_debt_cycle()
+
+func _start_next_debt_cycle() -> void:
+	_awaiting_final_deposit = false
+	rounds_left = maxi(round_limit, 1)
+	early_bonus_given = false
+	debt_target = _next_debt_target(debt_target)
+	deposited = 0
+	_update_debt_ui()
+	_set_choice_overlay(false)
+	_show_jackpot_jail_screen()
+
+func _next_debt_target(current_target: int) -> int:
+	var base: int = maxi(current_target, 1)
+	var by_flat: int = base + maxi(debt_target_growth_flat, 1)
+	var by_percent: int = int(ceil(float(base) * (1.0 + maxf(debt_target_growth_percent, 1.0) / 100.0)))
+	return maxi(by_flat, by_percent)
 
 func _sync_slot_symbol_multiplier() -> void:
 	if slot_ui == null:
@@ -975,8 +1004,23 @@ func _update_debt_ui() -> void:
 	if debt_ui == null:
 		return
 	var interest_gain: int = _interest_amount()
+	var remaining_needed: int = maxi(debt_target - deposited, 0)
+	var can_continue: bool = rounds_left <= 0 and deposited < debt_target and (_get_money() + pending_interest_reward) >= remaining_needed
+	var status_line: String = ""
+	if game_over:
+		status_line = "GAME OVER"
+	elif _awaiting_final_deposit and can_continue:
+		status_line = "DEPOSIT %d F TO CONTINUE" % remaining_needed
 	if debt_ui.has_method("set_data"):
-		debt_ui.call("set_data", rounds_left, debt_target, deposited, _current_interest_percent(), interest_gain)
+		debt_ui.call(
+			"set_data",
+			rounds_left,
+			debt_target,
+			deposited,
+			_current_interest_percent(),
+			interest_gain,
+			status_line
+		)
 
 func _interest_amount() -> int:
 	return maxi(int(floor((float(deposited) * _current_interest_percent()) / 100.0)), 0)
