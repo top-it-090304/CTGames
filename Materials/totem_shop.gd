@@ -170,6 +170,9 @@ func _on_buy_requested() -> void:
 	if not bool(_slot_ui.call("spend_tickets", price)):
 		_refresh_panel_tokens()
 		return
+	var world: Node = get_parent()
+	if world != null and world.has_method("_update_ready_button_visibility"):
+		world.call_deferred("_update_ready_button_visibility")
 
 	_owned_totems[totem_id] = true
 	if _slot_ui.has_method("add_totem_bonus"):
