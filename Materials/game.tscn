@@ -56,7 +56,7 @@
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
-[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
@@ -124,6 +124,7 @@ _data = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tn84i"]
+size = Vector3(1.6931763, 1.4282837, 1.5842285)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tn84i"]
 viewport_path = NodePath("DebtViewport")
@@ -366,12 +367,12 @@ libraries/ = SubResource("AnimationLibrary_rnwkk")
 transform = Transform3D(0.0063006436, 0, 0.99998015, 0, 1, 0, -0.99998015, 0, 0.0063006436, -2.4458764, 2.1250708, -0.67064714)
 
 [node name="DebtMachine" parent="." unique_id=611159530 instance=ExtResource("5_ablru")]
-transform = Transform3D(-0.9997814, 0, 0.02090746, 0, 1, 0, -0.02090746, 0, -0.9997814, -2.2672462, 0.5121797, -2.4699512)
+transform = Transform3D(-0.9997808, 0, 0.020942502, 0, 1, 0, -0.020942502, 0, -0.9997808, -2.2672462, 0.5121797, -2.4699512)
 
 [node name="DepositButtonArea" type="Area3D" parent="DebtMachine" unique_id=1603461943]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DebtMachine/DepositButtonArea" unique_id=573360212]
-transform = Transform3D(0.24, 0, -4.656613e-10, 0, 0.24, 0, 4.656613e-10, 0, 0.24, -0.6198497, 1.2524881, -0.23979592)
+transform = Transform3D(0.24000001, 0, 2.9802322e-08, 0, 0.24, 0, -2.9802322e-08, 0, 0.24000001, -0.6380358, 1.2787013, -0.30990303)
 shape = SubResource("BoxShape3D_tn84i")
 
 [node name="FocusPoint" type="Marker3D" parent="DebtMachine" unique_id=980007033]
