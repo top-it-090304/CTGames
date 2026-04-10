@@ -289,7 +289,7 @@ albedo_texture = SubResource("ViewportTexture_7mxcb")
 size = Vector2(1.38, 1.18)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tc3b6"]
-size = Vector3(1, 1, 0.36224365)
+size = Vector3(1, 1.2647705, 0.36224365)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2c4sm"]
 shading_mode = 0
@@ -1747,7 +1747,7 @@ mesh = SubResource("QuadMesh_yci1l")
 [node name="LeverArea" type="Area3D" parent="SlotMachineRoot" unique_id=456430284]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachineRoot/LeverArea" unique_id=728471463]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2824306, 2.027752, -0.9953079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2824306, 2.1601372, -0.9953079)
 shape = SubResource("BoxShape3D_tc3b6")
 
 [node name="FocusPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1781774373]
