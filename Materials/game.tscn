@@ -66,6 +66,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
 [ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 [ext_resource type="AudioStream" uid="uid://3fj0daoyghn4" path="res://Objects/Sound/OstReleaseTrailer.ogg" id="66_7x08p"]
+[ext_resource type="AudioStream" uid="uid://dguvdndqc2sd8" path="res://Objects/Sound/spin.ogg" id="67_yovps"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1859,8 +1860,12 @@ mesh = ExtResource("63_gsmia")
 
 [node name="BGMusic" type="AudioStreamPlayer3D" parent="." unique_id=96479439]
 stream = ExtResource("66_7x08p")
-volume_db = -50.0
+volume_db = -70.0
 autoplay = true
+
+[node name="SpinSound" type="AudioStreamPlayer3D" parent="." unique_id=840589602]
+stream = ExtResource("67_yovps")
+volume_db = -5.0
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]

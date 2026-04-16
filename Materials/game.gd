@@ -22,6 +22,7 @@ var _camera_locked: bool = false
 
 var win_popup_tween: Tween
 var cam_tween: Tween
+var _spin_sound: AudioStreamPlayer
 
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 var _money_base_pos := Vector2.ZERO
@@ -269,6 +270,8 @@ func _request_spin() -> void:
 
 	if slot_ui.has_method("request_spin"):
 		slot_ui.call("request_spin")
+
+	_play_spin_sound()
 
 	if animation_player != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		animation_player.play("lever")
@@ -561,6 +564,10 @@ func _connect_slot_ui() -> void:
 		var on_sequence: Callable = Callable(self, "_on_win_sequence_requested")
 		if not slot_ui.is_connected("win_sequence_requested", on_sequence):
 			slot_ui.connect("win_sequence_requested", on_sequence)
+	if slot_ui.has_signal("spin_completed"):
+		var on_done: Callable = Callable(self, "_on_spin_completed")
+		if not slot_ui.is_connected("spin_completed", on_done):
+			slot_ui.connect("spin_completed", on_done)
 
 func _sync_hud_from_slot() -> void:
 	if slot_ui == null or not slot_ui.has_method("get_hud_state"):
@@ -785,3 +792,42 @@ func _format_money(value: int) -> String:
 			out = "." + out
 			count = 0
 	return out
+
+func _ensure_spin_sound() -> void:
+	if _spin_sound != null:
+		return
+	_spin_sound = AudioStreamPlayer.new()
+	_spin_sound.name = "SpinSound"
+	add_child(_spin_sound)
+	# Ищем любой подходящий звук в папке Sound
+	var candidates: Array[String] = [
+		"res://Objects/Sound/spin.ogg",
+		"res://Objects/Sound/spin.wav",
+		"res://Objects/Sound/reel.ogg",
+		"res://Objects/Sound/reel.wav",
+		"res://Objects/Sound/slot_spin.ogg",
+		"res://Objects/Sound/slot_spin.wav",
+	]
+	for path: String in candidates:
+		if ResourceLoader.exists(path):
+			_spin_sound.stream = load(path)
+			print("[SpinSound] загружен: ", path)
+			break
+	if _spin_sound.stream == null:
+		print("[SpinSound] положи файл spin.ogg в папку Objects/Sound/")
+
+func _play_spin_sound() -> void:
+	_ensure_spin_sound()
+	if _spin_sound == null or _spin_sound.stream == null:
+		return
+	if _spin_sound.playing:
+		_spin_sound.stop()
+	_spin_sound.volume_db = -15.0
+	_spin_sound.play()
+
+func _on_spin_completed(_win_amount: int) -> void:
+	if _spin_sound == null or not _spin_sound.playing:
+		return
+	var tw: Tween = create_tween()
+	tw.tween_property(_spin_sound, "volume_db", -40.0, 0.3).set_trans(Tween.TRANS_SINE)
+	tw.tween_callback(_spin_sound.stop)
