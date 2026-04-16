@@ -160,8 +160,8 @@ func _compute_local_mesh_aabb() -> AABB:
 		if mesh_node != null and mesh_node.mesh != null:
 			var mesh_aabb: AABB = mesh_node.mesh.get_aabb()
 			if mesh_aabb.size != Vector3.ZERO:
-				var to_local: Transform3D = root_inverse * mesh_node.global_transform
-				var transformed: AABB = _transform_aabb(mesh_aabb, to_local)
+				var local_xform: Transform3D = root_inverse * mesh_node.global_transform
+				var transformed: AABB = _transform_aabb(mesh_aabb, local_xform)
 				if not has_bounds:
 					merged = transformed
 					has_bounds = true

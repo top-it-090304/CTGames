@@ -409,7 +409,7 @@ func _median_value(values: Array[float]) -> float:
 		return 0.0
 	var sorted_values: Array[float] = values.duplicate()
 	sorted_values.sort()
-	var middle: int = sorted_values.size() / 2
+	var middle: int = sorted_values.size() >> 1
 	if sorted_values.size() % 2 == 1:
 		return sorted_values[middle]
 	return (sorted_values[middle - 1] + sorted_values[middle]) * 0.5

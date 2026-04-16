@@ -239,16 +239,16 @@ func _is_totem_buy_panel_open() -> bool:
 func _update_ready_button_visibility() -> void:
 	if ready_button == null:
 		return
-	var show: bool = false
+	var should_show: bool = false
 	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open() and not is_win_sequence_active():
 		var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
 		var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
 		var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
 		var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
-		show = not spinning and not round_active and not game_over and spins_left <= 0
-	ready_button.visible = show
-	ready_button.disabled = not show
-	if show:
+		should_show = not spinning and not round_active and not game_over and spins_left <= 0
+	ready_button.visible = should_show
+	ready_button.disabled = not should_show
+	if should_show:
 		_camera_locked = false
 
 func _request_spin() -> void:
@@ -773,18 +773,6 @@ func _hud_box_style() -> StyleBoxFlat:
 	style.corner_radius_bottom_right = 0
 	return style
 
-func _update_hud_shake() -> void:
-	var t: float = float(Time.get_ticks_msec()) * 0.001
-	if lbl_money != null:
-		lbl_money.position = _money_base_pos + Vector2(sin(t * 2.6) * 0.8, cos(t * 3.1) * 0.55)
-	if lbl_spins != null:
-		lbl_spins.position = _spins_base_pos + Vector2(sin(t * 2.2 + 0.7) * 0.55, cos(t * 2.8 + 0.5) * 0.35)
-	if lbl_tok != null:
-		lbl_tok.position = _tok_base_pos + Vector2(sin(t * 2.5 + 1.1) * 0.65, cos(t * 3.0 + 0.2) * 0.45)
-	if win_popup != null and win_popup.visible:
-		win_popup.position = _win_popup_base_pos + Vector2(sin(t * 3.0 + 0.9) * 1.0, cos(t * 3.4 + 0.4) * 0.7)
-	elif win_popup != null:
-		win_popup.position = _win_popup_base_pos
 
 func _format_money(value: int) -> String:
 	var s: String = str(maxi(value, 0))

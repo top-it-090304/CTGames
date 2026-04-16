@@ -199,27 +199,27 @@ func _refresh_option_visuals() -> void:
 			_option_b.mouse_filter = Control.MOUSE_FILTER_STOP
 	_apply_button_selection_colors(_cancel, false)
 
-func _set_choice_controls_visible(show: bool) -> void:
+func _set_choice_controls_visible(visible_state: bool) -> void:
 	if _option_a != null:
-		_option_a.visible = show
+		_option_a.visible = visible_state
 	if _option_b != null:
-		_option_b.visible = show
+		_option_b.visible = visible_state
 	if _cancel != null:
-		_cancel.visible = show
+		_cancel.visible = visible_state
 
-func _set_idle_logo_visible(show: bool) -> void:
+func _set_idle_logo_visible(visible_state: bool) -> void:
 	if _backdrop != null:
-		_backdrop.color = Color(0.0, 0.0, 0.0, 1.0) if show else Color(0.0, 0.0, 0.0, 0.0)
-		_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE if show else Control.MOUSE_FILTER_STOP
+		_backdrop.color = Color(0.0, 0.0, 0.0, 1.0) if visible_state else Color(0.0, 0.0, 0.0, 0.0)
+		_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE if visible_state else Control.MOUSE_FILTER_STOP
 
 	if _logo != null:
 		_logo.texture = jackpot_jail_logo
-		_logo.visible = show and jackpot_jail_logo != null
+		_logo.visible = visible_state and jackpot_jail_logo != null
 		if _logo.visible:
 			_logo.move_to_front()
 
 	if _panel != null:
-		_panel.visible = (not show) or jackpot_jail_logo == null
+		_panel.visible = (not visible_state) or jackpot_jail_logo == null
 
 func press_by_normalized_position(nx: float, ny: float) -> bool:
 	if not is_open() or _panel == null:
@@ -231,8 +231,8 @@ func press_by_normalized_position(nx: float, ny: float) -> bool:
 
 	var screen_pos: Vector2 = Vector2(nx * viewport_size.x, ny * viewport_size.y)
 	var order: Array[String] = ["Option7Button", "Option3Button", "CancelButton"]
-	for name: String in order:
-		var btn: BaseButton = _panel.get_node_or_null(name) as BaseButton
+	for btn_name: String in order:
+		var btn: BaseButton = _panel.get_node_or_null(btn_name) as BaseButton
 		if btn == null or btn.disabled or not btn.visible:
 			continue
 		if btn.get_global_rect().has_point(screen_pos):

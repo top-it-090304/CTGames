@@ -6,7 +6,7 @@ var base_position: Vector2
 func _ready():
 	base_position = position
 
-func _process(delta):
+func _process(_delta: float) -> void:
 	position = base_position + Vector2(
 		randf_range(-shake_strength, shake_strength),
 		randf_range(-shake_strength, shake_strength)

@@ -3,6 +3,7 @@ extends Control
 
 signal status_changed(text: String)
 signal hud_changed(money: int, spins_left: int, tickets: int)
+@warning_ignore("unused_signal")
 signal win_popup_requested(amount: int)
 signal win_sequence_requested(result: Dictionary)
 signal spin_completed(win_amount: int)
@@ -533,6 +534,8 @@ func _autoload_spin_fx_textures() -> void:
 			"res://Objects/jackpot_jail_slot.png",
 		]
 		for path: String in intro_candidates:
+			if not ResourceLoader.exists(path):
+				continue
 			var tex: Texture2D = load(path) as Texture2D
 			if tex != null:
 				spin_intro_texture = tex

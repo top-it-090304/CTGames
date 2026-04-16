@@ -1252,8 +1252,8 @@ func _node_matches_area(node: Node, area: Area3D) -> bool:
 func _has_ancestor_named(node: Node, names: Array[String]) -> bool:
 	var current: Node = node
 	while current != null:
-		for name: String in names:
-			if current.name == name:
+		for n: String in names:
+			if current.name == n:
 				return true
 		current = current.get_parent()
 	return false

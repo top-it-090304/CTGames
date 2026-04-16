@@ -292,10 +292,10 @@ func _on_pause_button_pressed() -> void:
 	_toggle_pause()
 
 func _is_slot_spinning() -> bool:
-	var game := get_tree().get_root().get_node_or_null("Game")
-	if game == null:
+	var game_node := get_tree().get_root().get_node_or_null("Game")
+	if game_node == null:
 		return false
-	var slot_ui := game.get_node_or_null("SubViewport/SlotUI")
+	var slot_ui := game_node.get_node_or_null("SubViewport/SlotUI")
 	if slot_ui == null:
 		return false
 	if slot_ui.has_method("is_spinning"):
