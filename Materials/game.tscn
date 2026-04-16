@@ -1876,7 +1876,7 @@ transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4
 
 [node name="Стрелка1NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=1082772974]
 position = Vector2(1077, 573)
-scale = Vector2(1.1363636, 1.2605042)
+scale = Vector2(1.1363637, 1.2605042)
 texture = ExtResource("68_nb1du")
 
 [node name="Стрелка2NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=1851071318]
