@@ -1476,7 +1476,7 @@ reward_anim_speed_scale = 1.0
 [node name="CameraTargets" type="Node3D" parent="." unique_id=48921000]
 
 [node name="CamDebt" type="Marker3D" parent="CameraTargets" unique_id=1824680857]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.017, -0.669)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.141714, -0.3162838)
 
 [node name="CamTickets" type="Marker3D" parent="CameraTargets" unique_id=2089826251]
 
@@ -1866,6 +1866,9 @@ autoplay = true
 [node name="SpinSound" type="AudioStreamPlayer3D" parent="." unique_id=840589602]
 stream = ExtResource("67_yovps")
 volume_db = -5.0
+
+[node name="SlotView" type="Marker3D" parent="." unique_id=1544157953]
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -3.25984, 2.2179234, -0.31471264)
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
