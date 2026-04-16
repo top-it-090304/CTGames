@@ -67,6 +67,8 @@
 [ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 [ext_resource type="AudioStream" uid="uid://3fj0daoyghn4" path="res://Objects/Sound/OstReleaseTrailer.ogg" id="66_7x08p"]
 [ext_resource type="AudioStream" uid="uid://dguvdndqc2sd8" path="res://Objects/Sound/spin.ogg" id="67_yovps"]
+[ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="68_nb1du"]
+[ext_resource type="Texture2D" uid="uid://db8jtlbskokpt" path="res://Objects/Стрелка2-no-bg-preview (carve.photos).png" id="69_42vkw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l2bl"]
 albedo_texture = ExtResource("2_62l5a")
@@ -1380,6 +1382,7 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1440,16 +1443,15 @@ offset_bottom = 382.0
 horizontal_alignment = 1
 
 [node name="Right" type="Button" parent="UI" unique_id=593232687]
-offset_left = 1020.0
-offset_top = 539.0
-offset_right = 1157.0
-offset_bottom = 647.0
+offset_left = 1002.0
+offset_top = 498.0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [node name="Left" type="Button" parent="UI" unique_id=1323410314]
-offset_left = 23.0
-offset_top = 550.0
-offset_right = 112.0
-offset_bottom = 639.0
+offset_top = 498.0
+offset_right = 150.0
+offset_bottom = 648.0
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
@@ -1868,3 +1870,13 @@ volume_db = -5.0
 
 [node name="SlotView" type="Marker3D" parent="." unique_id=1544157953]
 transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -3.25984, 2.2179234, -0.31471264)
+
+[node name="Стрелка1NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=1082772974]
+position = Vector2(1077, 573)
+scale = Vector2(1.1363636, 1.2605042)
+texture = ExtResource("68_nb1du")
+
+[node name="Стрелка2NoBgPreview(carve_photos)" type="Sprite2D" parent="." unique_id=1851071318]
+position = Vector2(75, 573)
+scale = Vector2(1.1538461, 1.260504)
+texture = ExtResource("69_42vkw")
