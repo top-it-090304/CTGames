@@ -293,7 +293,7 @@ func _on_popup_option_selected(spins: int, cost: int, ticket_bonus: int) -> void
 	_close_popup()
 	_set_slot_locked(false)
 	_update_debt_ui()
-	_move_camera_hint_safe("slot_machine", 0.6)
+	_move_camera_hint_safe("slot_play", 0.6)
 
 func _on_popup_canceled() -> void:
 	if game_over:

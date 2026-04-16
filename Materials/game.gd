@@ -85,10 +85,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
 		if key_event.keycode == KEY_SPACE or key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
-			if ready_button != null and ready_button.visible:
-				_on_ready_button_pressed()
-			else:
-				_request_spin()
+			_request_spin()
 			return
 
 	if _is_intro_active():
@@ -117,20 +114,31 @@ func _rotate_camera_by_drag(delta_x: float) -> void:
 	camera_3d.rotate_y(-delta_x * 0.004)
 
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
-	if slot_ui != null and slot_ui.has_method("get_spins_left") and int(slot_ui.call("get_spins_left")) <= 0:
-		return
 	if is_win_sequence_active():
 		return
 	if not _is_slot_machine_hit(screen_pos):
 		return
+	var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
+	if spins_left <= 0:
+		_try_open_spin_choice()
+		return
 	_request_spin()
+
+func _try_open_spin_choice() -> void:
+	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
+		return
+	var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
+	var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
+	if round_active or game_over:
+		return
+	_camera_locked = true
+	_move_camera_to_hint("slot_view")
+	if round_system != null and round_system.has_method("request_spin_choice"):
+		round_system.call("request_spin_choice")
+	_update_ready_button_visibility()
 
 func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 	if camera_3d == null:
-		return false
-	if slot_spin_area == null:
-		slot_spin_area = _find_slot_spin_area()
-	if slot_spin_area == null:
 		return false
 
 	var from: Vector3 = camera_3d.project_ray_origin(screen_pos)
@@ -146,7 +154,18 @@ func _is_slot_machine_hit(screen_pos: Vector2) -> bool:
 	if collider == null:
 		return false
 
-	return _is_node_under(slot_spin_area, collider)
+	# Проверяем попадание в рычаг (для спина)
+	if slot_spin_area == null:
+		slot_spin_area = _find_slot_spin_area()
+	if slot_spin_area != null and _is_node_under(slot_spin_area, collider):
+		return true
+
+	# Проверяем попадание в любую часть автомата
+	var machine: Node3D = _find_slot_machine()
+	if machine != null and _is_node_under(machine, collider):
+		return true
+
+	return false
 
 func _is_node_under(root: Node, node: Node) -> bool:
 	if root == null or node == null:
@@ -245,17 +264,9 @@ func _is_totem_buy_panel_open() -> bool:
 func _update_ready_button_visibility() -> void:
 	if ready_button == null:
 		return
-	var should_show: bool = false
-	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open() and not is_win_sequence_active():
-		var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
-		var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
-		var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
-		var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
-		should_show = not spinning and not round_active and not game_over and spins_left <= 0
-	ready_button.visible = should_show
-	ready_button.disabled = not should_show
-	if should_show:
-		_camera_locked = false
+	ready_button.visible = false
+	ready_button.disabled = true
+	_camera_locked = false
 
 func _request_spin() -> void:
 	if _is_intro_active():
@@ -430,8 +441,28 @@ func _hint_target(hint: String) -> Marker3D:
 			if target == null:
 				target = get_node_or_null("SlotView") as Marker3D
 			return target
+		"slot_play":
+			return _get_or_create_slot_play_marker(root)
 		_:
 			return root.get_node_or_null("CamMain") as Marker3D
+
+func _get_or_create_slot_play_marker(root: Node3D) -> Marker3D:
+	var marker: Marker3D = root.get_node_or_null("CamSlotPlay") as Marker3D
+	if marker != null:
+		return marker
+	# Маркера нет в сцене — создаём динамически чуть дальше SlotView
+	marker = Marker3D.new()
+	marker.name = "CamSlotPlay"
+	root.add_child(marker)
+	var slot_view: Marker3D = get_node_or_null("SlotView") as Marker3D
+	if slot_view == null:
+		slot_view = root.get_parent().get_node_or_null("CameraTargets/SlotView") as Marker3D
+	if slot_view != null:
+		marker.global_transform = slot_view.global_transform
+		marker.global_position += slot_view.global_transform.basis.z * 1.2
+	elif camera_3d != null:
+		marker.global_transform = camera_3d.global_transform
+	return marker
 
 func _find_machine(primary: String, fallback: String) -> Node3D:
 	var node: Node3D = get_node_or_null(primary) as Node3D

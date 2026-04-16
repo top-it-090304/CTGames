@@ -56,7 +56,7 @@
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
-[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
@@ -293,7 +293,7 @@ albedo_texture = SubResource("ViewportTexture_7mxcb")
 size = Vector2(1.38, 1.18)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tc3b6"]
-size = Vector3(1, 1.2647705, 0.36224365)
+size = Vector3(1, 1.0266418, 1.7743835)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2c4sm"]
 shading_mode = 0
@@ -1484,6 +1484,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.141714, -0.3162838)
 [node name="CamSlot" type="Marker3D" parent="CameraTargets" unique_id=1177043428]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7948208, 1.4398408, -0.6386836)
 
+[node name="CamSlotPlay" type="Marker3D" parent="CameraTargets" unique_id=1278376703]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.0048754, 2.15838, -0.3975181)
+
 [node name="DebtViewport" type="SubViewport" parent="." unique_id=1115058972]
 size = Vector2i(1024, 512)
 render_target_update_mode = 4
@@ -1750,7 +1753,7 @@ mesh = SubResource("QuadMesh_yci1l")
 [node name="LeverArea" type="Area3D" parent="SlotMachineRoot" unique_id=456430284]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SlotMachineRoot/LeverArea" unique_id=728471463]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2824306, 2.1601372, -0.9953079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2824306, 2.2792015, -0.28923798)
 shape = SubResource("BoxShape3D_tc3b6")
 
 [node name="FocusPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1781774373]
