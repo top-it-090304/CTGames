@@ -56,7 +56,7 @@
 [ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
-[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
@@ -1294,19 +1294,6 @@ offset_bottom = 23.0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="Left" type="Button" parent="UI" unique_id=2131542521]
-offset_left = 974.0
-offset_top = 483.0
-offset_right = 1152.0
-offset_bottom = 648.0
-flat = true
-
-[node name="Right" type="Button" parent="UI" unique_id=673842236]
-offset_top = 483.0
-offset_right = 181.0
-offset_bottom = 648.0
-flat = true
-
 [node name="TotemBuyPanel" type="Panel" parent="UI" unique_id=1622409470]
 anchors_preset = 8
 anchor_left = 0.5
@@ -1451,6 +1438,18 @@ offset_top = 359.0
 offset_right = 720.0
 offset_bottom = 382.0
 horizontal_alignment = 1
+
+[node name="Right" type="Button" parent="UI" unique_id=593232687]
+offset_left = 1020.0
+offset_top = 539.0
+offset_right = 1157.0
+offset_bottom = 647.0
+
+[node name="Left" type="Button" parent="UI" unique_id=1323410314]
+offset_left = 23.0
+offset_top = 550.0
+offset_right = 112.0
+offset_bottom = 639.0
 
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
@@ -1869,8 +1868,3 @@ volume_db = -5.0
 
 [node name="SlotView" type="Marker3D" parent="." unique_id=1544157953]
 transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -3.25984, 2.2179234, -0.31471264)
-
-[connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
-[connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
-[connection signal="button_down" from="UI/Right" to="." method="_on_right_button_down"]
-[connection signal="button_up" from="UI/Right" to="." method="_on_right_button_up"]

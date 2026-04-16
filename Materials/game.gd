@@ -6,7 +6,10 @@ extends Node3D
 @onready var intro_overlay: Node = get_node_or_null("IntroOverlay")
 @onready var camera_3d: Camera3D = get_node_or_null("Camera3D") as Camera3D
 @onready var round_system: Node = get_node_or_null("RoundSystem")
+@onready var btn_left = $UI/Left
+@onready var btn_right = $UI/Right
 
+var tween: Tween
 var hud_layer: CanvasLayer
 var hud_left: Panel
 var hud_right: Panel
@@ -54,6 +57,8 @@ func _ready() -> void:
 	_update_ready_button_visibility()
 	if win_popup != null:
 		win_popup.visible = false
+	btn_left.pressed.connect(_on_left_pressed)
+	btn_right.pressed.connect(_on_right_pressed)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -836,3 +841,23 @@ func _on_spin_completed(_win_amount: int) -> void:
 	var tw: Tween = create_tween()
 	tw.tween_property(_spin_sound, "volume_db", -40.0, 0.3).set_trans(Tween.TRANS_SINE)
 	tw.tween_callback(_spin_sound.stop)
+func _on_left_pressed():
+	rotate_camera(90)
+
+func _on_right_pressed():
+	rotate_camera(-90)
+
+func rotate_camera(angle_degrees: float):
+	# Если предыдущая анимация еще идет — останавливаем её
+	if tween and tween.is_running():
+		tween.kill()
+	
+	tween = create_tween()
+	
+	# Рассчитываем новый угол в радианах
+	var target_rotation = camera_3d.rotation.y + deg_to_rad(angle_degrees)
+	
+	# Плавное вращение за 0.5 секунды с использованием эффекта замедления (TRANS_QUAD)
+	tween.tween_property(camera_3d, "rotation:y", target_rotation, 0.5)\
+		.set_trans(Tween.TRANS_QUAD)\
+		.set_ease(Tween.EASE_OUT)
