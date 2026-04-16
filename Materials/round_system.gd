@@ -299,6 +299,12 @@ func _on_popup_canceled() -> void:
 	if game_over:
 		return
 	_show_jackpot_jail_screen()
+	_close_popup()
+	_move_camera_hint_safe("default", 0.6)
+	if game_root != null:
+		game_root.set("_camera_locked", false)
+		if game_root.has_method("_update_ready_button_visibility"):
+			game_root.call("_update_ready_button_visibility")
 
 func _on_popup_replay_requested() -> void:
 	var tree: SceneTree = get_tree()
