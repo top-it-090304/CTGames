@@ -224,7 +224,7 @@ func _on_ready_button_pressed() -> void:
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
 	_camera_locked = true
-	_move_camera_to_hint("slot_machine")
+	_move_camera_to_hint("slot_view") 
 	if round_system != null and round_system.has_method("request_spin_choice"):
 		round_system.call("request_spin_choice")
 	_update_ready_button_visibility()
@@ -417,6 +417,11 @@ func _hint_target(hint: String) -> Marker3D:
 			return root.get_node_or_null("CamTickets") as Marker3D
 		"slot_machine":
 			return root.get_node_or_null("CamSlot") as Marker3D
+		"slot_view":
+			var target = root.get_node_or_null("SlotView") as Marker3D
+			if target == null:
+				target = get_node_or_null("SlotView") as Marker3D
+			return target
 		_:
 			return root.get_node_or_null("CamMain") as Marker3D
 

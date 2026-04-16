@@ -1856,6 +1856,9 @@ mesh = ExtResource("63_gsmia")
 transform = Transform3D(0.004935747, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -2.1812973)
 mesh = ExtResource("63_gsmia")
 
+[node name="SlotView" type="Marker3D" parent="." unique_id=1544157953]
+transform = Transform3D(0.067788884, 0, 0.9976998, 0, 1, 0, -0.9976998, 0, 0.067788884, -3.25984, 2.2179234, -0.36672306)
+
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]
 [connection signal="button_down" from="UI/Right" to="." method="_on_right_button_down"]

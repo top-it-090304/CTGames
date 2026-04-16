@@ -208,9 +208,9 @@ func _select_popup_option_by_screen_pos(screen_pos: Vector2) -> void:
 	# Fallback mapping
 	if nx < 0.18 or nx > 0.82:
 		return
-	if ny < 0.61:
+	if ny < 0.55:
 		_press_popup_button("Option7Button")
-	elif ny < 0.70:
+	elif ny < 0.60:
 		_press_popup_button("Option3Button")
 	else:
 		_press_popup_button("CancelButton")
@@ -284,6 +284,7 @@ func _on_popup_option_selected(spins: int, cost: int, ticket_bonus: int) -> void
 	_close_popup()
 	_set_slot_locked(false)
 	_update_debt_ui()
+	_move_camera_hint_safe("slot_machine", 0.6)
 
 func _on_popup_canceled() -> void:
 	if game_over:
