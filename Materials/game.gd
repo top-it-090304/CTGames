@@ -267,28 +267,12 @@ func _update_ready_button_visibility() -> void:
 	ready_button.visible = false
 	ready_button.disabled = true
 	_camera_locked = false
-	
+
 	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
 	var win_active: bool = is_win_sequence_active()
 	var should_block_ui: bool = spinning or win_active or _is_intro_active() or _is_spin_choice_open()
-	
-	# Блокируем кнопки поворота
 	if btn_left: btn_left.disabled = should_block_ui
 	if btn_right: btn_right.disabled = should_block_ui
-
-	# Логика для кнопки Ready (оставляем вашу существующую)
-	var should_show_ready: bool = false
-	if not _is_intro_active() and not _is_spin_choice_open() and not _is_totem_buy_panel_open() and not win_active:
-		var spins_left: int = int(slot_ui.call("get_spins_left")) if slot_ui != null and slot_ui.has_method("get_spins_left") else 0
-		var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
-		var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
-		should_show_ready = not spinning and not round_active and not game_over and spins_left <= 0
-	
-	ready_button.visible = should_show_ready
-	ready_button.disabled = not should_show_ready
-	
-	if should_show_ready:
-		_camera_locked = false
 
 func _request_spin() -> void:
 	if _is_intro_active():

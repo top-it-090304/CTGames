@@ -39,11 +39,18 @@ func _ready() -> void:
 	_ensure_scene()
 	_build_reels()
 	_sync_layout()
+	set_process(false)
 
 func _process(delta: float) -> void:
+	var any_active: bool = false
 	for reel_var: Variant in _reels:
-		_update_reel(reel_var as Dictionary, delta)
+		var reel: Dictionary = reel_var as Dictionary
+		if String(reel.get("mode", "idle")) != "idle":
+			any_active = true
+		_update_reel(reel, delta)
 	_update_highlights(delta)
+	if not any_active and _highlight_targets.is_empty():
+		set_process(false)
 
 func set_symbol_pool(symbols: Array[Texture2D], weights: Array[float]) -> void:
 	_symbol_pool = symbols.duplicate()
@@ -70,6 +77,7 @@ func set_status_text(_text: String) -> void:
 func start_spin_with_board(board: Array) -> void:
 	if _symbol_pool.is_empty():
 		return
+	set_process(true)
 	clear_combo_highlight()
 	for col: int in range(mini(reel_count, _reels.size())):
 		var reel: Dictionary = _reels[col] as Dictionary
@@ -108,6 +116,7 @@ func preview_board(board: Array) -> void:
 		_apply_target_to_reel(reel)
 
 func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
+	set_process(true)
 	clear_combo_highlight()
 	var palette: Array = _palettes[posmod(palette_index, _palettes.size())]
 	for point_var: Variant in points:

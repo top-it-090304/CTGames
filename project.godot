@@ -13,7 +13,7 @@ config_version=5
 config/name="JackpotJail"
 run/main_scene="uid://bkm6cqcetsu17"
 config/features=PackedStringArray("4.6", "Mobile")
-boot_splash/bg_color=Color(0.21795261, 0.11175083, 0.0032757188, 1)
+boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="uid://b764vd2en4vac"
 config/icon="uid://d0eug0onpabq0"
 

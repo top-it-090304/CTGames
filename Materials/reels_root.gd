@@ -28,9 +28,11 @@ func _ready() -> void:
 	_bind_reels()
 	_bind_frame_rams()
 	_clear_frame_rams()
+	set_process(false)
 
 func _process(delta: float) -> void:
 	if _active_frame_ids.is_empty():
+		set_process(false)
 		return
 	_pulse_t += delta
 	var phase: float = 0.5 + 0.5 * sin(_pulse_t * frame_pulse_speed)
@@ -218,6 +220,7 @@ func _apply_frame_rams(active_ids: Dictionary) -> void:
 		return
 	_active_frame_ids = active_ids.duplicate()
 	_pulse_t = 0.0
+	set_process(not active_ids.is_empty())
 	for id_var: Variant in _frame_nodes.keys():
 		var id: int = int(id_var)
 		var node: Node3D = _frame_nodes[id] as Node3D

@@ -47,6 +47,7 @@ var _highlight_materials: Dictionary = {}
 func _ready() -> void:
 	randomize()
 	_setup_reel()
+	set_process(false)
 
 func _process(delta: float) -> void:
 	if _delay_remaining > 0.0:
@@ -58,6 +59,9 @@ func _process(delta: float) -> void:
 		_update_settle(delta)
 	if _highlight_slot_index >= 0:
 		_update_highlight_visual(delta)
+	# Выключаем process когда нечего делать
+	if not _is_spinning and not _is_settling and _delay_remaining <= 0.0 and _highlight_slot_index < 0:
+		set_process(false)
 
 func sync_layout() -> void:
 	_setup_reel(true)
@@ -76,6 +80,7 @@ func begin_spin(target_keys: Array, spin_speed: float, settle_speed: float, tota
 	_is_settling = false
 	position.y = 0.0
 	_apply_visibility(true)
+	set_process(true)
 
 func preview_symbols(target_keys: Array) -> void:
 	_setup_reel()
@@ -100,6 +105,7 @@ func highlight_row(row: int) -> void:
 	_highlight_slot_index = slot_index
 	_highlight_t = 0.0
 	_apply_highlight_state(slot_index, 1.0)
+	set_process(true)
 
 func is_spinning() -> bool:
 	return _is_spinning or _is_settling or _delay_remaining > 0.0

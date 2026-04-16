@@ -242,6 +242,7 @@ func _process(delta: float) -> void:
 		_update_editor_preview_if_needed()
 		return
 	if _highlighted_icons.is_empty():
+		set_process(false)
 		return
 	_highlight_pulse_t += delta
 	_refresh_icon_highlights()
@@ -1443,6 +1444,7 @@ func show_combo_highlight(points: Array, palette_index: int = 0) -> void:
 		return
 	_highlight_palette_index = posmod(palette_index, _highlight_palettes.size())
 	_highlight_pulse_t = 0.0
+	set_process(true)
 	for point_var: Variant in points:
 		var point: Vector2i = _point_to_board_cell(point_var)
 		if point.x < 0 or point.y < 0:

@@ -29,9 +29,11 @@ func _ready() -> void:
 	_bind_nodes()
 	_apply_visuals()
 	_hide_all()
+	set_process(false)
 
 func _process(delta: float) -> void:
 	if not _active:
+		set_process(false)
 		return
 	_neon_t += delta
 	_update_neon_anim()
@@ -51,6 +53,7 @@ func play_result(result: Dictionary) -> void:
 	var token: int = _sequence_token
 	_active = true
 	visible = true
+	set_process(true)
 	emit_signal("sequence_started")
 	_run_sequence.call_deferred(token, result.duplicate(true))
 
