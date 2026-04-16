@@ -1474,7 +1474,7 @@ reward_anim_speed_scale = 1.0
 [node name="CameraTargets" type="Node3D" parent="." unique_id=48921000]
 
 [node name="CamDebt" type="Marker3D" parent="CameraTargets" unique_id=1824680857]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.017, -0.669)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.652, 2.141714, -0.3162838)
 
 [node name="CamTickets" type="Marker3D" parent="CameraTargets" unique_id=2089826251]
 
@@ -1857,7 +1857,7 @@ transform = Transform3D(0.004935747, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.004860000
 mesh = ExtResource("63_gsmia")
 
 [node name="SlotView" type="Marker3D" parent="." unique_id=1544157953]
-transform = Transform3D(0.067788884, 0, 0.9976998, 0, 1, 0, -0.9976998, 0, 0.067788884, -3.25984, 2.2179234, -0.36672306)
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -3.25984, 2.2179234, -0.31471264)
 
 [connection signal="button_down" from="UI/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="UI/Left" to="." method="_on_left_button_up"]

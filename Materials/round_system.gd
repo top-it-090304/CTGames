@@ -194,26 +194,35 @@ func _handle_popup_input(event: InputEvent) -> void:
 		return
 
 func _select_popup_option_by_screen_pos(screen_pos: Vector2) -> void:
+	if camera_3d == null: return
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
-	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
-		return
-
+	if viewport_size.x <= 0 or viewport_size.y <= 0: return
+	
 	var nx: float = screen_pos.x / viewport_size.x
 	var ny: float = screen_pos.y / viewport_size.y
 
-	if popup != null and popup.has_method("press_by_normalized_position"):
-		popup.call("press_by_normalized_position", nx, ny)
-		return
+	var is_zoomed: bool = false
+	var machine = _find_machine(["SlotMachine", "blockbench_export2"])
+	if machine != null:
+		if camera_3d.global_position.distance_to(machine.global_position) < 1.5:
+			is_zoomed = true
 
-	# Fallback mapping
-	if nx < 0.18 or nx > 0.82:
-		return
-	if ny < 0.55:
-		_press_popup_button("Option7Button")
-	elif ny < 0.60:
-		_press_popup_button("Option3Button")
+	if is_zoomed:
+		if nx < 0.15 or nx > 0.85: return
+		if ny < 0.40: 
+			_press_popup_button("Option7Button")
+		elif ny < 0.65: 
+			_press_popup_button("Option3Button")
+		else: 
+			_press_popup_button("CancelButton")
 	else:
-		_press_popup_button("CancelButton")
+		if nx < 0.18 or nx > 0.82: return
+		if ny < 0.61: 
+			_press_popup_button("Option7Button")
+		elif ny < 0.70: 
+			_press_popup_button("Option3Button")
+		else: 
+			_press_popup_button("CancelButton")
 
 func _press_popup_button(button_name: String) -> void:
 	if popup == null:
