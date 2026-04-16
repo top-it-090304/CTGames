@@ -18,6 +18,7 @@ var ready_button: Button
 var totem_buy_panel: Panel
 var win_sequence_layer: Control
 var slot_test_console: Panel
+var _camera_locked: bool = false
 
 var win_popup_tween: Tween
 var cam_tween: Tween
@@ -63,13 +64,15 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventScreenDrag:
 		var drag: InputEventScreenDrag = event as InputEventScreenDrag
-		_rotate_camera_by_drag(drag.relative.x)
+		if not _camera_locked:
+			_rotate_camera_by_drag(drag.relative.x)
 		return
 
 	if event is InputEventMouseMotion:
 		var mm: InputEventMouseMotion = event as InputEventMouseMotion
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-			_rotate_camera_by_drag(mm.relative.x)
+			if not _camera_locked:
+				_rotate_camera_by_drag(mm.relative.x)
 			return
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -102,6 +105,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _rotate_camera_by_drag(delta_x: float) -> void:
 	if camera_3d == null:
+		return
+	if _camera_locked:
 		return
 	camera_3d.rotate_y(-delta_x * 0.004)
 
@@ -218,6 +223,8 @@ func _on_ready_button_pressed() -> void:
 		return
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
+	_camera_locked = true
+	_move_camera_to_hint("slot_machine")
 	if round_system != null and round_system.has_method("request_spin_choice"):
 		round_system.call("request_spin_choice")
 	_update_ready_button_visibility()
@@ -241,6 +248,8 @@ func _update_ready_button_visibility() -> void:
 		show = not spinning and not round_active and not game_over and spins_left <= 0
 	ready_button.visible = show
 	ready_button.disabled = not show
+	if show:
+		_camera_locked = false
 
 func _request_spin() -> void:
 	if _is_intro_active():
