@@ -8,16 +8,8 @@ var play_locked
 var full_text = ""
 var char_index = 0
 var speed = 0.03
-@export var shake_strength := 1.5
-var base_play_pos: Vector2
-var base_quit_pos: Vector2
-var base_label_pos: Vector2
-
 
 func _ready():
-	base_play_pos = play_button.position
-	base_quit_pos = quit_button.position
-	base_label_pos = message.position
 	_configure_button(play_button)
 	_configure_button(quit_button)
 	_configure_label(message)
@@ -61,20 +53,6 @@ func _configure_label(lbl: Label) -> void:
 	lbl.add_theme_constant_override("outline_size", 4)
 	lbl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
-func _process(delta):
-	play_button.position = base_play_pos + Vector2(
-		randf_range(-shake_strength, shake_strength),
-		randf_range(-shake_strength, shake_strength)
-	)
-	quit_button.position = base_quit_pos + Vector2(
-		randf_range(-shake_strength, shake_strength),
-		randf_range(-shake_strength, shake_strength)
-	)
-	message.position = base_label_pos + Vector2(
-		randf_range(-shake_strength, shake_strength),
-		randf_range(-shake_strength, shake_strength)
-	)
-
 func _on_play_pressed():
 	if play_locked:
 		return
@@ -112,6 +90,4 @@ func fade_out_text():
 func move_play_button():
 	var tween = create_tween()
 	var target_y = get_viewport_rect().size.y * 0.6
-	base_play_pos.y = target_y
 	tween.tween_property(play_button, "position:y", target_y, 1.5)
-	await tween.finished

@@ -30,9 +30,6 @@ var _waiting_choice := false
 var _no_branch := false
 
 var _pending_steps: Array[Dictionary] = []
-var _text_base_position := Vector2.ZERO
-var _hint_base_position := Vector2.ZERO
-var _choices_base_position := Vector2.ZERO
 
 func _ready() -> void:
 	_setup_ui()
@@ -189,14 +186,13 @@ func _setup_ui() -> void:
 		btn.mouse_filter = Control.MOUSE_FILTER_STOP
 		btn.add_theme_font_override("font", PIXEL_FONT)
 		btn.add_theme_font_size_override("font_size", 56)
-		btn.add_theme_color_override("font_color",         Color(0.95, 0.95, 0.95, 1.0))
-		btn.add_theme_color_override("font_hover_color",   Color(1.0, 0.86, 0.08, 1.0))
+		btn.add_theme_color_override("font_color",          Color(0.95, 0.95, 0.95, 1.0))
+		btn.add_theme_color_override("font_hover_color",    Color(1.0, 0.86, 0.08, 1.0))
 		btn.add_theme_color_override("font_pressed_color", Color(0.75, 0.75, 0.75, 1.0))
 		btn.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1.0))
 		btn.add_theme_constant_override("outline_size", 2)
 		btn.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
-	_cache_dialogue_base_positions()
 	_box.visible = false
 
 	if not _pending_steps.is_empty() and not _active:
@@ -204,27 +200,7 @@ func _setup_ui() -> void:
 		_pending_steps.clear()
 		start(queued)
 
-func _cache_dialogue_base_positions() -> void:
-	if _text != null:
-		_text_base_position = _text.position
-	if _hint != null:
-		_hint_base_position = _hint.position
-	if _choices != null:
-		_choices_base_position = _choices.position
-
-func _update_dialogue_shake() -> void:
-	if _box == null or not _box.visible:
-		return
-	var t: float = float(Time.get_ticks_msec()) * 0.001
-	if _text != null:
-		_text.position = _text_base_position + Vector2(sin(t * 2.8) * 0.8, cos(t * 3.3) * 0.55)
-	if _hint != null:
-		_hint.position = _hint_base_position + Vector2(sin(t * 2.4 + 0.7) * 0.55, cos(t * 2.9 + 0.4) * 0.35)
-	if _choices != null:
-		_choices.position = _choices_base_position + Vector2(sin(t * 2.2 + 1.1) * 0.65, cos(t * 2.7 + 0.9) * 0.35)
-
 func _process(delta: float) -> void:
-	_update_dialogue_shake()
 	if not _active or not _typing:
 		return
 

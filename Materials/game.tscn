@@ -53,18 +53,14 @@
 [ext_resource type="Texture2D" uid="uid://ckj8yyeditin" path="res://Objects/Untitled_Texture_SlotMachine_KnobEmissionMap.png" id="53_p4b4j"]
 [ext_resource type="PackedScene" uid="uid://lumo42tfv36o" path="res://diamond.glb" id="54_omno6"]
 [ext_resource type="Script" uid="uid://blwdsgmrq2ro2" path="res://Materials/slot_ui.gd" id="54_slotui"]
-[ext_resource type="ArrayMesh" uid="uid://d3qeq7hvn3pxe" path="res://Objects/megafon.mesh" id="55_2c4sm"]
 [ext_resource type="PackedScene" uid="uid://boxkh4qi1enro" path="res://lemon.glb" id="55_omno6"]
 [ext_resource type="ArrayMesh" uid="uid://cta8u2k3xos0n" path="res://Objects/tabletki.mesh" id="55_rnwkk"]
-[ext_resource type="Script" uid="uid://4oya0l6jpl53" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
+[ext_resource type="Script" path="res://Materials/mesh_instance_3d.gd" id="56_k6p7f"]
 [ext_resource type="Script" uid="uid://dgi1xre8rxvph" path="res://Materials/slot_visual_stage.gd" id="56_visualstage"]
 [ext_resource type="Script" uid="uid://dehmm1s6o5ymt" path="res://Materials/reels_root.gd" id="57_reelsroot"]
 [ext_resource type="PackedScene" uid="uid://d2ln7nd8i6q6e" path="res://textures/bans.glb" id="57_syuwj"]
 [ext_resource type="Texture2D" uid="uid://8fo74ewfgy7k" path="res://textures/TextureCircleShadowDarkRed.png" id="58_7mxcb"]
 [ext_resource type="Script" uid="uid://cp60l1pgp7yh4" path="res://Materials/reel_3d.gd" id="58_reel3d"]
-[ext_resource type="ArrayMesh" uid="uid://1ecqcq5dcky0" path="res://Objects/dver.mesh" id="59_7mxcb"]
-[ext_resource type="ArrayMesh" uid="uid://bh4gvlsn0ehss" path="res://Objects/polks.mesh" id="61_6qhtt"]
-[ext_resource type="ArrayMesh" uid="uid://b3tko13usanx6" path="res://Objects/zapiska.mesh" id="63_gsmia"]
 [ext_resource type="AudioStream" uid="uid://3fj0daoyghn4" path="res://Objects/Sound/OstReleaseTrailer.ogg" id="66_7x08p"]
 [ext_resource type="AudioStream" uid="uid://dguvdndqc2sd8" path="res://Objects/Sound/spin.ogg" id="67_yovps"]
 [ext_resource type="Texture2D" uid="uid://ecp53pl5jbcr" path="res://Objects/Стрелка1-no-bg-preview (carve.photos).png" id="68_nb1du"]
@@ -127,6 +123,23 @@ _data = {
 &"lever": SubResource("Animation_7mxcb")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_tc3b6"]
+font = ExtResource("23_nmok7")
+font_size = 27
+outline_color = Color(0.99911004, 0.49464387, 0, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_tn84i"]
 size = Vector3(1.6931763, 1.4282837, 1.5842285)
 
@@ -168,23 +181,6 @@ albedo_color = Color(1, 0, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7x08p"]
 albedo_color = Color(1, 0, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yci1l"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.96295136, 0.50069934, 0.053525537, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="LabelSettings" id="LabelSettings_tc3b6"]
-font = ExtResource("23_nmok7")
-font_size = 27
-outline_color = Color(0.99911004, 0.49464387, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_if7fe"]
 size = Vector3(1.0966797, 0.68463135, 1)
@@ -316,7 +312,7 @@ material = SubResource("StandardMaterial3D_v06jb")
 metadata/_edit_group_ = true
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=1272693432]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.2752392, 3.7258468, -1.0215673)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.2788885, 3.719746, -1.0233669)
 material_override = SubResource("StandardMaterial3D_3w25a")
 size = Vector3(15.430664, 0.2, 7.6620483)
 material = SubResource("StandardMaterial3D_v06jb")
@@ -369,6 +365,208 @@ libraries/ = SubResource("AnimationLibrary_rnwkk")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1137695550]
 transform = Transform3D(0.0063006436, 0, 0.99998015, 0, 1, 0, -0.99998015, 0, 0.0063006436, -2.4458764, 2.1250708, -0.67064714)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
+
+[node name="DialogueBox" type="Control" parent="UI" unique_id=1234789670]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 42.0
+offset_bottom = 42.0
+script = ExtResource("18_3w25a")
+
+[node name="ColorRect" type="ColorRect" parent="UI/DialogueBox" unique_id=817507137]
+layout_mode = 0
+offset_right = 63.0
+offset_bottom = 59.0
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/DialogueBox" unique_id=370922921]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI/DialogueBox" unique_id=2022856999]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="RoundPanel" type="Panel" parent="UI" unique_id=1268353357]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DebtLabel" type="Label" parent="UI" unique_id=2062725729]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="PaidLabel" type="Label" parent="UI" unique_id=2099453375]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="InterestLabel" type="Label" parent="UI" unique_id=300832743]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="RoundsLabel" type="Label" parent="UI" unique_id=756170373]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="TotemBuyPanel" type="Panel" parent="UI" unique_id=1622409470]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -140.0
+offset_right = 180.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
+script = ExtResource("24_oat0n")
+
+[node name="TitleLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1257933572]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 20.0
+offset_right = 338.0
+offset_bottom = 62.0
+text = "Кот"
+label_settings = SubResource("LabelSettings_tc3b6")
+autowrap_mode = 3
+
+[node name="PriceLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1017563582]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 60.0
+offset_right = 338.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="DescLabel" type="RichTextLabel" parent="UI/TotemBuyPanel" unique_id=1801157762]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 100.0
+offset_right = 338.0
+offset_bottom = 192.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("23_nmok7")
+theme_override_font_sizes/normal_font_size = 17
+bbcode_enabled = true
+text = "+ 1 Ф к любому выигрышу"
+fit_content = true
+scroll_active = false
+
+[node name="BuyButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1227227659]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 220.0
+offset_right = 166.0
+offset_bottom = 258.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 18
+text = "Купить"
+
+[node name="CloseButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1562681512]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 220.0
+offset_right = 338.0
+offset_bottom = 258.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 18
+text = "Закрыть"
+
+[node name="ReadyButton" type="Button" parent="UI" unique_id=2086978882]
+offset_left = 493.0
+offset_top = 19.0
+offset_right = 704.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+theme_override_font_sizes/font_size = 48
+text = "READY?!"
+flat = true
+script = ExtResource("31_uasde")
+
+[node name="WinSequenceLayer" type="Control" parent="UI" unique_id=1032020429]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("33_8k356")
+
+[node name="Dim" type="ColorRect" parent="UI/WinSequenceLayer" unique_id=128007144]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ComboPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=2011231711]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -161.0
+offset_top = -231.0
+offset_right = 185.0
+offset_bottom = -140.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ComboValueLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=655202734]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 48.0
+offset_right = 276.0
+offset_bottom = 97.0
+theme_override_fonts/font = ExtResource("23_nmok7")
+text = "
+"
+horizontal_alignment = 1
+
+[node name="TotalPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=643676193]
+layout_mode = 0
+offset_left = 406.0
+offset_top = 86.0
+offset_right = 767.0
+offset_bottom = 194.0
+
+[node name="TotalTitleLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=2126401319]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "TOTAL"
+
+[node name="TotalValueLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=975195003]
+layout_mode = 0
+offset_left = 680.0
+offset_top = 359.0
+offset_right = 720.0
+offset_bottom = 382.0
+horizontal_alignment = 1
+
+[node name="Right" type="Button" parent="UI" unique_id=593232687]
+offset_left = 1002.0
+offset_top = 498.0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Left" type="Button" parent="UI" unique_id=1323410314]
+offset_top = 498.0
+offset_right = 150.0
+offset_bottom = 648.0
 
 [node name="DebtMachine" parent="." unique_id=611159530 instance=ExtResource("5_ablru")]
 transform = Transform3D(-0.9997808, 0, 0.020942502, 0, 1, 0, -0.020942502, 0, -0.9997808, -2.2672462, 0.5121797, -2.4699512)
@@ -1251,208 +1449,6 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("56_visualstage")
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=1070131443]
-
-[node name="DialogueBox" type="Control" parent="UI" unique_id=1234789670]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 42.0
-offset_bottom = 42.0
-script = ExtResource("18_3w25a")
-
-[node name="ColorRect" type="ColorRect" parent="UI/DialogueBox" unique_id=817507137]
-layout_mode = 0
-offset_right = 63.0
-offset_bottom = 59.0
-color = Color(0, 0, 0, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/DialogueBox" unique_id=370922921]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="UI/DialogueBox" unique_id=2022856999]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="RoundPanel" type="Panel" parent="UI" unique_id=1268353357]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="DebtLabel" type="Label" parent="UI" unique_id=2062725729]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="PaidLabel" type="Label" parent="UI" unique_id=2099453375]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="InterestLabel" type="Label" parent="UI" unique_id=300832743]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="RoundsLabel" type="Label" parent="UI" unique_id=756170373]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="TotemBuyPanel" type="Panel" parent="UI" unique_id=1622409470]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -180.0
-offset_top = -140.0
-offset_right = 180.0
-offset_bottom = 140.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yci1l")
-script = ExtResource("24_oat0n")
-
-[node name="TitleLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1257933572]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 20.0
-offset_right = 338.0
-offset_bottom = 62.0
-text = "Кот"
-label_settings = SubResource("LabelSettings_tc3b6")
-autowrap_mode = 3
-
-[node name="PriceLabel" type="Label" parent="UI/TotemBuyPanel" unique_id=1017563582]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 60.0
-offset_right = 338.0
-offset_bottom = 92.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 18
-autowrap_mode = 3
-
-[node name="DescLabel" type="RichTextLabel" parent="UI/TotemBuyPanel" unique_id=1801157762]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 100.0
-offset_right = 338.0
-offset_bottom = 192.0
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("23_nmok7")
-theme_override_font_sizes/normal_font_size = 17
-bbcode_enabled = true
-text = "+ 1 Ф к любому выигрышу"
-fit_content = true
-scroll_active = false
-
-[node name="BuyButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1227227659]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 220.0
-offset_right = 166.0
-offset_bottom = 258.0
-theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 18
-text = "Купить"
-
-[node name="CloseButton" type="Button" parent="UI/TotemBuyPanel" unique_id=1562681512]
-layout_mode = 0
-offset_left = 194.0
-offset_top = 220.0
-offset_right = 338.0
-offset_bottom = 258.0
-theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 18
-text = "Закрыть"
-
-[node name="ReadyButton" type="Button" parent="UI" unique_id=2086978882]
-offset_left = 493.0
-offset_top = 19.0
-offset_right = 704.0
-offset_bottom = 102.0
-theme_override_fonts/font = ExtResource("23_nmok7")
-theme_override_font_sizes/font_size = 48
-text = "READY?!"
-flat = true
-script = ExtResource("31_uasde")
-
-[node name="WinSequenceLayer" type="Control" parent="UI" unique_id=1032020429]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("33_8k356")
-
-[node name="Dim" type="ColorRect" parent="UI/WinSequenceLayer" unique_id=128007144]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="ComboPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=2011231711]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -161.0
-offset_top = -231.0
-offset_right = 185.0
-offset_bottom = -140.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ComboValueLabel" type="Label" parent="UI/WinSequenceLayer/ComboPopup" unique_id=655202734]
-layout_mode = 0
-offset_left = 236.0
-offset_top = 48.0
-offset_right = 276.0
-offset_bottom = 97.0
-theme_override_fonts/font = ExtResource("23_nmok7")
-text = "
-"
-horizontal_alignment = 1
-
-[node name="TotalPopup" type="Panel" parent="UI/WinSequenceLayer" unique_id=643676193]
-layout_mode = 0
-offset_left = 406.0
-offset_top = 86.0
-offset_right = 767.0
-offset_bottom = 194.0
-
-[node name="TotalTitleLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=2126401319]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "TOTAL"
-
-[node name="TotalValueLabel" type="Label" parent="UI/WinSequenceLayer/TotalPopup" unique_id=975195003]
-layout_mode = 0
-offset_left = 680.0
-offset_top = 359.0
-offset_right = 720.0
-offset_bottom = 382.0
-horizontal_alignment = 1
-
-[node name="Right" type="Button" parent="UI" unique_id=593232687]
-offset_left = 1002.0
-offset_top = 498.0
-offset_right = 1152.0
-offset_bottom = 648.0
-
-[node name="Left" type="Button" parent="UI" unique_id=1323410314]
-offset_top = 498.0
-offset_right = 150.0
-offset_bottom = 648.0
-
 [node name="IntroOverlay" type="Node" parent="." unique_id=291078155]
 script = ExtResource("19_m4sbs")
 
@@ -1760,10 +1756,6 @@ shape = SubResource("BoxShape3D_tc3b6")
 
 [node name="SpinCameraPoint" type="Marker3D" parent="SlotMachineRoot" unique_id=1363419081]
 
-[node name="Megafon" type="MeshInstance3D" parent="SlotMachineRoot" unique_id=1870855242]
-transform = Transform3D(1.5237892e-05, 0.004641822, -2.3264151e-06, 0.0004378395, -2.68655e-10, 0.004981048, 0.0037794802, -1.8714576e-05, -0.00057702744, -2.187676, 3.16029, -2.7877998)
-mesh = ExtResource("55_2c4sm")
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=241403847]
 transform = Transform3D(15, 0, 0, 0, -4.3711387e-10, -15, 0, 0.01, -6.556708e-07, -16.594517, 1.2789068, -23.58215)
 material_override = SubResource("StandardMaterial3D_2c4sm")
@@ -1841,26 +1833,6 @@ texture = ExtResource("58_7mxcb")
 
 [node name="bans" parent="." unique_id=1326125751 instance=ExtResource("57_syuwj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.229446, 0, 15.307127)
-
-[node name="Dver" type="MeshInstance3D" parent="." unique_id=1274731307]
-transform = Transform3D(-1.5736093e-10, 0.0033492884, 1.7197785e-10, 0, -1.4640204e-10, 0.0039343946, 0.0035999983, 1.4640204e-10, 7.51739e-18, -1.7630291, -0.29603267, 0.7225299)
-mesh = ExtResource("59_7mxcb")
-
-[node name="Polks" type="MeshInstance3D" parent="." unique_id=569826091]
-transform = Transform3D(0.0059999977, 0, 0, 0, -2.6226823e-10, 0.0059999963, 0, -0.0059999977, -2.6226815e-10, -4.407419, 1.0956316, -1.7962492)
-mesh = ExtResource("61_6qhtt")
-
-[node name="Zapiska" type="MeshInstance3D" parent="." unique_id=1774686175]
-transform = Transform3D(0.0024539372, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -1.5822904)
-mesh = ExtResource("63_gsmia")
-
-[node name="Zapiska2" type="MeshInstance3D" parent="." unique_id=1490804869]
-transform = Transform3D(0.0024539372, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -1.8785512)
-mesh = ExtResource("63_gsmia")
-
-[node name="Zapiska3" type="MeshInstance3D" parent="." unique_id=1625632267]
-transform = Transform3D(0.004935747, 0, 0, 0, 0.0048600007, 0, 0, 0, 0.0048600007, -3.9464843, 1.9724514, -2.1812973)
-mesh = ExtResource("63_gsmia")
 
 [node name="BGMusic" type="AudioStreamPlayer3D" parent="." unique_id=96479439]
 stream = ExtResource("66_7x08p")
