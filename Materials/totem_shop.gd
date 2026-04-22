@@ -76,9 +76,11 @@ func _resolve_slot_ui() -> Control:
 
 # ─── 3D input ────────────────────────────────────────────────────────────────
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		return
+	# Эту проверку можно оставить для надежности, 
+	# хотя для _unhandled_input она уже не так критична
 	if get_viewport().is_input_handled():
 		return
 
@@ -86,12 +88,6 @@ func _input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			_try_pick_item(mb.position)
-		return
-
-	if event is InputEventScreenTouch:
-		var st: InputEventScreenTouch = event as InputEventScreenTouch
-		if st.pressed:
-			_try_pick_item(st.position)
 
 func _try_pick_item(screen_pos: Vector2) -> void:
 	if not _can_interact():
