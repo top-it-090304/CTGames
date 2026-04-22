@@ -130,19 +130,6 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
-	if event is InputEventScreenDrag:
-		var drag: InputEventScreenDrag = event as InputEventScreenDrag
-		if not _camera_locked:
-			_rotate_camera_by_drag(drag.relative.x)
-		return
-
-	if event is InputEventMouseMotion:
-		var mm: InputEventMouseMotion = event as InputEventMouseMotion
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-			if not _camera_locked:
-				_rotate_camera_by_drag(mm.relative.x)
-			return
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key_event: InputEventKey = event as InputEventKey
@@ -166,14 +153,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			_request_spin_from_screen(mb.position)
 			return
-
-
-func _rotate_camera_by_drag(delta_x: float) -> void:
-	if camera_3d == null:
-		return
-	if _camera_locked:
-		return
-	camera_3d.rotate_y(-delta_x * 0.004)
 
 func _request_spin_from_screen(screen_pos: Vector2) -> void:
 	if is_win_sequence_active():
