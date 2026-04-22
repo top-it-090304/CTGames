@@ -966,3 +966,36 @@ func can_pause() -> bool:
 	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and bool(round_system.call("is_reward_sequence_active"))
 	
 	return not is_spinning and not has_spins and not reward_active
+
+func _process(_delta: float) -> void:
+	# Если мы внутри редактора Godot, ничего не делаем
+	if Engine.is_editor_hint():
+		return
+		
+	_update_ui_visibility()
+func _update_ui_visibility() -> void:
+	if Engine.is_editor_hint():
+		return
+
+	# Состояние 1: Идет ли анимация наград (монеты/билеты)
+	var reward_active: bool = false
+	if round_system != null and round_system.has_method("is_reward_sequence_active"):
+		reward_active = round_system.is_reward_sequence_active()
+	
+	# Состояние 2: Идет ли активный раунд (вращение или наличие спинов)
+	var round_in_progress: bool = false
+	if slot_ui != null:
+		var spinning = slot_ui.has_method("is_spinning") and slot_ui.is_spinning()
+		var has_spins = slot_ui.get("spins_left") > 0
+		round_in_progress = spinning or has_spins
+	
+	# Состояние 3: Интро
+	var intro_active: bool = _is_intro_active()
+	
+	# Кнопки видны, только если НЕТ интро, НЕТ наград и НЕТ активного раунда
+	var should_show_controls: bool = not intro_active and not reward_active and not round_in_progress
+	
+	if btn_left:
+		btn_left.visible = should_show_controls
+	if btn_right:
+		btn_right.visible = should_show_controls

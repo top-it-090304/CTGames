@@ -255,7 +255,20 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 func _process(_delta: float) -> void:
 	var pause_btn := get_node_or_null("PauseButton") as Button
 	if pause_btn and not is_paused:
-		pause_btn.visible = not game._is_intro_active()
+		# Проверяем анимацию наград
+		var reward_active: bool = false
+		if game and game.round_system and game.round_system.has_method("is_reward_sequence_active"):
+			reward_active = game.round_system.is_reward_sequence_active()
+			
+		# Проверяем активный раунд (спины)
+		var round_in_progress: bool = false
+		if game and game.slot_ui:
+			var spinning = game.slot_ui.has_method("is_spinning") and game.slot_ui.is_spinning()
+			var has_spins = game.slot_ui.get("spins_left") > 0
+			round_in_progress = spinning or has_spins
+		
+		# Прячем, если идет интро, награды или сам раунд
+		pause_btn.visible = not game._is_intro_active() and not reward_active and not round_in_progress
 
 func _on_pause_button_pressed() -> void:
 	if not is_paused and _is_session_active():
