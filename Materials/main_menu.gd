@@ -17,7 +17,7 @@ func _ready():
 	# Проверяем наличие сохранений и настраиваем текст кнопок
 	if SaveSystem.has_save():
 		play_button.text = "Продолжить"
-		quit_button.text = "Заново"
+		quit_button.text = "Новая игра"
 	else:
 		play_button.text = "Играть"
 		quit_button.text = "Выйти"

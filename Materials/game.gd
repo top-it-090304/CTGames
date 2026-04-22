@@ -989,3 +989,18 @@ func rotate_camera(angle_degrees: float):
 	tween.tween_property(camera_3d, "rotation:y", target_rotation, 0.5)\
 		.set_trans(Tween.TRANS_QUAD)\
 		.set_ease(Tween.EASE_OUT)
+
+# Проверка, можно ли сейчас открывать меню паузы
+func can_pause() -> bool:
+	if slot_ui == null:
+		return true
+	
+	# Проверяем, идет ли сейчас анимация вращения
+	var is_spinning: bool = slot_ui.has_method("is_spinning") and slot_ui.is_spinning()
+	
+	# Проверяем, остались ли спины в текущей сессии
+	# (предполагаем, что spins_left > 0 означает активную сессию)
+	var has_spins: bool = slot_ui.get("spins_left") > 0
+	
+	# Если ничего не крутится и спинов 0 — пауза разрешена
+	return not is_spinning and not has_spins

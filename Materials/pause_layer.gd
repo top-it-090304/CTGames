@@ -9,6 +9,9 @@ var quit_no_btn: Button
 var quit_choices: HBoxContainer
 @onready var game = get_node("/root/Game")
 
+# Переменная для определения, что именно мы подтверждаем
+var confirm_mode: String = "" # "quit" или "restart"
+
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
 func _ready() -> void:
@@ -142,16 +145,17 @@ func _setup_quit_confirm() -> void:
 		btn.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		quit_choices.add_child(btn)
 
-	quit_yes_btn.pressed.connect(_on_quit_confirmed)
+	quit_yes_btn.pressed.connect(_on_confirm_yes_pressed)
 	quit_no_btn.pressed.connect(_on_quit_cancelled)
 
 	var resume_btn   := pause_panel.get_node_or_null("ResumeButton")   as Button
-	var settings_btn := pause_panel.get_node_or_null("SettingsButton") as Button
+	var restart_btn  := pause_panel.get_node_or_null("SettingsButton") as Button
 	var quit_btn     := pause_panel.get_node_or_null("QuitButton")     as Button
+	
 	if resume_btn   != null:
 		resume_btn.pressed.connect(_on_resume_pressed)
-	if settings_btn != null:
-		settings_btn.pressed.connect(_on_settings_pressed)
+	if restart_btn != null:
+		restart_btn.pressed.connect(_on_restart_pressed)
 	if quit_btn     != null:
 		quit_btn.pressed.connect(_on_quit_pressed)
 
@@ -195,6 +199,10 @@ func _configure_visuals() -> void:
 	_configure_button("ResumeButton",   150.0)
 	_configure_button("SettingsButton", 270.0)
 	_configure_button("QuitButton",     390.0)
+	
+	var restart_btn = pause_panel.get_node_or_null("SettingsButton") as Button
+	if restart_btn:
+		restart_btn.text = "Новая игра"
 
 func _configure_button(node_name: String, offset_top: float) -> void:
 	var btn := pause_panel.get_node_or_null(node_name) as Button
@@ -250,20 +258,22 @@ func _process(_delta: float) -> void:
 		pause_btn.visible = not game._is_intro_active()
 
 func _on_pause_button_pressed() -> void:
-	if not is_paused and _is_slot_spinning():
+	if not is_paused and _is_session_active():
 		return
 	_toggle_pause()
 
-func _is_slot_spinning() -> bool:
+func _is_session_active() -> bool:
 	var game_node := get_tree().get_root().get_node_or_null("Game")
 	if game_node == null:
 		return false
-	var slot_ui := game_node.get_node_or_null("SubViewport/SlotUI")
+	var slot_ui = game_node.get_node_or_null("SubViewport/SlotUI")
 	if slot_ui == null:
 		return false
+	var spinning: bool = false
 	if slot_ui.has_method("is_spinning"):
-		return bool(slot_ui.call("is_spinning"))
-	return false
+		spinning = bool(slot_ui.call("is_spinning"))
+	var has_spins: bool = slot_ui.get("spins_left") > 0
+	return spinning or has_spins
 
 func _toggle_pause() -> void:
 	is_paused = !is_paused
@@ -285,16 +295,21 @@ func _on_resume_pressed() -> void:
 	if pause_btn != null:
 		pause_btn.visible = true
 
-func _on_settings_pressed() -> void:
-	pass
-
-func _on_quit_pressed() -> void:
+func _on_restart_pressed() -> void:
+	confirm_mode = "restart"
 	if pause_panel != null:
 		pause_panel.visible = false
 	quit_confirm_box.visible = true
-	_type_quit_text("Думаешь выйти из игры так просто?")
+	_type_text("Ты действительно хочешь начать всё сначала?")
 
-func _type_quit_text(text: String) -> void:
+func _on_quit_pressed() -> void:
+	confirm_mode = "quit"
+	if pause_panel != null:
+		pause_panel.visible = false
+	quit_confirm_box.visible = true
+	_type_text("Думаешь выйти из игры так просто?")
+
+func _type_text(text: String) -> void:
 	quit_confirm_label.text = ""
 	quit_choices.visible = false
 	var char_i := 0
@@ -304,17 +319,22 @@ func _type_quit_text(text: String) -> void:
 		await get_tree().create_timer(0.03).timeout
 	quit_choices.visible = true
 
-func _on_quit_confirmed() -> void:
-	# ── Сохраняем прогресс перед выходом ──
-	if game != null and game.has_method("save_game"):
-		game.save_game()
-	get_tree().paused = false
-	get_tree().quit()
+func _on_confirm_yes_pressed() -> void:
+	if confirm_mode == "restart":
+		# Логика из main_menu.gd для кнопки "Заново"
+		SaveSystem.delete_save()
+		get_tree().paused = false
+		get_tree().change_scene_to_file("res://Materials/game.tscn")
+	else:
+		# Сохраняем прогресс перед обычным выходом
+		if game != null and game.has_method("save_game"):
+			game.save_game()
+		get_tree().paused = false
+		get_tree().quit()
 
 func _on_quit_cancelled() -> void:
 	quit_confirm_box.visible = false
-	is_paused = false
-	get_tree().paused = false
-	var pause_btn := get_node_or_null("PauseButton") as Button
-	if pause_btn != null:
-		pause_btn.visible = true
+	confirm_mode = ""
+	# Возвращаем панель паузы
+	if pause_panel != null:
+		pause_panel.visible = true
