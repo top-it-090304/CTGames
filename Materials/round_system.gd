@@ -388,6 +388,13 @@ func _finish_round() -> void:
 
 	await _play_round_reward_sequence(interest_gain, awarded_tickets)
 	_update_debt_ui()
+	if game_root != null and game_root.has_method("save_game"):
+		print("====================================")
+		print("[RoundSystem] Раунд закончен. Вызываю сохранение Jackpot Jail...")
+		game_root.call("save_game")
+		print("====================================")
+	else:
+		push_error("[RoundSystem] Ошибка: метод save_game не найден в game_root!")
 
 	if rounds_left <= 0 and deposited < debt_target:
 		var remaining_needed: int = debt_target - deposited
@@ -785,6 +792,11 @@ func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) 
 		_add_tickets(bonus_tickets)
 
 	_update_debt_ui()
+	if game_root != null and game_root.has_method("save_game"):
+		print("====================================")
+		print("[RoundSystem] Цикл долга завершен! Сохраняю прогресс...")
+		game_root.call("save_game")
+		print("====================================")
 
 	# Build the congratulation text.
 	var reward_parts: PackedStringArray = PackedStringArray()

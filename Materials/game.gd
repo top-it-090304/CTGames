@@ -35,12 +35,6 @@ var _win_popup_base_pos := Vector2.ZERO
 @export var slot_spin_area_name: StringName = &"LeverArea"
 var slot_spin_area: Area3D
 
-# ─────────────────────────────────────────────
-#  Сохранение: таймер для автосохранения
-# ─────────────────────────────────────────────
-var _autosave_timer: float = 0.0
-const AUTOSAVE_INTERVAL: float = 30.0   # автосохранение каждые 30 секунд
-
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -68,19 +62,6 @@ func _ready() -> void:
 
 	# ── Загружаем сохранение ──
 	_load_saved_game()
-
-func _process(delta: float) -> void:
-	# Автосохранение раз в AUTOSAVE_INTERVAL секунд
-	if Engine.is_editor_hint():
-		return
-	_autosave_timer += delta
-	if _autosave_timer >= AUTOSAVE_INTERVAL:
-		_autosave_timer = 0.0
-		save_game()
-
-# ─────────────────────────────────────────────
-#  Публичный API сохранения
-# ─────────────────────────────────────────────
 
 ## Собирает текущее состояние и пишет на диск.
 func save_game() -> void:
