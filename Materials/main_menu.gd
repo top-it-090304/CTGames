@@ -9,10 +9,42 @@ var full_text = ""
 var char_index = 0
 var speed = 0.03
 
+# ── Кнопка "Продолжить" (создаётся динамически если есть сохранение) ──
+var continue_button: Button = null
+
 func _ready():
 	_configure_button(play_button)
 	_configure_button(quit_button)
 	_configure_label(message)
+	_setup_continue_button()
+
+# ─────────────────────────────────────────────
+#  Кнопка "Продолжить"
+# ─────────────────────────────────────────────
+
+func _setup_continue_button() -> void:
+	# Показываем кнопку только если есть файл сохранения
+	if not SaveSystem.has_save():
+		return
+
+	continue_button = Button.new()
+	continue_button.name = "ContinueButton"
+	continue_button.text = "Продолжить"
+
+	# Позиционируем над кнопкой Play (или рядом — подстрой под свою сцену)
+	continue_button.position = Vector2(
+		play_button.position.x,
+		play_button.position.y - 90.0
+	)
+	continue_button.size = play_button.size
+
+	_configure_button(continue_button)
+	add_child(continue_button)
+	continue_button.pressed.connect(_on_continue_pressed)
+
+	# Немного сдвигаем Play вниз чтобы не перекрывались
+	play_button.position.y += 90.0
+	quit_button.position.y += 90.0
 
 func _configure_button(btn: Button) -> void:
 	btn.add_theme_color_override("font_color",         Color(1.0, 1.0, 1.0, 1.0))
@@ -53,9 +85,21 @@ func _configure_label(lbl: Label) -> void:
 	lbl.add_theme_constant_override("outline_size", 4)
 	lbl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
+# ─────────────────────────────────────────────
+#  Обработчики кнопок
+# ─────────────────────────────────────────────
+
+func _on_continue_pressed() -> void:
+	# Просто запускаем игру — game.gd сам подхватит сохранение в _ready()
+	if play_locked:
+		return
+	get_tree().change_scene_to_file("res://Materials/game.tscn")
+
 func _on_play_pressed():
 	if play_locked:
 		return
+	# Новая игра: удаляем старое сохранение
+	SaveSystem.delete_save()
 	get_tree().change_scene_to_file("res://Materials/game.tscn")
 
 func _on_quit_pressed():

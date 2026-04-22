@@ -35,6 +35,12 @@ var _win_popup_base_pos := Vector2.ZERO
 @export var slot_spin_area_name: StringName = &"LeverArea"
 var slot_spin_area: Area3D
 
+# ─────────────────────────────────────────────
+#  Сохранение: таймер для автосохранения
+# ─────────────────────────────────────────────
+var _autosave_timer: float = 0.0
+const AUTOSAVE_INTERVAL: float = 30.0   # автосохранение каждые 30 секунд
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -59,6 +65,81 @@ func _ready() -> void:
 		win_popup.visible = false
 	btn_left.pressed.connect(_on_left_pressed)
 	btn_right.pressed.connect(_on_right_pressed)
+
+	# ── Загружаем сохранение ──
+	_load_saved_game()
+
+func _process(delta: float) -> void:
+	# Автосохранение раз в AUTOSAVE_INTERVAL секунд
+	if Engine.is_editor_hint():
+		return
+	_autosave_timer += delta
+	if _autosave_timer >= AUTOSAVE_INTERVAL:
+		_autosave_timer = 0.0
+		save_game()
+
+# ─────────────────────────────────────────────
+#  Публичный API сохранения
+# ─────────────────────────────────────────────
+
+## Собирает текущее состояние и пишет на диск.
+func save_game() -> void:
+	if slot_ui == null:
+		return
+	var state: Dictionary = {}
+	if slot_ui.has_method("get_hud_state"):
+		state = slot_ui.call("get_hud_state") as Dictionary
+
+	var round_data: Dictionary = {}
+	if round_system != null and round_system.has_method("get_save_data"):
+		round_data = round_system.call("get_save_data") as Dictionary
+
+	var totem_data: Dictionary = {}
+	# Предполагается, что узел магазина называется TotemShop и лежит в корне сцены
+	var totem_shop: Node = get_node_or_null("TotemShop") 
+	if totem_shop != null and totem_shop.has_method("get_save_data"):
+		totem_data = totem_shop.call("get_save_data") as Dictionary
+
+	var save_data: Dictionary = {
+		"money":      int(state.get("money",      0)),
+		"spins_left": int(state.get("spins_left", 0)),
+		"tickets":    int(state.get("tickets",    0)),
+		"round_data": round_data,
+		"totem_data": totem_data,
+	}
+	SaveSystem.save_game(save_data)
+
+func _load_saved_game() -> void:
+	if not SaveSystem.has_save():
+		return
+	var data: Dictionary = SaveSystem.load_game()
+	if data.is_empty():
+		return
+
+	# SlotUI
+	if slot_ui != null and slot_ui.has_method("apply_save_data"):
+		slot_ui.call("apply_save_data", data)
+	elif slot_ui != null:
+		if slot_ui.has_method("set_money"): slot_ui.call("set_money", int(data.get("money", 0)))
+		if slot_ui.has_method("set_spins"): slot_ui.call("set_spins", int(data.get("spins_left", 0)))
+		if slot_ui.has_method("set_tickets"): slot_ui.call("set_tickets", int(data.get("tickets", 0)))
+		slot_ui.set("money",      data.get("money",      slot_ui.get("money")))
+		slot_ui.set("spins_left", data.get("spins_left", slot_ui.get("spins_left")))
+		slot_ui.set("tickets",    data.get("tickets",    slot_ui.get("tickets")))
+
+	# RoundSystem
+	var round_data: Dictionary = data.get("round_data", {})
+	if not round_data.is_empty() and round_system != null and round_system.has_method("apply_save_data"):
+		round_system.call("apply_save_data", round_data)
+
+	# TotemShop
+	var totem_data: Dictionary = data.get("totem_data", {})
+	var totem_shop: Node = get_node_or_null("TotemShop")
+	if not totem_data.is_empty() and totem_shop != null and totem_shop.has_method("apply_save_data"):
+		totem_shop.call("apply_save_data", totem_data)
+
+	_sync_hud_from_slot()
+	print("[Game] Прогресс восстановлен.")
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -249,7 +330,7 @@ func _on_ready_button_pressed() -> void:
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
 	_camera_locked = true
-	_move_camera_to_hint("slot_view") 
+	_move_camera_to_hint("slot_view")
 	if round_system != null and round_system.has_method("request_spin_choice"):
 		round_system.call("request_spin_choice")
 	_update_ready_button_visibility()
@@ -878,6 +959,7 @@ func _on_spin_completed(_win_amount: int) -> void:
 	var tw: Tween = create_tween()
 	tw.tween_property(_spin_sound, "volume_db", -40.0, 0.3).set_trans(Tween.TRANS_SINE)
 	tw.tween_callback(_spin_sound.stop)
+
 func _on_left_pressed():
 	rotate_camera(90)
 
@@ -887,19 +969,19 @@ func _on_right_pressed():
 func rotate_camera(angle_degrees: float):
 	# Проверяем, крутятся ли слоты или идет ли анимация победы
 	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
-	
+
 	if spinning or is_win_sequence_active() or _camera_locked:
 		return
 
 	# Если предыдущая анимация еще идет — останавливаем её
 	if tween and tween.is_running():
 		tween.kill()
-	
+
 	tween = create_tween()
-	
+
 	# Рассчитываем новый угол в радианах
 	var target_rotation = camera_3d.rotation.y + deg_to_rad(angle_degrees)
-	
+
 	# Плавное вращение
 	tween.tween_property(camera_3d, "rotation:y", target_rotation, 0.5)\
 		.set_trans(Tween.TRANS_QUAD)\

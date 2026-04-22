@@ -305,6 +305,9 @@ func _type_quit_text(text: String) -> void:
 	quit_choices.visible = true
 
 func _on_quit_confirmed() -> void:
+	# ── Сохраняем прогресс перед выходом ──
+	if game != null and game.has_method("save_game"):
+		game.save_game()
 	get_tree().paused = false
 	get_tree().quit()
 

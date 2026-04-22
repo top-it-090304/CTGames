@@ -1280,3 +1280,29 @@ func _safe_set_input_handled() -> void:
 	var vp: Viewport = get_viewport()
 	if vp != null:
 		vp.set_input_as_handled()
+
+func get_save_data() -> Dictionary:
+	return {
+		"rounds_left": rounds_left,
+		"deposited": deposited,
+		"debt_target": debt_target,
+		"pending_interest_reward": pending_interest_reward,
+		"early_bonus_given": early_bonus_given,
+		"round_active": round_active,
+		"game_over": game_over,
+		"_awaiting_final_deposit": _awaiting_final_deposit
+	}
+
+func apply_save_data(data: Dictionary) -> void:
+	rounds_left = int(data.get("rounds_left", rounds_left))
+	deposited = int(data.get("deposited", deposited))
+	debt_target = int(data.get("debt_target", debt_target))
+	pending_interest_reward = int(data.get("pending_interest_reward", pending_interest_reward))
+	early_bonus_given = bool(data.get("early_bonus_given", early_bonus_given))
+	round_active = bool(data.get("round_active", round_active))
+	game_over = bool(data.get("game_over", game_over))
+	_awaiting_final_deposit = bool(data.get("_awaiting_final_deposit", _awaiting_final_deposit))
+	
+	# Обновляем UI и логику после того как загрузили переменные
+	_update_debt_ui()
+	_sync_slot_symbol_multiplier()

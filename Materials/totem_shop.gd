@@ -604,3 +604,51 @@ func _transform_aabb(aabb: AABB, xform: Transform3D) -> AABB:
 	for i: int in range(1, corners.size()):
 		out = out.expand(xform * corners[i])
 	return out
+
+func get_save_data() -> Dictionary:
+	var owned_ids: Array = []
+	for key in _owned_totems.keys():
+		owned_ids.append(key)
+	return {"owned_totems": owned_ids}
+
+func apply_save_data(data: Dictionary) -> void:
+	var owned_ids: Array = data.get("owned_totems", [])
+	for totem_id in owned_ids:
+		# Если тотем уже куплен (защита от дубликатов при мульти-загрузке)
+		if _owned_totems.has(totem_id):
+			continue
+			
+		# Ищем 3D модель тотема в магазине
+		var found_item: Node3D = null
+		for item in _collect_shop_totem_items():
+			var offer: Dictionary = item.call("get_offer_data") as Dictionary
+			if String(offer.get("id", "")) == totem_id:
+				found_item = item
+				break
+		
+		# Имитируем процесс выдачи тотема
+		if found_item != null:
+			_owned_totems[totem_id] = true
+			var offer: Dictionary = found_item.call("get_offer_data") as Dictionary
+			
+			# Возвращаем бонусы к слотам
+			if _slot_ui != null and _slot_ui.has_method("add_totem_bonus"):
+				var bonuses_var: Variant = offer.get("bonuses", [])
+				if bonuses_var is Array and not (bonuses_var as Array).is_empty():
+					var idx: int = 0
+					for bonus_var: Variant in (bonuses_var as Array):
+						if not (bonus_var is Dictionary): continue
+						var bonus: Dictionary = bonus_var as Dictionary
+						_slot_ui.call("add_totem_bonus", "%s#%d" % [totem_id, idx], String(bonus.get("type", "")), int(bonus.get("value", 0)))
+						idx += 1
+				else:
+					_slot_ui.call("add_totem_bonus", totem_id, String(offer.get("bonus_type", "")), int(offer.get("bonus_value", 0)))
+
+			# Отключаем в магазине, переносим в дисплей "Куплено", рисуем UI
+			if found_item.has_method("set_shop_enabled"):
+				found_item.call("set_shop_enabled", false)
+			_move_item_to_owned_display(found_item)
+			_add_owned_totem_card(offer)
+
+	_refresh_shop_layout()
+	_refresh_panel_tokens()
