@@ -273,7 +273,14 @@ func _is_session_active() -> bool:
 	if slot_ui.has_method("is_spinning"):
 		spinning = bool(slot_ui.call("is_spinning"))
 	var has_spins: bool = slot_ui.get("spins_left") > 0
-	return spinning or has_spins
+	
+	# Проверка анимации награды
+	var reward_active: bool = false
+	var round_sys = game_node.get_node_or_null("RoundSystem")
+	if round_sys != null and round_sys.has_method("is_reward_sequence_active"):
+		reward_active = bool(round_sys.call("is_reward_sequence_active"))
+		
+	return spinning or has_spins or reward_active
 
 func _toggle_pause() -> void:
 	is_paused = !is_paused

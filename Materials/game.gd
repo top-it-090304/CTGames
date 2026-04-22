@@ -932,8 +932,12 @@ func _on_right_pressed():
 func rotate_camera(angle_degrees: float):
 	# Проверяем, крутятся ли слоты или идет ли анимация победы
 	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
+	
+	# Проверяем, идет ли сейчас анимация выдачи наград
+	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and bool(round_system.call("is_reward_sequence_active"))
 
-	if spinning or is_win_sequence_active() or _camera_locked:
+	# Добавили проверку reward_active
+	if spinning or is_win_sequence_active() or _camera_locked or reward_active:
 		return
 
 	# Если предыдущая анимация еще идет — останавливаем её
@@ -955,12 +959,10 @@ func can_pause() -> bool:
 	if slot_ui == null:
 		return true
 	
-	# Проверяем, идет ли сейчас анимация вращения
 	var is_spinning: bool = slot_ui.has_method("is_spinning") and slot_ui.is_spinning()
-	
-	# Проверяем, остались ли спины в текущей сессии
-	# (предполагаем, что spins_left > 0 означает активную сессию)
 	var has_spins: bool = slot_ui.get("spins_left") > 0
 	
-	# Если ничего не крутится и спинов 0 — пауза разрешена
-	return not is_spinning and not has_spins
+	# Проверка на анимацию
+	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and bool(round_system.call("is_reward_sequence_active"))
+	
+	return not is_spinning and not has_spins and not reward_active

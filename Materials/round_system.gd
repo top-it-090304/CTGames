@@ -32,7 +32,7 @@ extends Node
 @export var reward_anim_speed_scale: float = 0.65
 @export var reward_coin_mesh_scale: float = 0.12
 @export var reward_ticket_mesh_scale: float = 0.10
-
+var _reward_sequence_active: bool = false
 var game_root: Node3D
 var slot_ui: Control
 var intro_overlay: Node
@@ -95,6 +95,9 @@ func _process(_delta: float) -> void:
 		return
 	_try_finish_round_if_ready()
 
+func is_reward_sequence_active() -> bool:
+	return _reward_sequence_active
+	
 func _try_finish_round_if_ready() -> void:
 	if _finish_round_requested or game_over or not round_active:
 		return
@@ -429,6 +432,9 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 	if game_over:
 		return
 
+	# Включаем блокировку (анимация началась)
+	_reward_sequence_active = true 
+
 	_set_slot_locked(true)
 
 	if interest_gain > 0:
@@ -450,6 +456,9 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 
 	if not _is_intro_active() and not game_over and pending_interest_reward <= 0 and not _awaiting_final_deposit:
 		_set_slot_locked(false)
+		
+	# Выключаем блокировку (анимация закончилась)
+	_reward_sequence_active = false
 
 func _move_camera_hint_safe(hint: String, duration: float = 0.6) -> void:
 	if game_root == null:
