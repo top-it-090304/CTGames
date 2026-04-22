@@ -956,16 +956,7 @@ func rotate_camera(angle_degrees: float):
 
 # Проверка, можно ли сейчас открывать меню паузы
 func can_pause() -> bool:
-	if slot_ui == null:
-		return true
-	
-	var is_spinning: bool = slot_ui.has_method("is_spinning") and slot_ui.is_spinning()
-	var has_spins: bool = slot_ui.get("spins_left") > 0
-	
-	# Проверка на анимацию
-	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and bool(round_system.call("is_reward_sequence_active"))
-	
-	return not is_spinning and not has_spins and not reward_active
+	return not is_ui_blocked()
 
 func _process(_delta: float) -> void:
 	# Если мы внутри редактора Godot, ничего не делаем
@@ -977,25 +968,35 @@ func _update_ui_visibility() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	# Состояние 1: Идет ли анимация наград (монеты/билеты)
-	var reward_active: bool = false
-	if round_system != null and round_system.has_method("is_reward_sequence_active"):
-		reward_active = round_system.is_reward_sequence_active()
-	
-	# Состояние 2: Идет ли активный раунд (вращение или наличие спинов)
-	var round_in_progress: bool = false
-	if slot_ui != null:
-		var spinning = slot_ui.has_method("is_spinning") and slot_ui.is_spinning()
-		var has_spins = slot_ui.get("spins_left") > 0
-		round_in_progress = spinning or has_spins
-	
-	# Состояние 3: Интро
-	var intro_active: bool = _is_intro_active()
-	
-	# Кнопки видны, только если НЕТ интро, НЕТ наград и НЕТ активного раунда
-	var should_show_controls: bool = not intro_active and not reward_active and not round_in_progress
+	var blocked = is_ui_blocked()
 	
 	if btn_left:
-		btn_left.visible = should_show_controls
+		btn_left.visible = not blocked
 	if btn_right:
-		btn_right.visible = should_show_controls
+		btn_right.visible = not blocked
+
+func is_ui_blocked() -> bool:
+	if Engine.is_editor_hint():
+		return true
+
+	# 1. Вступительное интро
+	if _is_intro_active():
+		return true
+
+	# 2. Анимация выигрыша (те самые "очки")
+	if is_win_sequence_active():
+		return true
+
+	# 3. Состояние слотов (вращение или наличие неиспользованных спинов)
+	if slot_ui != null:
+		if slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
+			return true
+		if slot_ui.get("spins_left") > 0:
+			return true
+
+	# 4. Анимация наград от раунд-системы (монетки/билеты)
+	if round_system != null and round_system.has_method("is_reward_sequence_active"):
+		if round_system.is_reward_sequence_active():
+			return true
+
+	return false
