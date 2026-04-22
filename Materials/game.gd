@@ -399,6 +399,9 @@ func _ensure_intro_started() -> void:
 		return
 	if intro_overlay.has_method("is_active") and bool(intro_overlay.call("is_active")):
 		return
+	if SaveSystem.has_save():
+		return
+		
 	if intro_overlay.has_method("start"):
 		intro_overlay.call_deferred("start")
 

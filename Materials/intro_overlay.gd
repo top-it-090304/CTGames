@@ -34,7 +34,8 @@ var _pending_steps: Array[Dictionary] = []
 func _ready() -> void:
 	_setup_ui()
 	if start_on_ready:
-		start(_build_default_steps())
+		if not SaveSystem.has_save():
+			start(_build_default_steps())
 
 func start(steps: Array[Dictionary] = []) -> void:
 	var actual_steps: Array[Dictionary] = steps
