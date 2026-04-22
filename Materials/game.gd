@@ -983,20 +983,24 @@ func is_ui_blocked() -> bool:
 	if _is_intro_active():
 		return true
 
-	# 2. Анимация выигрыша (те самые "очки")
+	# 2. Анимация выигрыша (очки над барабанами)
 	if is_win_sequence_active():
 		return true
 
-	# 3. Состояние слотов (вращение или наличие неиспользованных спинов)
+	# 3. Проверка состояния раунд-системы (САМОЕ ВАЖНОЕ)
+	# round_active в RoundSystem остается true, пока не закончатся ВСЕ анимации наград.
+	if round_system != null:
+		if round_system.get("round_active") == true:
+			return true
+		# На всякий случай проверяем и наш флаг анимации
+		if round_system.has_method("is_reward_sequence_active") and round_system.is_reward_sequence_active():
+			return true
+
+	# 4. Состояние слотов (дополнительная страховка)
 	if slot_ui != null:
 		if slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
 			return true
 		if slot_ui.get("spins_left") > 0:
-			return true
-
-	# 4. Анимация наград от раунд-системы (монетки/билеты)
-	if round_system != null and round_system.has_method("is_reward_sequence_active"):
-		if round_system.is_reward_sequence_active():
 			return true
 
 	return false

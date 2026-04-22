@@ -427,14 +427,11 @@ func _finish_round() -> void:
 	_show_jackpot_jail_screen()
 
 func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
+	_reward_sequence_active = true 
 	if not reward_sequence_enabled:
 		return
 	if game_over:
 		return
-
-	# Включаем блокировку (анимация началась)
-	_reward_sequence_active = true 
-
 	_set_slot_locked(true)
 
 	if interest_gain > 0:
