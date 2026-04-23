@@ -301,6 +301,7 @@ uv2_padding = 1.6
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_syuwj"]
 
 [node name="Game" type="Node3D" unique_id=970350183]
+process_mode = 3
 script = ExtResource("1_hudx2")
 slot_spin_area_name = &"SpinButtonArea"
 

@@ -968,12 +968,18 @@ func _update_ui_visibility() -> void:
 	if Engine.is_editor_hint():
 		return
 
+	# Проверяем общую блокировку (спины, интро, анимации)
 	var blocked = is_ui_blocked()
-	
+	# Проверяем, стоит ли игра на паузе
+	var paused = get_tree().paused
+
+	# Кнопки вращения камеры пропадают, если:
+	# 1. Интерфейс заблокирован (включая выбор спинов)
+	# 2. Игра на паузе
 	if btn_left:
-		btn_left.visible = not blocked
+		btn_left.visible = not (blocked or paused)
 	if btn_right:
-		btn_right.visible = not blocked
+		btn_right.visible = not (blocked or paused)
 
 func is_ui_blocked() -> bool:
 	if Engine.is_editor_hint():
@@ -981,6 +987,8 @@ func is_ui_blocked() -> bool:
 
 	# 1. Вступительное интро
 	if _is_intro_active():
+		return true
+	if _is_spin_choice_open():
 		return true
 
 	# 2. Анимация выигрыша (очки над барабанами)

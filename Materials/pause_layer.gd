@@ -255,12 +255,12 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 func _process(_delta: float) -> void:
 	var pause_btn := get_node_or_null("PauseButton") as Button
 	if pause_btn and not is_paused:
-		# Если игра говорит, что интерфейс заблокирован — прячем кнопку
+		# Если в главном скрипте Game заблокирован UI (например, открыт выбор спинов),
+		# то кнопка паузы скрывается
 		if game and game.has_method("is_ui_blocked"):
 			pause_btn.visible = not game.is_ui_blocked()
 		else:
-			# Запасной вариант, если ссылка на игру еще не подтянулась
-			pause_btn.visible = not _is_session_active()
+			pause_btn.visible = true
 
 func _on_pause_button_pressed() -> void:
 	if not is_paused and _is_session_active():
