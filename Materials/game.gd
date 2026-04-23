@@ -985,24 +985,34 @@ func is_ui_blocked() -> bool:
 	if Engine.is_editor_hint():
 		return true
 
-	# 1. Вступительное интро
-	if _is_intro_active():
-		return true
-	if _is_spin_choice_open():
+	# 1. Вступительное интро или выбор количества спинов
+	if _is_intro_active() or _is_spin_choice_open():
 		return true
 
-	# 2. Анимация выигрыша (очки над барабанами)
+	# 2. Окно описания и покупки тотема
+	if _is_totem_buy_panel_open():
+		return true
+
+	# 3. Анимация выигрыша (очки над барабанами)
 	if is_win_sequence_active():
 		return true
 
-	# 3. Проверка состояния раунд-системы (САМОЕ ВАЖНОЕ)
-	# round_active в RoundSystem остается true, пока не закончатся ВСЕ анимации наград.
+	# 4. Проверка состояния раунд-системы
 	if round_system != null:
 		if round_system.get("round_active") == true:
 			return true
-		# На всякий случай проверяем и наш флаг анимации
 		if round_system.has_method("is_reward_sequence_active") and round_system.is_reward_sequence_active():
 			return true
+
+	# 5. Состояние слотов
+	if slot_ui != null:
+		if slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
+			return true
+		# Если есть спины в очереди, блокируем вращение камеры (опционально)
+		if slot_ui.get("spins_left") > 0:
+			return true
+
+	return false
 
 	# 4. Состояние слотов (дополнительная страховка)
 	if slot_ui != null:
