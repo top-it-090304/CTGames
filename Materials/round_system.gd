@@ -103,9 +103,9 @@ func _try_finish_round_if_ready() -> void:
 		return
 	if _get_spins_left() > 0:
 		return
-	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
+	if slot_ui != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		return
-	if game_root != null and game_root.has_method("is_win_sequence_active") and bool(game_root.call("is_win_sequence_active")):
+	if game_root != null and game_root.has_method("is_win_sequence_active") and game_root.call("is_win_sequence_active"):
 		return
 	_finish_round_requested = true
 	call_deferred("_finish_round_if_ready_deferred")
@@ -116,9 +116,9 @@ func _finish_round_if_ready_deferred() -> void:
 		return
 	if _get_spins_left() > 0:
 		return
-	if slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning")):
+	if slot_ui != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		return
-	if game_root != null and game_root.has_method("is_win_sequence_active") and bool(game_root.call("is_win_sequence_active")):
+	if game_root != null and game_root.has_method("is_win_sequence_active") and game_root.call("is_win_sequence_active"):
 		return
 	await _finish_round()
 
@@ -369,7 +369,7 @@ func _popup_open() -> bool:
 	if popup == null:
 		return false
 	if popup.has_method("is_open"):
-		return bool(popup.call("is_open"))
+		return popup.call("is_open")
 	return popup.visible
 
 func _finish_round() -> void:
@@ -1159,7 +1159,7 @@ func _current_interest_percent() -> float:
 func _is_intro_active() -> bool:
 	if intro_overlay == null or not intro_overlay.has_method("is_active"):
 		return false
-	return bool(intro_overlay.call("is_active"))
+	return intro_overlay.call("is_active")
 
 func _set_slot_locked(locked: bool) -> void:
 	if slot_ui == null:
@@ -1217,7 +1217,7 @@ func _spend_money(amount: int) -> bool:
 	if slot_ui == null:
 		return false
 	if slot_ui.has_method("spend_money"):
-		return bool(slot_ui.call("spend_money", amount))
+		return slot_ui.call("spend_money", amount)
 	var money: int = _get_money()
 	if money < amount:
 		return false
@@ -1316,10 +1316,10 @@ func apply_save_data(data: Dictionary) -> void:
 	deposited = int(data.get("deposited", deposited))
 	debt_target = int(data.get("debt_target", debt_target))
 	pending_interest_reward = int(data.get("pending_interest_reward", pending_interest_reward))
-	early_bonus_given = bool(data.get("early_bonus_given", early_bonus_given))
-	round_active = bool(data.get("round_active", round_active))
-	game_over = bool(data.get("game_over", game_over))
-	_awaiting_final_deposit = bool(data.get("_awaiting_final_deposit", _awaiting_final_deposit))
+	early_bonus_given = data.get("early_bonus_given", early_bonus_given)
+	round_active = data.get("round_active", round_active)
+	game_over = data.get("game_over", game_over)
+	_awaiting_final_deposit = data.get("_awaiting_final_deposit", _awaiting_final_deposit)
 	
 	# Обновляем UI и логику после того как загрузили переменные
 	_update_debt_ui()

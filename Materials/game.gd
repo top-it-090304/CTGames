@@ -168,8 +168,8 @@ func _request_spin_from_screen(screen_pos: Vector2) -> void:
 func _try_open_spin_choice() -> void:
 	if _is_intro_active() or _is_spin_choice_open() or _is_totem_buy_panel_open():
 		return
-	var round_active: bool = round_system != null and round_system.has_method("is_round_active") and bool(round_system.call("is_round_active"))
-	var game_over: bool = round_system != null and round_system.has_method("is_game_over") and bool(round_system.call("is_game_over"))
+	var round_active: bool = round_system != null and round_system.has_method("is_round_active") and round_system.call("is_round_active")
+	var game_over: bool = round_system != null and round_system.has_method("is_game_over") and round_system.call("is_game_over")
 	if round_active or game_over:
 		return
 	_camera_locked = true
@@ -274,7 +274,7 @@ func _bind_win_sequence_layer() -> void:
 			win_sequence_layer.connect("highlight_cleared", clear_cb)
 
 func is_win_sequence_active() -> bool:
-	return win_sequence_layer != null and win_sequence_layer.has_method("is_playing") and bool(win_sequence_layer.call("is_playing"))
+	return win_sequence_layer != null and win_sequence_layer.has_method("is_playing") and win_sequence_layer.call("is_playing")
 
 func _on_win_highlight_requested(points: Array, palette_index: int) -> void:
 	if slot_ui != null and slot_ui.has_method("show_combo_highlight"):
@@ -309,7 +309,7 @@ func _update_ready_button_visibility() -> void:
 	ready_button.disabled = true
 	_camera_locked = false
 
-	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
+	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning")
 	var win_active: bool = is_win_sequence_active()
 	var should_block_ui: bool = spinning or win_active or _is_intro_active() or _is_spin_choice_open()
 	if btn_left: btn_left.disabled = should_block_ui
@@ -357,7 +357,7 @@ func _sync_intro_lock() -> void:
 func _ensure_intro_started() -> void:
 	if intro_overlay == null:
 		return
-	if intro_overlay.has_method("is_active") and bool(intro_overlay.call("is_active")):
+	if intro_overlay.has_method("is_active") and intro_overlay.call("is_active"):
 		return
 	if SaveSystem.has_save():
 		return
@@ -368,12 +368,12 @@ func _ensure_intro_started() -> void:
 func _is_intro_active() -> bool:
 	if intro_overlay == null or not intro_overlay.has_method("is_active"):
 		return false
-	return bool(intro_overlay.call("is_active"))
+	return intro_overlay.call("is_active")
 
 func _is_spin_choice_open() -> bool:
 	if round_system == null or not round_system.has_method("is_popup_open"):
 		return false
-	return bool(round_system.call("is_popup_open"))
+	return round_system.call("is_popup_open")
 
 func _on_intro_active_changed(active: bool) -> void:
 	if slot_ui == null:
@@ -931,10 +931,10 @@ func _on_right_pressed():
 
 func rotate_camera(angle_degrees: float):
 	# Проверяем, крутятся ли слоты или идет ли анимация победы
-	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and bool(slot_ui.call("is_spinning"))
+	var spinning: bool = slot_ui != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning")
 	
 	# Проверяем, идет ли сейчас анимация выдачи наград
-	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and bool(round_system.call("is_reward_sequence_active"))
+	var reward_active: bool = round_system != null and round_system.has_method("is_reward_sequence_active") and round_system.call("is_reward_sequence_active")
 
 	# Добавили проверку reward_active
 	if spinning or is_win_sequence_active() or _camera_locked or reward_active:

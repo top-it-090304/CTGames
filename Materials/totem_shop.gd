@@ -163,7 +163,7 @@ func _on_buy_requested() -> void:
 	var price: int = int(offer.get("price", 0))
 	if totem_id.is_empty() or _owned_totems.has(totem_id):
 		return
-	if not bool(_slot_ui.call("spend_tickets", price)):
+	if not _slot_ui.call("spend_tickets", price):
 		_refresh_panel_tokens()
 		return
 	var world: Node = get_parent()
@@ -284,7 +284,7 @@ func _refresh_shop_layout() -> void:
 func _resolve_shop_placement_for_spot(item: Node3D, spot_index: int) -> Dictionary:
 	var fallback_pos: Vector3 = item.get("shop_position_offset") as Vector3
 	var fallback_rot: Vector3 = item.get("shop_rotation_offset_degrees") as Vector3
-	if not bool(item.get("use_shop_spot_overrides")):
+	if not item.get("use_shop_spot_overrides"):
 		return {"position": fallback_pos, "rotation": fallback_rot}
 	match spot_index:
 		0:
@@ -410,7 +410,7 @@ func _add_owned_totem_card(offer: Dictionary) -> void:
 	var name_lbl := Label.new()
 	name_lbl.text = title_s
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.add_child(name_lbl)
 
@@ -418,7 +418,7 @@ func _add_owned_totem_card(offer: Dictionary) -> void:
 		var desc_lbl := Label.new()
 		desc_lbl.text = desc_s
 		desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 		desc_lbl.add_theme_font_size_override("font_size", 10)
 		desc_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		vbox.add_child(desc_lbl)
@@ -484,11 +484,11 @@ func _refresh_panel_tokens() -> void:
 		_buy_panel.call("refresh_tokens", _current_tokens())
 
 func _can_interact() -> bool:
-	if _buy_panel != null and _buy_panel.has_method("is_open") and bool(_buy_panel.call("is_open")):
+	if _buy_panel != null and _buy_panel.has_method("is_open") and _buy_panel.call("is_open"):
 		return false
-	if _intro_overlay != null and _intro_overlay.has_method("is_active") and bool(_intro_overlay.call("is_active")):
+	if _intro_overlay != null and _intro_overlay.has_method("is_active") and _intro_overlay.call("is_active"):
 		return false
-	if _round_system != null and _round_system.has_method("is_popup_open") and bool(_round_system.call("is_popup_open")):
+	if _round_system != null and _round_system.has_method("is_popup_open") and _round_system.call("is_popup_open"):
 		return false
 	return true
 

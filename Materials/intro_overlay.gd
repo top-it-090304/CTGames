@@ -138,7 +138,7 @@ func _setup_ui() -> void:
 	_text.offset_top = 22.0
 	_text.offset_bottom = -70.0
 	_text.bbcode_enabled = true
-	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_text.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_text.scroll_active = false
 	_text.add_theme_font_override("normal_font", PIXEL_FONT)
 	_text.add_theme_font_override("bold_font", PIXEL_FONT)
@@ -273,7 +273,7 @@ func _show_step() -> void:
 	_text.visible_characters = 0
 	_char_progress = 0.0
 	_typing = true
-	_waiting_choice = bool(step.get("choice", false))
+	_waiting_choice = step.get("choice", false)
 	_choices.visible = false
 	_hint.text = "Tap — далее"
 	_hint.visible = false

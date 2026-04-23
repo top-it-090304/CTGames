@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 func _ready() -> void:
 	totem_id = "cat"

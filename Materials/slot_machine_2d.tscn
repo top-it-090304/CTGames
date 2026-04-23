@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://dvdb04wnnmqih"]
 
-[node name="SlotMachine2D" type="Control" unique_id=1948149660]
+[node name="SlotMachine2D" type="Control"]
 layout_mode = 3
 anchors_preset = 0

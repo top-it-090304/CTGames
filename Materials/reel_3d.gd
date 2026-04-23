@@ -532,7 +532,7 @@ func _restore_materials_recursive(root: Node3D) -> void:
 			var base: Dictionary = _base_materials.get(key, {}) as Dictionary
 			if mat != null and not base.is_empty():
 				mat.albedo_color = base.get("albedo", Color.WHITE)
-				mat.emission_enabled = bool(base.get("emission_enabled", false))
+				mat.emission_enabled = base.get("emission_enabled", false)
 				mat.emission = base.get("emission", Color.BLACK)
 				mat.emission_energy_multiplier = float(base.get("emission_energy", 1.0))
 		for child: Node in current.get_children():

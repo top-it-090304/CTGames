@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 @export var pony_bonus_rounds: int = 3
 

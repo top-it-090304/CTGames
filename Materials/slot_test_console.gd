@@ -38,7 +38,7 @@ func _ensure_ui() -> void:
 
 	_hint = _ensure_label("HintLabel", Vector2(18.0, 48.0), Vector2(520.0, 72.0), 14, Color(0.85, 0.85, 0.85, 1.0))
 	_hint.text = "Вводи 3 строки по 5 символов через пробел. Можно: 1-7, лимон, вишня, клевер, колокол, алмаз, сундук, семерки."
-	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD
 
 	_board_input = get_node_or_null("BoardInput") as TextEdit
 	if _board_input == null:
@@ -136,7 +136,7 @@ func _on_apply_pressed() -> void:
 		_result_label.text = "SlotUI не найден."
 		return
 	var parsed: Dictionary = _parse_board_text(_board_input.text)
-	if not bool(parsed.get("ok", false)):
+	if not parsed.get("ok", false):
 		_result_label.text = String(parsed.get("error", "Ошибка ввода."))
 		return
 	var board: Array = parsed.get("board", []) as Array
@@ -222,7 +222,7 @@ func _run_paytable_self_test() -> Dictionary:
 	for case_var: Variant in cases:
 		var case_data: Dictionary = case_var as Dictionary
 		var parsed: Dictionary = _parse_board_text(String(case_data.get("board_text", "")))
-		if not bool(parsed.get("ok", false)):
+		if not parsed.get("ok", false):
 			details.append("FAIL %s: ошибка ввода (%s)" % [String(case_data.get("name", "")), String(parsed.get("error", ""))])
 			continue
 		var board: Array = parsed.get("board", []) as Array

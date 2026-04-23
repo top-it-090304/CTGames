@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 @export var pepper_bonus_rounds: int = 3
 

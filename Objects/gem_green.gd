@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 @export var gem_diamond_bias: int = 3
 @export var gem_win_multiplier_percent: int = 10

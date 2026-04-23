@@ -104,7 +104,7 @@ func _setup_quit_confirm() -> void:
 	quit_confirm_label.offset_top     = 22.0
 	quit_confirm_label.offset_bottom = -70.0
 	quit_confirm_label.bbcode_enabled = false
-	quit_confirm_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	quit_confirm_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	quit_confirm_label.scroll_active = false
 	quit_confirm_label.add_theme_font_override("normal_font", PIXEL_FONT)
 	quit_confirm_label.add_theme_font_size_override("normal_font_size", 34)
@@ -276,14 +276,14 @@ func _is_session_active() -> bool:
 		return false
 	var spinning: bool = false
 	if slot_ui.has_method("is_spinning"):
-		spinning = bool(slot_ui.call("is_spinning"))
+		spinning = slot_ui.call("is_spinning")
 	var has_spins: bool = slot_ui.get("spins_left") > 0
 	
 	# Проверка анимации награды
 	var reward_active: bool = false
 	var round_sys = game_node.get_node_or_null("RoundSystem")
 	if round_sys != null and round_sys.has_method("is_reward_sequence_active"):
-		reward_active = bool(round_sys.call("is_reward_sequence_active"))
+		reward_active = round_sys.call("is_reward_sequence_active")
 		
 	return spinning or has_spins or reward_active
 

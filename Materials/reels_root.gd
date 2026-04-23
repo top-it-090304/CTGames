@@ -119,7 +119,7 @@ func clear_combo_highlight() -> void:
 func is_spinning() -> bool:
 	_bind_reels()
 	for reel: Node3D in _reels:
-		if reel != null and reel.has_method("is_spinning") and bool(reel.call("is_spinning")):
+		if reel != null and reel.has_method("is_spinning") and reel.call("is_spinning"):
 			return true
 	return false
 

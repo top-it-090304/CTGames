@@ -12,14 +12,14 @@ config_version=5
 
 config/name="JackpotJail"
 run/main_scene="uid://bkm6cqcetsu17"
-config/features=PackedStringArray("4.6", "Mobile")
+config/features=PackedStringArray("4.4", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="uid://b764vd2en4vac"
 config/icon="uid://d0eug0onpabq0"
 
 [autoload]
 
-SaveSystem="*uid://dl70llril0ex"
+SaveSystem="*res://Materials/save_system.gd"
 
 [display]
 
@@ -29,12 +29,7 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Новый игровой проект"
 
-[physics]
-
-3d/physics_engine="Jolt Physics"
-
 [rendering]
 
-rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true

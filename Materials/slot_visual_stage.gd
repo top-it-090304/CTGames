@@ -54,7 +54,7 @@ func clear_combo_highlight() -> void:
 
 func is_spinning() -> bool:
 	_bind_nodes()
-	return _reels_root != null and _reels_root.has_method("is_spinning") and bool(_reels_root.call("is_spinning"))
+	return _reels_root != null and _reels_root.has_method("is_spinning") and _reels_root.call("is_spinning")
 
 func _bind_nodes() -> void:
 	_stage_root = get_node_or_null(stage_root_path) as Node3D

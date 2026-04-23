@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 @export var flower_diamond_bias: int = 2
 

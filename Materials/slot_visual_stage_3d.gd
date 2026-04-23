@@ -314,9 +314,9 @@ func _update_reel(reel: Dictionary, delta: float) -> void:
 
 	if mode == "settling":
 		reel["speed"] = lerpf(speed, 0.0, delta * settle_speed)
-		if not bool(reel.get("target_applied", false)) and speed <= spin_speed * 0.45:
+		if not reel.get("target_applied", false) and speed <= spin_speed * 0.45:
 			_apply_target_to_reel(reel)
-		if bool(reel.get("target_applied", false)):
+		if reel.get("target_applied", false):
 			reel_root.position.y = lerpf(reel_root.position.y, 0.0, delta * (settle_speed + 2.0))
 		if speed <= 0.12 and absf(reel_root.position.y) <= 0.03:
 			reel_root.position.y = 0.0

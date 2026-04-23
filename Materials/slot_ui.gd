@@ -505,7 +505,7 @@ func _spin() -> void:
 		await get_tree().create_timer(0.08).timeout
 
 	if _has_visual_stage():
-		while _visual_stage != null and _visual_stage.has_method("is_spinning") and bool(_visual_stage.call("is_spinning")):
+		while _visual_stage != null and _visual_stage.has_method("is_spinning") and _visual_stage.call("is_spinning"):
 			await get_tree().process_frame
 
 	if spin_outro_enabled:

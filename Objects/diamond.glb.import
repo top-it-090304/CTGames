@@ -4,22 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://lumo42tfv36o"
-path="res://.godot/imported/diamond.glb-3d58e6f5a8733789b2346fb2b95f7118.scn"
+path="res://.godot/imported/diamond.glb-1f33c12e4a375e36b07038875a38f419.scn"
 
 [deps]
 
-source_file="res://diamond.glb"
-dest_files=["res://.godot/imported/diamond.glb-3d58e6f5a8733789b2346fb2b95f7118.scn"]
+source_file="res://Objects/diamond.glb"
+dest_files=["res://.godot/imported/diamond.glb-1f33c12e4a375e36b07038875a38f419.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
-nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
-nodes/use_name_suffixes=true
 nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
@@ -34,9 +32,6 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-materials/extract=0
-materials/extract_format=0
-materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1

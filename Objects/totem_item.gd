@@ -3,8 +3,8 @@ extends Node3D
 signal pressed(item: Node3D)
 
 @export var totem_id: String = "cat"
-@export var title: String = "Cat"
-@export_multiline var description: String = "+1 F to any win"
+@export var title: String = "Кот"
+@export_multiline var description: String = "+1 Ф к любому выигрышу"
 @export var price_tokens: int = 3
 
 @export_group("Bonuses")
@@ -22,15 +22,6 @@ signal pressed(item: Node3D)
 @export var shop_rotation_offset_degrees: Vector3 = Vector3.ZERO
 @export var owned_position_offset: Vector3 = Vector3.ZERO
 @export var owned_rotation_offset_degrees: Vector3 = Vector3.ZERO
-
-@export_group("Placement By Shop Spot")
-@export var use_shop_spot_overrides: bool = false
-@export var shop_position_offset_spot1: Vector3 = Vector3.ZERO
-@export var shop_position_offset_spot2: Vector3 = Vector3.ZERO
-@export var shop_position_offset_spot3: Vector3 = Vector3.ZERO
-@export var shop_rotation_offset_degrees_spot1: Vector3 = Vector3.ZERO
-@export var shop_rotation_offset_degrees_spot2: Vector3 = Vector3.ZERO
-@export var shop_rotation_offset_degrees_spot3: Vector3 = Vector3.ZERO
 
 var _interact_area: Area3D
 var _shop_enabled: bool = true

@@ -1,4 +1,4 @@
-extends "res://totem_item.gd"
+extends "res://Objects/totem_item.gd"
 
 @export var pill_common_reduction: int = -2
 @export var pill_jackpot_bias: int = 1
