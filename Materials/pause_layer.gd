@@ -252,11 +252,14 @@ func _configure_button(node_name: String, offset_top: float) -> void:
 	btn.add_theme_stylebox_override("hover",   hover)
 	btn.add_theme_stylebox_override("pressed", pressed)
 
-func _process(_delta: float) -> void:
+var _pause_btn_timer: float = 0.0
+func _process(delta: float) -> void:
+	_pause_btn_timer -= delta
+	if _pause_btn_timer > 0.0:
+		return
+	_pause_btn_timer = 0.12
 	var pause_btn := get_node_or_null("PauseButton") as Button
 	if pause_btn and not is_paused:
-		# Если в главном скрипте Game заблокирован UI (например, открыт выбор спинов),
-		# то кнопка паузы скрывается
 		if game and game.has_method("is_ui_blocked"):
 			pause_btn.visible = not game.is_ui_blocked()
 		else:

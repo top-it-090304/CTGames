@@ -88,6 +88,7 @@ func _ready() -> void:
 	if _is_intro_active():
 		_set_slot_locked(true)
 	call_deferred("_show_jackpot_jail_screen")
+	set_process(false)
 
 
 func _process(_delta: float) -> void:
@@ -293,6 +294,7 @@ func _on_popup_option_selected(spins: int, cost: int, ticket_bonus: int) -> void
 	_add_tickets(ticket_bonus)
 	_set_spins_left(spins)
 	round_active = true
+	set_process(true)
 	_close_popup()
 	_set_slot_locked(false)
 	_update_debt_ui()
@@ -374,6 +376,7 @@ func _popup_open() -> bool:
 
 func _finish_round() -> void:
 	round_active = false
+	set_process(false)
 	_set_spins_left(0)
 	var interest_gain: int = _interest_amount()
 	var awarded_tickets: int = 0
@@ -786,6 +789,7 @@ func _deposit_to_debt_machine() -> void:
 
 func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) -> void:
 	round_active = false
+	set_process(false)
 	_set_spins_left(0)
 
 	# Auto-collect any uncollected interest reward.

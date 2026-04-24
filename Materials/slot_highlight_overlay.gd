@@ -22,6 +22,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	z_index = 80
 	visible = false
+	set_process(false)
 
 func _process(_delta: float) -> void:
 	if visible and not _rects.is_empty():
@@ -36,11 +37,13 @@ func set_highlights(rects: Array, palette_index: int) -> void:
 				_rects.append(rect)
 	_palette_index = posmod(palette_index, _palettes.size())
 	visible = not _rects.is_empty()
+	set_process(visible)
 	queue_redraw()
 
 func clear_highlights() -> void:
 	_rects.clear()
 	visible = false
+	set_process(false)
 	queue_redraw()
 
 func _draw() -> void:

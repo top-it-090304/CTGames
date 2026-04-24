@@ -958,12 +958,14 @@ func rotate_camera(angle_degrees: float):
 func can_pause() -> bool:
 	return not is_ui_blocked()
 
-func _process(_delta: float) -> void:
-	# Если мы внутри редактора Godot, ничего не делаем
+var _ui_vis_timer: float = 0.0
+func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-		
-	_update_ui_visibility()
+	_ui_vis_timer -= delta
+	if _ui_vis_timer <= 0.0:
+		_update_ui_visibility()
+		_ui_vis_timer = 0.1
 func _update_ui_visibility() -> void:
 	if Engine.is_editor_hint():
 		return

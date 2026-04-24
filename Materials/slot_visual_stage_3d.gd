@@ -1,6 +1,6 @@
 extends Control
 
-@export var viewport_size: Vector2i = Vector2i(1024, 768)
+@export var viewport_size: Vector2i = Vector2i(512, 384)
 @export var reel_count: int = 5
 @export var holder_count: int = 7
 @export var reel_spacing: float = 1.48
@@ -165,8 +165,8 @@ func _ensure_scene() -> void:
 	_viewport.size = viewport_size
 	_viewport.transparent_bg = true
 	_viewport.handle_input_locally = false
-	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	_viewport.msaa_3d = Viewport.MSAA_2X
+	_viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
+	_viewport.msaa_3d = Viewport.MSAA_DISABLED
 
 	_stage_root = _viewport.get_node_or_null("StageRoot") as Node3D
 	if _stage_root == null:
