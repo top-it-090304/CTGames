@@ -37,7 +37,8 @@ func _ready() -> void:
 	if _interact_area == null and auto_create_interact_area:
 		_interact_area = _create_generated_interact_area()
 	if _interact_area == null:
-		push_warning("Totem item '%s' has no InteractArea" % name)
+		if auto_create_interact_area:
+			push_warning("Totem item '%s' has no InteractArea and auto-create failed" % name)
 		return
 	_interact_area.input_ray_pickable = true
 	var cb: Callable = Callable(self, "_on_interact_input_event")

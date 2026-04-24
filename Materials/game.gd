@@ -336,7 +336,7 @@ func _request_spin() -> void:
 
 	_play_spin_sound()
 
-	if animation_player != null and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
+	if animation_player != null and animation_player.has_animation("lever") and slot_ui.has_method("is_spinning") and slot_ui.call("is_spinning"):
 		animation_player.play("lever")
 
 func _connect_intro_overlay() -> void:
@@ -1011,15 +1011,6 @@ func is_ui_blocked() -> bool:
 		if slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
 			return true
 		# Если есть спины в очереди, блокируем вращение камеры (опционально)
-		if slot_ui.get("spins_left") > 0:
-			return true
-
-	return false
-
-	# 4. Состояние слотов (дополнительная страховка)
-	if slot_ui != null:
-		if slot_ui.has_method("is_spinning") and slot_ui.is_spinning():
-			return true
 		if slot_ui.get("spins_left") > 0:
 			return true
 

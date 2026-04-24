@@ -1534,20 +1534,6 @@ script = ExtResource("41_7mxcb")
 [node name="CatTotemShop" parent="TotemShop/ShopItems" instance=ExtResource("33_uuapk")]
 transform = Transform3D(0.000848255, 0, -0.449999, 0, 0.45, 0, 0.449999, 0, 0.000848255, -0.191003, 1.26164, -1.70565)
 script = ExtResource("43_rnwkk")
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
-shop_position_offset = null
-shop_rotation_offset_degrees = null
-owned_position_offset = null
-owned_rotation_offset_degrees = null
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/CatTotemShop"]
 transform = Transform3D(1, 0, 1.16415e-10, 0, 1, 0, -1.16415e-10, 0, 1, 0, 0.0568125, 0)
@@ -1559,21 +1545,8 @@ shape = SubResource("BoxShape3D_if7fe")
 [node name="pony" parent="TotemShop/ShopItems" instance=ExtResource("48_6qhtt")]
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, -0.386457, 1.01951, -0.943822)
 script = ExtResource("49_bd2p1")
-pony_bonus_rounds = null
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
 shop_position_offset = Vector3(0, 0.1, 0)
-shop_rotation_offset_degrees = null
 owned_position_offset = Vector3(0, 0.08, 0)
-owned_rotation_offset_degrees = null
 
 [node name="InteractArea" type="Area3D" parent="TotemShop/ShopItems/pony"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 78.9231, 0)
@@ -1585,21 +1558,8 @@ shape = SubResource("BoxShape3D_gsmia")
 [node name="Chili Pepper" parent="TotemShop/ShopItems" instance=ExtResource("50_nxyih")]
 transform = Transform3D(0.0328688, 0, 0.0376782, 0, 0.05, 0, -0.0376782, 0, 0.0328688, -0.199199, 0.984875, -0.0592138)
 script = ExtResource("51_7x08p")
-pepper_bonus_rounds = null
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
 shop_position_offset = Vector3(0, 0.05, 0)
-shop_rotation_offset_degrees = null
 owned_position_offset = Vector3(0, 0.04, 0)
-owned_rotation_offset_degrees = null
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Chili Pepper"]
 transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0, -0.252432, 0)
@@ -1612,21 +1572,6 @@ shape = SubResource("BoxShape3D_bd2p1")
 transform = Transform3D(-8.74228e-09, 0, 0.2, 0, 0.2, 0, -0.2, 0, -8.74228e-09, -0.424242, 1.19498, -0.152821)
 visible = false
 script = ExtResource("49_7x08p")
-flower_diamond_bias = null
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
-shop_position_offset = null
-shop_rotation_offset_degrees = null
-owned_position_offset = null
-owned_rotation_offset_degrees = null
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Flower"]
 transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, -0.194654, 0)
@@ -1639,22 +1584,6 @@ shape = SubResource("BoxShape3D_cya74")
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -0.399894, 1.26785, -0.928289)
 visible = false
 script = ExtResource("51_6rt0k")
-gem_diamond_bias = null
-gem_win_multiplier_percent = null
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
-shop_position_offset = null
-shop_rotation_offset_degrees = null
-owned_position_offset = null
-owned_rotation_offset_degrees = null
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/GemGreen"]
 
@@ -1666,22 +1595,6 @@ shape = SubResource("BoxShape3D_4li4q")
 transform = Transform3D(9.23962, 0, -17.7378, 0, 20, 0, 17.7378, 0, 9.23962, -0.328336, 1.16177, -1.76234)
 visible = false
 script = ExtResource("53_42vkw")
-pill_common_reduction = null
-pill_jackpot_bias = null
-totem_id = null
-title = null
-description = null
-price_tokens = null
-bonus_type = null
-bonus_value = null
-extra_bonuses = null
-interact_area_path = null
-auto_create_interact_area = null
-generated_area_padding = null
-shop_position_offset = null
-shop_rotation_offset_degrees = null
-owned_position_offset = null
-owned_rotation_offset_degrees = null
 
 [node name="Area3D" type="Area3D" parent="TotemShop/ShopItems/Pill"]
 

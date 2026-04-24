@@ -92,8 +92,6 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
 	_try_finish_round_if_ready()
 
 func is_reward_sequence_active() -> bool:

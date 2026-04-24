@@ -79,11 +79,11 @@ func _ensure_ui() -> void:
 	if not _close_button.pressed.is_connected(_on_close_pressed):
 		_close_button.pressed.connect(_on_close_pressed)
 
-func _ensure_label(name: String, pos: Vector2, rect_size: Vector2, font_size: int, color: Color) -> Label:
-	var label: Label = get_node_or_null(name) as Label
+func _ensure_label(node_name: String, pos: Vector2, rect_size: Vector2, font_size: int, color: Color) -> Label:
+	var label: Label = get_node_or_null(node_name) as Label
 	if label == null:
 		label = Label.new()
-		label.name = name
+		label.name = node_name
 		add_child(label)
 	label.position = pos
 	label.size = rect_size
@@ -93,11 +93,11 @@ func _ensure_label(name: String, pos: Vector2, rect_size: Vector2, font_size: in
 	label.add_theme_constant_override("outline_size", 2)
 	return label
 
-func _ensure_button(name: String, text_value: String, pos: Vector2, rect_size: Vector2) -> Button:
-	var button: Button = get_node_or_null(name) as Button
+func _ensure_button(node_name: String, text_value: String, pos: Vector2, rect_size: Vector2) -> Button:
+	var button: Button = get_node_or_null(node_name) as Button
 	if button == null:
 		button = Button.new()
-		button.name = name
+		button.name = node_name
 		add_child(button)
 	button.position = pos
 	button.size = rect_size

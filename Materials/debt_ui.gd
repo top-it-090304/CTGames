@@ -78,11 +78,11 @@ func _ensure_ui() -> void:
 	status_line_label = _ensure_label("StatusLineLabel", Vector2(left, 344.0), Vector2(width, 34.0), 22, COLOR_TITLE, HORIZONTAL_ALIGNMENT_CENTER)
 
 
-func _ensure_line(name: String, pos: Vector2, line_size: Vector2) -> ColorRect:
-	var line: ColorRect = get_node_or_null(name) as ColorRect
+func _ensure_line(node_name: String, pos: Vector2, line_size: Vector2) -> ColorRect:
+	var line: ColorRect = get_node_or_null(node_name) as ColorRect
 	if line == null:
 		line = ColorRect.new()
-		line.name = name
+		line.name = node_name
 		add_child(line)
 	line.position = pos
 	line.size = line_size
@@ -90,11 +90,11 @@ func _ensure_line(name: String, pos: Vector2, line_size: Vector2) -> ColorRect:
 	return line
 
 
-func _ensure_label(name: String, pos: Vector2, label_size: Vector2, font_size: int, color: Color, align: HorizontalAlignment) -> Label:
-	var lbl: Label = get_node_or_null(name) as Label
+func _ensure_label(node_name: String, pos: Vector2, label_size: Vector2, font_size: int, color: Color, align: HorizontalAlignment) -> Label:
+	var lbl: Label = get_node_or_null(node_name) as Label
 	if lbl == null:
 		lbl = Label.new()
-		lbl.name = name
+		lbl.name = node_name
 		add_child(lbl)
 	lbl.position = pos
 	lbl.size = label_size
