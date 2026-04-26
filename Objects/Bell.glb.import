@@ -4,22 +4,20 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dg2fvorj2edl5"
-path="res://.godot/imported/bell.glb-325c8d8a3b3f812ce9a53146054b5367.scn"
+path="res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"
 
 [deps]
 
-source_file="res://Objects/bell.glb"
-dest_files=["res://.godot/imported/bell.glb-325c8d8a3b3f812ce9a53146054b5367.scn"]
+source_file="res://Objects/Bell.glb"
+dest_files=["res://.godot/imported/Bell.glb-99797fcce02e447c79cc85aef2a339a1.scn"]
 
 [params]
 
 nodes/root_type=""
 nodes/root_name=""
-nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
-nodes/use_name_suffixes=true
 nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
@@ -34,9 +32,6 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-materials/extract=0
-materials/extract_format=0
-materials/extract_path=""
 _subresources={}
 gltf/naming_version=2
 gltf/embedded_image_handling=1

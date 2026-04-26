@@ -31,7 +31,8 @@ project/assembly_name="Новый игровой проект"
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 global_illumination/gi/use_half_resolution=true
 shading/overrides/force_vertex_shading=true
