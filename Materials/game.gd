@@ -772,6 +772,27 @@ func _bind_hud_nodes() -> void:
 	lbl_spins = get_node_or_null("MainHUD/HudLeft/SpinsLabel") as Label
 	lbl_tok = get_node_or_null("MainHUD/HudRight/TokLabel") as Label
 	win_popup = get_node_or_null("MainHUD/WinPopup") as Label
+	_cleanup_old_totem_ui()
+
+func _cleanup_old_totem_ui() -> void:
+	# Очистка выполняется отложенно — после того как все _ready() дочерних нод отработали
+	call_deferred("_cleanup_old_totem_ui_deferred")
+
+func _cleanup_old_totem_ui_deferred() -> void:
+	# Чистим лишних детей HudRight (оставляем только TokLabel)
+	# Именно здесь появлялся "Acitve Totem" от старой версии кода
+	if hud_right != null:
+		for child: Node in hud_right.get_children():
+			if child.name != "TokLabel":
+				child.queue_free()
+	# Удаляем старые дисплеи тотемов (НЕ TotemOwnedCanvas — его создаёт наш код)
+	var old_names: Array[String] = [
+		"TotemDisplayLayer", "ActiveTotemLayer", "TotemActivePanel"
+	]
+	for node_name: String in old_names:
+		var old_node: Node = get_node_or_null(node_name)
+		if old_node != null:
+			old_node.queue_free()
 
 func _remove_paytable_panel() -> void:
 	if hud_layer == null:

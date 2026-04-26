@@ -9,6 +9,9 @@ extends Node3D
 @export var round_system_path: NodePath = ^"../RoundSystem"
 @export var intro_overlay_path: NodePath = ^"../IntroOverlay"
 @export var camera_path: NodePath = ^"../Camera3D"
+@export_group("Owned UI")
+@export var owned_ui_panel_path: NodePath = ^""
+@export_group("")
 @export var randomize_shop_items: bool = false
 @export_range(1, 12, 1) var max_visible_shop_items: int = 3
 @export_group("Auto Placement")
@@ -36,14 +39,8 @@ var _owned_spot_used: Dictionary = {}
 var _shop_spot_used: Dictionary = {}
 var _current_shop_offers: Array[Node3D] = []
 
-# UI display for OWNED totems
+# Ссылка на панель купленных тотемов (owned_panel.gd)
 var _owned_ui_root: Control
-var _owned_ui_row: HBoxContainer
-
-const _CARD_W := 110.0
-const _CARD_H := 110.0
-const _CARD_GAP := 10.0
-const _BAR_PAD := 12.0
 
 func _ready() -> void:
 	_rng.randomize()
@@ -312,121 +309,41 @@ func _set_shop_item_active(item: Node3D, active: bool) -> void:
 	else:
 		item.visible = active
 
-# ─── Owned display (UI квадратики) ───────────────────────────────────────────
+# ─── Owned UI (вертикальная панель справа) ───────────────────────────────────
 
 func _ensure_owned_ui() -> void:
-	var root_ui: Node = get_parent().get_node_or_null("UI")
-	if root_ui == null:
-		return
-
-	_owned_ui_root = root_ui.get_node_or_null("TotemOwnedUI") as Control
+	# Ищем по экспортированным путям (задаются в Inspector)
+	if owned_ui_panel_path != NodePath("") and not owned_ui_panel_path.is_empty():
+		_owned_ui_root = get_node_or_null(owned_ui_panel_path) as Control
+	# Запасной поиск по имени
 	if _owned_ui_root == null:
-		_owned_ui_root = Control.new()
-		_owned_ui_root.name = "TotemOwnedUI"
-		root_ui.add_child(_owned_ui_root)
-	_owned_ui_root.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_owned_ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_owned_ui_root.z_index = 130
+		_owned_ui_root = _find_node_by_name_in_tree("OwnedPanel") as Control
+	if _owned_ui_root != null:
+		_owned_ui_root.visible = true
 
-	# Фоновая панель — снизу по центру
-	var panel: Panel = _owned_ui_root.get_node_or_null("OwnedPanel") as Panel
-	if panel == null:
-		panel = Panel.new()
-		panel.name = "OwnedPanel"
-		_owned_ui_root.add_child(panel)
-	panel.anchor_left = 0.0
-	panel.anchor_right = 1.0
-	panel.anchor_top = 1.0
-	panel.anchor_bottom = 1.0
-	panel.offset_top = -(_CARD_H + _BAR_PAD * 2.0 + 24.0)
-	panel.offset_bottom = 0.0
-	panel.offset_left = 0.0
-	panel.offset_right = 0.0
-	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	panel.visible = false  # скрыта пока нет купленных
+func _find_node_by_name_in_tree(node_name: String) -> Node:
+	var root: Node = get_tree().current_scene
+	if root == null:
+		root = get_tree().get_root()
+	return _search_node(root, node_name)
 
-	# Лейбл "Тотемы"
-	var title_lbl: Label = panel.get_node_or_null("TitleLabel") as Label
-	if title_lbl == null:
-		title_lbl = Label.new()
-		title_lbl.name = "TitleLabel"
-		panel.add_child(title_lbl)
-	title_lbl.text = "Тотемы:"
-	title_lbl.anchor_left = 0.0
-	title_lbl.anchor_right = 0.0
-	title_lbl.anchor_top = 0.0
-	title_lbl.anchor_bottom = 0.0
-	title_lbl.offset_left = _BAR_PAD
-	title_lbl.offset_top = 4.0
-	title_lbl.offset_right = 120.0
-	title_lbl.offset_bottom = 24.0
-	title_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	# Ряд карточек
-	var row: HBoxContainer = panel.get_node_or_null("CardsRow") as HBoxContainer
-	if row == null:
-		row = HBoxContainer.new()
-		row.name = "CardsRow"
-		panel.add_child(row)
-	row.anchor_left = 0.0
-	row.anchor_right = 1.0
-	row.anchor_top = 0.0
-	row.anchor_bottom = 1.0
-	row.offset_left = _BAR_PAD
-	row.offset_top = 24.0
-	row.offset_right = -_BAR_PAD
-	row.offset_bottom = -_BAR_PAD
-	row.alignment = BoxContainer.ALIGNMENT_BEGIN
-	row.add_theme_constant_override("separation", int(_CARD_GAP))
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_owned_ui_row = row
+func _search_node(from: Node, node_name: String) -> Node:
+	if from.name == node_name:
+		return from
+	for child: Node in from.get_children():
+		var found: Node = _search_node(child, node_name)
+		if found != null:
+			return found
+	return null
 
 func _add_owned_totem_card(offer: Dictionary) -> void:
-	if _owned_ui_root == null or _owned_ui_row == null:
+	if _owned_ui_root == null:
 		_ensure_owned_ui()
-	if _owned_ui_row == null:
+	if _owned_ui_root == null:
 		return
-
-	var title_s: String = String(offer.get("title", "?"))
-	var desc_s: String = String(offer.get("description", ""))
-
-	# Квадратная карточка
-	var card := Panel.new()
-	card.custom_minimum_size = Vector2(_CARD_W, _CARD_H)
-	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_owned_ui_row.add_child(card)
-
-	var vbox := VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.offset_left = 6.0
-	vbox.offset_top = 6.0
-	vbox.offset_right = -6.0
-	vbox.offset_bottom = -6.0
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 4)
-	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	card.add_child(vbox)
-
-	var name_lbl := Label.new()
-	name_lbl.text = title_s
-	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	vbox.add_child(name_lbl)
-
-	if not desc_s.is_empty():
-		var desc_lbl := Label.new()
-		desc_lbl.text = desc_s
-		desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-		desc_lbl.add_theme_font_size_override("font_size", 10)
-		desc_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		vbox.add_child(desc_lbl)
-
-	# Показываем панель
-	var panel: Panel = _owned_ui_root.get_node_or_null("OwnedPanel") as Panel
-	if panel != null:
-		panel.visible = true
+	# Вся логика отрисовки — в owned_panel.gd
+	if _owned_ui_root.has_method("add_totem"):
+		_owned_ui_root.call("add_totem", offer)
 
 # ─── Owned display (3D перемещение) ──────────────────────────────────────────
 
@@ -484,6 +401,9 @@ func _refresh_panel_tokens() -> void:
 		_buy_panel.call("refresh_tokens", _current_tokens())
 
 func _can_interact() -> bool:
+	# Нельзя взаимодействовать во время вращения барабанов
+	if _slot_ui != null and _slot_ui.has_method("is_spinning") and _slot_ui.call("is_spinning"):
+		return false
 	if _buy_panel != null and _buy_panel.has_method("is_open") and _buy_panel.call("is_open"):
 		return false
 	if _intro_overlay != null and _intro_overlay.has_method("is_active") and _intro_overlay.call("is_active"):
