@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cjhvomca0mqdv" path="res://textures/wall.png" id="2_j4gtj"]
 [ext_resource type="Texture2D" uid="uid://d0eug0onpabq0" path="res://textures/jackpot_jail_logo_nofon.png" id="3_j4gtj"]
 [ext_resource type="FontFile" uid="uid://ck38hek12mqvp" path="res://textures/pixeloidsans/PixeloidSans.ttf" id="3_jdk68"]
-[ext_resource type="AudioStream" uid="uid://bq7yvsew2evsj" path="res://Materials/SoundVoiceEvil.ogg" id="5_1luex"]
+[ext_resource type="AudioStream" uid="uid://c07wblrn54pl" path="res://Materials/SoundVoiceEvil (2).ogg" id="5_1luex"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1luex"]
 bg_color = Color(0.6, 0.6, 0.6, 0.337255)

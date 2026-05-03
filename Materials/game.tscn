@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
 [ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
-[ext_resource type="AudioStream" uid="uid://bq7yvsew2evsj" path="res://Materials/SoundVoiceEvil.ogg" id="9_cya74"]
 [ext_resource type="Script" uid="uid://i1f4bkjx5705" path="res://Materials/cash.gd" id="9_r0umr"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
@@ -31,6 +30,7 @@
 [ext_resource type="Script" uid="uid://duhnls4b655nw" path="res://Materials/win_sequence_layer.gd" id="33_8k356"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://Objects/voxel_lucky_cat.glb" id="33_uuapk"]
 [ext_resource type="AudioStream" uid="uid://cb2nbnoked8ag" path="res://Materials/SoundSlotMachineScored.ogg" id="35_nb1du"]
+[ext_resource type="AudioStream" uid="uid://c07wblrn54pl" path="res://Materials/SoundVoiceEvil (2).ogg" id="38_cya74"]
 [ext_resource type="AudioStream" uid="uid://skn35ej7lf8v" path="res://Materials/Ticket.ogg" id="40_42vkw"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="41_7mxcb"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
@@ -1453,7 +1453,7 @@ script = ExtResource("56_visualstage")
 script = ExtResource("19_m4sbs")
 
 [node name="EvilVoice" type="AudioStreamPlayer3D" parent="IntroOverlay"]
-stream = ExtResource("9_cya74")
+stream = ExtResource("38_cya74")
 volume_db = -17.529
 
 [node name="TicketMachine" parent="." instance=ExtResource("21_navue")]
