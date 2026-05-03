@@ -3,7 +3,7 @@ extends Node2D
 @onready var play_button = $Play
 @onready var quit_button = $Quit
 @onready var message = $Label
-
+@onready var evil_voice: AudioStreamPlayer = get_node_or_null("EvilVoice")
 var play_locked
 var full_text = ""
 var char_index = 0
@@ -55,6 +55,8 @@ func _on_quit_pressed():
 		message.text = full_text
 		message.visible = true
 		message.visible_characters = 0
+		if evil_voice != null:
+			evil_voice.play()
 
 		char_index = 0
 		type_text()
@@ -107,6 +109,8 @@ func type_text():
 		message.visible_characters = char_index
 		char_index += 1
 		await get_tree().create_timer(speed).timeout
+	if evil_voice != null:
+		evil_voice.stop()
 	await get_tree().create_timer(3).timeout
 	fade_out_text()
 	move_play_button()

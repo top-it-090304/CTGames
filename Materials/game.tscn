@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=4 uid="uid://drv5iuxcpqs3h"]
+[gd_scene load_steps=114 format=4 uid="uid://drv5iuxcpqs3h"]
 
 [ext_resource type="Script" uid="uid://ch7t4b4kf5x60" path="res://Materials/game.gd" id="1_hudx2"]
 [ext_resource type="Texture2D" uid="uid://dfgldvoi47m3b" path="res://textures/ChatGPT Image 21 февр. 2026 г., 12_23_11.png" id="2_62l5a"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dxdv207n3c4lq" path="res://textures/chest.png" id="7_0m7j0"]
 [ext_resource type="Texture2D" uid="uid://bbm0nrnhw3s5v" path="res://textures/clover.png" id="8_qk58f"]
 [ext_resource type="Texture2D" uid="uid://dijonn6vw7pyb" path="res://textures/diamond.png" id="9_62l5a"]
+[ext_resource type="AudioStream" uid="uid://bq7yvsew2evsj" path="res://Materials/SoundVoiceEvil.ogg" id="9_cya74"]
 [ext_resource type="Script" uid="uid://i1f4bkjx5705" path="res://Materials/cash.gd" id="9_r0umr"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
@@ -1438,6 +1439,7 @@ spin_outro_texture = ExtResource("28_gsmia")
 
 [node name="MachineScored" type="AudioStreamPlayer3D" parent="SubViewport/SlotUI"]
 stream = ExtResource("35_nb1du")
+volume_db = -17.0
 
 [node name="CloverStage" type="Control" parent="SubViewport/SlotUI"]
 z_index = 5
@@ -1449,6 +1451,10 @@ script = ExtResource("56_visualstage")
 
 [node name="IntroOverlay" type="Node" parent="."]
 script = ExtResource("19_m4sbs")
+
+[node name="EvilVoice" type="AudioStreamPlayer3D" parent="IntroOverlay"]
+stream = ExtResource("9_cya74")
+volume_db = -17.529
 
 [node name="TicketMachine" parent="." instance=ExtResource("21_navue")]
 transform = Transform3D(-0.998497, 0, -0.0548109, 0, 1, 0, 0.0548109, 0, -0.998497, -3.2627, 0.960785, -2.5752)
@@ -1558,6 +1564,7 @@ owned_ui_panel_path = NodePath("../TotemOwnedCanvas/OwnedPanel")
 [node name="StoreBuy" type="AudioStreamPlayer3D" parent="TotemShop"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.494187, -0.530309, 0)
 stream = ExtResource("43_yovps")
+volume_db = -17.0
 
 [node name="FocusPoint" type="Marker3D" parent="TotemShop"]
 
