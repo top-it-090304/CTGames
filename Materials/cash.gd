@@ -20,6 +20,8 @@ extends AnimationPlayer
 @export var coin_bounce: float = 0.02
 @export var coin_linear_damp: float = 0.85
 @export var coin_angular_damp: float = 1.35
+@onready var coin_fall_sound: AudioStreamPlayer3D = get_node_or_null("CoinFall")
+
 
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _coin_emit_timer: Timer
@@ -48,6 +50,8 @@ func emit_coins(count: int = -1) -> void:
 		for _i: int in range(total):
 			_spawn_one_coin(coin_mesh)
 		return
+	if coin_fall_sound:
+		coin_fall_sound.play()
 
 	_coin_emit_mesh = coin_mesh
 	_coin_emit_remaining = total
@@ -69,6 +73,8 @@ func _emit_one_coin_tick() -> void:
 	if _coin_emit_remaining <= 0:
 		if _coin_emit_timer != null:
 			_coin_emit_timer.stop()
+		if coin_fall_sound:
+			coin_fall_sound.stop()
 		return
 	_coin_emit_remaining -= 1
 	_spawn_one_coin(_coin_emit_mesh)

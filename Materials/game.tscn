@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=4 uid="uid://drv5iuxcpqs3h"]
+[gd_scene load_steps=113 format=4 uid="uid://drv5iuxcpqs3h"]
 
 [ext_resource type="Script" uid="uid://ch7t4b4kf5x60" path="res://Materials/game.gd" id="1_hudx2"]
 [ext_resource type="Texture2D" uid="uid://dfgldvoi47m3b" path="res://textures/ChatGPT Image 21 февр. 2026 г., 12_23_11.png" id="2_62l5a"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://i1f4bkjx5705" path="res://Materials/cash.gd" id="9_r0umr"]
 [ext_resource type="Texture2D" uid="uid://5m45wgueak4b" path="res://textures/lemon.png" id="10_7l2bl"]
 [ext_resource type="Texture2D" uid="uid://dl3gculjd1nra" path="res://textures/seven.png" id="11_3w25a"]
+[ext_resource type="AudioStream" uid="uid://bmkmprkju0hks" path="res://Materials/SoundCoinFall.ogg" id="15_6rt0k"]
 [ext_resource type="Script" uid="uid://d07nu8nxq4dwu" path="res://Materials/dialogue_box.gd" id="18_3w25a"]
 [ext_resource type="Script" uid="uid://bh7fn4s6oyu3u" path="res://Materials/intro_overlay.gd" id="19_m4sbs"]
 [ext_resource type="PackedScene" uid="uid://cvpplaoqrasw8" path="res://Objects/bilet.glb" id="21_navue"]
@@ -28,6 +29,8 @@
 [ext_resource type="Script" uid="uid://wka1rk8u27jb" path="res://Materials/totem_shop.gd" id="32_54luh"]
 [ext_resource type="Script" uid="uid://duhnls4b655nw" path="res://Materials/win_sequence_layer.gd" id="33_8k356"]
 [ext_resource type="PackedScene" uid="uid://3uijebt1cyr4" path="res://Objects/voxel_lucky_cat.glb" id="33_uuapk"]
+[ext_resource type="AudioStream" uid="uid://cb2nbnoked8ag" path="res://Materials/SoundSlotMachineScored.ogg" id="35_nb1du"]
+[ext_resource type="AudioStream" uid="uid://skn35ej7lf8v" path="res://Materials/Ticket.ogg" id="40_42vkw"]
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="41_7mxcb"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bht7rwfq4b7iq" path="res://Objects/cat_totem.gd" id="43_rnwkk"]
@@ -573,6 +576,10 @@ mesh = SubResource("PlaneMesh_xkq3k")
 
 [node name="cash" type="AnimationPlayer" parent="DebtMachine"]
 script = ExtResource("9_r0umr")
+
+[node name="CoinFall" type="AudioStreamPlayer3D" parent="DebtMachine/cash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.38419e-07, 0, -2.38419e-07)
+stream = ExtResource("15_6rt0k")
 
 [node name="Coin_spawn" type="Marker3D" parent="DebtMachine"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.238092, 0.470868, -0.378784)
@@ -1429,6 +1436,9 @@ reels_row_path = NodePath("SlotReels")
 label_path = NodePath("StatusLabel")
 spin_outro_texture = ExtResource("28_gsmia")
 
+[node name="MachineScored" type="AudioStreamPlayer3D" parent="SubViewport/SlotUI"]
+stream = ExtResource("35_nb1du")
+
 [node name="CloverStage" type="Control" parent="SubViewport/SlotUI"]
 z_index = 5
 anchors_preset = 0
@@ -1457,6 +1467,10 @@ script = ExtResource("24_i1y15")
 debt_button_animation_name = "AnimationPlayer"
 reward_emit_hold = 1.0
 reward_anim_speed_scale = 1.0
+
+[node name="Ticket" type="AudioStreamPlayer3D" parent="RoundSystem"]
+stream = ExtResource("40_42vkw")
+volume_db = 80.0
 
 [node name="CameraTargets" type="Node3D" parent="."]
 

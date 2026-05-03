@@ -446,6 +446,11 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 		_move_camera_hint_safe("ticket_machine", reward_camera_move_duration)
 		await get_tree().create_timer(maxf(reward_camera_move_wait, 0.01)).timeout
 		_play_machine_reward_anim(ticket_machine, ["ticket", "tok", "coupon", "print", "eject"])
+	
+		var ticket_sfx = ticket_machine.get_node_or_null("Ticket") as AudioStreamPlayer3D
+		if ticket_sfx:
+			ticket_sfx.play()
+		
 		_emit_machine_reward(ticket_machine, "ticket")
 		await get_tree().create_timer(maxf(reward_emit_hold, 0.01)).timeout
 
