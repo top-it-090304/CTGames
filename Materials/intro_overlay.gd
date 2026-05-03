@@ -316,6 +316,8 @@ func _on_no_pressed() -> void:
 	_text.visible_characters = 0
 	_char_progress = 0.0
 	_typing = true
+	if evil_voice != null and not evil_voice.playing:
+		evil_voice.play()
 	_hint.text = "Tap — закрыть"
 	_hint.visible = false
 
