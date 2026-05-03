@@ -9,6 +9,7 @@ extends Node3D
 @export var round_system_path: NodePath = ^"../RoundSystem"
 @export var intro_overlay_path: NodePath = ^"../IntroOverlay"
 @export var camera_path: NodePath = ^"../Camera3D"
+@export var buy_sound_path: NodePath = ^"StoreBuy"
 @export_group("Owned UI")
 @export var owned_ui_panel_path: NodePath = ^""
 @export_group("")
@@ -22,6 +23,7 @@ extends Node3D
 @export var spawn_catalog_totems_on_ready: bool = false
 @export var clear_spawned_catalog_totems: bool = false
 @export var catalog_totem_scenes: Array[PackedScene] = []
+@onready var voice_player: AudioStreamPlayer3D = get_node_or_null("VoicePlayer")
 
 var _buy_panel: Panel
 var _shop_items: Node3D
@@ -38,7 +40,7 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _owned_spot_used: Dictionary = {}
 var _shop_spot_used: Dictionary = {}
 var _current_shop_offers: Array[Node3D] = []
-
+var _buy_sound: AudioStreamPlayer3D
 # Ссылка на панель купленных тотемов (owned_panel.gd)
 var _owned_ui_root: Control
 
@@ -53,6 +55,7 @@ func _ready() -> void:
 	_round_system = get_node_or_null(round_system_path)
 	_intro_overlay = get_node_or_null(intro_overlay_path)
 	_camera_3d = get_node_or_null(camera_path) as Camera3D
+	_buy_sound = get_node_or_null(buy_sound_path)
 
 	_spawn_catalog_totems_if_needed()
 	_ensure_owned_ui()
@@ -163,6 +166,8 @@ func _on_buy_requested() -> void:
 	if not _slot_ui.call("spend_tickets", price):
 		_refresh_panel_tokens()
 		return
+	if _buy_sound:
+		_buy_sound.play()
 	var world: Node = get_parent()
 	if world != null and world.has_method("_update_ready_button_visibility"):
 		world.call_deferred("_update_ready_button_visibility")

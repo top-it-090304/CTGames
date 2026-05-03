@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=4 uid="uid://drv5iuxcpqs3h"]
+[gd_scene load_steps=110 format=4 uid="uid://drv5iuxcpqs3h"]
 
 [ext_resource type="Script" uid="uid://ch7t4b4kf5x60" path="res://Materials/game.gd" id="1_hudx2"]
 [ext_resource type="Texture2D" uid="uid://dfgldvoi47m3b" path="res://textures/ChatGPT Image 21 февр. 2026 г., 12_23_11.png" id="2_62l5a"]
@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://dpour1uu533ad" path="res://Materials/totem_item.gd" id="41_7mxcb"]
 [ext_resource type="PackedScene" uid="uid://crpb7yejlgx2y" path="res://Objects/shkaf.glb" id="43_ln6k1"]
 [ext_resource type="Script" uid="uid://bht7rwfq4b7iq" path="res://Objects/cat_totem.gd" id="43_rnwkk"]
+[ext_resource type="AudioStream" uid="uid://bf2hl7ifv2ikc" path="res://Materials/SoundStoreBuy.ogg" id="43_yovps"]
 [ext_resource type="Script" uid="uid://bcwex0y21usjj" path="res://Materials/pause_layer.gd" id="46_nt7fw"]
 [ext_resource type="PackedScene" uid="uid://buk3ot5v4ey55" path="res://Objects/pony.glb" id="48_6qhtt"]
 [ext_resource type="PackedScene" uid="uid://brucrkwkxm78d" path="res://Objects/fluorescent_lamplight_-_4096px2.glb" id="48_gwlxx"]
@@ -1539,6 +1540,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.494187, 0.530309, 0)
 script = ExtResource("32_54luh")
 slot_ui_path = NodePath("")
 owned_ui_panel_path = NodePath("../TotemOwnedCanvas/OwnedPanel")
+
+[node name="StoreBuy" type="AudioStreamPlayer3D" parent="TotemShop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.494187, -0.530309, 0)
+stream = ExtResource("43_yovps")
 
 [node name="FocusPoint" type="Marker3D" parent="TotemShop"]
 
