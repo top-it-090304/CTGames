@@ -20,6 +20,8 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	_apply_border_color(border_colors[0] if not border_colors.is_empty() else Color(1.0, 0.48, 0.08, 1.0))
+	set_process(false)
+	visibility_changed.connect(func() -> void: set_process(visible))
 
 func _process(_delta: float) -> void:
 	var t: float = float(Time.get_ticks_msec()) * 0.001

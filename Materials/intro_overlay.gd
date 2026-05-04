@@ -32,6 +32,7 @@ var _no_branch := false
 var _pending_steps: Array[Dictionary] = []
 
 func _ready() -> void:
+	set_process(false)
 	_setup_ui()
 	if start_on_ready:
 		if not SaveSystem.has_save():
@@ -52,6 +53,7 @@ func start(steps: Array[Dictionary] = []) -> void:
 	_no_branch = false
 	_active = true
 	_box.visible = true
+	set_process(true)
 	emit_signal("active_changed", true)
 	_show_step()
 
@@ -287,6 +289,7 @@ func _finish() -> void:
 	_waiting_choice = false
 	_no_branch = false
 	_typing = false
+	set_process(false)
 	if _box != null:
 		_box.visible = false
 	emit_signal("active_changed", false)

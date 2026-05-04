@@ -27,6 +27,7 @@ func _ready() -> void:
 		hint.add_theme_font_override("font", PIXEL_FONT)
 		hint.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_hint_base_position = hint.position
+	set_process(false)
 
 func _resolve_text_label() -> RichTextLabel:
 	var direct: RichTextLabel = get_node_or_null("Text") as RichTextLabel
@@ -45,6 +46,7 @@ func start_dialogue(new_pages: Array[String], cps := 33.0) -> void:
 	pages = new_pages
 	page_i = 0
 	visible = true
+	set_process(true)
 	_show_page()
 
 func _show_page() -> void:
@@ -92,6 +94,7 @@ func next() -> void:
 	page_i += 1
 	if page_i >= pages.size():
 		visible = false
+		set_process(false)
 		emit_signal("finished_all")
 	else:
 		_show_page()

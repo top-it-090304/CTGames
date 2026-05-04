@@ -11,6 +11,8 @@ const PIXEL_FONT := preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
 var _slot_ui: Node = null
 var _list: VBoxContainer = null
+var _last_spinning: bool = false
+var _fade_tween: Tween = null
 
 # ─── Инициализация ────────────────────────────────────────────────────────────
 
@@ -38,16 +40,30 @@ func _ready() -> void:
 
 	modulate.a = 1.0
 
-# ─── Fade при вращении ────────────────────────────────────────────────────────
+	# Опрос состояния спина 10 раз в секунду вместо каждого кадра
+	var timer := Timer.new()
+	timer.name = "SpinPollTimer"
+	timer.wait_time = 0.1
+	timer.autostart = true
+	timer.timeout.connect(_poll_spin_state)
+	add_child(timer)
 
-func _process(delta: float) -> void:
+# ─── Fade при вращении (опрос 10 Гц) ─────────────────────────────────────────
+
+func _poll_spin_state() -> void:
 	var spinning: bool = (
 		_slot_ui != null
 		and _slot_ui.has_method("is_spinning")
 		and _slot_ui.call("is_spinning")
 	)
+	if spinning == _last_spinning:
+		return  # состояние не изменилось — ничего не делаем
+	_last_spinning = spinning
 	var target: float = 0.0 if spinning else 1.0
-	modulate.a = move_toward(modulate.a, target, delta * 6.0)
+	if _fade_tween != null:
+		_fade_tween.kill()
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(self, "modulate:a", target, 0.2).set_ease(Tween.EASE_OUT)
 
 # ─── Добавить карточку тотема ────────────────────────────────────────────────
 
