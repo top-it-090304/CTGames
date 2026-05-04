@@ -6,7 +6,7 @@ signal camera_hint_requested(hint: String)
 @export var target_canvaslayer_path: NodePath = ^"../UI"
 @export var start_on_ready: bool = true
 @export var chars_per_sec: float = 42.0
-
+@onready var evil_voice: AudioStreamPlayer3D = get_node_or_null("EvilVoice")
 const COLOR_TEXT := "#FFFFFF"
 const COLOR_COIN := "#F0D34E"
 const FONT_SIZE := 34
@@ -211,6 +211,8 @@ func _process(delta: float) -> void:
 	_text.visible_characters = int(_char_progress)
 	if _text.visible_characters >= _text.get_total_character_count():
 		_typing = false
+		if evil_voice != null:
+			evil_voice.stop()
 		if _waiting_choice:
 			_choices.visible = true
 		else:
@@ -248,6 +250,8 @@ func _next() -> void:
 	if _typing:
 		_text.visible_characters = _text.get_total_character_count()
 		_typing = false
+		if evil_voice != null:
+			evil_voice.stop()
 		if _waiting_choice:
 			_choices.visible = true
 		else:
@@ -276,6 +280,8 @@ func _show_step() -> void:
 	_char_progress = 0.0
 	_typing = true
 	_waiting_choice = step.get("choice", false)
+	if evil_voice != null and not evil_voice.playing:
+		evil_voice.play()
 	_choices.visible = false
 	_hint.text = "Tap — далее"
 	_hint.visible = false
@@ -313,6 +319,8 @@ func _on_no_pressed() -> void:
 	_text.visible_characters = 0
 	_char_progress = 0.0
 	_typing = true
+	if evil_voice != null and not evil_voice.playing:
+		evil_voice.play()
 	_hint.text = "Tap — закрыть"
 	_hint.visible = false
 

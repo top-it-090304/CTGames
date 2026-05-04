@@ -11,7 +11,7 @@ var quit_choices: HBoxContainer
 
 # Переменная для определения, что именно мы подтверждаем
 var confirm_mode: String = "" # "quit" или "restart"
-
+@onready var evil_voice: AudioStreamPlayer3D = game.get_node("IntroOverlay/EvilVoice")
 const PIXEL_FONT: FontFile = preload("res://textures/pixeloidsans/PixeloidSans.ttf")
 
 func _ready() -> void:
@@ -327,11 +327,15 @@ func _on_quit_pressed() -> void:
 func _type_text(text: String) -> void:
 	quit_confirm_label.text = ""
 	quit_choices.visible = false
+	if evil_voice != null:
+		evil_voice.play()
 	var char_i := 0
 	while char_i <= text.length():
 		quit_confirm_label.text = text.substr(0, char_i)
 		char_i += 1
 		await get_tree().create_timer(0.03).timeout
+	if evil_voice != null:
+		evil_voice.stop()
 	quit_choices.visible = true
 
 func _on_confirm_yes_pressed() -> void:

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c07wblrn54pl"
+path="res://.godot/imported/SoundVoiceEvil (2).ogg-0c0adbc0440d4d3bfde1edb9f2a75f13.oggvorbisstr"
+
+[deps]
+
+source_file="res://Materials/SoundVoiceEvil (2).ogg"
+dest_files=["res://.godot/imported/SoundVoiceEvil (2).ogg-0c0adbc0440d4d3bfde1edb9f2a75f13.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

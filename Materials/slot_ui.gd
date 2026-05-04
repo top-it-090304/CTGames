@@ -8,7 +8,7 @@ signal win_popup_requested(amount: int)
 signal win_sequence_requested(result: Dictionary)
 signal spin_completed(win_amount: int)
 signal round_ended(round_number: int, interest_amount: int)
-
+@onready var machine_scored_audio: AudioStreamPlayer3D = get_node_or_null("MachineScored")
 @export var symbols: Array[Texture2D] = []
 @export var weights: Array[float] = []
 @export var symbol_multiplier: float = 1.0
@@ -520,6 +520,8 @@ func _spin() -> void:
 	_last_win_combo_id = String(result.get("combo_id", ""))
 
 	if win_amount > 0:
+		if machine_scored_audio:
+			machine_scored_audio.play()
 		money += win_amount
 		emit_signal("win_sequence_requested", result.duplicate(true))
 
