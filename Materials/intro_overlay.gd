@@ -6,7 +6,7 @@ signal camera_hint_requested(hint: String)
 @export var target_canvaslayer_path: NodePath = ^"../UI"
 @export var start_on_ready: bool = true
 @export var chars_per_sec: float = 42.0
-@onready var evil_voice: AudioStreamPlayer3D = get_node_or_null("EvilVoice")
+@onready var evil_voice: AudioStreamPlayer = get_node_or_null("EvilVoice")
 const COLOR_TEXT := "#FFFFFF"
 const COLOR_COIN := "#F0D34E"
 const FONT_SIZE := 34
