@@ -275,6 +275,10 @@ func _on_intro_active_changed(active: bool) -> void:
 		return
 
 	if not round_active and _get_spins_left() <= 0:
+		# Если денег нет — сразу проигрыш, не показываем логотип
+		if not _awaiting_final_deposit and not _can_afford_any_spins() and pending_interest_reward <= 0:
+			_trigger_lose_screen("broke")
+			return
 		call_deferred("_show_jackpot_jail_screen")
 	else:
 		_set_slot_locked(false)
@@ -335,6 +339,11 @@ func _show_jackpot_jail_screen() -> void:
 	if round_active:
 		return
 
+	# Проверяем — может игрок уже broke и не может купить спины?
+	if not _awaiting_final_deposit and not _can_afford_any_spins() and pending_interest_reward <= 0:
+		_trigger_lose_screen("broke")
+		return
+
 	_set_slot_locked(_is_intro_active() or _awaiting_final_deposit)
 	_set_choice_overlay(true)
 	if popup.has_method("show_jackpot_jail"):
@@ -344,6 +353,11 @@ func _show_jackpot_jail_screen() -> void:
 
 func _open_spin_choice() -> void:
 	if popup == null or game_over or round_active or _is_intro_active():
+		return
+
+	# Если не можем позволить даже самый дешёвый пакет — сразу поражение
+	if not _can_afford_any_spins():
+		_trigger_lose_screen("broke")
 		return
 
 	var effective_cost_a: int = _effective_spin_choice_cost(option_a_cost)
@@ -372,6 +386,36 @@ func _popup_open() -> bool:
 		return popup.call("is_open")
 	return popup.visible
 
+## Показывает экран поражения через intro_overlay (как вступление, но унизительный).
+func _trigger_lose_screen(reason: String = "deadline") -> void:
+	game_over = true
+	_reward_sequence_active = false
+	_set_spins_left(0)
+	_set_slot_locked(true)
+	_set_choice_overlay(false)
+	_close_popup()
+	SaveSystem.delete_save()
+	print("[RoundSystem] ПОРАЖЕНИЕ: ", reason)
+	# Ищем intro_overlay заново на случай если ссылка потерялась
+	if intro_overlay == null and game_root != null:
+		intro_overlay = game_root.get_node_or_null("IntroOverlay")
+	# Через deferred чтобы не конфликтовать с текущим await-стеком
+	if intro_overlay != null and intro_overlay.has_method("show_lose_screen"):
+		intro_overlay.call_deferred("show_lose_screen", reason)
+	elif popup != null and popup.has_method("show_game_over"):
+		popup.call_deferred("show_game_over", debt_target, deposited)
+
+## Возвращает минимальную стоимость покупки спинов с учётом скидок.
+func _min_spin_cost() -> int:
+	return mini(
+		_effective_spin_choice_cost(option_a_cost),
+		_effective_spin_choice_cost(option_b_cost)
+	)
+
+## Проверяет, может ли игрок вообще купить хоть один пакет спинов.
+func _can_afford_any_spins() -> bool:
+	return _get_money() >= _min_spin_cost()
+
 func _finish_round() -> void:
 	round_active = false
 	set_process(false)
@@ -392,6 +436,11 @@ func _finish_round() -> void:
 
 	await _play_round_reward_sequence(interest_gain, awarded_tickets)
 	_update_debt_ui()
+
+	# После await проверяем — вдруг game_over уже выставлен в другом месте
+	if game_over:
+		return
+
 	if game_root != null and game_root.has_method("save_game"):
 		print("====================================")
 		print("[RoundSystem] Раунд закончен. Вызываю сохранение Jackpot Jail...")
@@ -411,12 +460,13 @@ func _finish_round() -> void:
 			_update_debt_ui()
 			call_deferred("_show_jackpot_jail_screen")
 			return
-		game_over = true
-		_set_spins_left(0)
-		_set_slot_locked(true)
-		_set_choice_overlay(true)
-		if popup != null and popup.has_method("show_game_over"):
-			popup.call("show_game_over", debt_target, deposited)
+		# Денег не хватает чтобы закрыть долг — поражение по дедлайну
+		_trigger_lose_screen("deadline")
+		return
+
+	# Раунды ещё есть, но проверяем — может игрок уже broke?
+	if not _can_afford_any_spins() and pending_interest_reward <= 0:
+		_trigger_lose_screen("broke")
 		return
 
 	if pending_interest_reward > 0:
@@ -428,10 +478,9 @@ func _finish_round() -> void:
 	_show_jackpot_jail_screen()
 
 func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
-	_reward_sequence_active = true 
-	if not reward_sequence_enabled:
-		return
-	if game_over:
+	_reward_sequence_active = true
+	if not reward_sequence_enabled or game_over:
+		_reward_sequence_active = false
 		return
 	_set_slot_locked(true)
 
@@ -459,8 +508,7 @@ func _play_round_reward_sequence(interest_gain: int, tickets_gain: int) -> void:
 
 	if not _is_intro_active() and not game_over and pending_interest_reward <= 0 and not _awaiting_final_deposit:
 		_set_slot_locked(false)
-		
-	# Выключаем блокировку (анимация закончилась)
+
 	_reward_sequence_active = false
 
 func _move_camera_hint_safe(hint: String, duration: float = 0.6) -> void:

@@ -30,6 +30,7 @@ var _waiting_choice := false
 var _no_branch := false
 
 var _pending_steps: Array[Dictionary] = []
+var _lose_screen_active: bool = false
 
 func _ready() -> void:
 	set_process(false)
@@ -215,6 +216,11 @@ func _process(delta: float) -> void:
 			evil_voice.stop()
 		if _waiting_choice:
 			_choices.visible = true
+		elif _lose_screen_active and _step_i >= _steps.size() - 1 and _steps[_step_i].get("lose_final", false):
+			# Последняя страница поражения — показываем кнопку рестарта
+			var restart_btn: Button = _box.get_node_or_null("RestartButton") as Button
+			if restart_btn != null:
+				restart_btn.visible = true
 		else:
 			_hint.visible = true
 
@@ -224,6 +230,12 @@ func _input(event: InputEvent) -> void:
 
 	if _waiting_choice:
 		return
+
+	# Если кнопка рестарта видима — мышь/тач не перехватываем, пусть кнопка сама обработает
+	if _lose_screen_active:
+		var restart_btn: Button = _box.get_node_or_null("RestartButton") as Button
+		if restart_btn != null and restart_btn.visible:
+			return
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		var k := event as InputEventKey
@@ -254,11 +266,19 @@ func _next() -> void:
 			evil_voice.stop()
 		if _waiting_choice:
 			_choices.visible = true
+		elif _lose_screen_active and _step_i >= _steps.size() - 1 and _steps[_step_i].get("lose_final", false):
+			var restart_btn: Button = _box.get_node_or_null("RestartButton") as Button
+			if restart_btn != null:
+				restart_btn.visible = true
 		else:
 			_hint.visible = true
 		return
 
 	if _waiting_choice:
+		return
+
+	# На последнем шаге поражения — клик ничего не делает (нужна кнопка)
+	if _lose_screen_active and _step_i >= _steps.size() - 1 and _steps[_step_i].get("lose_final", false):
 		return
 
 	if _no_branch:
@@ -292,6 +312,7 @@ func _show_step() -> void:
 
 func _finish() -> void:
 	_active = false
+	_lose_screen_active = false
 	_waiting_choice = false
 	_no_branch = false
 	_typing = false
@@ -341,6 +362,84 @@ func _highlight_coin_words(raw_text: String) -> String:
 		from_i = e
 	out += raw_text.substr(from_i)
 	return out
+
+## Показывает экран поражения с унизительным текстом и кнопкой "Начать заново".
+## reason: "broke" - кончились деньги, "deadline" - не выплатил долг.
+func show_lose_screen(reason: String = "deadline") -> void:
+	if _box == null or _text == null:
+		call_deferred("show_lose_screen", reason)
+		return
+
+	# Создаём кнопку рестарта если её ещё нет
+	var restart_btn: Button = _box.get_node_or_null("RestartButton") as Button
+	if restart_btn == null:
+		restart_btn = Button.new()
+		restart_btn.name = "RestartButton"
+		_box.add_child(restart_btn)
+		restart_btn.anchor_left = 0.5
+		restart_btn.anchor_right = 0.5
+		restart_btn.anchor_top = 1.0
+		restart_btn.anchor_bottom = 1.0
+		restart_btn.offset_left = -180.0
+		restart_btn.offset_right = 180.0
+		restart_btn.offset_top = -96.0
+		restart_btn.offset_bottom = -14.0
+		restart_btn.focus_mode = Control.FOCUS_CLICK
+		restart_btn.flat = false
+		restart_btn.mouse_filter = Control.MOUSE_FILTER_STOP
+		restart_btn.add_theme_font_override("font", PIXEL_FONT)
+		restart_btn.add_theme_font_size_override("font_size", 38)
+		restart_btn.add_theme_color_override("font_color",         Color(1.0, 0.22, 0.22, 1.0))
+		restart_btn.add_theme_color_override("font_hover_color",   Color(1.0, 0.5,  0.08, 1.0))
+		restart_btn.add_theme_color_override("font_pressed_color", Color(0.7, 0.1,  0.1,  1.0))
+		restart_btn.add_theme_color_override("font_outline_color", Color(0.0, 0.0,  0.0,  1.0))
+		restart_btn.add_theme_constant_override("outline_size", 3)
+		restart_btn.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		restart_btn.pressed.connect(_on_restart_pressed)
+		# Запасной вариант — gui_input ловит клик напрямую если pressed не срабатывает
+		restart_btn.gui_input.connect(func(ev: InputEvent) -> void:
+			if ev is InputEventMouseButton:
+				var mb := ev as InputEventMouseButton
+				if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+					_on_restart_pressed()
+		)
+	restart_btn.text = "НАЧАТЬ ЗАНОВО"
+	restart_btn.visible = false
+
+	var pages_lose: Array[String]
+	if reason == "broke":
+		pages_lose = [
+			"Деньги кончились.",
+			"Нет, ты не понял — совсем кончились. Даже на один прокрут не хватает.",
+			"Ты умудрился проиграть ВСЁ. Казино благодарит тебя за щедрое пожертвование.",
+		]
+	else:
+		pages_lose = [
+			"Время вышло. Долг так и не выплачен.",
+			"Ожидаемо, честно говоря. Надежды на тебя не было с самого начала.",
+			"Может, в следующий раз хоть попробуй постараться?",
+		]
+
+	var steps_arr: Array[Dictionary] = []
+	for i in range(pages_lose.size()):
+		var d: Dictionary = {"text": pages_lose[i]}
+		if i == pages_lose.size() - 1:
+			d["lose_final"] = true
+		steps_arr.append(d)
+
+	_steps = steps_arr
+	_step_i = 0
+	_no_branch = false
+	_active = true
+	_lose_screen_active = true
+	_box.visible = true
+	set_process(true)
+	emit_signal("active_changed", true)
+	_show_step()
+
+func _on_restart_pressed() -> void:
+	SaveSystem.delete_save()
+	get_tree().reload_current_scene()
 
 func _build_default_steps() -> Array[Dictionary]:
 	return [
