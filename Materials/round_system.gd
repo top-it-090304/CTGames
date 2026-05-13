@@ -451,7 +451,9 @@ func _finish_round() -> void:
 
 	if rounds_left <= 0 and deposited < debt_target:
 		var remaining_needed: int = debt_target - deposited
-		var can_cover_now: bool = (_get_money() + pending_interest_reward) >= remaining_needed
+		# The final deadline must be covered with the player's actual money.
+		# Reward is paid only after the deadline is completed successfully.
+		var can_cover_now: bool = _get_money() >= remaining_needed
 		if can_cover_now:
 			_awaiting_final_deposit = true
 			_set_spins_left(0)
@@ -726,8 +728,9 @@ func _try_interact(screen_pos: Vector2) -> void:
 		return
 
 	if _node_matches_area(collider, debt_area) or _has_ancestor_named(collider, ["DebtMachine", "blockbench_export3"]):
-		# If there's a pending reward, allow collecting by clicking anywhere on the machine.
-		if pending_interest_reward > 0:
+		# Pending reward is only granted after the deadline is successfully completed.
+		# During the final deposit phase the player must finish paying the debt first.
+		if pending_interest_reward > 0 and not _awaiting_final_deposit:
 			_collect_pending_interest_reward()
 			get_viewport().set_input_as_handled()
 			return
@@ -827,7 +830,8 @@ func _deposit_to_debt_machine() -> void:
 	# Safety: if still awaiting deposit but can no longer cover the remaining debt — game over.
 	if _awaiting_final_deposit and deposited < debt_target:
 		var remaining_after: int = debt_target - deposited
-		var can_still_cover: bool = (_get_money() + pending_interest_reward) >= remaining_after
+		# Do not count pending reward here: it is awarded only after success.
+		var can_still_cover: bool = _get_money() >= remaining_after
 		if not can_still_cover:
 			_awaiting_final_deposit = false
 			_trigger_lose_screen("deadline")
@@ -1183,7 +1187,8 @@ func _update_debt_ui() -> void:
 		return
 	var interest_gain: int = _interest_amount()
 	var remaining_needed: int = maxi(debt_target - deposited, 0)
-	var can_continue: bool = rounds_left <= 0 and deposited < debt_target and (_get_money() + pending_interest_reward) >= remaining_needed
+	# Final-deadline status must reflect only the money that is actually on hand.
+	var can_continue: bool = rounds_left <= 0 and deposited < debt_target and _get_money() >= remaining_needed
 	var status_line: String = ""
 	if game_over:
 		status_line = "GAME OVER"
