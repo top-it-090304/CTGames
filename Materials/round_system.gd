@@ -829,13 +829,8 @@ func _deposit_to_debt_machine() -> void:
 		var remaining_after: int = debt_target - deposited
 		var can_still_cover: bool = (_get_money() + pending_interest_reward) >= remaining_after
 		if not can_still_cover:
-			game_over = true
 			_awaiting_final_deposit = false
-			_set_spins_left(0)
-			_set_slot_locked(true)
-			_set_choice_overlay(true)
-			if popup != null and popup.has_method("show_game_over"):
-				popup.call("show_game_over", debt_target, deposited)
+			_trigger_lose_screen("deadline")
 			return
 
 func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) -> void:
@@ -853,11 +848,6 @@ func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) 
 		_add_tickets(bonus_tickets)
 
 	_update_debt_ui()
-	if game_root != null and game_root.has_method("save_game"):
-		print("====================================")
-		print("[RoundSystem] Цикл долга завершен! Сохраняю прогресс...")
-		game_root.call("save_game")
-		print("====================================")
 
 	# Build the congratulation text.
 	var reward_parts: PackedStringArray = PackedStringArray()
@@ -877,6 +867,14 @@ func _complete_debt_cycle(extra_money: int, bonus_tickets: int, is_early: bool) 
 	_set_slot_locked(true)
 	_close_popup()
 	_set_choice_overlay(true)
+
+	# Сохраняем с _completing_cycle=true — если игра закроется во время диалога,
+	# при следующем запуске apply_save_data сразу вызовет _start_next_debt_cycle.
+	if game_root != null and game_root.has_method("save_game"):
+		print("====================================")
+		print("[RoundSystem] Цикл долга завершен! Сохраняю прогресс...")
+		game_root.call("save_game")
+		print("====================================")
 
 	if intro_overlay != null and intro_overlay.has_method("start"):
 		var steps: Array[Dictionary] = [{"text": dialogue_text}]
@@ -1355,15 +1353,19 @@ func _safe_set_input_handled() -> void:
 		vp.set_input_as_handled()
 
 func get_save_data() -> Dictionary:
+	# Если раунд технически активен но спинов нет — считаем раунд завершённым.
+	# Это защищает от зависания при загрузке если игрок вышел в середине раунда.
+	var save_round_active: bool = round_active and _get_spins_left() > 0
 	return {
 		"rounds_left": rounds_left,
 		"deposited": deposited,
 		"debt_target": debt_target,
 		"pending_interest_reward": pending_interest_reward,
 		"early_bonus_given": early_bonus_given,
-		"round_active": round_active,
+		"round_active": save_round_active,
 		"game_over": game_over,
-		"_awaiting_final_deposit": _awaiting_final_deposit
+		"_awaiting_final_deposit": _awaiting_final_deposit,
+		"_completing_cycle": _completing_cycle,
 	}
 
 func apply_save_data(data: Dictionary) -> void:
@@ -1375,7 +1377,50 @@ func apply_save_data(data: Dictionary) -> void:
 	round_active = data.get("round_active", round_active)
 	game_over = data.get("game_over", game_over)
 	_awaiting_final_deposit = data.get("_awaiting_final_deposit", _awaiting_final_deposit)
-	
-	# Обновляем UI и логику после того как загрузили переменные
+	_completing_cycle = data.get("_completing_cycle", false)
+
+	# 1. Если _completing_cycle=true — вышли во время диалога перехода к новому дедлайну.
+	#    Сбрасываем и стартуем следующий цикл сразу.
+	if _completing_cycle:
+		_completing_cycle = false
+		round_active = false
+		set_process(false)
+		_update_debt_ui()
+		_sync_slot_symbol_multiplier()
+		call_deferred("_start_next_debt_cycle")
+		return
+
+	# 2. Если round_active=true но спинов нет — вышли во время раунда.
+	#    Считаем раунд завершённым, восстанавливаем нормальное состояние.
+	if round_active and _get_spins_left() <= 0:
+		round_active = false
+		set_process(false)
+
 	_update_debt_ui()
 	_sync_slot_symbol_multiplier()
+
+	# 3. Сейв с game_over не должен существовать (удаляем при проигрыше),
+	#    но если попали сюда — чистим и перезапускаем.
+	if game_over:
+		call_deferred("_handle_loaded_game_over")
+		return
+
+	# 4. Восстанавливаем UI через deferred чтобы все узлы успели проинициализироваться.
+	call_deferred("_restore_ui_state")
+
+func _handle_loaded_game_over() -> void:
+	SaveSystem.delete_save()
+	get_tree().reload_current_scene()
+
+func _restore_ui_state() -> void:
+	if _awaiting_final_deposit:
+		_set_spins_left(0)
+		_set_slot_locked(true)
+		_set_choice_overlay(true)
+		_show_jackpot_jail_screen()
+		return
+	if pending_interest_reward > 0:
+		_set_slot_locked(true)
+		_set_choice_overlay(false)
+		return
+	_show_jackpot_jail_screen()	
