@@ -1562,8 +1562,7 @@ script = ExtResource("32_54luh")
 slot_ui_path = NodePath("")
 owned_ui_panel_path = NodePath("../TotemOwnedCanvas/OwnedPanel")
 
-[node name="StoreBuy" type="AudioStreamPlayer3D" parent="TotemShop"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.494187, -0.530309, 0)
+[node name="StoreBuy" type="AudioStreamPlayer" parent="TotemShop"]
 stream = ExtResource("43_yovps")
 volume_db = -17.0
 

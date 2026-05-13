@@ -23,7 +23,6 @@ extends Node3D
 @export var spawn_catalog_totems_on_ready: bool = false
 @export var clear_spawned_catalog_totems: bool = false
 @export var catalog_totem_scenes: Array[PackedScene] = []
-@onready var voice_player: AudioStreamPlayer3D = get_node_or_null("VoicePlayer")
 
 var _buy_panel: Panel
 var _shop_items: Node3D
@@ -40,7 +39,7 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _owned_spot_used: Dictionary = {}
 var _shop_spot_used: Dictionary = {}
 var _current_shop_offers: Array[Node3D] = []
-var _buy_sound: AudioStreamPlayer3D
+var _buy_sound: AudioStreamPlayer
 # Ссылка на панель купленных тотемов (owned_panel.gd)
 var _owned_ui_root: Control
 
