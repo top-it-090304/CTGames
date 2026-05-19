@@ -1,0 +1,39 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://ow8h4hs2hpis"
+path.s3tc="res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.s3tc.ctex"
+path.etc2="res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.etc2.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "278fb3842c5f4fa19fac942102f5c7e5"
+}
+
+[deps]
+
+source_file="res://Objects/chest_2.png"
+dest_files=["res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.s3tc.ctex", "res://.godot/imported/chest_2.png-bd84243d1fde891f6c09430efa0e7edd.etc2.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

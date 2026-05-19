@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cg34ppw1s2cpu"
+path.s3tc="res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.s3tc.ctex"
+path.etc2="res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.etc2.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://Objects/clover_0.png"
+dest_files=["res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.s3tc.ctex", "res://.godot/imported/clover_0.png-2b4c469100162ba1e4c4650e24648ab7.etc2.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

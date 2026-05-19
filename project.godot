@@ -10,15 +10,37 @@ config_version=5
 
 [application]
 
-config/name="Новый игровой проект"
-run/main_scene="uid://drv5iuxcpqs3h"
-config/features=PackedStringArray("4.6", "Mobile")
+config/name="JackpotJail"
+run/main_scene="uid://bkm6cqcetsu17"
+config/features=PackedStringArray("4.4", "Mobile")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="uid://b764vd2en4vac"
+config/icon="uid://d0eug0onpabq0"
 
-[physics]
+[autoload]
 
-3d/physics_engine="Jolt Physics"
+SaveSystem="*res://Materials/save_system.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
+
+[dotnet]
+
+project/assembly_name="Новый игровой проект"
 
 [rendering]
 
-rendering_device/driver.windows="d3d12"
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+global_illumination/gi/use_half_resolution=true
+shading/overrides/force_vertex_shading=true
+textures/default_filters/use_nearest_mipmap_filter=true
+textures/default_filters/anisotropic_filtering_level=0
+environment/glow/upscale_mode=0
+mesh_lod/lod_change/threshold_pixels=4.0
+shadows/directional_shadow/size=1024
+shadows/directional_shadow/soft_shadow_filter_quality=0
+shadows/positional_shadow/atlas_size=1024
+shadows/positional_shadow/atlas_16_bits=false
